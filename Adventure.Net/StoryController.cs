@@ -13,13 +13,9 @@ namespace Adventure.Net
 
         public StoryController(IStory story, Output output, CommandPrompt commandPrompt)
         {
-            if (story == null) throw new ArgumentNullException("story");
-            if (output == null) throw new ArgumentNullException("output");
-            if (commandPrompt == null) throw new ArgumentNullException("commandPrompt");
-
-            Context.Output = output;
-            Context.CommandPrompt = commandPrompt;
-            Context.Story = story;
+            Context.Output = output ?? throw new ArgumentNullException("output");
+            Context.CommandPrompt = commandPrompt ?? throw new ArgumentNullException("commandPrompt");
+            Context.Story = story ?? throw new ArgumentNullException("story");
             Context.Parser = new Parser();
 
         }

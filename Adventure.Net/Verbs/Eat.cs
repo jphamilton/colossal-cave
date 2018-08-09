@@ -14,10 +14,20 @@ namespace Adventure.Net.Verbs
         private bool EatObject()
         {
             if (!Object.IsEdible)
-                Print(String.Format("{0} plainly inedible.", Object.TheyreOrThats));
+            {
+                Print($"{Object.TheyreOrThats} plainly inedible.");
+            }
+            else if (Inventory.Contains(Object))
+            {
+                Print($"You eat the {Object.Name}. Not bad.");
+            }
             else
-                Print(String.Format("You eat the {0}. Not bad.", Object.Name));
-            
+            {
+                Context.Story.Location.Objects.Remove(Object);
+                Inventory.Add(Object);
+                Print($"(first taking the {Object.Name})");
+            }
+
             Inventory.Remove(Object);
             
             return true;

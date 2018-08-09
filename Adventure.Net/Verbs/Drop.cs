@@ -28,14 +28,14 @@ namespace Adventure.Net.Verbs
                 Print("Dropped.");
                 result = true;
             }
+            else if (Object == null)
+            {
+                Print("You aren't carrying anything.");
+            }
             else if (Object.AtLocation)
             {
                 string isAre = Object.HasPluralName ? "are" : "is";
                 Print("The {0} {1} already here.", Object.Name, isAre);
-            }
-            else if (Object == null)
-            {
-                Print("You aren't carrying anything.");
             }
             else
             {

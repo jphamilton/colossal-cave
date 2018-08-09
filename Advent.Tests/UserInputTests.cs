@@ -84,8 +84,6 @@ namespace Advent.Tests
         public void should_not_understand()
         {
             var results = parser.Parse("");
-            //var input = new UserInput();
-            //var result = input.Parse("");
             Assert.AreEqual(L.DoNotUnderstand, results[0]);
         }
 
@@ -93,8 +91,6 @@ namespace Advent.Tests
         public void should_not_recognize_verb()
         {
             var results = parser.Parse("snark");
-//            var input = new UserInput();
-            //var result = input.Parse("snark");
             Assert.AreEqual(L.VerbNotRecognized, results[0]);
         }
 
