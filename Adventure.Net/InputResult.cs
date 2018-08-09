@@ -7,7 +7,7 @@ namespace Adventure.Net
 {
     public class InputResult
     {
-        public List<Object> Objects { get; set; }
+        public IList<Object> Objects { get; set; }
         public Object IndirectObject { get; set; }
         public List<Object> Exceptions { get; private set; }
         public string Pregrammar { get; set; }

@@ -178,11 +178,12 @@ namespace Adventure.Net
             {
                 if (result.ObjectsMustBeHeld)
                 {
-                    result.Objects = result.Objects.Where(x => x.InInventory).ToList();
+                    result.Objects = Inventory.Items.Reverse().ToList(); // copy inventory items 
                 }
                 else
                 {
-                    result.Objects = L.ObjectsInScope();
+                    // TODO: Describe AllObjects better
+                    result.Objects = L.AllObjects(); //L.ObjectsInScope();
                 }
             }
 

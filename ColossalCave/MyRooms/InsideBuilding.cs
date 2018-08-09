@@ -16,14 +16,15 @@ namespace ColossalCave.MyRooms
             WestTo<EndOfRoad>();
             OutTo<EndOfRoad>();
         
-            Has<Spring>();
-            Has<SewerPipes>();
+            
             Has<SetOfKeys>();
             Has<TastyFood>();
             Has<BrassLantern>();
             Has<Bottle>();
-            Has<WellHouse>();
             Has<Stream>();
+            Has<WellHouse>();
+            Has<Spring>();
+            Has<SewerPipes>();
 
             Before<Enter>(() =>
                 {

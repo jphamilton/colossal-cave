@@ -51,10 +51,10 @@ namespace Advent.Tests.Verbs
             Assert.IsFalse(Inventory.Contains("keys"));
             Assert.IsFalse(Inventory.Contains("lamp"));
 
-            Assert.AreEqual("set of keys: Dropped.", results[0]);
-            Assert.AreEqual("tasty food: Dropped.", results[1]);
-            Assert.AreEqual("brass lantern: Dropped.", results[2]);
-            Assert.AreEqual("small bottle: Dropped.", results[3]);
+            Assert.AreEqual("set of keys: Dropped.", results[3]);
+            Assert.AreEqual("tasty food: Dropped.", results[2]);
+            Assert.AreEqual("brass lantern: Dropped.", results[1]);
+            Assert.AreEqual("small bottle: Dropped.", results[0]);
         }
 
         [Test]
@@ -88,9 +88,9 @@ namespace Advent.Tests.Verbs
             Assert.IsFalse(Inventory.Contains("keys"));
             Assert.IsFalse(Inventory.Contains("lamp"));
 
-            Assert.AreEqual("set of keys: Dropped.", results[0]);
+            Assert.AreEqual("set of keys: Dropped.", results[2]);
             Assert.AreEqual("tasty food: Dropped.", results[1]);
-            Assert.AreEqual("brass lantern: Dropped.", results[2]);
+            Assert.AreEqual("brass lantern: Dropped.", results[0]);
         }
 
         [Test]
