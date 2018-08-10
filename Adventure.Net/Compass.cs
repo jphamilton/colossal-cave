@@ -1,39 +1,42 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Adventure.Net
 {
     public static class Compass
     {
-        private static readonly List<string> directions = new List<string>();
+        private static readonly ReadOnlyCollection<string> directions = null;
 
         static Compass()
         {
-            directions.AddRange(new List<string>
-                                    {
-                                        "n",
-                                        "north",
-                                        "s",
-                                        "south",
-                                        "e",
-                                        "east",
-                                        "w",
-                                        "west",
-                                        "nw",
-                                        "northwest",
-                                        "sw",
-                                        "southwest",
-                                        "ne",
-                                        "northeast",
-                                        "se",
-                                        "southeast",
-                                        "u",
-                                        "up",
-                                        "d",
-                                        "down",
-                                        "in",
-                                        "out",
-                                        "enter"
-                                    });
+            var list = new List<string>
+            {
+                "n",
+                "north",
+                "s",
+                "south",
+                "e",
+                "east",
+                "w",
+                "west",
+                "nw",
+                "northwest",
+                "sw",
+                "southwest",
+                "ne",
+                "northeast",
+                "se",
+                "southeast",
+                "u",
+                "up",
+                "d",
+                "down",
+                "in",
+                "out",
+                "enter"
+            };
+
+            directions = new ReadOnlyCollection<string>(list);
         }
 
         public static IList<string> Directions

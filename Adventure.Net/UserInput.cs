@@ -45,9 +45,7 @@ namespace Adventure.Net
             {
                 result.Verb = possibleVerbs.First();
             }
-            //else { NOT sure what to do about multiple possible verbs here}
-
-
+            
             // remove verb token
             removeVerbToken();
 
@@ -89,7 +87,6 @@ namespace Adventure.Net
                     }
                     else if (token == K.ALL)
                     {
-                       // result.Objects.AddRange(L.ObjectsInScope());
                         grammarTokens.Add(token);
                         result.IsAll = true;
                     }
@@ -178,12 +175,11 @@ namespace Adventure.Net
             {
                 if (result.ObjectsMustBeHeld)
                 {
-                    result.Objects = Inventory.Items.Reverse().ToList(); // copy inventory items 
+                    result.Objects = Inventory.Items.Reverse().ToList();
                 }
                 else
                 {
-                    // TODO: Describe AllObjects better
-                    result.Objects = L.AllObjects(); //L.ObjectsInScope();
+                    result.Objects = L.ObjectsInScope().Where(obj => obj != L.CurrentLocation).ToList(); 
                 }
             }
 

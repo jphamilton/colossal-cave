@@ -276,40 +276,5 @@ namespace Adventure.Net
 
             return result;
         }
-
-        // TODO: I hate this
-        public List<Object> AllObjects()
-        {
-            var result = new List<Object>();
-
-            var objectsInRoom = Location.Objects.Where(x => !x.IsScenery && !x.IsStatic);
-
-            result.AddRange(objectsInRoom);
-
-            var scenery = Location.Objects.Where(x => x.IsScenery);
-
-            result.AddRange(scenery);
-
-            var staticObjects = Location.Objects.Where(x => x.IsStatic);
-
-            result.AddRange(staticObjects);
-
-            result.AddRange(Inventory.Items);
-            
-            var contained = new List<Object>();
-
-            foreach (var obj in result)
-            {
-                var container = obj as Container;
-                if (container != null)
-                {
-                    contained.AddRange(container.Contents);
-                }
-            }
-
-            result.AddRange(contained);
-
-            return result;
-        }
     }
 }

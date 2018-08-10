@@ -1,6 +1,6 @@
 ﻿namespace Adventure.Net
 {
-    public class Context
+    public static class Context
     {
         static Context()
         {

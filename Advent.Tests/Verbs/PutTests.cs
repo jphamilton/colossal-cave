@@ -194,5 +194,11 @@ namespace Advent.Tests.Verbs
             var results = parser.Parse("put bottle lantern");
             Assert.AreEqual("I didn't understand that sentence.", results[0]);
         }
+
+        [Test]
+        public void can_put_down_object()
+        {
+
+        }
     }
 }

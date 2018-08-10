@@ -24,7 +24,6 @@ namespace Advent.Tests.Verbs
             Assert.AreEqual(Room<SlitInStreambed>(), Location);
             parser.Parse("run north");
             Assert.AreEqual(Room<Valley>(), Location);
-
         }
 
         [Test]

@@ -8,16 +8,15 @@ namespace Adventure.Net
 
         public StoryController(IStory story) : this(story, new Output(Console.Out), new CommandPrompt(Console.Out, Console.In))
         {
-            
+            Console.Title = story.Story;
         }
 
-        public StoryController(IStory story, Output output, CommandPrompt commandPrompt)
+        private StoryController(IStory story, Output output, CommandPrompt commandPrompt)
         {
             Context.Output = output ?? throw new ArgumentNullException("output");
             Context.CommandPrompt = commandPrompt ?? throw new ArgumentNullException("commandPrompt");
             Context.Story = story ?? throw new ArgumentNullException("story");
             Context.Parser = new Parser();
-
         }
 
         public void Run()

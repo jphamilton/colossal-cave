@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Adventure.Net.Verbs;
 
 namespace Adventure.Net
 {
