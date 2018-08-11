@@ -24,7 +24,7 @@ namespace Adventure.Net.Verbs
         {
             if (!Object.InInventory)
             {
-                Print("You need to be holding {0} {1} before you can put it on top of something else.", Object.Article, Object.Name);
+                Print($"You need to be holding the {Object.Name} before you can put it on top of something else.");
                 return true;
             }
 

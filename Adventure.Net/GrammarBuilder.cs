@@ -80,8 +80,11 @@ namespace Adventure.Net
                 }
 
                 string grammar = string.Join(" ", elements.ToArray());
+
                 if (!grammars.Contains(grammar))
+                {
                     grammars.Add(grammar);
+                }
             }
             
             return grammars;

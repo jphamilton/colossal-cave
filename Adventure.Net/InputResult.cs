@@ -14,7 +14,7 @@ namespace Adventure.Net
         public bool IsAll { get; set; }
         public string Preposition { get; set; }
         public bool IsAskingQuestion { get; set; }
-        public bool IsPartial { get; set; }
+        //public bool IsPartial { get; set; }
         public bool Handled { get; set; }
 
         // contains parser results for recursive calls

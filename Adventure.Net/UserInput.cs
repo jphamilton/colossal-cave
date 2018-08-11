@@ -9,48 +9,6 @@ namespace Adventure.Net
     {
         private Library L = new Library();
 
-        public InputResult Parse_New(string input)
-        {
-            var result = new InputResult();
-            var tokenizer = new InputTokenizer();
-            var tokens = tokenizer.Tokenize(input);
-
-            if (tokens.Count == 0)
-            {
-                result.Action = () =>
-                {
-                    Context.Parser.Print(L.DoNotUnderstand);
-                    return true;
-                };
-
-                return result;
-            }
-
-            // there can be more than one match for verbs like "switch"
-            // which has one class that handles "switch on" and another 
-            // class that handles "switch off"
-            var possibleVerbs = VerbList.GetVerbsByName(tokens[0]);
-
-            if (possibleVerbs.Count == 0)
-            {
-                result.Action = () =>
-                {
-                    Context.Parser.Print(L.VerbNotRecognized);
-                    return true;
-                };
-
-                return result;
-            }
-
-            // remove verb token from token list
-            tokens.RemoveAt(0);
-
-            // find actual verb based on grammar
-
-
-            return null;
-        }
-
         public InputResult Parse(string input)
         {
             var result = new InputResult();
@@ -145,13 +103,6 @@ namespace Adventure.Net
                     }
                     else
                     {
-                        if (result.IsPartial)
-                        {
-                            string partial = String.Format("I only understood you as far as wanting to {0} the {1}.", possibleVerbs[0].Name, result.Objects[0].Name);
-                            result.Action = ErrorAction(partial);
-                            return result;
-                        }
-
                         result.Action = ErrorAction(L.CantSeeObject);
                         return result;
                     }
@@ -161,6 +112,7 @@ namespace Adventure.Net
                     // need to implement "Which do you mean, the red cape or the black cape?" type behavior here
                     Object obj;
                     var ofInterest = objects.Where(x => x.InScope).ToList();
+
                     if (ofInterest.Count > 1)
                     {
                         obj = ofInterest.FirstOrDefault(x => x.InInventory);
@@ -169,6 +121,7 @@ namespace Adventure.Net
                     {
                         obj = ofInterest.FirstOrDefault();
                     }
+
                     //-------------------------------------------------------------------------------------
 
                     bool isIndirectObject = hasPreposition && hasObject;
@@ -186,7 +139,6 @@ namespace Adventure.Net
                     }
                     else if (result.IsExcept)
                     {
-                        //result.Objects.Remove(obj);
                         result.Exceptions.Add(obj);
                     }
                     else
@@ -195,7 +147,6 @@ namespace Adventure.Net
                             grammarTokens.Add(K.OBJECT_TOKEN);
                         if (!result.Objects.Contains(obj))
                             result.Objects.Add(obj);
-                        result.IsPartial = true;
                     }
                 }
 
@@ -208,6 +159,11 @@ namespace Adventure.Net
             var grammars = grammarBuilder.Build();
 
             FindVerb(result, possibleVerbs, grammars);
+
+            if ((result.IsAll || result.Objects.Count > 1) && !result.Verb.AllowsMulti)
+            {
+                return DoesNotAllowMulti();
+            }
 
             if (result.Grammar == null)
             {
@@ -237,10 +193,41 @@ namespace Adventure.Net
 
             if (result.IsExcept)
             {
+                if (!result.Exceptions.Any())
+                {
+                    return WhatDoYouWantToDo(result);
+                }
+
                 result.Exceptions.ForEach(x => result.Objects.Remove(x));
             }
 
             return result;
+        }
+
+        private static InputResult WhatDoYouWantToDo(InputResult result)
+        {
+            var verb = result.Verb.Name;
+
+            return new InputResult
+            {
+                Action = () =>
+                {
+                    Context.Parser.Print($"What do you want to {verb}?");
+                    return true;
+                }
+            };
+        }
+
+        private static InputResult DoesNotAllowMulti()
+        {
+            return new InputResult
+            {
+                Action = () =>
+                {
+                    Context.Parser.Print($"You can't use multiple objects with that verb.");
+                    return true;
+                }
+            };
         }
 
         private void FindVerb(InputResult result, IEnumerable<Verb> possibleVerbs, IEnumerable<string> grammars)

@@ -15,6 +15,14 @@ namespace Adventure.Net
         public bool ImplicitTake { get; set; }
 
 
+        public bool AllowsMulti
+        {
+            get
+            {
+                return Grammars.Any(x => x.Format.Contains("<multi"));
+            }
+        }
+
         protected bool RedirectTo<T>(string format) where T : Verb, new()
         {
             bool result = false;

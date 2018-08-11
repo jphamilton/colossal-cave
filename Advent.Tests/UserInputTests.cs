@@ -129,5 +129,13 @@ namespace Advent.Tests
             Assert.AreEqual("I only understood you as far as wanting to take the small bottle.", results[0]);
 
         }
+
+        [Test]
+        public void cannot_use_multiple_objects_with_that_verb()
+        {
+            var results = parser.Parse("look at all except");
+            Assert.AreEqual(1, results.Count);
+            Assert.AreEqual("You can't use multiple objects with that verb.", results[0]);
+        }
     }
 }

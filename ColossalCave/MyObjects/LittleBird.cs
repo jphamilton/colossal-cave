@@ -1,6 +1,5 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Verbs;
-//using Object = Adventure.Net.Object;
 
 namespace ColossalCave.MyObjects
 {
