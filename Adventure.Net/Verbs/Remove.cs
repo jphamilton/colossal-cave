@@ -14,7 +14,6 @@ Verb 'remove'
         public Remove()
         {
             Name = "remove";
-            //Synonyms.Are("take", "carry", "hold");
             Grammars.Add(K.HELD_TOKEN, Disrobe);
             Grammars.Add(K.MULTI_TOKEN, Take);
         }

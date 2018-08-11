@@ -6,8 +6,8 @@
         {
             Name = "ask";
             //Grammars.Add("<creature> 'about' <topic>", AttackObject);
-            Grammars.Add("<noun> 'about' <topic>", OnAsk);
-            Grammars.Add("<noun> 'for' <noun>", OnAskFor);
+            Grammars.Add("<noun> about <topic>", OnAsk);
+            Grammars.Add("<noun> for <noun>", OnAskFor);
 
         }
 

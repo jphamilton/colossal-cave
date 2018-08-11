@@ -1,6 +1,4 @@
-﻿using System;
-using Adventure.Net;
-using Object = Adventure.Net.Object;
+﻿using Adventure.Net;
 
 namespace Advent.Tests
 {

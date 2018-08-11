@@ -73,6 +73,57 @@ namespace Advent.Tests.Verbs
         }
 
         [Test]
+        public void can_take_comma_delimited()
+        {
+            Object bottle = Objects.Get<Bottle>();
+            Object keys = Objects.Get<SetOfKeys>();
+
+            IList<string> results = parser.Parse("take bottle,keys");
+
+            Assert.AreEqual("small bottle: Taken.", results[0]);
+            Assert.AreEqual("set of keys: Taken.", results[1]);
+
+            Assert.IsTrue(Inventory.Contains(bottle));
+            Assert.IsTrue(Inventory.Contains(keys));
+        }
+
+        [Test]
+        public void can_take_multiple_objects_using_and()
+        {
+            Object bottle = Objects.Get<Bottle>();
+            Object keys = Objects.Get<SetOfKeys>();
+            Object lantern = Objects.Get<BrassLantern>();
+
+            IList<string> results = parser.Parse("take bottle and keys and lantern");
+
+            Assert.AreEqual("small bottle: Taken.", results[0]);
+            Assert.AreEqual("set of keys: Taken.", results[1]);
+            Assert.AreEqual("brass lantern: Taken.", results[2]);
+
+            Assert.IsTrue(Inventory.Contains(bottle));
+            Assert.IsTrue(Inventory.Contains(keys));
+            Assert.IsTrue(Inventory.Contains(lantern));
+        }
+
+        [Test]
+        public void can_take_multiple_objects_using_comma_and()
+        {
+            Object bottle = Objects.Get<Bottle>();
+            Object keys = Objects.Get<SetOfKeys>();
+            Object lantern = Objects.Get<BrassLantern>();
+
+            IList<string> results = parser.Parse("take bottle, keys and lantern");
+
+            Assert.AreEqual("small bottle: Taken.", results[0]);
+            Assert.AreEqual("set of keys: Taken.", results[1]);
+            Assert.AreEqual("brass lantern: Taken.", results[2]);
+
+            Assert.IsTrue(Inventory.Contains(bottle));
+            Assert.IsTrue(Inventory.Contains(keys));
+            Assert.IsTrue(Inventory.Contains(lantern));
+        }
+
+        [Test]
         public void can_take_all()
         {
             Object bottle = Objects.Get<Bottle>();
@@ -93,11 +144,6 @@ namespace Advent.Tests.Verbs
             Assert.IsTrue(results.Contains("tasty food: Taken."));
             Assert.IsTrue(results.Contains("brass lantern: Taken."));
             Assert.IsTrue(results.Contains("small bottle: Taken."));
-            Assert.IsTrue(results.Contains("spring: That's hardly portable."));
-            Assert.IsTrue(results.Contains("pair of 1 foot diameter sewer pipes: That's hardly portable."));
-            Assert.IsTrue(results.Contains("well house: That's hardly portable."));
-            Assert.IsTrue(results.Contains("stream: The bottle is now full of water."));
-            
         }
 
         [Test]
@@ -112,6 +158,20 @@ namespace Advent.Tests.Verbs
 
             Assert.IsTrue(Inventory.Contains(bottle, keys, lamp));
             Assert.IsFalse(Inventory.Contains(food));
+        }
+
+        [Test]
+        public void can_take_all_except_multple_objects()
+        {
+            Object bottle = Objects.Get<Bottle>();
+            Object keys = Objects.Get<SetOfKeys>();
+            Object food = Objects.Get<TastyFood>();
+            Object lamp = Objects.Get<BrassLantern>();
+
+            parser.Parse("take all except food and keys");
+
+            Assert.IsTrue(Inventory.Contains(bottle, lamp));
+            Assert.IsFalse(Inventory.Contains(food, keys));
         }
 
         [Test]
@@ -141,6 +201,14 @@ namespace Advent.Tests.Verbs
         public void take_bottle_lantern_food_except_bottle()
         {
             var results = parser.Parse("take bottle lantern food except bottle");
+            Assert.IsTrue(results.Contains("tasty food: Taken."));
+            Assert.IsTrue(results.Contains("brass lantern: Taken."));
+        }
+
+        [Test]
+        public void take_bottle_lantern_food_except_bottle_with_better_grammer()
+        {
+            var results = parser.Parse("take bottle, lantern and food except bottle");
             Assert.IsTrue(results.Contains("tasty food: Taken."));
             Assert.IsTrue(results.Contains("brass lantern: Taken."));
         }

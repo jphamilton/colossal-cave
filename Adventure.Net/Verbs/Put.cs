@@ -8,8 +8,8 @@ namespace Adventure.Net.Verbs
         public Put()
         {
             Name = "put";
-            Grammars.Add("<multi> [in,inside,into] <noun>", InsertObject);
-            Grammars.Add("<multiheld> [on,onto] <noun>", PutOnObject);
+            Grammars.Add("<multi> in <noun>", InsertObject);
+            Grammars.Add("<multiheld> on <noun>", PutOnObject);
             Grammars.Add("on <held>", WearObject);
             Grammars.Add("down <multiheld>", DropObject);
             Grammars.Add("<multiheld> down", DropObject);

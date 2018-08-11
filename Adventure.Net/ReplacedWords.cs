@@ -13,6 +13,10 @@ namespace Adventure.Net
             {",", " "},
             {"everything", "all"},
             {"but", "except"},
+            {"inside", "in"},
+            {"into", "in"},
+            {"onto", "on"},
+            {"outside", "out"},
         };
 
         public static string ReplacementFor(string word)

@@ -11,7 +11,7 @@ namespace ColossalCave.MyObjects
             Synonyms.Are("bottle", "jar", "flask");
             IsOpen = true;
             InitialDescription = "There is an empty bottle here.";
-            Article = "the";
+            Article = "a";
 
             Before<Fill>(() =>
                 {

@@ -8,7 +8,7 @@ namespace Adventure.Net.Verbs
         public Insert()
         {
             Name = "insert";
-            Grammars.Add("<multi> [in,into] <noun>", InsertObject);
+            Grammars.Add("<multi> in <noun>", InsertObject);
         }
 
         private bool InsertObject()

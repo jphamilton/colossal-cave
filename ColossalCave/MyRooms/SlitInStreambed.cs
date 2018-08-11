@@ -8,7 +8,7 @@ namespace ColossalCave.MyRooms
         public override void Initialize()
         {
             Name = "At Slit In Streambed";
-            Synonyms.Are("slit", "in", "streambed");
+            Synonyms.Are("slit", "streambed");
             Description = "At your feet all the water of the stream splashes into a 2-inch slit in the rock. Downstream the streambed is bare rock.";
         
             NorthTo<Valley>();

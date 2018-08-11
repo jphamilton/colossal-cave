@@ -2,10 +2,19 @@
 {
     public class Go : Verb
     {
+        /*
+         Verb 'go' 'run' 'walk'
+            *                                           -> VagueGo
+            * noun=ADirection                           -> Go
+            * noun                                      -> Enter
+            * 'out'                                     -> Exit     
+            * 'in'                                      -> GoIn     
+            * 'in'/'through' noun                       -> Enter;
+        */
         public Go()
         {
             Name = "go";
-            Synonyms.Are("g", "walk", "run");
+            Synonyms.Are("walk", "run");
             Grammars.Add(Grammar.Empty,VagueGo);
             Grammars.Add(K.DIRECTION_TOKEN, ()=> false);
             Grammars.Add(K.NOUN_TOKEN, EnterIt);

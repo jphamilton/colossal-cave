@@ -2,6 +2,13 @@
 {
     public class Take : Verb
     {
+        /*
+        Verb 'take' 'carry' 'hold'
+            * multi                                     -> Take
+            * 'off' held                                -> Disrobe // not implemented
+            * multiinside 'from'/'off' noun             -> Remove
+            * 'inventory'                               -> Inv;    // not implemented
+        */
         public Take()
         {
             Name = "take";

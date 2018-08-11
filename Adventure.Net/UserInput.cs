@@ -9,6 +9,47 @@ namespace Adventure.Net
     {
         private Library L = new Library();
 
+        public InputResult Parse_New(string input)
+        {
+            var result = new InputResult();
+            var tokenizer = new InputTokenizer();
+            var tokens = tokenizer.Tokenize(input);
+
+            if (tokens.Count == 0)
+            {
+                result.Action = () =>
+                {
+                    Context.Parser.Print(L.DoNotUnderstand);
+                    return true;
+                };
+
+                return result;
+            }
+
+            // there can be more than one match for verbs like "switch"
+            // which has one class that handles "switch on" and another 
+            // class that handles "switch off"
+            var possibleVerbs = VerbList.GetVerbsByName(tokens[0]);
+
+            if (possibleVerbs.Count == 0)
+            {
+                result.Action = () =>
+                {
+                    Context.Parser.Print(L.VerbNotRecognized);
+                    return true;
+                };
+
+                return result;
+            }
+
+            // remove verb token from token list
+            tokens.RemoveAt(0);
+
+            // find actual verb based on grammar
+
+
+            return null;
+        }
 
         public InputResult Parse(string input)
         {
@@ -16,8 +57,6 @@ namespace Adventure.Net
 
             var tokenizer = new InputTokenizer();
             var tokens = tokenizer.Tokenize(input);
-
-            Action removeVerbToken = () => tokens.RemoveAt(0);
 
             if (tokens.Count == 0)
             {
@@ -40,24 +79,29 @@ namespace Adventure.Net
                 result.Action = ErrorAction(L.VerbNotRecognized);
                 return result;
             }
-            
+
             if (possibleVerbs.Count == 1)
             {
                 result.Verb = possibleVerbs.First();
             }
-            
+
             // remove verb token
-            removeVerbToken();
+            tokens.RemoveAt(0);
 
             var grammarTokens = new List<string>();
             bool hasPreposition = false;
 
             foreach (string token in tokens)
             {
+                // var objects = Objects.WithName(token);
+                var objects = (
+                    from o in Objects.WithName(token)
+                    where L.ObjectsInScope().Contains(o)
+                    select o
+                ).ToList();
+
                 bool hasObject = result.Objects.Count > 0;
 
-                var objects = Objects.WithName(token);
-                
                 if (!hasObject)
                 {
                     var rooms = Rooms.WithName(token);
@@ -66,14 +110,14 @@ namespace Adventure.Net
                         objects.Add(room);
                     }
                 }
-                
+
                 if (objects.Count == 0)
                 {
-                    bool isDirection = possibleVerbs.Count == 1 && 
+                    bool isDirection = possibleVerbs.Count == 1 &&
                                        Compass.Directions.Contains(token) &&
                                        result.Objects.Count == 0;
                     bool isPreposition = Prepositions.Contains(token);
-                
+
                     if (isDirection)
                     {
                         possibleVerbs.Clear();
@@ -107,7 +151,7 @@ namespace Adventure.Net
                             result.Action = ErrorAction(partial);
                             return result;
                         }
-                        
+
                         result.Action = ErrorAction(L.CantSeeObject);
                         return result;
                     }
@@ -126,15 +170,15 @@ namespace Adventure.Net
                         obj = ofInterest.FirstOrDefault();
                     }
                     //-------------------------------------------------------------------------------------
-                    
+
                     bool isIndirectObject = hasPreposition && hasObject;
-                    
+
                     if (obj == null)
                     {
                         result.Action = ErrorAction(L.CantSeeObject);
                         return result;
                     }
-                    
+
                     if (isIndirectObject)
                     {
                         grammarTokens.Add(K.INDIRECT_OBJECT_TOKEN);
@@ -155,7 +199,7 @@ namespace Adventure.Net
                     }
                 }
 
-               
+
             }
 
             result.Pregrammar = string.Join(" ", grammarTokens.ToArray());
@@ -170,7 +214,7 @@ namespace Adventure.Net
                 var incomplete = new IncompleteInput();
                 incomplete.Handle(result);
             }
-            
+
             if (result.IsAll)
             {
                 if (result.ObjectsMustBeHeld)
@@ -179,7 +223,15 @@ namespace Adventure.Net
                 }
                 else
                 {
-                    result.Objects = L.ObjectsInScope().Where(obj => obj != L.CurrentLocation).ToList(); 
+                    // This is different from Inform 6 which will include scenery and static
+                    // objects (resulting in the generation of ridiculous messages like
+                    // "well house: that's hardly portable"
+                    result.Objects = (
+                        from o in L.ObjectsInScope()
+                        where o != L.CurrentLocation && !o.IsScenery && !o.IsStatic
+                        && !Inventory.Contains(o)
+                        select o
+                    ).ToList();
                 }
             }
 

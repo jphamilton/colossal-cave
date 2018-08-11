@@ -28,34 +28,7 @@ namespace Advent.Tests
             Inventory.Clear();
         }
 
-        [Test]
-        public void all_with_exceptional_grammar()
-        {
-            var input = new UserInput();
-            var result = input.Parse("take all except bottle");
-            Assert.AreEqual("all", result.Pregrammar);
-            var bottle = Objects.Get<Bottle>();
-            Assert.IsTrue(result.Objects.Count > 0);
-            // even objects that can't be taken should be in the input results
-            Assert.IsTrue(result.Objects.Contains(Objects.Get<SewerPipes>()));
-            Assert.IsTrue(result.Exceptions.Contains(bottle));
-        }
-
-        [Test]
-        public void all_with_multiple_exceptional_objects_grammar()
-        {
-            var input = new UserInput();
-            var result = input.Parse("take all except bottle and keys");
-            Assert.AreEqual("all", result.Pregrammar);
-            var take = VerbList.GetVerbByName("take");
-            var bottle = Objects.Get<Bottle>();
-            var keys = Objects.Get<SetOfKeys>();
-            Assert.AreSame(take, result.Verb);
-            Assert.IsTrue(result.Objects.Count > 0);
-            Assert.IsTrue(result.Exceptions.Contains(bottle));
-            Assert.IsTrue(result.Exceptions.Contains(keys));
-        }
-
+        
         [Test]
         public void object_only()
         {
@@ -121,15 +94,9 @@ namespace Advent.Tests
         public void object_not_present()
         {
             var results = parser.Parse("take cage");
-
-            //var input = new UserInput();
-            // this object is in a different room
-            //var result = input.Parse("take cage");
             Assert.AreEqual(L.CantSeeObject, results[0]);
-            // object is here, indirect object is not
             results = parser.Parse("put bottle in cage");
             Assert.AreEqual(L.CantSeeObject, results[0]);
-            // object is not here, indirect object is here
             results = parser.Parse("put batteries in lamp");
             Assert.AreEqual(L.CantSeeObject, results[0]);
         }
