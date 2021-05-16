@@ -177,13 +177,9 @@ namespace Adventure.Net
                 }
                 else
                 {
-                    // This is different from Inform 6 which will include scenery and static
-                    // objects (resulting in the generation of ridiculous messages like
-                    // "well house: that's hardly portable"
                     result.Objects = (
                         from o in CurrentRoom.ObjectsInScope()
-                        where o != CurrentRoom.Location && !o.IsScenery && !o.IsStatic
-                        && !Inventory.Contains(o)
+                        where !Inventory.Contains(o)
                         select o
                     ).ToList();
                 }
