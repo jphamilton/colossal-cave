@@ -1,5 +1,6 @@
 ﻿using ColossalCave.Places;
 using Adventure.Net.Verbs;
+using Adventure.Net;
 
 namespace ColossalCave.Objects
 {
@@ -21,7 +22,7 @@ namespace ColossalCave.Objects
                         return true;
                     }
                     
-                    L.MovePlayerTo<InsideBuilding>();
+                    Library.MovePlayerTo<InsideBuilding>();
                     return false;
                 }
             );

@@ -193,7 +193,7 @@ namespace Advent.Tests.Verbs
         public void take_except()
         {
             var results = parser.Parse("take except");
-            Assert.AreEqual(L.CantSeeObject, results[0]);
+            Assert.AreEqual(Library.CantSeeObject, results[0]);
             
         }
 

@@ -7,8 +7,6 @@ namespace Adventure.Net
 {
     public class UserInput
     {
-        private Library L = new Library();
-
         public InputResult Parse(string input)
         {
             var result = new InputResult();
@@ -20,7 +18,7 @@ namespace Adventure.Net
             {
                 result.Action = () =>
                 {
-                    Context.Parser.Print(L.DoNotUnderstand);
+                    Context.Parser.Print(Library.DoNotUnderstand);
                     return true;
                 };
                 return result;
@@ -34,7 +32,7 @@ namespace Adventure.Net
             if (possibleVerbs.Count == 0)
             {
                 result.Verb = new NullVerb();
-                result.Action = ErrorAction(L.VerbNotRecognized);
+                result.Action = ErrorAction(Library.VerbNotRecognized);
                 return result;
             }
 
@@ -54,7 +52,7 @@ namespace Adventure.Net
                 // var objects = Objects.WithName(token);
                 var objects = (
                     from o in Items.WithName(token)
-                    where L.ObjectsInScope().Contains(o)
+                    where Library.ObjectsInScope().Contains(o)
                     select o
                 ).ToList();
 
@@ -96,14 +94,14 @@ namespace Adventure.Net
                     {
                         if (!result.IsAll && !result.Objects.Any())
                         {
-                            result.Action = ErrorAction(L.CantSeeObject);
+                            result.Action = ErrorAction(Library.CantSeeObject);
                             return result;
                         }
                         result.IsExcept = true;
                     }
                     else
                     {
-                        result.Action = ErrorAction(L.CantSeeObject);
+                        result.Action = ErrorAction(Library.CantSeeObject);
                         return result;
                     }
                 }
@@ -128,7 +126,7 @@ namespace Adventure.Net
 
                     if (obj == null)
                     {
-                        result.Action = ErrorAction(L.CantSeeObject);
+                        result.Action = ErrorAction(Library.CantSeeObject);
                         return result;
                     }
 
@@ -183,8 +181,8 @@ namespace Adventure.Net
                     // objects (resulting in the generation of ridiculous messages like
                     // "well house: that's hardly portable"
                     result.Objects = (
-                        from o in L.ObjectsInScope()
-                        where o != L.CurrentLocation && !o.IsScenery && !o.IsStatic
+                        from o in Library.ObjectsInScope()
+                        where o != Library.CurrentLocation && !o.IsScenery && !o.IsStatic
                         && !Inventory.Contains(o)
                         select o
                     ).ToList();

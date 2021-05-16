@@ -26,7 +26,7 @@ namespace ColossalCave.Places
                     if (rnd.Next(1, 2) == 1)
                     {
                         var forest2 = Room<Forest2>();
-                        L.MovePlayerTo(forest2);
+                        Library.MovePlayerTo(forest2);
                     }
 
                 };

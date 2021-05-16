@@ -83,8 +83,7 @@ namespace Adventure.Net
             
             results = new List<ParserResult>();
 
-            var L = new Library();
-            bool wasLit = L.IsLit();
+            bool wasLit = Library.IsLit();
 
             var userInput = new UserInput();
 
@@ -117,8 +116,8 @@ namespace Adventure.Net
                 HandleInputResult();
             }
 
-            if (!wasLit && L.IsLit())
-                L.Look(true);
+            if (!wasLit && Library.IsLit())
+                Library.Look(true);
 
             return GetResults(showOutput, inputResult.ParserResults);
         }

@@ -11,8 +11,8 @@
 
         private bool TryQuit()
         {
-            Library L = new Library();
-            L.Quit();
+            
+            Library.Quit();
             return true;
         }
     }

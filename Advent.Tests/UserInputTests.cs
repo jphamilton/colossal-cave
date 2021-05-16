@@ -12,7 +12,6 @@ namespace Advent.Tests
     [TestFixture]
     public class UserInputTests
     {
-        private Library L = new Library();
         private Parser parser;
 
         [SetUp]
@@ -57,14 +56,14 @@ namespace Advent.Tests
         public void should_not_understand()
         {
             var results = parser.Parse("");
-            Assert.AreEqual(L.DoNotUnderstand, results[0]);
+            Assert.AreEqual(Library.DoNotUnderstand, results[0]);
         }
 
         [Test]
         public void should_not_recognize_verb()
         {
             var results = parser.Parse("snark");
-            Assert.AreEqual(L.VerbNotRecognized, results[0]);
+            Assert.AreEqual(Library.VerbNotRecognized, results[0]);
         }
 
         [Test]
@@ -94,11 +93,11 @@ namespace Advent.Tests
         public void object_not_present()
         {
             var results = parser.Parse("take cage");
-            Assert.AreEqual(L.CantSeeObject, results[0]);
+            Assert.AreEqual(Library.CantSeeObject, results[0]);
             results = parser.Parse("put bottle in cage");
-            Assert.AreEqual(L.CantSeeObject, results[0]);
+            Assert.AreEqual(Library.CantSeeObject, results[0]);
             results = parser.Parse("put batteries in lamp");
-            Assert.AreEqual(L.CantSeeObject, results[0]);
+            Assert.AreEqual(Library.CantSeeObject, results[0]);
         }
 
         [Test]
@@ -117,13 +116,13 @@ namespace Advent.Tests
         {
             // don't try to parse nonsense
             var results = parser.Parse("take south bottle");
-            Assert.AreEqual(L.DoNotUnderstand, results[0]);
+            Assert.AreEqual(Library.DoNotUnderstand, results[0]);
 
             results = parser.Parse("take drop bottle");
-            Assert.AreEqual(L.CantSeeObject, results[0]);
+            Assert.AreEqual(Library.CantSeeObject, results[0]);
 
             results = parser.Parse("bottle drop");
-            Assert.AreEqual(L.VerbNotRecognized, results[0]);
+            Assert.AreEqual(Library.VerbNotRecognized, results[0]);
 
             results = parser.Parse("take bottle drop");
             Assert.AreEqual("I only understood you as far as wanting to take the small bottle.", results[0]);

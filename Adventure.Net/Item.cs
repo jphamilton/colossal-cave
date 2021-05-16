@@ -6,8 +6,6 @@ namespace Adventure.Net
     public abstract class Item
     {
         
-        protected static Library L = new Library();
-
         private readonly Dictionary<Type, Func<bool>> beforeRoutines;
         private readonly Dictionary<Type, Func<bool>> afterRoutines;
 
@@ -154,7 +152,7 @@ namespace Adventure.Net
         protected bool In<T>() where T:Item
         {
             Item obj = Rooms.Get<T>();
-            return (L.CurrentLocation == obj);
+            return (Library.CurrentLocation == obj);
         }
 
         protected Room Room<T>()
@@ -171,7 +169,7 @@ namespace Adventure.Net
         {
             get
             {
-                var scoped = L.ObjectsInScope();
+                var scoped = Library.ObjectsInScope();
                 return scoped.Contains(this);
             }
         }

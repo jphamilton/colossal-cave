@@ -16,12 +16,11 @@ namespace Adventure.Net
 
         protected bool MovePlayer()
         {
-            var L = new Library();
             var room = getRoom(Context.Story.Location);
             if (room == null)
                 Print(Context.Story.Location.CantGo);
             else
-                L.MovePlayerTo(room);
+                Library.MovePlayerTo(room);
             return true;
         }
 

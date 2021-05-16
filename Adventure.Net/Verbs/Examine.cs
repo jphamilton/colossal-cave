@@ -13,9 +13,9 @@ namespace Adventure.Net.Verbs
 
         public bool ExamineObject()
         {
-            Library L = new Library();
+            
 
-            if (!L.IsLit())
+            if (!Library.IsLit())
             {
                 Print("Darkness, noun. An absence of light to see by.");
                 return true;

@@ -23,8 +23,8 @@
 
         private bool LookAtRoom()
         {
-            Library L = new Library();
-            L.Look(true);
+            
+            Library.Look(true);
             return true;
         }
 

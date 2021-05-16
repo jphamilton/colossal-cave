@@ -44,11 +44,11 @@ namespace ColossalCave.Places
                     
                     if (debrisRoom.Visited)
                     {
-                        L.MovePlayerTo<DebrisRoom>();
+                        Library.MovePlayerTo<DebrisRoom>();
                         return false;
                     }
 
-                    Print(L.DoNotUnderstand);
+                    Print(Library.DoNotUnderstand);
                     return true;
                 });
         }

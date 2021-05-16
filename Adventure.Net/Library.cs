@@ -6,10 +6,9 @@ using System.Text;
 
 namespace Adventure.Net
 {
-    public class Library 
+    public static class Library
     {
-
-        public Library()
+        static Library()
         {
             CantSeeObject = "You can't see any such thing.";
             DoNotUnderstand = "I beg your pardon?";
@@ -17,49 +16,49 @@ namespace Adventure.Net
             VerbNotRecognized = "That's not a verb I recognize.";
         }
 
-        public void Banner()
+        public static void Banner()
         {
             Bold(Story.Story);
             Print(Story.Headline);
             PrintLine();
         }
 
-        public void Bold(string message)
+        public static void Bold(string message)
         {
             Context.Output.Bold(message);
         }
 
-        public void Print(string msg)
+        public static void Print(string msg)
         {
             Context.Output.Print(msg);
         }
 
-        public void Print(string format, params object[] arg)
+        public static void Print(string format, params object[] arg)
         {
             Context.Output.Print(format, arg);
         }
 
-        public void PrintLine()
+        public static void PrintLine()
         {
             Context.Output.PrintLine();
         }
 
-        private Room Location
+        private static Room Location
         {
             get { return Context.Story.Location; }
         }
 
-        private IStory Story
+        private static IStory Story
         {
             get { return Context.Story; }
         }
 
-        public string DoNotUnderstand { get; set;}
-        public string DidntUnderstandSentence { get; set;}
-        public string CantSeeObject { get; set; }
-        public string VerbNotRecognized { get; set; }
+        public static string DoNotUnderstand { get; set;}
+        public static string DidntUnderstandSentence { get; set;}
+        public static string CantSeeObject { get; set; }
+        public static string VerbNotRecognized { get; set; }
 
-        public void Look(bool showFull)
+        public static void Look(bool showFull)
         {
             PrintLine();
 
@@ -74,7 +73,7 @@ namespace Adventure.Net
 
         }
 
-        public bool IsLit()
+        public static bool IsLit()
         {
             if (Location.HasLight)
                 return true;
@@ -96,7 +95,7 @@ namespace Adventure.Net
             return false;
         }
 
-        private void DisplayRoomObjects()
+        private static void DisplayRoomObjects()
         {
             var ordinary = new List<Item>();
             int total = 0;
@@ -170,12 +169,12 @@ namespace Adventure.Net
     
         }
 
-        public Room CurrentLocation
+        public static Room CurrentLocation
         {
             get { return Context.Story.Location; }
         }
 
-        public void Quit()
+        public static void Quit()
         {
             if (YesOrNo("Are you sure you want to quit?"))
             {
@@ -183,7 +182,7 @@ namespace Adventure.Net
             }
         }
 
-        public bool YesOrNo(string question)
+        public static bool YesOrNo(string question)
         {
             Print(question);
 
@@ -199,13 +198,13 @@ namespace Adventure.Net
             }
         }
 
-        public void MovePlayerTo<T>() where T:Room
+        public static void MovePlayerTo<T>() where T:Room
         {
             var room = Rooms.Get<T>();
             MovePlayerTo(room);
         }
 
-        public void MovePlayerTo(Room room)
+        public static void MovePlayerTo(Room room)
         {
             Room real = room;
 
@@ -229,14 +228,14 @@ namespace Adventure.Net
             Story.Location = real;
         }
 
-        public void RunDaemons()
+        public static void RunDaemons()
         {
             IList<Item> objectsWithDaemons = Items.WithRunningDaemons();
             foreach (var obj in objectsWithDaemons)
                 obj.Daemon();
         }
 
-        public Item GetObjectByName(string name)
+        public static Item GetObjectByName(string name)
         {
             var objects = from x in ObjectsInScope() where x.Name == name || x.Synonyms.Contains(name) select x;
             if (objects.Count() > 1)
@@ -253,7 +252,7 @@ namespace Adventure.Net
             return objects.FirstOrDefault();
         }
 
-        public List<Item> ObjectsInScope()
+        public static List<Item> ObjectsInScope()
         {
             var result = new List<Item>();
             

@@ -14,7 +14,7 @@ namespace Advent.Tests.Verbs
         {
             Location = Rooms.Get<BelowTheGrate>();
             IList<string> results = parser.Parse("drink water");
-            Assert.AreEqual(L.CantSeeObject, results[0]);
+            Assert.AreEqual(Library.CantSeeObject, results[0]);
         }
 
         [Test]
@@ -86,7 +86,7 @@ namespace Advent.Tests.Verbs
         {
             Location = Rooms.Get<InsideBuilding>();
             IList<string> results = parser.Parse("drink cola");
-            Assert.AreEqual(L.CantSeeObject, results[0]);
+            Assert.AreEqual(Library.CantSeeObject, results[0]);
         }
     }
 }

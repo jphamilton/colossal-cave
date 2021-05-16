@@ -6,11 +6,8 @@ namespace Adventure.Net
 {
     public class IncompleteInput
     {
-        private Library L;
-
         public void Handle(InputResult inputResult)
         {
-            L = new Library();
 
             if (inputResult.Preposition.HasValue())
             {
@@ -59,7 +56,7 @@ namespace Adventure.Net
             string reply = Context.CommandPrompt.GetInput();
             if (string.IsNullOrEmpty(reply))
             {
-                inputResult.Action = UserInput.ErrorAction(L.DoNotUnderstand);
+                inputResult.Action = UserInput.ErrorAction(Library.DoNotUnderstand);
             }
 
             var tokenizer = new InputTokenizer();
@@ -83,7 +80,7 @@ namespace Adventure.Net
 
         private void MultipleObjects(InputResult inputResult)
         {
-            inputResult.ParserResults.Add(L.DidntUnderstandSentence);
+            inputResult.ParserResults.Add(Library.DidntUnderstandSentence);
             inputResult.Handled = true;
         }
 
@@ -95,7 +92,7 @@ namespace Adventure.Net
             string reply = Context.CommandPrompt.GetInput();
             if (string.IsNullOrEmpty(reply))
             {
-                inputResult.Action = UserInput.ErrorAction(L.DoNotUnderstand);
+                inputResult.Action = UserInput.ErrorAction(Library.DoNotUnderstand);
             }
 
             var tokenizer = new InputTokenizer();

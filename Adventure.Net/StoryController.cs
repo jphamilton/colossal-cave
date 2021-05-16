@@ -21,17 +21,15 @@ namespace Adventure.Net
 
         public void Run()
         {
-            var L = new Library();
-            
             Context.Story.Initialize();
-            L.Banner();
-            L.MovePlayerTo(Context.Story.Location);
+            Library.Banner();
+            Library.MovePlayerTo(Context.Story.Location);
 
             while (!Context.Story.IsDone)
             {
                 Context.Parser.Parse(Context.CommandPrompt.GetInput());
                 Moves++;
-                L.RunDaemons();
+                Library.RunDaemons();
             }
 
         }

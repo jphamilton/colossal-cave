@@ -11,7 +11,6 @@ namespace Advent.Tests
     public class AdventTestFixture 
     {
         protected readonly Parser parser = new Parser();
-        protected readonly Library L = new Library();
 
         protected virtual void OnSetUp() {}
         protected virtual void OnTearDown() {}

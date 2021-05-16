@@ -1,4 +1,5 @@
-﻿using ColossalCave.Objects;
+﻿using Adventure.Net;
+using ColossalCave.Objects;
 using ColossalCave.Verbs;
 
 namespace ColossalCave.Places
@@ -21,7 +22,7 @@ namespace ColossalCave.Places
 
             Before<Xyzzy>(() =>
                 {
-                    L.MovePlayerTo<InsideBuilding>();
+                    Library.MovePlayerTo<InsideBuilding>();
                     return true;
                 });
 

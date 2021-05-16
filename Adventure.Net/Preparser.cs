@@ -4,7 +4,6 @@ namespace Adventure.Net
 {
     public class Preparser
     {
-        private Library L = new Library();
         public string Error { get; private set; }
         public IList<Item> Objects { get; private set; }
         public Item IndirectObject { get; private set; }
@@ -26,7 +25,7 @@ namespace Adventure.Net
 
             if (tokens.Count == 0)
             {
-                Error = L.DoNotUnderstand;
+                Error = Library.DoNotUnderstand;
                 return false;
             }
 
@@ -34,7 +33,7 @@ namespace Adventure.Net
 
             if (possibleVerbs.Count == 0)
             {
-                Error = L.VerbNotRecognized;
+                Error = Library.VerbNotRecognized;
                 return false;
             }
 
@@ -66,7 +65,7 @@ namespace Adventure.Net
                     }
                     else
                     {
-                        Error = L.DoNotUnderstand;
+                        Error = Library.DoNotUnderstand;
                         return false;
                     }
                 }

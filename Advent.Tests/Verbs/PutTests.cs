@@ -165,8 +165,6 @@ namespace Advent.Tests.Verbs
         [Test]
         public void just_put_all_except()
         {
-            var L = new Library();
-
             var response = new FakeCommandPrompt("bird");
             Context.CommandPrompt = response;
 

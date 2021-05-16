@@ -61,15 +61,13 @@ namespace Adventure.Net.Verbs
         // currently remember the last command
         private void ObjectNotSpecified()
         {
-            var L = new Library();
-
             // do not use Print, go directly to output
             Context.Output.Print("What do you want to unlock the {0} with?", Item.Name);
             
             string input = Context.CommandPrompt.GetInput();
             if (string.IsNullOrEmpty(input))
             {
-                Print(L.DoNotUnderstand);
+                Print(Library.DoNotUnderstand);
                 return;
             }
 
