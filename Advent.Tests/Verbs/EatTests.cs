@@ -11,7 +11,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void cannot_eat_inedible_things()
         {
-            Inventory.Add(Objects.Get<Bottle>());
+            Inventory.Add(Items.Get<Bottle>());
             IList<string> results = parser.Parse("eat bottle");
             Assert.AreEqual("That's plainly inedible.", results[0]);
         }
@@ -19,7 +19,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void should_eat_inedible_things()
         {
-            var bottle = Objects.Get<Bottle>();
+            var bottle = Items.Get<Bottle>();
             bottle.IsEdible = true;
 
             Inventory.Add(bottle);

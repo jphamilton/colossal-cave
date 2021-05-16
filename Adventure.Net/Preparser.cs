@@ -6,16 +6,16 @@ namespace Adventure.Net
     {
         private Library L = new Library();
         public string Error { get; private set; }
-        public IList<Object> Objects { get; private set; }
-        public Object IndirectObject { get; private set; }
-        public IList<Object> Exceptions { get; private set; }
+        public IList<Item> Objects { get; private set; }
+        public Item IndirectObject { get; private set; }
+        public IList<Item> Exceptions { get; private set; }
         public string Pregrammar { get; private set; }
         public IList<Verb> PossibleVerbs { get; private set; }
 
         public Preparser()
         {
-            Objects = new List<Object>();
-            Exceptions = new List<Object>();
+            Objects = new List<Item>();
+            Exceptions = new List<Item>();
         }
 
         public bool Parse(string input)
@@ -47,7 +47,7 @@ namespace Adventure.Net
 
             foreach (string token in tokens)
             {
-                var obj = Adventure.Net.Objects.GetByName(token);
+                var obj = Adventure.Net.Items.GetByName(token);
 
                 if (obj == null)
                 {

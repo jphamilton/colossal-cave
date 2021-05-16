@@ -2,7 +2,7 @@
 
 namespace Advent.Tests
 {
-    public class RedCape : Object
+    public class RedCape : Item
     {
         public override void Initialize()
         {

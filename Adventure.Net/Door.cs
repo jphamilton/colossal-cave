@@ -13,15 +13,15 @@ namespace Adventure.Net
             IsLockable = true;
         }
 
-        public Object Key { get; private set; }
+        public Item Key { get; private set; }
         
         public Func<Room> DoorTo { get; set; }
 
         public Func<DirectionalVerb> DoorDirection { get; set; } 
         
-        public void WithKey<T>() where T:Object
+        public void WithKey<T>() where T:Item
         {
-            Key = Net.Objects.Get<T>();            
+            Key = Net.Items.Get<T>();            
         }
 
         protected T Direction<T>() where T:DirectionalVerb

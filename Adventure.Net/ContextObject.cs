@@ -2,13 +2,13 @@
 {
     public class ContextObject
     {
-        protected Object Object
+        protected Item Object
         {
             get { return Context.Object; }
             set { Context.Object = value; }
         }
 
-        protected Object IndirectObject
+        protected Item IndirectObject
         {
             get { return Context.IndirectObject; }
             set { Context.IndirectObject = value; }

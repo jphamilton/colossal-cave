@@ -11,7 +11,7 @@ namespace Advent.Tests.ObjectTests
 
         protected override void OnSetUp()
         {
-            lamp = Objects.Get<BrassLantern>();
+            lamp = Items.Get<BrassLantern>();
             Inventory.Add(lamp);
         }
 
@@ -23,13 +23,13 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void should_accept_fresh_batteries()
         {
-            var fresh = Objects.Get<FreshBatteries>();
+            var fresh = Items.Get<FreshBatteries>();
             Inventory.Add(fresh);
             lamp.PowerRemaining = 0;
             var results = parser.Parse("put batteries in lamp");
             Assert.AreEqual(lamp.PowerRemaining, 2500);
             Assert.IsTrue(results.Contains("I'm taking the liberty of replacing the batteries."));
-            var old = Objects.Get<OldBatteries>();
+            var old = Items.Get<OldBatteries>();
             Assert.IsTrue(old.InScope);
             Assert.IsTrue(fresh.HaveBeenUsed);
         }
@@ -37,7 +37,7 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void should_reject_old_batteries()
         {
-            Inventory.Add(Objects.Get<OldBatteries>());
+            Inventory.Add(Items.Get<OldBatteries>());
             var results = parser.Parse("put batteries in lamp");
             results.ShouldContain("Those batteries are dead; they won't do any good at all.");            
         }
@@ -45,7 +45,7 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void cannot_accept_anything_other_than_batteries()
         {
-            var bottle = Objects.Get<Bottle>();
+            var bottle = Items.Get<Bottle>();
             Inventory.Add(bottle);
             var results = parser.Parse("put bottle in lamp");
             results.ShouldContain("The only thing you might successfully put in the lamp is a fresh pair of batteries.");

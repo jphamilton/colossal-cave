@@ -11,8 +11,8 @@
         public static Output Output { get; set; }
         public static CommandPrompt CommandPrompt { get; set; }
 
-        public static Object Object { get; set; }
-        public static Object IndirectObject { get; set; }
+        public static Item Object { get; set; }
+        public static Item IndirectObject { get; set; }
 
         public static IParser Parser { get; set; }
     }

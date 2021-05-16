@@ -4,17 +4,17 @@ using System.Reflection;
 
 namespace Adventure.Net
 {
-    public abstract class Room : Object
+    public abstract class Room : Item
     {
         protected Room() 
         {
-            Objects = new List<Object>();
+            Objects = new List<Item>();
             DarkToDark = () => Print("It's pitch black, and you can't see a thing.");
             CantGo = "You can't go that way.";
             Visited = false;
         }
 
-        public IList<Object> Objects { get; private set;}
+        public IList<Item> Objects { get; private set;}
 
         public string CantGo { get; set; }
 
@@ -240,9 +240,9 @@ namespace Adventure.Net
             return room;
         }
 
-        public void Has<T>() where T : Object
+        public void Has<T>() where T : Item
         {
-            Object obj = Net.Objects.Get<T>();
+            Item obj = Net.Items.Get<T>();
             if (obj == null)
                 obj = Net.Rooms.Get<T>();
 
@@ -250,7 +250,7 @@ namespace Adventure.Net
             Objects.Add(obj);
         }
 
-        public bool Contains<T>() where T : Object
+        public bool Contains<T>() where T : Item
         {
             foreach(var obj in Objects)
             {
@@ -261,12 +261,12 @@ namespace Adventure.Net
             return false;
         }
 
-        public bool Contains(Object obj) 
+        public bool Contains(Item obj) 
         {
             return Objects.Contains(obj);
         }
 
-        public T Get<T>() where T:Object
+        public T Get<T>() where T:Item
         {
             foreach (var obj in Objects)
             {

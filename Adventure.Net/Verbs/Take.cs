@@ -43,7 +43,7 @@
             return result;
         }
 
-        public bool TakeObject(Object obj)
+        public bool TakeObject(Item obj)
         {
             Object = obj;
             return TakeObject();

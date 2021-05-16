@@ -1,7 +1,7 @@
 ﻿using ColossalCave.MyRooms;
 using Adventure.Net;
 using NUnit.Framework;
-using Object = Adventure.Net.Object;
+using Item = Adventure.Net.Item;
 
 namespace Advent.Tests.Verbs
 {
@@ -23,7 +23,7 @@ namespace Advent.Tests.Verbs
             
             var shark = new Shark();
             shark.Initialize();
-            Objects.Add(shark);
+            Items.Add(shark);
             Location.Objects.Add(shark);
             
             var results = parser.Parse("catch shark");
@@ -31,7 +31,7 @@ namespace Advent.Tests.Verbs
         }
     }
 
-    public class Shark : Object
+    public class Shark : Item
     {
         public override void Initialize()
         {

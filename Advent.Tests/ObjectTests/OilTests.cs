@@ -13,7 +13,7 @@ namespace Advent.Tests.ObjectTests
         protected override void OnSetUp()
         {
             Location = Rooms.Get<DebrisRoom>();
-            oil = Objects.Get<Oil>();
+            oil = Items.Get<Oil>();
             Location.Objects.Add(oil);
         }
 
@@ -40,7 +40,7 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void can_take_oil()
         {
-            var bottle = Objects.Get<Bottle>();
+            var bottle = Items.Get<Bottle>();
             Inventory.Add(bottle);
             var results = parser.Parse("take oil");
             results.ShouldContain("The bottle is now full of oil.");
@@ -49,7 +49,7 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void can_insert_oil()
         {
-            var bottle = Objects.Get<Bottle>();
+            var bottle = Items.Get<Bottle>();
             Inventory.Add(bottle);
             var results = parser.Parse("insert oil into bottle");
             results.ShouldContain("The bottle is now full of oil.");

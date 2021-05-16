@@ -17,12 +17,12 @@ namespace Adventure.Net
         public void Initialize()
         {
             Rooms.Load(this);
-            Objects.Load(this);
+            Items.Load(this);
 
             foreach (var obj in Rooms.All)
                 obj.Initialize();
             
-            foreach (var obj in Objects.All)
+            foreach (var obj in Items.All)
                 obj.Initialize();
 
             OnInitialize();

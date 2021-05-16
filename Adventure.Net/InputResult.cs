@@ -7,9 +7,9 @@ namespace Adventure.Net
 {
     public class InputResult
     {
-        public IList<Object> Objects { get; set; }
-        public Object IndirectObject { get; set; }
-        public List<Object> Exceptions { get; private set; }
+        public IList<Item> Objects { get; set; }
+        public Item IndirectObject { get; set; }
+        public List<Item> Exceptions { get; private set; }
         public string Pregrammar { get; set; }
         public bool IsAll { get; set; }
         public string Preposition { get; set; }
@@ -25,8 +25,8 @@ namespace Adventure.Net
 
         public InputResult()
         {
-            Objects = new List<Object>();
-            Exceptions = new List<Object>();
+            Objects = new List<Item>();
+            Exceptions = new List<Item>();
             Verb = new NullVerb();
             ParserResults = new List<string>();
         }

@@ -6,7 +6,7 @@
         {
         }
 
-        public static bool Has<T>() where T:Object
+        public static bool Has<T>() where T:Item
         {
             return Inventory.Contains<T>();
         }

@@ -2,7 +2,7 @@
 
 namespace Advent.Tests
 {
-    public class GreenCape : Object
+    public class GreenCape : Item
     {
         public override void Initialize()
         {

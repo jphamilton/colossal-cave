@@ -22,7 +22,7 @@ namespace Advent.Tests.Verbs
         {
             Location = Rooms.Get<BelowTheGrate>();
 
-            Bottle bottle = Objects.Get<Bottle>() as Bottle;
+            Bottle bottle = Items.Get<Bottle>() as Bottle;
             bottle.Add<WaterInTheBottle>();
 
             Inventory.Add(bottle);
@@ -37,7 +37,7 @@ namespace Advent.Tests.Verbs
             // there are two sources of water: the stream and the bottle in inventory
             Location = Rooms.Get<InsideBuilding>();
 
-            Bottle bottle = Objects.Get<Bottle>() as Bottle;
+            Bottle bottle = Items.Get<Bottle>() as Bottle;
             bottle.Add<WaterInTheBottle>();
 
             Inventory.Add(bottle);
@@ -49,7 +49,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void should_empty_bottle()
         {
-            Bottle bottle = Objects.Get<Bottle>() as Bottle;
+            Bottle bottle = Items.Get<Bottle>() as Bottle;
             bottle.Add<WaterInTheBottle>();
 
             Inventory.Add(bottle);

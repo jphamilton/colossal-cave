@@ -10,7 +10,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void should_turn_on()
         {
-            var lamp = Objects.Get<BrassLantern>();
+            var lamp = Items.Get<BrassLantern>();
             Inventory.Add(lamp);
             var results = parser.Parse("switch on lamp");
             Assert.IsTrue(lamp.IsOn);
@@ -20,7 +20,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void should_also_turn_on()
         {
-            var lamp = Objects.Get<BrassLantern>();
+            var lamp = Items.Get<BrassLantern>();
             Inventory.Add(lamp);
             var results = parser.Parse("turn lamp on");
             Assert.AreEqual(1, results.Count);
@@ -31,7 +31,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void should_turn_off()
         {
-            var lamp = Objects.Get<BrassLantern>();
+            var lamp = Items.Get<BrassLantern>();
             Inventory.Add(lamp);
             var results = parser.Parse("turn on lamp");
             Assert.IsTrue(lamp.IsOn);
@@ -43,7 +43,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void should_also_turn_off()
         {
-            var lamp = Objects.Get<BrassLantern>();
+            var lamp = Items.Get<BrassLantern>();
             Inventory.Add(lamp);
             var results = parser.Parse("turn on lamp");
             Assert.IsTrue(lamp.IsOn);
@@ -57,7 +57,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void cannot_turn_on_something_thats_already_on()
         {
-            var lamp = Objects.Get<BrassLantern>();
+            var lamp = Items.Get<BrassLantern>();
             Inventory.Add(lamp);
             lamp.IsOn = true;
             var results = parser.Parse("turn on lamp");
@@ -68,7 +68,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void cannot_turn_off_something_thats_already_off()
         {
-            var lamp = Objects.Get<BrassLantern>();
+            var lamp = Items.Get<BrassLantern>();
             Inventory.Add(lamp);
             lamp.IsOn = false;
             var results = parser.Parse("turn off lamp");

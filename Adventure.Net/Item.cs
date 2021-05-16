@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Adventure.Net
 {
-    public abstract class Object
+    public abstract class Item
     {
         
         protected static Library L = new Library();
@@ -11,7 +11,9 @@ namespace Adventure.Net
         private readonly Dictionary<Type, Func<bool>> beforeRoutines;
         private readonly Dictionary<Type, Func<bool>> afterRoutines;
 
-        protected Object()
+        public abstract void Initialize();
+
+        protected Item()
         {
             beforeRoutines = new Dictionary<Type, Func<bool>>();
             afterRoutines = new Dictionary<Type, Func<bool>>();
@@ -52,10 +54,9 @@ namespace Adventure.Net
 
         
         public string Name { get; set; }
-        public Object Parent { get; set; }
+        public Item Parent { get; set; }
         public Synonyms Synonyms { get; set; }
         
-        public abstract void Initialize();
 
         public Func<string> Describe { get; set; }
 
@@ -150,9 +151,9 @@ namespace Adventure.Net
            
         }
 
-        protected bool In<T>() where T:Object
+        protected bool In<T>() where T:Item
         {
-            Object obj = Rooms.Get<T>();
+            Item obj = Rooms.Get<T>();
             return (L.CurrentLocation == obj);
         }
 

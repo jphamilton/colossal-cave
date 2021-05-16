@@ -53,7 +53,7 @@ namespace Adventure.Net
             {
                 // var objects = Objects.WithName(token);
                 var objects = (
-                    from o in Objects.WithName(token)
+                    from o in Items.WithName(token)
                     where L.ObjectsInScope().Contains(o)
                     select o
                 ).ToList();
@@ -110,7 +110,7 @@ namespace Adventure.Net
                 else
                 {
                     // need to implement "Which do you mean, the red cape or the black cape?" type behavior here
-                    Object obj;
+                    Item obj;
                     var ofInterest = objects.Where(x => x.InScope).ToList();
 
                     if (ofInterest.Count > 1)

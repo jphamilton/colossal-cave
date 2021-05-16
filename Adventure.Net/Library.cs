@@ -97,7 +97,7 @@ namespace Adventure.Net
 
         private void DisplayRoomObjects()
         {
-            var ordinary = new List<Object>();
+            var ordinary = new List<Item>();
             int total = 0;
 
             foreach(var obj in Location.Objects)
@@ -133,7 +133,7 @@ namespace Adventure.Net
 
             for(int i = 0; i < ordinary.Count; i++)
             {
-                Object obj = ordinary[i];
+                Item obj = ordinary[i];
 
                 if (i == ordinary.Count - 1 && i > 0)
                     group.Append(" and ");
@@ -145,7 +145,7 @@ namespace Adventure.Net
                 {
                     if (container.Contents.Count > 0)
                     {
-                        Object child = container.Contents[0];
+                        Item child = container.Contents[0];
                         group.AppendFormat("{0} {1} (which contains {2} {3})", obj.Article, obj.Name, child.Article, child.Name);
                     }
                     else
@@ -230,12 +230,12 @@ namespace Adventure.Net
 
         public void RunDaemons()
         {
-            IList<Object> objectsWithDaemons = Objects.WithRunningDaemons();
+            IList<Item> objectsWithDaemons = Items.WithRunningDaemons();
             foreach (var obj in objectsWithDaemons)
                 obj.Daemon();
         }
 
-        public Object GetObjectByName(string name)
+        public Item GetObjectByName(string name)
         {
             var objects = from x in ObjectsInScope() where x.Name == name || x.Synonyms.Contains(name) select x;
             if (objects.Count() > 1)
@@ -252,16 +252,16 @@ namespace Adventure.Net
             return objects.FirstOrDefault();
         }
 
-        public List<Object> ObjectsInScope()
+        public List<Item> ObjectsInScope()
         {
-            var result = new List<Object>();
+            var result = new List<Item>();
             
             result.AddRange(Location.Objects.Where(x => !x.IsScenery && !x.IsStatic));
             result.AddRange(Location.Objects.Where(x => x.IsScenery || x.IsStatic));
             result.AddRange(Inventory.Items);
             result.Add(Location);
 
-            var contained = new List<Object>();
+            var contained = new List<Item>();
             
             foreach(var obj in result)
             {

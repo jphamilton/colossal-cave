@@ -5,9 +5,9 @@ using System.Reflection;
 
 namespace Adventure.Net
 {
-    public class Objects
+    public class Items
     {
-        private static IList<Object> objects = new List<Object>();
+        private static IList<Item> objects = new List<Item>();
 
         public static void Load(IStory story)
         {
@@ -18,9 +18,9 @@ namespace Adventure.Net
 
             foreach (var type in types)
             {
-                if (type.IsSubclassOf(typeof (Object)) && !type.IsAbstract && !type.IsSubclassOf(typeof (Room)))
+                if (type.IsSubclassOf(typeof (Item)) && !type.IsAbstract && !type.IsSubclassOf(typeof (Room)))
                 {
-                    var obj = Activator.CreateInstance(type) as Object;
+                    var obj = Activator.CreateInstance(type) as Item;
                     if (obj != null)
                         objects.Add(obj);
                 }
@@ -28,27 +28,27 @@ namespace Adventure.Net
 
         }
 
-        public static IList<Object> All
+        public static IList<Item> All
         {
             get { return objects; }
         }
 
-        public static Object GetByName(string name)
+        public static Item GetByName(string name)
         {
             return objects.SingleOrDefault(x => x.Name == name || x.Synonyms.Contains(name));
         }
 
-        public static IList<Object> WithName(string name)
+        public static IList<Item> WithName(string name)
         {
             return objects.Where(x => x.Name == name || x.Synonyms.Contains(name)).ToList();
         }
 
-        public static T Get<T>() where T:Object
+        public static T Get<T>() where T:Item
         {
             return Get(typeof (T)) as T;
         }
 
-        public static Object Get(Type objectType)
+        public static Item Get(Type objectType)
         {
             foreach (var obj in objects)
             {
@@ -60,12 +60,12 @@ namespace Adventure.Net
             return null;
         }
 
-        public static IList<Object> WithRunningDaemons()
+        public static IList<Item> WithRunningDaemons()
         {
             return objects.Where(x => x.Daemon != null && x.DaemonStarted == true).ToList();
         }
 
-        public static void Add(Object obj)
+        public static void Add(Item obj)
         {
             objects.Add(obj);
         }

@@ -1,7 +1,7 @@
 ﻿
 namespace Adventure.Net
 {
-    public class NullObject : Object
+    public class NullObject : Item
     {
         public override void Initialize()
         {

@@ -14,7 +14,7 @@ namespace Advent.Tests.ObjectTests
         protected override void OnSetUp()
         {
             Location = Rooms.Get<InsideBuilding>();
-            vase = Objects.Get<MingVase>();
+            vase = Items.Get<MingVase>();
             Inventory.Add(vase);
         }
 
@@ -36,7 +36,7 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void should_not_break()
         {
-            var pillow = Objects.Get<VelvetPillow>();
+            var pillow = Items.Get<VelvetPillow>();
             Location.Objects.Add(pillow);
             var results = parser.Parse("drop vase");
             results.ShouldContain("(coming to rest, delicately, on the velvet pillow)");
@@ -53,7 +53,7 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void cannot_fill_vase()
         {
-            var bottle = Objects.Get<Bottle>();
+            var bottle = Items.Get<Bottle>();
             Inventory.Add(bottle);
             var results = parser.Parse("put bottle in vase");
             results.ShouldContain("The vase is too fragile to use as a container.");

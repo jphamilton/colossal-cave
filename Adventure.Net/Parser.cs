@@ -32,7 +32,7 @@ namespace Adventure.Net
         }
         
         private InputResult inputResult;
-        private Object objectInPlay;
+        private Item objectInPlay;
 
         public void Print(string msg)
         {
@@ -207,7 +207,7 @@ namespace Adventure.Net
             return Before(command, command.IndirectObject) || (Before(command, command.Object) || Before(command, Context.Story.Location));
         }
 
-        private bool Before(Command command, Object obj)
+        private bool Before(Command command, Item obj)
         {
             if (obj != null)
             {
@@ -235,7 +235,7 @@ namespace Adventure.Net
             return After(command, command.IndirectObject) || (After(command, command.Object) || After(command, Context.Story.Location));
         }
 
-        private bool After(Command command, Object obj)
+        private bool After(Command command, Item obj)
         {
             if (obj != null)
             {

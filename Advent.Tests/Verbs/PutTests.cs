@@ -14,10 +14,10 @@ namespace Advent.Tests.Verbs
             var response = new FakeCommandPrompt("cage");
             Context.CommandPrompt = response;
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
                
             var results = parser.Parse("put bird");
@@ -30,10 +30,10 @@ namespace Advent.Tests.Verbs
             var response = new FakeCommandPrompt("put bird in cage");
             Context.CommandPrompt = response;
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
             var results = parser.Parse("put bird");
@@ -46,10 +46,10 @@ namespace Advent.Tests.Verbs
             var response = new FakeCommandPrompt("keys");
             Context.CommandPrompt = response;
 
-            var bottle = Objects.Get<Bottle>();
+            var bottle = Items.Get<Bottle>();
             Location.Objects.Add(bottle);
 
-            var keys = Objects.Get<SetOfKeys>();
+            var keys = Items.Get<SetOfKeys>();
             Location.Objects.Add(keys);
 
             var results = parser.Parse("put bottle on");
@@ -72,10 +72,10 @@ namespace Advent.Tests.Verbs
             var response = new FakeCommandPrompt("bird in cage");
             Context.CommandPrompt = response;
 
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("put");
@@ -89,10 +89,10 @@ namespace Advent.Tests.Verbs
             
             Context.CommandPrompt = response;
 
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("put");
@@ -116,10 +116,10 @@ namespace Advent.Tests.Verbs
 
             Context.CommandPrompt = response;
 
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("put");
@@ -142,10 +142,10 @@ namespace Advent.Tests.Verbs
             var response = new FakeCommandPrompt("bird\ncage");
             Context.CommandPrompt = response;
 
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             cage.Add(bird);
 
             var results = parser.Parse("put");
@@ -186,9 +186,9 @@ namespace Advent.Tests.Verbs
         [Test]
         public void i_dont_understand_that_sentence()
         {
-            var bottle = Objects.Get<Bottle>();
+            var bottle = Items.Get<Bottle>();
             Location.Objects.Add(bottle);
-            var lantern = Objects.Get<BrassLantern>();
+            var lantern = Items.Get<BrassLantern>();
             Location.Objects.Add(lantern);
 
             var results = parser.Parse("put bottle lantern");

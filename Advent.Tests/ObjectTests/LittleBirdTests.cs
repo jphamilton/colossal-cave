@@ -10,7 +10,7 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void cannot_release_bird_when_its_not_in_the_cage()
         {
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("release bird");
@@ -20,8 +20,8 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void bird_should_be_unhappy()
         {
-            var bird = Objects.Get<LittleBird>();
-            var cage = Objects.Get<WickerCage>();
+            var bird = Items.Get<LittleBird>();
+            var cage = Items.Get<WickerCage>();
 
             cage.Add(bird);
             cage.IsOpen = false;
@@ -34,7 +34,7 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void bird_should_be_happy()
         {
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
             var results = parser.Parse("examine bird");
             Assert.AreEqual("The cheerful little bird is sitting here singing.", results[0]);
@@ -43,8 +43,8 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void bird_should_be_released_when_cage_dropped()
         {
-            var bird = Objects.Get<LittleBird>();
-            var cage = Objects.Get<WickerCage>();
+            var bird = Items.Get<LittleBird>();
+            var cage = Items.Get<WickerCage>();
 
             cage.Add(bird);
             cage.IsOpen = false;
@@ -63,8 +63,8 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void bird_should_be_released_when_removed()
         {
-            var bird = Objects.Get<LittleBird>();
-            var cage = Objects.Get<WickerCage>();
+            var bird = Items.Get<LittleBird>();
+            var cage = Items.Get<WickerCage>();
 
             cage.Add(bird);
             cage.IsOpen = false;
@@ -83,8 +83,8 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void cannot_take_the_bird_again()
         {
-            var bird = Objects.Get<LittleBird>();
-            var cage = Objects.Get<WickerCage>();
+            var bird = Items.Get<LittleBird>();
+            var cage = Items.Get<WickerCage>();
 
             cage.Add(bird);
             cage.IsOpen = false;
@@ -102,8 +102,8 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void cannot_catch_the_bird_again()
         {
-            var bird = Objects.Get<LittleBird>();
-            var cage = Objects.Get<WickerCage>();
+            var bird = Items.Get<LittleBird>();
+            var cage = Items.Get<WickerCage>();
 
             cage.Add(bird);
             cage.IsOpen = false;
@@ -121,7 +121,7 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void cannot_catch_bird_without_cage()
         {
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
             var results = parser.Parse("catch bird");
             Assert.AreEqual("You can catch the bird, but you cannot carry it.", results[0]);
@@ -131,13 +131,13 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void cannot_catch_bird_if_holding_black_rod()
         {
-            var blackRod = Objects.Get<BlackRod>();
+            var blackRod = Items.Get<BlackRod>();
             Inventory.Add(blackRod);
 
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("catch bird");
@@ -150,10 +150,10 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void should_take_bird()
         {
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("take bird");
@@ -167,10 +167,10 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void cannot_release_bird_if_its_not_in_the_cage()
         {
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("release bird");
@@ -182,13 +182,13 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void bird_should_kill_snake()
         {
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             cage.Add(bird);
 
-            var snake = Objects.Get<Snake>();
+            var snake = Items.Get<Snake>();
             Location.Objects.Add(snake);
 
             var results = parser.Parse("release bird");
@@ -204,13 +204,13 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void dragon_should_kill_bird()
         {
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             cage.Add(bird);
 
-            var dragon = Objects.Get<Dragon>();
+            var dragon = Items.Get<Dragon>();
             Location.Objects.Add(dragon);
 
             var results = parser.Parse("release bird");
@@ -229,10 +229,10 @@ namespace Advent.Tests.ObjectTests
         {
             var oven = new Oven();
             oven.Initialize();
-            Objects.Add(oven);
+            Items.Add(oven);
             Location.Objects.Add(oven);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("put bird into oven");
@@ -243,10 +243,10 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void can_insert_bird_into_cage()
         {
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("put bird into cage");
@@ -256,10 +256,10 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void can_catch_bird()
         {
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("catch bird");
@@ -269,10 +269,10 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void leave_the_poor_bird_alone()
         {
-            var cage = Objects.Get<WickerCage>();
+            var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             cage.Add(bird);
 
             var results = parser.Parse("attack bird");
@@ -282,7 +282,7 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void the_bird_is_dead()
         {
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
             var results = parser.Parse("attack bird");
             Assert.AreEqual("The little bird is now dead. Its body disappears.", results[0]);
@@ -291,10 +291,10 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void cannot_ask_bird_about_stuff()
         {
-            var bird = Objects.Get<LittleBird>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
-            var snake = Objects.Get<Snake>();
+            var snake = Items.Get<Snake>();
             Location.Objects.Add(snake);
 
             var results = parser.Parse("ask bird about snake");

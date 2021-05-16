@@ -6,16 +6,20 @@ namespace Adventure.Net
 {
     public class Grammar
     {
+        public const string Empty = "";
+        
         public string Format { get; private set; }
         public Func<bool> Action { get; set; }
         public string Preposition { get; set; }
+        
         private IList<string> tokens;
-
-        public const string Empty = "";
 
         public Grammar(string format)
         {
             Format = format;
+
+            IsMulti = Format.Contains("<multi>");
+            IsMultiHeld = Format.Contains("<multiheld>");
 
             foreach (var token in Tokens)
             {
@@ -27,16 +31,9 @@ namespace Adventure.Net
             }
         }
 
-        public bool IsMulti
-        {
-            get { return Format.Contains("<multi>"); }
-        }
+        public bool IsMulti { get; }
 
-        public bool IsMultiHeld
-        {
-            get { return Format.Contains("<multiheld>"); }
-        }
-
+        public bool IsMultiHeld { get; }
 
         private IList<string> Tokens
         {

@@ -1,10 +1,8 @@
-﻿using System;
-using Adventure.Net;
-using Object = Adventure.Net.Object;
+﻿using Item = Adventure.Net.Item;
 
 namespace Advent.Tests
 {
-    public class BlackCape : Object
+    public class BlackCape : Item
     {
         public override void Initialize()
         {

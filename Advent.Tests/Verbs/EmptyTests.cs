@@ -28,7 +28,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void cannot_empty_something_that_is_closed()
         {
-            var cage = Objects.Get<WickerCage>() as Container;
+            var cage = Items.Get<WickerCage>() as Container;
             cage.Add<Bottle>();
             cage.IsOpen = false; 
             Inventory.Add(cage);

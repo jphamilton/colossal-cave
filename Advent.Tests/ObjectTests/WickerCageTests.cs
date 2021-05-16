@@ -10,8 +10,8 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void bird_not_in_cage()
         {
-            var cage = Objects.Get<WickerCage>();
-            var bird = Objects.Get<LittleBird>();
+            var cage = Items.Get<WickerCage>();
+            var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             cage.IsOpen = false;
@@ -27,8 +27,8 @@ namespace Advent.Tests.ObjectTests
         [Test]
         public void bird_should_fly_out()
         {
-            var bird = Objects.Get<LittleBird>();
-            var cage = Objects.Get<WickerCage>();
+            var bird = Items.Get<LittleBird>();
+            var cage = Items.Get<WickerCage>();
 
             cage.Add(bird);
             cage.IsOpen = false;

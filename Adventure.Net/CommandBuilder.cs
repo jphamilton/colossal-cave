@@ -73,7 +73,7 @@ namespace Adventure.Net
             return result;
         }
 
-        private Command GetCommand(Object obj)
+        private Command GetCommand(Item obj)
         {
             return new Command()
             {

@@ -6,21 +6,21 @@ namespace Adventure.Net
 {
     public class Inventory 
     {
-        private static readonly List<Object> objects = new List<Object>();
+        private static readonly List<Item> objects = new List<Item>();
 
-        public static void Add(Object obj)
+        public static void Add(Item obj)
         {
             objects.Add(obj);
             obj.IsTouched = true;
         }
 
-        public static bool Contains<T>() where T : Object
+        public static bool Contains<T>() where T : Item
         {
-            Object obj = Objects.Get<T>();
+            Item obj = Net.Items.Get<T>();
             return Contains(obj);
         }
 
-        public static bool Contains(Object obj)
+        public static bool Contains(Item obj)
         {
             foreach(var o in objects)
             {
@@ -46,12 +46,12 @@ namespace Adventure.Net
             return false;
         }
 
-        public static bool Contains(params Object[] args)
+        public static bool Contains(params Item[] args)
         {
             if (args.Length == 0)
                 return false;
 
-            foreach(Object obj in args)
+            foreach(Item obj in args)
             {
                 if (!objects.Contains(obj))
                     return false;
@@ -60,7 +60,7 @@ namespace Adventure.Net
             return true;
         }
 
-        public static void Remove(Object obj)
+        public static void Remove(Item obj)
         {
             objects.Remove(obj);
         }
@@ -78,7 +78,7 @@ namespace Adventure.Net
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("You are carrying:");
 
-            var containers = new List<Object>();
+            var containers = new List<Item>();
 
             foreach(var obj in objects.OrderBy(x=>x.Description))
             {
@@ -129,7 +129,7 @@ namespace Adventure.Net
             return sb.ToString();
         }
 
-        public static IList<Object> Items
+        public static IList<Item> Items
         {
             get { return objects.AsReadOnly(); }
         }

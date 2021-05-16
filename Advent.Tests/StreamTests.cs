@@ -4,7 +4,7 @@ using ColossalCave.MyObjects;
 using ColossalCave.MyRooms;
 using Adventure.Net;
 using NUnit.Framework;
-using Object=Adventure.Net.Object;
+using Item=Adventure.Net.Item;
 
 namespace Advent.Tests
 {
@@ -19,8 +19,8 @@ namespace Advent.Tests
         [Test]
         public void should_handle_BeforeTake()
         {
-            Container bottle = Objects.Get<Bottle>() as Container;
-            Object water = Objects.Get<WaterInTheBottle>();
+            Container bottle = Items.Get<Bottle>() as Container;
+            Item water = Items.Get<WaterInTheBottle>();
 
             IList<string> results = parser.Parse("take bottle");
 
