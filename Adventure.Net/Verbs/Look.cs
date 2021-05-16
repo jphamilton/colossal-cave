@@ -24,7 +24,7 @@
         private bool LookAtRoom()
         {
             
-            Library.Look(true);
+            CurrentRoom.Look(true);
             return true;
         }
 

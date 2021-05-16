@@ -169,7 +169,7 @@ namespace Adventure.Net
         {
             get
             {
-                var scoped = Library.ObjectsInScope();
+                var scoped = CurrentRoom.ObjectsInScope();
                 return scoped.Contains(this);
             }
         }

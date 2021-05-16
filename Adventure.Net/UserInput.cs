@@ -52,7 +52,7 @@ namespace Adventure.Net
                 // var objects = Objects.WithName(token);
                 var objects = (
                     from o in Items.WithName(token)
-                    where Library.ObjectsInScope().Contains(o)
+                    where CurrentRoom.ObjectsInScope().Contains(o)
                     select o
                 ).ToList();
 
@@ -181,8 +181,8 @@ namespace Adventure.Net
                     // objects (resulting in the generation of ridiculous messages like
                     // "well house: that's hardly portable"
                     result.Objects = (
-                        from o in Library.ObjectsInScope()
-                        where o != Library.CurrentLocation && !o.IsScenery && !o.IsStatic
+                        from o in CurrentRoom.ObjectsInScope()
+                        where o != CurrentRoom.Location && !o.IsScenery && !o.IsStatic
                         && !Inventory.Contains(o)
                         select o
                     ).ToList();

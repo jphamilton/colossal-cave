@@ -75,7 +75,7 @@ namespace Adventure.Net
             return Parse(input, true);
         }
 
-        private IList<String> Parse(string input, bool showOutput)
+        private IList<string> Parse(string input, bool showOutput)
         {
             Context.Parser = this;
             Context.Item = null;
@@ -83,7 +83,7 @@ namespace Adventure.Net
             
             results = new List<ParserResult>();
 
-            bool wasLit = Library.IsLit();
+            bool wasLit = CurrentRoom.IsLit();
 
             var userInput = new UserInput();
 
@@ -116,8 +116,10 @@ namespace Adventure.Net
                 HandleInputResult();
             }
 
-            if (!wasLit && Library.IsLit())
-                Library.Look(true);
+            if (!wasLit && CurrentRoom.IsLit())
+            {
+                CurrentRoom.Look(true);
+            }
 
             return GetResults(showOutput, inputResult.ParserResults);
         }

@@ -15,7 +15,7 @@ namespace Adventure.Net.Verbs
         {
             
 
-            if (!Library.IsLit())
+            if (!CurrentRoom.IsLit())
             {
                 Print("Darkness, noun. An absence of light to see by.");
                 return true;
@@ -32,7 +32,7 @@ namespace Adventure.Net.Verbs
             else if (Item.Describe != null)
             {
                 string result = Item.Describe();
-                if (!String.IsNullOrEmpty(result))
+                if (!string.IsNullOrEmpty(result))
                     Print(result);
                 else
                     Print(Item.Description);

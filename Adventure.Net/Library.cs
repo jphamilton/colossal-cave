@@ -26,19 +26,9 @@ namespace Adventure.Net
             Output.Print(msg);
         }
 
-        public static void Print(string format, params object[] arg)
-        {
-            Output.Print(format, arg);
-        }
-
         public static void PrintLine()
         {
             Output.PrintLine();
-        }
-
-        private static Room Location
-        {
-            get { return Context.Story.Location; }
         }
 
         private static IStory Story
@@ -50,119 +40,6 @@ namespace Adventure.Net
         public static string DidntUnderstandSentence { get; set;}
         public static string CantSeeObject { get; set; }
         public static string VerbNotRecognized { get; set; }
-
-        public static void Look(bool showFull)
-        {
-            PrintLine();
-
-            Room room = IsLit() ? Location : Rooms.Get<Darkness>();
-
-            Bold(room.Name);
-
-            if (showFull || !Location.Visited)
-            {
-                Print(room.Description);
-            }
-
-            DisplayRoomObjects();
-
-        }
-
-        public static bool IsLit()
-        {
-            if (Location.HasLight)
-                return true;
-
-            foreach(var obj in Inventory.Items)
-            {
-                if (obj.HasLight)
-                    return true;
-                var container = obj as Container;
-                if (container == null || (!container.IsOpen && !container.IsTransparent)) 
-                    continue;
-                foreach(var containedObj in container.Contents)
-                {
-                    if (containedObj.HasLight)
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        private static void DisplayRoomObjects()
-        {
-            var ordinary = new List<Item>();
-            int total = 0;
-
-            foreach(var obj in Location.Objects)
-            {
-                if (obj.IsScenery && obj.Describe == null)
-                    continue;
-
-                if (obj.IsStatic && obj.Describe == null)
-                    continue;
-
-                total++;
-
-                if (!obj.IsTouched && !String.IsNullOrEmpty(obj.InitialDescription))
-                {
-                    PrintLine();
-                    Print(obj.InitialDescription);
-                }
-                else if (obj.Describe != null && (obj as Container) == null)
-                {
-                    PrintLine();
-                    Print(obj.Describe());
-                }
-                else
-                    ordinary.Add(obj);
-            }
-
-            var group = new StringBuilder();
-
-            if (total > ordinary.Count)
-                group.Append("You can also see ");
-            else
-                group.Append("You can see ");
-
-            for(int i = 0; i < ordinary.Count; i++)
-            {
-                Item obj = ordinary[i];
-
-                if (i == ordinary.Count - 1 && i > 0)
-                    group.Append(" and ");
-                else if (i > 0)
-                    group.Append(", ");
-
-                var container = obj as Container;
-                if (container != null)
-                {
-                    if (container.Contents.Count > 0)
-                    {
-                        Item child = container.Contents[0];
-                        group.AppendFormat("{0} {1} (which contains {2} {3})", obj.Article, obj.Name, child.Article, child.Name);
-                    }
-                    else
-                        group.AppendFormat("{0} {1} (which is empty)", obj.Article, obj.Name);
-                }
-                else
-                {
-                    group.AppendFormat("{0} {1}", obj.Article, obj.Name);
-                }
-                    
-            }
-
-            group.Append(" here.");
-
-            if (ordinary.Count > 0)
-            {
-                PrintLine();
-                Print(group.ToString());
-            }
-            
-    
-        }
 
         public static Room CurrentLocation
         {
@@ -203,18 +80,23 @@ namespace Adventure.Net
         {
             Room real = room;
 
-            if (!IsLit())
+            if (!CurrentRoom.IsLit())
                 room = Rooms.Get<Darkness>();
-            
+
             Story.Location = room;
 
             if (!room.Visited && room.Initial != null)
+            {
                 room.Initial();
+            }
             else
             {
-                if (!IsLit() && room.Visited)
+                if (!CurrentRoom.IsLit() && room.Visited)
+                {
                     real.DarkToDark();
-                Look(false);
+                }
+
+                CurrentRoom.Look(false);
             }
                 
             
@@ -230,46 +112,5 @@ namespace Adventure.Net
                 obj.Daemon();
         }
 
-        public static Item GetObjectByName(string name)
-        {
-            var objects = from x in ObjectsInScope() where x.Name == name || x.Synonyms.Contains(name) select x;
-            if (objects.Count() > 1)
-            {
-                //TODO: more than one object in scope with the same name
-                //throw new Exception("There is more than one object in scope with the same name - Need to implement!!!!");
-                foreach(var obj in objects)
-                {
-                    if (Inventory.Contains(obj))
-                        return obj;
-                }
-            }
-
-            return objects.FirstOrDefault();
-        }
-
-        public static List<Item> ObjectsInScope()
-        {
-            var result = new List<Item>();
-            
-            result.AddRange(Location.Objects.Where(x => !x.IsScenery && !x.IsStatic));
-            result.AddRange(Location.Objects.Where(x => x.IsScenery || x.IsStatic));
-            result.AddRange(Inventory.Items);
-            result.Add(Location);
-
-            var contained = new List<Item>();
-            
-            foreach(var obj in result)
-            {
-                var container = obj as Container;
-                if (container != null)
-                {
-                    contained.AddRange(container.Contents);
-                }
-            }
-
-            result.AddRange(contained);
-
-            return result;
-        }
     }
 }
