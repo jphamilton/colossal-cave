@@ -9,8 +9,10 @@ namespace Adventure.Net
         public StoryController(IStory story) 
         {
             Console.Title = story.Story;
+            
             Output.Initialize(Console.Out);
-            Context.CommandPrompt = new CommandPrompt(Console.Out, Console.In);
+            CommandPrompt.Initialize(Console.Out, Console.In);
+
             Context.Story = story ?? throw new ArgumentNullException("story");
             Context.Parser = new Parser();
         }
@@ -24,7 +26,7 @@ namespace Adventure.Net
 
             while (!Context.Story.IsDone)
             {
-                Context.Parser.Parse(Context.CommandPrompt.GetInput());
+                Context.Parser.Parse(CommandPrompt.GetInput());
                 Moves++;
                 Library.RunDaemons();
             }

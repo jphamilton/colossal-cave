@@ -11,8 +11,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void what_do_you_want_to_put_the_bottle_in()
         {
-            var response = new FakeCommandPrompt("cage");
-            Context.CommandPrompt = response;
+            CommandPrompt.FakeInput("cage");
 
             var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
@@ -27,8 +26,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void restate_command_after_incomplete_question()
         {
-            var response = new FakeCommandPrompt("put bird in cage");
-            Context.CommandPrompt = response;
+            CommandPrompt.FakeInput("put bird in cage");
 
             var bird = Items.Get<LittleBird>();
             Location.Objects.Add(bird);
@@ -43,9 +41,8 @@ namespace Advent.Tests.Verbs
         [Test]
         public void what_do_you_want_to_put_the_bottle_on()
         {
-            var response = new FakeCommandPrompt("keys");
-            Context.CommandPrompt = response;
-
+            CommandPrompt.FakeInput("keys");
+            
             var bottle = Items.Get<Bottle>();
             Location.Objects.Add(bottle);
 
@@ -59,8 +56,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void just_put_object_not_present()
         {
-            var response = new FakeCommandPrompt("bird in cage");
-            Context.CommandPrompt = response;
+            CommandPrompt.FakeInput("bird in cage");
 
             var results = parser.Parse("put");
             Assert.AreEqual("You can't see any such thing.", results[0]);
@@ -69,8 +65,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void just_put_object_present()
         {
-            var response = new FakeCommandPrompt("bird in cage");
-            Context.CommandPrompt = response;
+            CommandPrompt.FakeInput("bird in cage");
 
             var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
@@ -85,9 +80,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void start_with_bird()
         {
-            var response = new FakeCommandPrompt("bird\ncage");
-            
-            Context.CommandPrompt = response;
+            CommandPrompt.FakeInput("bird\ncage");
 
             var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
@@ -112,9 +105,7 @@ namespace Advent.Tests.Verbs
             //
             // However, the Before<Insert> action on the bird should be rewritten to disallow this specific case.
 
-            var response = new FakeCommandPrompt("bird");
-
-            Context.CommandPrompt = response;
+            CommandPrompt.FakeInput("bird");
 
             var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
@@ -139,8 +130,7 @@ namespace Advent.Tests.Verbs
             // cage
             // You already have the little bird. If you take it out of the cage it will likely fly away from you.
 
-            var response = new FakeCommandPrompt("bird\ncage");
-            Context.CommandPrompt = response;
+            CommandPrompt.FakeInput("bird\ncage");
 
             var cage = Items.Get<WickerCage>();
             Inventory.Add(cage);
@@ -165,8 +155,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void just_put_all_except()
         {
-            var response = new FakeCommandPrompt("bird");
-            Context.CommandPrompt = response;
+            CommandPrompt.FakeInput("bird");
 
             var results = parser.Parse("put all except");
             Assert.AreEqual(1, results.Count);

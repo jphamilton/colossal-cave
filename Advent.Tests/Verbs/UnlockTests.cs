@@ -33,9 +33,8 @@ namespace Advent.Tests.Verbs
         [Test]
         public void should_not_unlock_door_automatically_when_inventory_contains_stuff_other_than_the_key()
         {
-            
-            var prompt = new FakeCommandPrompt("keys");
-            Context.CommandPrompt = prompt;
+
+            CommandPrompt.FakeInput("keys");
             
             Location = Rooms.Get<InsideBuilding>();
             parser.Parse("take all");

@@ -2,22 +2,27 @@ using System.IO;
 
 namespace Adventure.Net
 {
-    public class CommandPrompt
+    public static class CommandPrompt
     {
-        protected TextWriter output;
-        protected TextReader input;
+        private static TextWriter output;
+        private static TextReader input;
         
-        public CommandPrompt(TextWriter output, TextReader input)
+        public static void Initialize(TextWriter output, TextReader input)
         {
-            this.output = output;
-            this.input = input;
+            CommandPrompt.output = output;
+            CommandPrompt.input = input;
         }
         
-        public string GetInput()
+        public static string GetInput()
         {
             output.Write("\n> ");
             string command = input.ReadLine().Trim();
             return command;
+        }
+
+        public static void FakeInput(string text)
+        {
+            input = new StringReader(text);
         }
     }
 }

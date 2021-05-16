@@ -21,7 +21,7 @@ namespace Advent.Tests
             // initialize story and put player in "Inside Building"
             Context.Story = new ColossalCaveStory();
             Output.Initialize(new StringWriter(new StringBuilder()));
-            Context.CommandPrompt = new CommandPrompt(new StringWriter(), new StringReader(""));
+            CommandPrompt.Initialize(new StringWriter(), new StringReader(""));
             Context.Story.Initialize();
             Context.Story.Location = Rooms.Get<InsideBuilding>();
             Inventory.Clear();

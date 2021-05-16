@@ -64,7 +64,7 @@ namespace Adventure.Net.Verbs
             // do not use Print, go directly to output
             Output.Print("What do you want to unlock the {0} with?", Item.Name);
             
-            string input = Context.CommandPrompt.GetInput();
+            string input = CommandPrompt.GetInput();
             if (string.IsNullOrEmpty(input))
             {
                 Print(Library.DoNotUnderstand);

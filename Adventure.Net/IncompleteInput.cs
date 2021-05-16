@@ -53,7 +53,7 @@ namespace Adventure.Net
             string msg = "What do you want to {0} the {1} {2}?".F(inputResult.Verb.Name, obj.Name, inputResult.Preposition);
             Output.Print(msg);
 
-            string reply = Context.CommandPrompt.GetInput();
+            string reply = CommandPrompt.GetInput();
             if (string.IsNullOrEmpty(reply))
             {
                 inputResult.Action = UserInput.ErrorAction(Library.DoNotUnderstand);
@@ -89,7 +89,7 @@ namespace Adventure.Net
             string msg = "What do you want to {0}?".F(inputResult.Verb.Name);
             Output.Print(msg);
 
-            string reply = Context.CommandPrompt.GetInput();
+            string reply = CommandPrompt.GetInput();
             if (string.IsNullOrEmpty(reply))
             {
                 inputResult.Action = UserInput.ErrorAction(Library.DoNotUnderstand);

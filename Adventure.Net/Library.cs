@@ -185,7 +185,7 @@ namespace Adventure.Net
             {
                 string[] affirmative = new[]{"y", "yes", "yep", "yeah"};
                 string[] negative = new[]{"n", "no", "nope", "nah", "naw"};
-                string response = Context.CommandPrompt.GetInput();
+                string response = CommandPrompt.GetInput();
                 if (!response.In(affirmative) && !response.In(negative))
                     Print("Please answer yes or no.");
                 else
