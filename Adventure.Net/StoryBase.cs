@@ -1,13 +1,12 @@
-﻿using System;
-
-namespace Adventure.Net
+﻿namespace Adventure.Net
 {
     public abstract class StoryBase : IStory
     {
         public string Story { get; set; }
-        public string Headline { get; set; }
         public Room Location { get; set; }
         public bool IsDone { get; set; }
+
+        protected abstract void OnInitialize();
 
         protected StoryBase()
         {
@@ -20,16 +19,16 @@ namespace Adventure.Net
             Items.Load(this);
 
             foreach (var obj in Rooms.All)
+            {
                 obj.Initialize();
-            
+            }
+
             foreach (var obj in Items.All)
+            {
                 obj.Initialize();
+            }
 
             OnInitialize();
-            
         }
-
-        protected abstract void OnInitialize();
-        
     }
 }

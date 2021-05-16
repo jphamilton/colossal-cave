@@ -4,7 +4,7 @@ namespace Adventure.Net
 {
     public interface IStory
     {
-        string Headline { get; set; }
+        //string Headline { get; set; }
         bool IsDone { get; set; }
         Room Location { get; set; }
         string Story { get; set; }

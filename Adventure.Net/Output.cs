@@ -23,12 +23,15 @@ namespace Adventure.Net
 
         public void Print(string text)
         {
-            if (String.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
                 return;
 
             string[] lines = text.Split('\n');
-            foreach(string line in lines)
+            
+            foreach (string line in lines)
+            {
                 target.WriteLine(WordWrap(line));
+            }
         }
 
         public void Print(string format, params object[] arg)
@@ -64,12 +67,12 @@ namespace Adventure.Net
 
             StringBuilder sb = new StringBuilder();
             string[] words = text.Split(' ');
-
             int charsInLine = 0;
 
             for (int i = 0; i < words.Length; i++)
             {
                 sb.AppendFormat("{0} ", words[i]);
+                
                 charsInLine += words[i].Length + 1;
 
                 if (i < words.Length - 1)

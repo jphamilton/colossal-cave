@@ -16,13 +16,6 @@ namespace Adventure.Net
             VerbNotRecognized = "That's not a verb I recognize.";
         }
 
-        public static void Banner()
-        {
-            Bold(Story.Story);
-            Print(Story.Headline);
-            PrintLine();
-        }
-
         public static void Bold(string message)
         {
             Context.Output.Bold(message);
@@ -67,7 +60,9 @@ namespace Adventure.Net
             Bold(room.Name);
 
             if (showFull || !Location.Visited)
+            {
                 Print(room.Description);
+            }
 
             DisplayRoomObjects();
 

@@ -22,7 +22,8 @@ namespace Adventure.Net
         public void Run()
         {
             Context.Story.Initialize();
-            Library.Banner();
+
+            //Library.Banner();
             Library.MovePlayerTo(Context.Story.Location);
 
             while (!Context.Story.IsDone)
