@@ -138,7 +138,7 @@ namespace Adventure.Net
                         list.Add(line);
                         if (showOutput)
                         {
-                            Context.Output.Print(line);
+                            Output.Print(line);
                         }
                     }
                 };

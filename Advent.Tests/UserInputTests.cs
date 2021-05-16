@@ -20,7 +20,7 @@ namespace Advent.Tests
             parser = new Parser();
             // initialize story and put player in "Inside Building"
             Context.Story = new ColossalCaveStory();
-            Context.Output = new Output(new StringWriter(new StringBuilder()));
+            Output.Initialize(new StringWriter(new StringBuilder()));
             Context.CommandPrompt = new CommandPrompt(new StringWriter(), new StringReader(""));
             Context.Story.Initialize();
             Context.Story.Location = Rooms.Get<InsideBuilding>();

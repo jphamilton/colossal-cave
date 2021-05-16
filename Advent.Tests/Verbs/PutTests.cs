@@ -171,7 +171,7 @@ namespace Advent.Tests.Verbs
             var results = parser.Parse("put all except");
             Assert.AreEqual(1, results.Count);
 
-            var output = Context.Output.Buffer.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            var output = Output.Buffer.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
 
             Assert.AreEqual("What do you want to put?", output[0]); // bird
             Assert.AreEqual("You can't see any such thing.", output[1]);

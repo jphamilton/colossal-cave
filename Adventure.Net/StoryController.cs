@@ -6,15 +6,11 @@ namespace Adventure.Net
     {
         public int Moves { get; private set; }
 
-        public StoryController(IStory story) : this(story, new Output(Console.Out), new CommandPrompt(Console.Out, Console.In))
+        public StoryController(IStory story) 
         {
             Console.Title = story.Story;
-        }
-
-        private StoryController(IStory story, Output output, CommandPrompt commandPrompt)
-        {
-            Context.Output = output ?? throw new ArgumentNullException("output");
-            Context.CommandPrompt = commandPrompt ?? throw new ArgumentNullException("commandPrompt");
+            Output.Initialize(Console.Out);
+            Context.CommandPrompt = new CommandPrompt(Console.Out, Console.In);
             Context.Story = story ?? throw new ArgumentNullException("story");
             Context.Parser = new Parser();
         }

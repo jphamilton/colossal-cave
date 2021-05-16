@@ -51,7 +51,7 @@ namespace Adventure.Net
             var obj = inputResult.Objects.Single();
             inputResult.Grammar = inputResult.Verb.Grammars.FirstOrDefault(x => x.Preposition == inputResult.Preposition);
             string msg = "What do you want to {0} the {1} {2}?".F(inputResult.Verb.Name, obj.Name, inputResult.Preposition);
-            Context.Output.Print(msg);
+            Output.Print(msg);
 
             string reply = Context.CommandPrompt.GetInput();
             if (string.IsNullOrEmpty(reply))
@@ -87,7 +87,7 @@ namespace Adventure.Net
         private void NoObject(InputResult inputResult)
         {
             string msg = "What do you want to {0}?".F(inputResult.Verb.Name);
-            Context.Output.Print(msg);
+            Output.Print(msg);
 
             string reply = Context.CommandPrompt.GetInput();
             if (string.IsNullOrEmpty(reply))

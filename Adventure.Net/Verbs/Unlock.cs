@@ -62,7 +62,7 @@ namespace Adventure.Net.Verbs
         private void ObjectNotSpecified()
         {
             // do not use Print, go directly to output
-            Context.Output.Print("What do you want to unlock the {0} with?", Item.Name);
+            Output.Print("What do you want to unlock the {0} with?", Item.Name);
             
             string input = Context.CommandPrompt.GetInput();
             if (string.IsNullOrEmpty(input))

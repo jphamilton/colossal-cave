@@ -18,22 +18,22 @@ namespace Adventure.Net
 
         public static void Bold(string message)
         {
-            Context.Output.Bold(message);
+            Output.Bold(message);
         }
 
         public static void Print(string msg)
         {
-            Context.Output.Print(msg);
+            Output.Print(msg);
         }
 
         public static void Print(string format, params object[] arg)
         {
-            Context.Output.Print(format, arg);
+            Output.Print(format, arg);
         }
 
         public static void PrintLine()
         {
-            Context.Output.PrintLine();
+            Output.PrintLine();
         }
 
         private static Room Location

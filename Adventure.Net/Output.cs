@@ -4,16 +4,16 @@ using System.Text;
 
 namespace Adventure.Net
 {
-    public class Output 
+    public static class Output 
     {
-        private readonly TextWriter target;
+        private static TextWriter target;
         
-        public Output(TextWriter destination)
+        public static void Initialize(TextWriter destination)
         {
             target = destination;
         }
 
-        public void Bold(string text)
+        public static void Bold(string text)
         {
             var currentColor = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.White;
@@ -21,7 +21,7 @@ namespace Adventure.Net
             Console.ForegroundColor = currentColor;
         }
 
-        public void Print(string text)
+        public static void Print(string text)
         {
             if (string.IsNullOrEmpty(text))
                 return;
@@ -34,22 +34,22 @@ namespace Adventure.Net
             }
         }
 
-        public void Print(string format, params object[] arg)
+        public static void Print(string format, params object[] arg)
         {
             target.WriteLine(WordWrap(format), arg);    
         }
 
-        public void PrintLine()
+        public static void PrintLine()
         {
             target.WriteLine();
         }
 
-        public void Write(string text)
+        public static void Write(string text)
         {
             target.Write(WordWrap(text));
         }
 
-        public string Buffer
+        public static string Buffer
         {
             get
             {

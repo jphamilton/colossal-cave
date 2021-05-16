@@ -19,7 +19,7 @@ namespace Advent.Tests
         public void SetUp()
         {
             Context.Story = new ColossalCaveStory();
-            Context.Output = new Output(new StringWriter(new StringBuilder()));
+            Output.Initialize(new StringWriter(new StringBuilder()));
             Context.Story.Initialize();
             Inventory.Clear();
             OnSetUp();
