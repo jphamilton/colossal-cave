@@ -13,22 +13,22 @@ namespace Adventure.Net.Verbs
 
         private bool EatObject()
         {
-            if (!Object.IsEdible)
+            if (!Item.IsEdible)
             {
-                Print($"{Object.TheyreOrThats} plainly inedible.");
+                Print($"{Item.TheyreOrThats} plainly inedible.");
             }
-            else if (Inventory.Contains(Object))
+            else if (Inventory.Contains(Item))
             {
-                Print($"You eat the {Object.Name}. Not bad.");
+                Print($"You eat the {Item.Name}. Not bad.");
             }
             else
             {
-                Context.Story.Location.Objects.Remove(Object);
-                Inventory.Add(Object);
-                Print($"(first taking the {Object.Name})");
+                Context.Story.Location.Objects.Remove(Item);
+                Inventory.Add(Item);
+                Print($"(first taking the {Item.Name})");
             }
 
-            Inventory.Remove(Object);
+            Inventory.Remove(Item);
             
             return true;
         }

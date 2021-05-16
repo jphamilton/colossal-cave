@@ -20,13 +20,13 @@ namespace Adventure.Net.Verbs
             //    return true;
             //}
 
-            var beforeReceive = IndirectObject.Before<Receive>();
+            var beforeReceive = IndirectItem.Before<Receive>();
             if (beforeReceive != null)
             {
                 return beforeReceive();
             }
 
-            var c = IndirectObject as Container;
+            var c = IndirectItem as Container;
             if (c == null)
             {
                 Print("That can't contain things.");
@@ -39,16 +39,16 @@ namespace Adventure.Net.Verbs
                 return true;
             }
 
-            Inventory.Remove(Object);
-            c.Add(Object);
+            Inventory.Remove(Item);
+            c.Add(Item);
 
-            var afterReceive = IndirectObject.After<Receive>();
+            var afterReceive = IndirectItem.After<Receive>();
             if (afterReceive != null)
             {
                 return afterReceive();
             }
 
-            Print(String.Format("You put the {0} into the {1}.", Object.Name, IndirectObject.Name));
+            Print(String.Format("You put the {0} into the {1}.", Item.Name, IndirectItem.Name));
             return true;
         }
     }

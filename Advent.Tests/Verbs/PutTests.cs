@@ -1,6 +1,6 @@
 ﻿using System;
 using Adventure.Net;
-using ColossalCave.MyObjects;
+using ColossalCave.Objects;
 using NUnit.Framework;
 
 namespace Advent.Tests.Verbs

@@ -1,11 +1,11 @@
 ﻿using System.IO;
 using System.Text;
 using ColossalCave;
-using ColossalCave.MyObjects;
+using ColossalCave.Objects;
 using Adventure.Net;
 using Adventure.Net.Verbs;
 using NUnit.Framework;
-using ColossalCave.MyRooms;
+using ColossalCave.Places;
 
 namespace Advent.Tests
 {

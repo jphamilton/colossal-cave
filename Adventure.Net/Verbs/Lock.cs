@@ -14,25 +14,25 @@ namespace Adventure.Net.Verbs
 
         private bool LockObject()
         {
-            if (!Object.IsLockable)
+            if (!Item.IsLockable)
             {
                 Print("That doesn't seem to be something you can lock.");
             }
-            else if (Object.IsLocked)
+            else if (Item.IsLocked)
             {
                 Print("It's locked at the moment.");
             }
-            else if (Object is Door)
+            else if (Item is Door)
             {
-                Door door = Object as Door;
+                Door door = Item as Door;
                 if (!Inventory.Contains(door.Key))
                     Print("You have nothing to lock that with.");
                 else
                 {
-                    if (IndirectObject == null && Inventory.Items.Count == 1)
+                    if (IndirectItem == null && Inventory.Items.Count == 1)
                         Print(String.Format("(with the {0})\n", door.Key.Name));
-                    Print(String.Format("You lock the {0}.", Object.Name));
-                    Object.IsLocked = true;
+                    Print(String.Format("You lock the {0}.", Item.Name));
+                    Item.IsLocked = true;
                 }
                 
             }

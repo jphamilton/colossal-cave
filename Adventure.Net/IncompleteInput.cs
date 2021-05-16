@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adventure.Net.Extensions;
+using System;
 using System.Linq;
 
 namespace Adventure.Net

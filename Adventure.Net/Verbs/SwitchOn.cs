@@ -15,12 +15,12 @@ namespace Adventure.Net.Verbs
 
         private bool SwitchOnObject()
         {
-            if (Object.IsSwitchable && !Object.IsOn)
+            if (Item.IsSwitchable && !Item.IsOn)
             {
-                Object.IsOn = true;
-                Print(String.Format("You switch the {0} on.", Object.Name));
+                Item.IsOn = true;
+                Print(String.Format("You switch the {0} on.", Item.Name));
             }
-            else if (Object.IsOn)
+            else if (Item.IsOn)
             {
                 Print("That's already on.");
             }

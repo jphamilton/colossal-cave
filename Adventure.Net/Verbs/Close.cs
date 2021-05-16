@@ -16,18 +16,18 @@ namespace Adventure.Net.Verbs
 
         private bool CloseObject()
         {
-            if (!Object.IsOpenable)
+            if (!Item.IsOpenable)
             {
-                Print(String.Format("{0} not something you can close.", Object.TheyreOrThats));
+                Print(String.Format("{0} not something you can close.", Item.TheyreOrThats));
             }
-            else if (!Object.IsOpen)
+            else if (!Item.IsOpen)
             {
-                Print(Object.TheyreOrThats + " already closed.");
+                Print(Item.TheyreOrThats + " already closed.");
             }
             else
             {
-                Object.IsOpen = false;
-                Print(String.Format("You close the {0}.", Object.Name));
+                Item.IsOpen = false;
+                Print(String.Format("You close the {0}.", Item.Name));
             }
 
             return true;

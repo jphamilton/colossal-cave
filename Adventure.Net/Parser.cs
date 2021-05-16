@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adventure.Net.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -77,8 +78,8 @@ namespace Adventure.Net
         private IList<String> Parse(string input, bool showOutput)
         {
             Context.Parser = this;
-            Context.Object = null;
-            Context.IndirectObject = null;
+            Context.Item = null;
+            Context.IndirectItem = null;
             
             results = new List<ParserResult>();
 
@@ -178,8 +179,8 @@ namespace Adventure.Net
 
         public bool ExecuteCommand(Command command)
         {
-            Context.Object = command.Object;
-            Context.IndirectObject = command.IndirectObject;
+            Context.Item = command.Object;
+            Context.IndirectItem = command.IndirectObject;
 
             var parserResult = new ParserResult();
             results.Add(parserResult);

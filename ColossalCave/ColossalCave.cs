@@ -1,4 +1,4 @@
-using ColossalCave.MyRooms;
+using ColossalCave.Places;
 using Adventure.Net;
 
 namespace ColossalCave

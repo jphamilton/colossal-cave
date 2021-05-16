@@ -34,8 +34,8 @@ namespace Adventure.Net
                 var command =
                     new Command
                         {
-                            Object = Context.Object,
-                            IndirectObject = Context.IndirectObject,
+                            Object = Context.Item,
+                            IndirectObject = Context.IndirectItem,
                             Verb = verb,
                             Action = g.Action
                         };

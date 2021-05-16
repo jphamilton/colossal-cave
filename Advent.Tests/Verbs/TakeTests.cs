@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using ColossalCave.MyObjects;
-using ColossalCave.MyRooms;
+using ColossalCave.Objects;
+using ColossalCave.Places;
 using Adventure.Net;
 using NUnit.Framework;
 

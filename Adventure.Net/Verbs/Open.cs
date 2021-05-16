@@ -15,23 +15,23 @@ namespace Adventure.Net.Verbs
 
         private bool OpenObject()
         {
-            if (!Object.IsOpenable)
+            if (!Item.IsOpenable)
             {
-                Print(String.Format("{0} not something you can open.", Object.TheyreOrThats));
+                Print(String.Format("{0} not something you can open.", Item.TheyreOrThats));
             }
-            else if (Object.IsLocked)
+            else if (Item.IsLocked)
             {
-                string seems = Object.HasPluralName ? "They seem" : "It seems";
+                string seems = Item.HasPluralName ? "They seem" : "It seems";
                 Print(String.Format("{0} to be locked.", seems));
             }
-            else if (Object.IsOpen)
+            else if (Item.IsOpen)
             {
-                Print(Object.TheyreOrThats + " already open.");
+                Print(Item.TheyreOrThats + " already open.");
             }
             else
             {
-                Object.IsOpen = true;
-                Print(String.Format("You open the {0}.", Object.Name));
+                Item.IsOpen = true;
+                Print(String.Format("You open the {0}.", Item.Name));
             }
 
             return true;

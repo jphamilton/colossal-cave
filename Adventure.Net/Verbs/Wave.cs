@@ -18,7 +18,7 @@ namespace Adventure.Net.Verbs
         
         private bool WaveObject()
         {
-            Print(String.Format("You look ridiculous waving the {0}.", Object.Name));
+            Print(String.Format("You look ridiculous waving the {0}.", Item.Name));
             return true;
         }
 

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ColossalCave.MyObjects;
+using ColossalCave.Objects;
 using Adventure.Net;
 using NUnit.Framework;
 

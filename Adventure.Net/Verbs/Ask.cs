@@ -18,7 +18,7 @@
 
         private bool Default()
         {
-            if (!Object.IsAnimate)
+            if (!Item.IsAnimate)
             {
                 Print("You can only do that to something animate.");
                 return true;

@@ -18,7 +18,7 @@ namespace Adventure.Net.Verbs
 
         public bool FillObject(Item obj)
         {
-            Object = obj;
+            Item = obj;
             return FillObject();
         }
     }

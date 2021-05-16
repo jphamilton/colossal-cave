@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Adventure.Net;
-using ColossalCave.MyRooms;
+using Adventure.Net.Extensions;
+using ColossalCave.Places;
 using NUnit.Framework;
 
 namespace Advent.Tests.RoomTests

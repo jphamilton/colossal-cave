@@ -22,24 +22,24 @@ namespace Adventure.Net.Verbs
         {
             bool result = false;
 
-            if (Inventory.Contains(Object))
+            if (Inventory.Contains(Item))
             {
-                Object.MoveToLocation();
+                Item.MoveToLocation();
                 Print("Dropped.");
                 result = true;
             }
-            else if (Object == null)
+            else if (Item == null)
             {
                 Print("You aren't carrying anything.");
             }
-            else if (Object.AtLocation)
+            else if (Item.AtLocation)
             {
-                string isAre = Object.HasPluralName ? "are" : "is";
-                Print("The {0} {1} already here.", Object.Name, isAre);
+                string isAre = Item.HasPluralName ? "are" : "is";
+                Print("The {0} {1} already here.", Item.Name, isAre);
             }
             else
             {
-                Print("You haven't got {0}", Object.ThatOrThose);
+                Print("You haven't got {0}", Item.ThatOrThose);
             }
 
             return result;

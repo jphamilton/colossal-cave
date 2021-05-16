@@ -1,9 +1,8 @@
-﻿using System;
-using Object = Adventure.Net.Object;
+﻿using Adventure.Net;
 
 namespace ColossalCave
 {
-    public abstract class Treasure : Object
+    public abstract class Treasure : Item
     {
         public int DepositPoints { get; protected set; }
         

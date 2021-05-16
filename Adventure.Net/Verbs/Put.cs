@@ -22,9 +22,9 @@ namespace Adventure.Net.Verbs
         
         private bool PutOnObject()
         {
-            if (!Object.InInventory)
+            if (!Item.InInventory)
             {
-                Print($"You need to be holding the {Object.Name} before you can put it on top of something else.");
+                Print($"You need to be holding the {Item.Name} before you can put it on top of something else.");
                 return true;
             }
 

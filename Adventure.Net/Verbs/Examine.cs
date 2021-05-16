@@ -21,26 +21,26 @@ namespace Adventure.Net.Verbs
                 return true;
             }
             
-            if (Object.IsScenery && string.IsNullOrEmpty(Object.Description))
+            if (Item.IsScenery && string.IsNullOrEmpty(Item.Description))
             {
-                Print("You see nothing special about the {0}.", Object.Name);
+                Print("You see nothing special about the {0}.", Item.Name);
             }
-            else if (Object is Room)
+            else if (Item is Room)
             {
                 Print("That's not something you need to refer to in the course of this game.");
             }
-            else if (Object.Describe != null)
+            else if (Item.Describe != null)
             {
-                string result = Object.Describe();
+                string result = Item.Describe();
                 if (!String.IsNullOrEmpty(result))
                     Print(result);
                 else
-                    Print(Object.Description);
+                    Print(Item.Description);
                 
             }
-            else if (!string.IsNullOrEmpty(Object.Description))
+            else if (!string.IsNullOrEmpty(Item.Description))
             {
-                Print(Object.Description);
+                Print(Item.Description);
             }
             else
             {

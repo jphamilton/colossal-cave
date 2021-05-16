@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using ColossalCave.MyRooms;
+using ColossalCave.Places;
 using NUnit.Framework;
 
 namespace Advent.Tests.Verbs

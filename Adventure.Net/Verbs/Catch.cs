@@ -13,7 +13,7 @@ namespace Adventure.Net.Verbs
 
         private bool CatchObject()
         {
-            if (!Object.IsAnimate)
+            if (!Item.IsAnimate)
                 Print("You can only do that to something animate.");
             else
                 Print("You can't catch that.");

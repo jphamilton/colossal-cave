@@ -2,16 +2,16 @@
 {
     public class ContextObject
     {
-        protected Item Object
+        protected Item Item
         {
-            get { return Context.Object; }
-            set { Context.Object = value; }
+            get { return Context.Item; }
+            set { Context.Item = value; }
         }
 
-        protected Item IndirectObject
+        protected Item IndirectItem
         {
-            get { return Context.IndirectObject; }
-            set { Context.IndirectObject = value; }
+            get { return Context.IndirectItem; }
+            set { Context.IndirectItem = value; }
         }
 
         public void Print(string format, params object[] arg)

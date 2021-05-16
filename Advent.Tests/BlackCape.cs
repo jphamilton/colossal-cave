@@ -1,4 +1,4 @@
-﻿using Item = Adventure.Net.Item;
+﻿using Adventure.Net;
 
 namespace Advent.Tests
 {

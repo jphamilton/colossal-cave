@@ -20,9 +20,9 @@ namespace Adventure.Net.Verbs
 
         private bool EmptyObject()
         {
-            Container obj = Object as Container;
+            Container obj = Item as Container;
             if (obj == null)
-                Print("The " + Object.Name + " can't contain things.");
+                Print("The " + Item.Name + " can't contain things.");
             else if (!obj.IsOpen)
                 Print("The " + obj.Name + " " + obj.IsOrAre + " closed.");
             else if (obj.IsEmpty)

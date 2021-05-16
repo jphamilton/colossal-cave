@@ -13,11 +13,11 @@ namespace Adventure.Net.Verbs
 
         private bool SwitchOffObject()
         {
-            if (Object.IsSwitchable && Object.IsOn)
+            if (Item.IsSwitchable && Item.IsOn)
             {
-                Print(String.Format("You switch the {0} off.", Object.Name));
+                Print(String.Format("You switch the {0} off.", Item.Name));
             }
-            else if (!Object.IsOn)
+            else if (!Item.IsOn)
             {
                 Print("That's already off.");
             }

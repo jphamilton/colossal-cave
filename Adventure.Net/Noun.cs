@@ -5,7 +5,7 @@
         public static bool Is<T>() where T:Item
         {
             Item obj = Items.Get<T>();
-            return Context.Object == obj;
+            return Context.Item == obj;
         }
     }
 }

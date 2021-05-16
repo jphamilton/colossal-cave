@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adventure.Net.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -15,13 +16,13 @@ namespace Adventure.Net.Verbs
 
         private bool UnlockObject()
         {
-            if (!Object.IsLockable)
+            if (!Item.IsLockable)
                 Print("That doesn't seem to be something you can unlock.");
-            else if (!Object.IsLocked)
+            else if (!Item.IsLocked)
                 Print("It's unlocked at the moment.");
-            else if (Object is Door) // need to refactor so this works for all lockable things
+            else if (Item is Door) // need to refactor so this works for all lockable things
             {
-                var door = Object as Door;
+                var door = Item as Door;
                 UnlockDoor(door);
             }
 
@@ -36,22 +37,22 @@ namespace Adventure.Net.Verbs
                 return;
             }
 
-            if (IndirectObject == null)
+            if (IndirectItem == null)
             {
                 if (Inventory.Items.Count == 1 && Inventory.Items[0] == door.Key)
                 {
                     Print("(with the {0})", door.Key.Name);
-                    Print("You unlock the {0}.", Object.Name);
-                    Object.IsLocked = false;
+                    Print("You unlock the {0}.", Item.Name);
+                    Item.IsLocked = false;
                     return;
                 }
 
                 ObjectNotSpecified();
             }
-            else if (IndirectObject == door.Key)
+            else if (IndirectItem == door.Key)
             {
-                Print("You unlock the {0}.", Object.Name);
-                Object.IsLocked = false;
+                Print("You unlock the {0}.", Item.Name);
+                Item.IsLocked = false;
             }
 
         }
@@ -63,7 +64,7 @@ namespace Adventure.Net.Verbs
             var L = new Library();
 
             // do not use Print, go directly to output
-            Context.Output.Print("What do you want to unlock the {0} with?", Object.Name);
+            Context.Output.Print("What do you want to unlock the {0} with?", Item.Name);
             
             string input = Context.CommandPrompt.GetInput();
             if (string.IsNullOrEmpty(input))
@@ -80,7 +81,7 @@ namespace Adventure.Net.Verbs
             if (!tokens.StartsWithVerb())
             {
                 // this is very simplistic right now
-                input = "unlock " + Object.Synonyms[0] + " with " + String.Join(" ", tokens.ToArray());
+                input = "unlock " + Item.Synonyms[0] + " with " + String.Join(" ", tokens.ToArray());
             }
 
             Context.Parser.Parse(input);

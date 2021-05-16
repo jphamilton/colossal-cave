@@ -20,22 +20,22 @@
         {
             bool result = false;
 
-            if (Object.IsScenery)
+            if (Item.IsScenery)
             {
                 Print("That's hardly portable.");
             }
-            else if (Object.IsStatic)
+            else if (Item.IsStatic)
             {
                 Print("That's fixed in place.");
             }
-            else if (Inventory.Contains(Object))
+            else if (Inventory.Contains(Item))
             {
                 Print("You already have that.");
             }
             else
             {
-                Context.Story.Location.Objects.Remove(Object);
-                Inventory.Add(Object);
+                Context.Story.Location.Objects.Remove(Item);
+                Inventory.Add(Item);
                 Print("Taken.");
                 result = true;
             }
@@ -45,7 +45,7 @@
 
         public bool TakeObject(Item obj)
         {
-            Object = obj;
+            Item = obj;
             return TakeObject();
         }
 
