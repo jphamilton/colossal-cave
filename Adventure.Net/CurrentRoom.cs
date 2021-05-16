@@ -15,15 +15,15 @@ namespace Adventure.Net
 
         public static void Look(bool showFull)
         {
-            Library.PrintLine();
+            Output.PrintLine();
 
             Room room = IsLit() ? Location : Rooms.Get<Darkness>();
 
-            Library.Bold(room.Name);
+            Output.Bold(room.Name);
 
             if (showFull || !Location.Visited)
             {
-                Library.Print(room.Description);
+                Output.Print(room.Description);
             }
 
             DisplayRoomObjects();
@@ -72,13 +72,13 @@ namespace Adventure.Net
 
                 if (!obj.IsTouched && !String.IsNullOrEmpty(obj.InitialDescription))
                 {
-                    Library.PrintLine();
-                    Library.Print(obj.InitialDescription);
+                    Output.PrintLine();
+                    Output.Print(obj.InitialDescription);
                 }
                 else if (obj.Describe != null && (obj as Container) == null)
                 {
-                    Library.PrintLine();
-                    Library.Print(obj.Describe());
+                    Output.PrintLine();
+                    Output.Print(obj.Describe());
                 }
                 else
                 {
@@ -124,8 +124,8 @@ namespace Adventure.Net
 
             if (ordinary.Count > 0)
             {
-                Library.PrintLine();
-                Library.Print(group.ToString());
+                Output.PrintLine();
+                Output.Print(group.ToString());
             }
         }
 

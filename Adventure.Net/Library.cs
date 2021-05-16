@@ -1,8 +1,5 @@
 ﻿using Adventure.Net.Extensions;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Adventure.Net
 {
@@ -16,21 +13,6 @@ namespace Adventure.Net
             VerbNotRecognized = "That's not a verb I recognize.";
         }
 
-        public static void Bold(string message)
-        {
-            Output.Bold(message);
-        }
-
-        public static void Print(string msg)
-        {
-            Output.Print(msg);
-        }
-
-        public static void PrintLine()
-        {
-            Output.PrintLine();
-        }
-
         private static IStory Story
         {
             get { return Context.Story; }
@@ -40,11 +22,6 @@ namespace Adventure.Net
         public static string DidntUnderstandSentence { get; set;}
         public static string CantSeeObject { get; set; }
         public static string VerbNotRecognized { get; set; }
-
-        public static Room CurrentLocation
-        {
-            get { return Context.Story.Location; }
-        }
 
         public static void Quit()
         {
@@ -56,7 +33,7 @@ namespace Adventure.Net
 
         public static bool YesOrNo(string question)
         {
-            Print(question);
+            Output.Print(question);
 
             while (true)
             {
@@ -64,7 +41,7 @@ namespace Adventure.Net
                 string[] negative = new[]{"n", "no", "nope", "nah", "naw"};
                 string response = CommandPrompt.GetInput();
                 if (!response.In(affirmative) && !response.In(negative))
-                    Print("Please answer yes or no.");
+                    Output.Print("Please answer yes or no.");
                 else
                     return (response.In(affirmative));
             }
@@ -81,7 +58,9 @@ namespace Adventure.Net
             Room real = room;
 
             if (!CurrentRoom.IsLit())
+            {
                 room = Rooms.Get<Darkness>();
+            }
 
             Story.Location = room;
 
