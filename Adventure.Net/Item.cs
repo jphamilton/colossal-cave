@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Adventure.Net
 {
-    public abstract class Item
+    public abstract class Item : INamed
     {
         
         private readonly Dictionary<Type, Func<bool>> beforeRoutines;

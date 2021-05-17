@@ -16,7 +16,7 @@ namespace Adventure.Net
         public static string GetInput()
         {
             output.Write("\n> ");
-            string command = input.ReadLine().Trim();
+            string command = input.ReadLine()?.Trim();
             return command;
         }
 

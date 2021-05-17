@@ -5,7 +5,7 @@ namespace Adventure.Net
 {
     public static class Compass
     {
-        private static readonly ReadOnlyCollection<string> directions = null;
+        private static readonly Collection<string> directions = null;
 
         static Compass()
         {
@@ -36,7 +36,7 @@ namespace Adventure.Net
                 "enter"
             };
 
-            directions = new ReadOnlyCollection<string>(list);
+            directions = new Collection<string>(list);
         }
 
         public static IList<string> Directions

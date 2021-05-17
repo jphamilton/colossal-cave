@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adventure.Net.Verbs
+﻿namespace Adventure.Net.Verbs
 {
 
     //Verb 'drop' 'discard' 'throw'
@@ -31,6 +29,7 @@ namespace Adventure.Net.Verbs
             else if (Item == null)
             {
                 Print("You aren't carrying anything.");
+                //Print("You aren't carrying anything.");
             }
             else if (Item.AtLocation)
             {

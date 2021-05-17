@@ -17,8 +17,9 @@ namespace Advent.Tests
         [SetUp]
         public void SetUp()
         {
-            parser = new Parser();
             // initialize story and put player in "Inside Building"
+
+            parser = new Parser();
             Context.Story = new ColossalCaveStory();
             Output.Initialize(new StringWriter(new StringBuilder()));
             CommandPrompt.Initialize(new StringWriter(), new StringReader(""));
@@ -94,9 +95,19 @@ namespace Advent.Tests
         {
             var results = parser.Parse("take cage");
             Assert.AreEqual(Library.CantSeeObject, results[0]);
-            results = parser.Parse("put bottle in cage");
+        }
+
+        [Test]
+        public void object_not_present_2()
+        {
+            var results = parser.Parse("put bottle in cage");
             Assert.AreEqual(Library.CantSeeObject, results[0]);
-            results = parser.Parse("put batteries in lamp");
+        }
+
+        [Test]
+        public void object_not_present_3()
+        {
+            var results = parser.Parse("put batteries in lamp");
             Assert.AreEqual(Library.CantSeeObject, results[0]);
         }
 
@@ -115,20 +126,40 @@ namespace Advent.Tests
         public void bad_grammar_good_words()
         {
             // don't try to parse nonsense
-            var results = parser.Parse("take south bottle");
-            Assert.AreEqual(Library.DoNotUnderstand, results[0]);
-
-            results = parser.Parse("take drop bottle");
+            var results = parser.Parse("take drop bottle");
             Assert.AreEqual(Library.CantSeeObject, results[0]);
-
-            results = parser.Parse("bottle drop");
-            Assert.AreEqual(Library.VerbNotRecognized, results[0]);
-
-            results = parser.Parse("take bottle drop");
-            Assert.AreEqual("I only understood you as far as wanting to take the small bottle.", results[0]);
-
         }
 
+        [Test]
+        public void bad_grammar_good_words_2()
+        {
+            var results = parser.Parse("bottle drop");
+            Assert.AreEqual(Library.VerbNotRecognized, results[0]);
+        }
+
+        [Test]
+        public void bad_grammar_good_words_3() 
+        {
+            var take = new Take();
+            var bottle = new Bottle();
+            bottle.Initialize();
+
+            var results = parser.Parse("take bottle drop");
+            Assert.AreEqual(Library.PartialUnderstanding(take, bottle), results[0]);
+        }
+
+        [Test]
+        public void bad_grammar_good_words_4()
+        {
+            var south = new South();
+            
+            var take = new Take();
+            var results = parser.Parse("take south bottle");
+            // this mimicks Inform which will response "I only understood you as far as wanting to take the south"
+            Assert.AreEqual(Library.PartialUnderstanding(take, south), results[0]);
+        }
+
+        
         [Test]
         public void cannot_use_multiple_objects_with_that_verb()
         {

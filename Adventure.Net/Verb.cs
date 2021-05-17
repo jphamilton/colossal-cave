@@ -3,7 +3,7 @@ using Adventure.Net.Verbs;
 
 namespace Adventure.Net
 {
-    public abstract class Verb : ContextObject
+    public abstract class Verb : ContextObject, INamed
     {
         public string Name { get; protected set; }
         

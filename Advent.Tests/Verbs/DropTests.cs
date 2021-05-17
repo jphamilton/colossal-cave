@@ -101,6 +101,14 @@ namespace Advent.Tests.Verbs
             Assert.AreEqual("What do you want to drop those things in?", results[0]);
         }
 
+        [Test]
+        public void drop_not_carrying()
+        {
+            Assert.IsTrue(Inventory.Items.Count == 0, "Inventory is not empty!");
+            var results = parser.Parse("drop in");
+            Assert.AreEqual("You haven't got that.", results[0]);
+        }
+
         private void TakeBottle()
         {
             parser.Parse("take bottle");

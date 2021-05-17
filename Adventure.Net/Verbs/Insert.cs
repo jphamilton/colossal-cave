@@ -14,7 +14,7 @@ namespace Adventure.Net.Verbs
         private bool InsertObject()
         {
 
-            //if (Object.InInventory)
+            //if (Item.InInventory)
             //{
             //    Print(String.Format("You need to be holding the {0} before you can put it into something else.", Object.Name));
             //    return true;
@@ -35,7 +35,7 @@ namespace Adventure.Net.Verbs
 
             if (!c.IsOpen)
             {
-                Print(String.Format("The {0} is closed.", c.Name));
+                Print(string.Format("The {0} is closed.", c.Name));
                 return true;
             }
 
@@ -48,7 +48,7 @@ namespace Adventure.Net.Verbs
                 return afterReceive();
             }
 
-            Print(String.Format("You put the {0} into the {1}.", Item.Name, IndirectItem.Name));
+            Print(string.Format("You put the {0} into the {1}.", Item.Name, IndirectItem.Name));
             return true;
         }
     }

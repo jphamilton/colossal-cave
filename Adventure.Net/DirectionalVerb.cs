@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 
 namespace Adventure.Net
@@ -9,6 +10,7 @@ namespace Adventure.Net
 
         protected void SetDirection(Expression<Func<Room, Room>> x, params string[] synonyms)
         {
+            Name = synonyms.First();
             getRoom = x.Compile();
             Synonyms.Are(synonyms);
             Grammars.Add(Grammar.Empty, MovePlayer);

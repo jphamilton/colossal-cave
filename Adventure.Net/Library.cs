@@ -23,6 +23,11 @@ namespace Adventure.Net
         public static string CantSeeObject { get; set; }
         public static string VerbNotRecognized { get; set; }
 
+        public static string PartialUnderstanding(Verb verb, INamed named)
+        {
+            return $"I only understood you as far as wanting to {verb.Name} the {named.Name}.";
+        }
+
         public static void Quit()
         {
             if (YesOrNo("Are you sure you want to quit?"))

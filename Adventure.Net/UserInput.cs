@@ -45,13 +45,18 @@ namespace Adventure.Net
             tokens.RemoveAt(0);
 
             var grammarTokens = new List<string>();
-            bool hasPreposition = false;
+            var hasPreposition = false;
+            var itemsParsed = new List<INamed>();
+            var partialUnderstanding = false;
 
             foreach (string token in tokens)
             {
-                // var objects = Objects.WithName(token);
-                var objects = (
-                    from o in Items.WithName(token)
+                partialUnderstanding = result.Verb != null && itemsParsed.Any();
+
+                var itemsWithName = Items.WithName(token);
+
+                var itemsInScope = (
+                    from o in itemsWithName
                     where CurrentRoom.ObjectsInScope().Contains(o)
                     select o
                 ).ToList();
@@ -61,23 +66,37 @@ namespace Adventure.Net
                 if (!hasObject)
                 {
                     var rooms = Rooms.WithName(token);
+                    
                     foreach (var room in rooms)
                     {
-                        objects.Add(room);
+                        itemsInScope.Add(room);
                     }
                 }
 
-                if (objects.Count == 0)
+                if (itemsInScope.Count == 0)
                 {
-                    bool isDirection = possibleVerbs.Count == 1 &&
-                                       Compass.Directions.Contains(token) &&
-                                       result.Objects.Count == 0;
+                    // parsing something like "go south"
+                    bool isDirection = possibleVerbs.Count == 1 && Compass.Directions.Contains(token);
                     bool isPreposition = Prepositions.Contains(token);
+                    bool isVerb = VerbList.GetVerbByName(token) != null;
 
-                    if (isDirection)
+                    if (isDirection && !isPreposition) // a direction other than "in"
                     {
-                        possibleVerbs.Clear();
-                        possibleVerbs.Add(VerbList.GetVerbByName(token));
+                        if (!itemsParsed.Any() && token == tokens.Last())
+                        {
+                            // go south, leave east, etc.
+                            possibleVerbs.Clear();
+                            possibleVerbs.Add(VerbList.GetVerbByName(token));
+                        }
+                        else
+                        {
+
+                            // copying Inform output here (e.g. I only understood you as far as wanting to take the south)
+                            var direction = VerbList.GetVerbByName(token);
+                            result.Action = ErrorAction(Library.PartialUnderstanding(result.Verb, direction));
+                            return result;
+                        }
+                        
                     }
                     else if (isPreposition)
                     {
@@ -85,6 +104,22 @@ namespace Adventure.Net
                         grammarTokens.Add(token);
                         result.Preposition = token;
                     }
+                   
+                    
+                    else if (isVerb && partialUnderstanding)
+                    {
+                        result.Action = ErrorAction(Library.PartialUnderstanding(result.Verb, itemsParsed.Last()));
+                        return result;
+                    }
+
+                    else if (isVerb) // but verb has already specified - Inform will print this nonsense message
+                    {
+                        // extra verbs in input
+                        //var verb = VerbList.GetVerbByName(token);
+                        result.Action = ErrorAction(Library.CantSeeObject);
+                        return result;
+                    }
+
                     else if (token == K.ALL)
                     {
                         grammarTokens.Add(token);
@@ -99,8 +134,21 @@ namespace Adventure.Net
                         }
                         result.IsExcept = true;
                     }
-                    else
+                    else if (itemsWithName.Any())
                     {
+                        // item is in command but not in scope
+                        result.Action = ErrorAction(Library.CantSeeObject);
+                        return result;
+                    }
+                    else if (partialUnderstanding)
+                    {
+                        result.Action = ErrorAction(Library.PartialUnderstanding(result.Verb, result.Objects.First()));
+                        return result;
+                    }
+                    //else
+                    else if (token == tokens.Last())
+                    {
+                       
                         result.Action = ErrorAction(Library.CantSeeObject);
                         return result;
                     }
@@ -108,23 +156,23 @@ namespace Adventure.Net
                 else
                 {
                     // need to implement "Which do you mean, the red cape or the black cape?" type behavior here
-                    Item obj;
-                    var ofInterest = objects.Where(x => x.InScope).ToList();
+                    Item item;
+                    var ofInterest = itemsInScope.Where(x => x.InScope).ToList();
 
                     if (ofInterest.Count > 1)
                     {
-                        obj = ofInterest.FirstOrDefault(x => x.InInventory);
+                        item = ofInterest.FirstOrDefault(x => x.InInventory);
                     }
                     else
                     {
-                        obj = ofInterest.FirstOrDefault();
+                        item = ofInterest.FirstOrDefault();
                     }
 
                     //-------------------------------------------------------------------------------------
 
                     bool isIndirectObject = hasPreposition && hasObject;
 
-                    if (obj == null)
+                    if (item == null)
                     {
                         result.Action = ErrorAction(Library.CantSeeObject);
                         return result;
@@ -133,21 +181,26 @@ namespace Adventure.Net
                     if (isIndirectObject)
                     {
                         grammarTokens.Add(K.INDIRECT_OBJECT_TOKEN);
-                        result.IndirectObject = obj;
+                        result.IndirectObject = item;
                     }
                     else if (result.IsExcept)
                     {
-                        result.Exceptions.Add(obj);
+                        result.Exceptions.Add(item);
                     }
                     else
                     {
                         if (!grammarTokens.Contains(K.OBJECT_TOKEN))
+                        {
                             grammarTokens.Add(K.OBJECT_TOKEN);
-                        if (!result.Objects.Contains(obj))
-                            result.Objects.Add(obj);
+                        }
+
+                        if (!result.Objects.Contains(item))
+                        {
+                            result.Objects.Add(item);
+                            itemsParsed.Add(item);
+                        }
                     }
                 }
-
 
             }
 
@@ -165,6 +218,12 @@ namespace Adventure.Net
 
             if (result.Grammar == null)
             {
+                if (partialUnderstanding)
+                {
+                    result.Action = ErrorAction(Library.PartialUnderstanding(result.Verb, itemsParsed.Last()));
+                    return result;
+                }
+
                 var incomplete = new IncompleteInput();
                 incomplete.Handle(result);
             }
@@ -196,6 +255,22 @@ namespace Adventure.Net
             }
 
             return result;
+        }
+
+        private static bool IsPreposition(IEnumerable<string> tokens, string token)
+        {
+            if (!Prepositions.Contains(token))
+            {
+                return false;
+            }
+
+            if (token != tokens.Last())
+            {
+                return true;
+            }
+
+            // handle "in" (e.g. go in) and commands that end in "on" (e.g. turn lamp on)
+            return false;
         }
 
         private static InputResult WhatDoYouWantToDo(InputResult result)
