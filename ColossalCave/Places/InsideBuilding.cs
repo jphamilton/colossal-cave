@@ -1,7 +1,8 @@
-﻿using ColossalCave.Objects;
+﻿using ColossalCave.Places;
 using ColossalCave.Verbs;
 using Adventure.Net;
 using Adventure.Net.Verbs;
+using System;
 
 namespace ColossalCave.Places
 {
@@ -15,28 +16,26 @@ namespace ColossalCave.Places
         
             WestTo<EndOfRoad>();
             OutTo<EndOfRoad>();
-        
-            
+
+            // define shared Before<Enter> here rather than in the objects themselves
+            bool cannotEnter()
+            {
+                Print("The stream flows out through a pair of 1 foot diameter sewer pipes. " +
+                       "It would be advisable to use the exit.");
+                return true;
+            }
+
             Has<SetOfKeys>();
             Has<TastyFood>();
             Has<BrassLantern>();
             Has<Bottle>();
             Has<Stream>();
             Has<WellHouse>();
-            Has<Spring>();
-            Has<SewerPipes>();
+            Has<Spring>()
+                .Before<Enter>(cannotEnter);
+            Has<SewerPipes>()
+                .Before<Enter>(cannotEnter);
 
-            Before<Enter>(() =>
-                {
-                    if (Noun.Is<Spring>() || Noun.Is<SewerPipes>())
-                    {
-                        Print("The stream flows out through a pair of 1 foot diameter sewer pipes. " +
-                               "It would be advisable to use the exit.");
-                        return true;
-                    }
-
-                    return false;
-                });
 
             Before<Xyzzy>(() =>
                 {
@@ -44,11 +43,11 @@ namespace ColossalCave.Places
                     
                     if (debrisRoom.Visited)
                     {
-                        Library.MovePlayerTo<DebrisRoom>();
+                        MovePlayer.To<DebrisRoom>();
                         return false;
                     }
 
-                    Print(Library.DoNotUnderstand);
+                    Print(Messages.DoNotUnderstand);
                     return true;
                 });
         }

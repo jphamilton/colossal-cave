@@ -2,24 +2,26 @@
 
 namespace Adventure.Net.Verbs
 {
+    //Verb 'fill'
+    //    * noun                                      -> Fill
+    //    * noun 'from' noun                          -> Fill;
     public class Fill : Verb
     {
+        // TODO: implement
         public Fill()
         {
             Name = "fill";
-            Grammars.Add("<noun>", FillObject);
         }
 
-        public bool FillObject()
+        public bool Expects(Item obj)
         {
-            Print("But there's no water here to carry.");
-            return true;
+            throw new MissingMethodException($"{obj.Name} is missing Before<Fill> implementation");
         }
 
-        public bool FillObject(Item obj)
+        public bool Expects(Item obj, Preposition prep, Item indirect)
         {
-            Item = obj;
-            return FillObject();
+            throw new MissingMethodException($"{indirect.Name} is missing Before<Fill> implementation");
         }
+
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class Mist : Scenic
     {

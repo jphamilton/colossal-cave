@@ -1,7 +1,8 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Extensions;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class Bottle : Container
     {
@@ -9,6 +10,7 @@ namespace ColossalCave.Objects
         {
             Name = "small bottle";
             Synonyms.Are("bottle", "jar", "flask");
+            Article = "the";
             IsOpen = true;
             InitialDescription = "There is an empty bottle here.";
             
@@ -35,16 +37,17 @@ namespace ColossalCave.Objects
                 }
             );
 
-            Before<Receive>(() =>
+            Receive((obj) =>
                 {
-                    if (Noun.Is<Stream>() || Noun.Is<Oil>())
+                    if (obj.Is<Stream>() || obj.Is<Oil>())
                     {
-                        Execute("fill bottle"); 
+                        Fill();
                     }
                     else
                     {
                         Print("The bottle is only supposed to hold liquids.");
                     }
+
                     return true;
                 });
         }
@@ -57,9 +60,9 @@ namespace ColossalCave.Objects
             }
             else
             {
-                var stream = Items.Get<Stream>();
-                var spring = Items.Get<Spring>();
-                var oil = Items.Get<Oil>();
+                var stream = Objects.Get<Stream>();
+                var spring = Objects.Get<Spring>();
+                var oil = Objects.Get<Oil>();
 
                 if (stream.InScope || spring.InScope)
                 {

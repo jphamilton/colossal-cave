@@ -1,53 +1,42 @@
+using System;
 using System.Linq;
-using Adventure.Net.Verbs;
 
 namespace Adventure.Net
 {
-    public abstract class Verb : ContextObject, INamed
+    public abstract class Verb 
     {
         public string Name { get; protected set; }
         
         public Synonyms Synonyms = new Synonyms();
         
-        public Grammars Grammars = new Grammars();
+        /// <summary>
+        /// Summary accepts multiple items (objects in scope)
+        /// </summary>
+        public bool Multi { get; set; }
 
-        public bool ImplicitTake { get; set; }
+        /// <summary>
+        /// Summary accepts multiple items (objects in inventory)
+        /// </summary>
+        public bool MultiHeld { get; set; }
 
-
-        public bool AllowsMulti
+        public static T Get<T>() where T : Verb
         {
-            get
-            {
-                return Grammars.Any(x => x.Format.Contains("<multi"));
-            }
+            return (T)VerbList.List.Single(x => x is T);
         }
 
-        protected bool RedirectTo<T>(string format) where T : Verb, new()
+        public static Verb Get(Type type) 
         {
-            bool result = false;
-            var verb = new T();
-            var g = verb.Grammars.SingleOrDefault(x => x.Format == format);
-
-            if (g != null)
-            {
-                var command =
-                    new Command
-                        {
-                            Object = Context.Item,
-                            IndirectObject = Context.IndirectItem,
-                            Verb = verb,
-                            Action = g.Action
-                        };
-
-                result = Context.Parser.ExecuteCommand(command);
-            }
-
-            return result;
+            return VerbList.List.Single(x => x.GetType() == type);
         }
 
-        public bool IsNull
+        public static bool Redirect<T>(Item item, Func<T, bool> callback) where T : Verb
         {
-            get { return this.GetType() == typeof (NullVerb); }
+            return item.Redirect(item, callback);
+        }
+
+        protected void Print(string message)
+        {
+            Context.Current.Print(message);
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using ColossalCave.Objects;
+using ColossalCave.Places;
 using ColossalCave.Places;
 using Adventure.Net;
 using NUnit.Framework;
@@ -19,8 +19,8 @@ namespace Advent.Tests
         [Test]
         public void should_handle_BeforeTake()
         {
-            Container bottle = Items.Get<Bottle>() as Container;
-            Item water = Items.Get<WaterInTheBottle>();
+            Container bottle = Objects.Get<Bottle>() as Container;
+            Item water = Objects.Get<WaterInTheBottle>();
 
             IList<string> results = parser.Parse("take bottle");
 

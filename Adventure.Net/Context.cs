@@ -1,10 +1,16 @@
-﻿namespace Adventure.Net
+﻿using System.Collections.Generic;
+
+namespace Adventure.Net
 {
     public static class Context
     {
         public static IStory Story { get; set; }
-        public static Item Item { get; set; }
-        public static Item IndirectItem { get; set; }
-        public static IParser Parser { get; set; }
+
+        public static Stack<CommandContext> Stack { get; } = new Stack<CommandContext>();
+
+        public static CommandContext Current
+        {
+            get { return Stack.Peek(); }
+        }
     }
 }

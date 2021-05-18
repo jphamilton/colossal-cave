@@ -4,13 +4,9 @@
     {
         public Disrobe()
         {
+            Name = "disrobe";
             Synonyms.Are("doff", "shed");
-            Grammars.Add(K.HELD_TOKEN, OnDisrobe);
         }
 
-        private bool OnDisrobe()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

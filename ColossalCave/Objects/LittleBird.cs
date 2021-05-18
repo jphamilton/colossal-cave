@@ -1,7 +1,8 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Extensions;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class LittleBird : Item
     {
@@ -13,8 +14,8 @@ namespace ColossalCave.Objects
 
             Before<Examine>(() =>
             {
-                var cage = Items.Get<WickerCage>();
-                var bird = Items.Get<LittleBird>();
+                var cage = Objects.Get<WickerCage>();
+                var bird = Objects.Get<LittleBird>();
 
                 if (cage.Contents.Contains(bird))
                 {
@@ -29,59 +30,15 @@ namespace ColossalCave.Objects
 
             });
 
-            Before<Release>(() =>
-            {
-                var cage = Items.Get<WickerCage>();
-                var bird = Items.Get<LittleBird>();
-
-                if (!cage.Contents.Contains(bird))
-                {
-                    Print("The bird is not caged now.");
-                    return true;
-                }
-
-                if (cage.InInventory)
-                {
-                    cage.IsOpen = true;
-                    cage.Remove(bird);
-                    bird.MoveToLocation();
-
-                    var snake = Items.Get<Snake>();
-
-                    if (snake.AtLocation)
-                    {
-                        Print("The little bird attacks the green snake,");
-                        Print("and in an astounding flurry drives the snake away.");
-                        Location.Objects.Remove(snake);
-                        return true;
-                    }
-
-                    var dragon = Items.Get<Dragon>();
-                    
-                    if (dragon.AtLocation)
-                    {
-                        Print("The little bird attacks the green dragon,");
-                        Print("and in an astounding flurry gets burnt to a cinder.");
-                        Print("The ashes blow away.");
-                        bird.Remove();
-                        return true;
-                    }
-
-                    Print("The little bird flies free.");
-                    return true;
-                }
-
-                return false;
-            });
+            Before<Release>(Release);
 
             Before<Drop>(() =>
                 {
-                    var cage = Items.Get<WickerCage>();
+                    var cage = Objects.Get<WickerCage>();
                     if (cage.Contains<LittleBird>())
                     {
                         Print("(The bird is released from the cage.)");
-                        var beforeRelease = Before<Release>();
-                        return beforeRelease();
+                        return Release();
                     }
 
                     return false;
@@ -89,62 +46,25 @@ namespace ColossalCave.Objects
 
             Before<Remove>(Before<Drop>());
 
-            Before<Take>(() =>
-            {
-
-                var cage = Items.Get<WickerCage>();
-                var bird = Items.Get<LittleBird>();
-                var blackRod = Items.Get<BlackRod>();
-
-                if (blackRod.InInventory)
-                {
-                    Print("The bird was unafraid when you entered,");
-                    Print("but as you approach it becomes disturbed and you cannot catch it.");
-                    return true;
-                }
-
-                if (cage.InInventory)
-                {
-                    if (cage.Contents.Contains(bird))
-                    {
-                        Print("You already have the little bird.");
-                        Print("If you take it out of the cage it will likely fly away from you.");
-                        return true;
-                    }
-                    
-                    Print("You catch the bird in the wicker cage.");
-                    cage.IsOpen = false;
-                    Location.Objects.Remove(bird);
-                    cage.Add(bird);
-                    return true;
-                }
-                
-                Print("You can catch the bird, but you cannot carry it.");
-                return true;
-
-            });
+            Before<Take>(Take);
 
             Before<Catch>(Before<Take>());
 
             Before<Insert>(() =>
                 {
-                    var cage = Items.Get<WickerCage>();
-                    var second = Context.IndirectItem;
-                    if (second != null && second.IsContainer && second != cage)
+                    if (IndirectObject.Is<Container>() && IndirectObject.IsNot<WickerCage>())
                     {
-                        Print("Don't put the poor bird in {0} {1}!", second.Article, second.Name);
+                        Print($"Don't put the poor bird in {IndirectObject.Article} {IndirectObject.Name}!");
                         return true;
                     }
-                    
-                    //Execute("take bird");
-                    var beforeTake = Before<Take>();
-                    return beforeTake(); 
+
+                    return Take();
                 });
 
             Before<Attack>(() =>
                 {
-                    var cage = Items.Get<WickerCage>();
-                    var bird = Items.Get<LittleBird>();
+                    var cage = Objects.Get<WickerCage>();
+                    var bird = Objects.Get<LittleBird>();
 
                     if (cage.Contents.Contains(bird))
                     {
@@ -162,6 +82,85 @@ namespace ColossalCave.Objects
                     Print("Cheep! Chirp!");
                     return true;
                 });
+        }
+
+        private bool Take()
+        {
+            var cage = Objects.Get<WickerCage>();
+            var bird = Objects.Get<LittleBird>();
+            var blackRod = Objects.Get<BlackRod>();
+
+            if (blackRod.InInventory)
+            {
+                Print("The bird was unafraid when you entered,");
+                Print("but as you approach it becomes disturbed and you cannot catch it.");
+                return true;
+            }
+
+            if (cage.InInventory)
+            {
+                if (cage.Contents.Contains(bird))
+                {
+                    Print("You already have the little bird.");
+                    Print("If you take it out of the cage it will likely fly away from you.");
+                    return true;
+                }
+
+                Print("You catch the bird in the wicker cage.");
+                cage.IsOpen = false;
+                CurrentRoom.Objects.Remove(bird);
+                cage.Add(bird);
+                return true;
+            }
+
+            Print("You can catch the bird, but you cannot carry it.");
+           
+            return true;
+        }
+
+        public bool Release()
+        {
+            var cage = Objects.Get<WickerCage>();
+            var bird = Objects.Get<LittleBird>();
+
+            if (!cage.Contents.Contains(bird))
+            {
+                Print("The bird is not caged now.");
+                return true;
+            }
+
+            if (cage.InInventory)
+            {
+                cage.IsOpen = true;
+                cage.Remove(bird);
+                bird.MoveToLocation();
+
+                var snake = Objects.Get<Snake>();
+
+                if (snake.InRoom)
+                {
+                    Print("The little bird attacks the green snake,");
+                    Print("and in an astounding flurry drives the snake away.");
+                    CurrentRoom.Objects.Remove(snake);
+                    return true;
+                }
+
+                var dragon = Objects.Get<Dragon>();
+
+                if (dragon.InRoom)
+                {
+                    Print("The little bird attacks the green dragon,");
+                    Print("and in an astounding flurry gets burnt to a cinder.");
+                    Print("The ashes blow away.");
+                    bird.Remove();
+                    return true;
+                }
+
+                Print("The little bird flies free.");
+                return true;
+            }
+
+            return false;
         }
     }
 

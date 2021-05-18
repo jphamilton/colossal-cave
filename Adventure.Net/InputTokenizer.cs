@@ -2,11 +2,16 @@
 
 namespace Adventure.Net
 {
+    public class TokenizedInput : List<string>
+    {
+
+    }
+
     public class InputTokenizer
     {
-        public IList<string> Tokenize(string input)
+        public TokenizedInput Tokenize(string input)
         {
-            var result = new List<string>();
+            var result = new TokenizedInput();
 
             if (input != null)
             {

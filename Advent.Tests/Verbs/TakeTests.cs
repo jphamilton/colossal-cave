@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ColossalCave.Objects;
+using ColossalCave.Places;
 using ColossalCave.Places;
 using Adventure.Net;
 using NUnit.Framework;
@@ -18,7 +18,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void can_take_one_object()
         {
-            Item bottle = Items.Get<Bottle>();
+            Item bottle = Objects.Get<Bottle>();
             
             IList<string> results = parser.Parse("take bottle");
 
@@ -31,7 +31,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void cannot_take_something_which_is_not_around()
         {
-            Item cage = Items.Get<WickerCage>();
+            Item cage = Objects.Get<WickerCage>();
             IList<string> results = parser.Parse("take cage");
 
             Assert.AreEqual(1, results.Count);
@@ -60,8 +60,8 @@ namespace Advent.Tests.Verbs
         [Test]
         public void can_take_multiple_objects()
         {
-            Item bottle = Items.Get<Bottle>();
-            Item keys = Items.Get<SetOfKeys>();
+            Item bottle = Objects.Get<Bottle>();
+            Item keys = Objects.Get<SetOfKeys>();
 
             IList<string> results = parser.Parse("take bottle and keys");
 
@@ -75,8 +75,8 @@ namespace Advent.Tests.Verbs
         [Test]
         public void can_take_comma_delimited()
         {
-            Item bottle = Items.Get<Bottle>();
-            Item keys = Items.Get<SetOfKeys>();
+            Item bottle = Objects.Get<Bottle>();
+            Item keys = Objects.Get<SetOfKeys>();
 
             IList<string> results = parser.Parse("take bottle,keys");
 
@@ -90,9 +90,9 @@ namespace Advent.Tests.Verbs
         [Test]
         public void can_take_multiple_objects_using_and()
         {
-            Item bottle = Items.Get<Bottle>();
-            Item keys = Items.Get<SetOfKeys>();
-            Item lantern = Items.Get<BrassLantern>();
+            Item bottle = Objects.Get<Bottle>();
+            Item keys = Objects.Get<SetOfKeys>();
+            Item lantern = Objects.Get<BrassLantern>();
 
             IList<string> results = parser.Parse("take bottle and keys and lantern");
 
@@ -108,9 +108,9 @@ namespace Advent.Tests.Verbs
         [Test]
         public void can_take_multiple_objects_using_comma_and()
         {
-            Item bottle = Items.Get<Bottle>();
-            Item keys = Items.Get<SetOfKeys>();
-            Item lantern = Items.Get<BrassLantern>();
+            Item bottle = Objects.Get<Bottle>();
+            Item keys = Objects.Get<SetOfKeys>();
+            Item lantern = Objects.Get<BrassLantern>();
 
             IList<string> results = parser.Parse("take bottle, keys and lantern");
 
@@ -126,10 +126,10 @@ namespace Advent.Tests.Verbs
         [Test]
         public void can_take_all()
         {
-            Item bottle = Items.Get<Bottle>();
-            Item keys = Items.Get<SetOfKeys>();
-            Item food = Items.Get<TastyFood>();
-            Item lamp = Items.Get<BrassLantern>();
+            Item bottle = Objects.Get<Bottle>();
+            Item keys = Objects.Get<SetOfKeys>();
+            Item food = Objects.Get<TastyFood>();
+            Item lamp = Objects.Get<BrassLantern>();
 
             Location.Objects.Add(bottle);
             Location.Objects.Add(keys);
@@ -149,10 +149,10 @@ namespace Advent.Tests.Verbs
         [Test]
         public void can_take_all_except_object()
         {
-            Item bottle = Items.Get<Bottle>();
-            Item keys = Items.Get<SetOfKeys>();
-            Item food = Items.Get<TastyFood>();
-            Item lamp = Items.Get<BrassLantern>();
+            Item bottle = Objects.Get<Bottle>();
+            Item keys = Objects.Get<SetOfKeys>();
+            Item food = Objects.Get<TastyFood>();
+            Item lamp = Objects.Get<BrassLantern>();
 
             parser.Parse("take all except food");
 
@@ -163,10 +163,10 @@ namespace Advent.Tests.Verbs
         [Test]
         public void can_take_all_except_multple_objects()
         {
-            Item bottle = Items.Get<Bottle>();
-            Item keys = Items.Get<SetOfKeys>();
-            Item food = Items.Get<TastyFood>();
-            Item lamp = Items.Get<BrassLantern>();
+            Item bottle = Objects.Get<Bottle>();
+            Item keys = Objects.Get<SetOfKeys>();
+            Item food = Objects.Get<TastyFood>();
+            Item lamp = Objects.Get<BrassLantern>();
 
             parser.Parse("take all except food and keys");
 
@@ -177,7 +177,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void cant_take_something_you_already_have()
         {
-            Item bottle = Items.Get<Bottle>();
+            Item bottle = Objects.Get<Bottle>();
 
             Location.Objects.Remove(bottle);
             Inventory.Add(bottle);
@@ -193,7 +193,7 @@ namespace Advent.Tests.Verbs
         public void take_except()
         {
             var results = parser.Parse("take except");
-            Assert.AreEqual(Library.CantSeeObject, results[0]);
+            Assert.AreEqual(Messages.CantSeeObject, results[0]);
             
         }
 

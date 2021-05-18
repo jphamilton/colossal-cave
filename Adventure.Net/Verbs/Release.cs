@@ -2,21 +2,28 @@
 
 namespace Adventure.Net.Verbs
 {
+    //Verb 'release' 'free'
+    //    * creature              -> Release;
     public class Release : Verb
     {
         public Release()
         {
             Name = "release";
             Synonyms.Are("free");
-            Grammars.Add("<noun>", ReleaseObject);
         }
 
-        private bool ReleaseObject()
+        public bool Expects(Item obj)
         {
-            if (!Item.IsAnimate)
-                Print("You can only do that to something animate");
-            else
+            // whatever is being released must provide a Before<Release> routine
+            if (obj.IsAnimate)
+            {
                 Print("You can't release that.");
+            }
+            else
+            {
+                Print("You can only do that to something animate");
+            }
+
             return true;
         }
     }

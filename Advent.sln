@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2047
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Advent.Tests", "Advent.Tests\Advent.Tests.csproj", "{5B7397F1-F716-4F09-8133-D1F801A0ED9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adventure.Net", "Adventure.Net\Adventure.Net.csproj", "{AFC80EF8-C098-4115-9FD9-C35AE9C6C791}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adventure.Net", "Adventure.Net\Adventure.Net.csproj", "{AFC80EF8-C098-4115-9FD9-C35AE9C6C791}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColossalCave", "ColossalCave\ColossalCave.csproj", "{CFA6C90B-95B9-47BD-9B16-1E78F5309923}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColossalCave", "ColossalCave\ColossalCave.csproj", "{CFA6C90B-95B9-47BD-9B16-1E78F5309923}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{50FAC4DF-D62C-4469-99FE-EECD77B03E2B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Advent.Tests", "Advent.Tests\Advent.Tests.csproj", "{3A8B3D71-237A-4D1B-A578-FD42CB7ED21A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +17,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{5B7397F1-F716-4F09-8133-D1F801A0ED9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B7397F1-F716-4F09-8133-D1F801A0ED9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B7397F1-F716-4F09-8133-D1F801A0ED9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B7397F1-F716-4F09-8133-D1F801A0ED9D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AFC80EF8-C098-4115-9FD9-C35AE9C6C791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AFC80EF8-C098-4115-9FD9-C35AE9C6C791}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFC80EF8-C098-4115-9FD9-C35AE9C6C791}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -27,6 +25,13 @@ Global
 		{CFA6C90B-95B9-47BD-9B16-1E78F5309923}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CFA6C90B-95B9-47BD-9B16-1E78F5309923}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CFA6C90B-95B9-47BD-9B16-1E78F5309923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50FAC4DF-D62C-4469-99FE-EECD77B03E2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50FAC4DF-D62C-4469-99FE-EECD77B03E2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50FAC4DF-D62C-4469-99FE-EECD77B03E2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50FAC4DF-D62C-4469-99FE-EECD77B03E2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A8B3D71-237A-4D1B-A578-FD42CB7ED21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A8B3D71-237A-4D1B-A578-FD42CB7ED21A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A8B3D71-237A-4D1B-A578-FD42CB7ED21A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

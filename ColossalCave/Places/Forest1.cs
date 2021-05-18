@@ -1,5 +1,5 @@
 ﻿using System;
-using ColossalCave.Objects;
+using ColossalCave.Places;
 using Adventure.Net;
 
 namespace ColossalCave.Places
@@ -25,8 +25,7 @@ namespace ColossalCave.Places
                     var rnd = new Random(DateTime.Now.Second);
                     if (rnd.Next(1, 2) == 1)
                     {
-                        var forest2 = Room<Forest2>();
-                        Library.MovePlayerTo(forest2);
+                        MovePlayer.To(Room<Forest2>());
                     }
 
                 };

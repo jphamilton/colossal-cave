@@ -1,4 +1,4 @@
-﻿using ColossalCave.Objects;
+﻿using ColossalCave.Places;
 using Adventure.Net.Verbs;
 
 namespace ColossalCave.Places

@@ -7,7 +7,7 @@ namespace Adventure.Net.Verbs
         public Count()
         {
             Name = "count";
-            Grammars.Add("<noun>", CountObject);
+            //Grammars.Add("<noun>", CountObject);
         }
 
         private bool CountObject()

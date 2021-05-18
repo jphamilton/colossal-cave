@@ -7,6 +7,7 @@ namespace Advent.Tests
         public override void Initialize()
         {
             Name = "red cape";
+            Synonyms.Are("red", "cape");
         }
     }
 }

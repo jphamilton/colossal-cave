@@ -7,42 +7,67 @@
     //* multiexcept 'on'/'onto' noun              -> PutOn
     //* held 'at'/'against'/'on'/'onto' noun      -> ThrowAt;
 
+    // TODO: implement Insert, PutOn, ThrowAt
     public class Drop : Verb
     {
         public Drop()
         {
             Name = "drop";
             Synonyms.Are("drop", "discard", "throw");
-            Grammars.Add("<multiheld>", DropObject);
+            MultiHeld = true;
         }
 
-        private bool DropObject()
+        public bool Expects()
         {
-            bool result = false;
-
-            if (Inventory.Contains(Item))
-            {
-                Item.MoveToLocation();
-                Print("Dropped.");
-                result = true;
-            }
-            else if (Item == null)
-            {
-                Print("You aren't carrying anything.");
-                //Print("You aren't carrying anything.");
-            }
-            else if (Item.AtLocation)
-            {
-                string isAre = Item.HasPluralName ? "are" : "is";
-                Print("The {0} {1} already here.", Item.Name, isAre);
-            }
-            else
-            {
-                Print("You haven't got {0}", Item.ThatOrThose);
-            }
-
-            return result;
+            Print("You aren't carrying anything.");
+            return false;
         }
+
+        public bool Expects(Item obj)
+        {
+            if (Inventory.Contains(obj))
+            {
+                obj.MoveToLocation();
+                Print("Dropped.");
+                return true;
+            }
+            else if (obj.InRoom)
+            {
+                string isAre = obj.HasPluralName ? "are" : "is";
+                Print($"The {obj.Name} {isAre} already here.");
+                return true;
+            }
+
+            return false;
+        }
+
+        //private bool DropObject()
+        //{
+        //    bool result = false;
+
+        //    if (Inventory.Contains(Item))
+        //    {
+        //        Item.MoveToLocation();
+        //        Print("Dropped.");
+        //        result = true;
+        //    }
+        //    else if (Item == null)
+        //    {
+        //        Print("You aren't carrying anything.");
+        //        //Print("You aren't carrying anything.");
+        //    }
+        //    else if (Item.AtLocation)
+        //    {
+        //        string isAre = Item.HasPluralName ? "are" : "is";
+        //        Print("The {0} {1} already here.", Item.Name, isAre);
+        //    }
+        //    else
+        //    {
+        //        Print("You haven't got {0}", Item.ThatOrThose);
+        //    }
+
+        //    return result;
+        //}
     }
 }
 
@@ -54,7 +79,3 @@
 //        4:  "Dropped.";
 //    }
 
-//TODO:  Verb 'drop' 'discard' 'throw'
-//171      * multiexcept 'in'/'into'/'down' noun       -> Insert
-//172      * multiexcept 'on'/'onto' noun              -> PutOn
-//173      * held 'at'/'against'/'on'/'onto' noun      -> ThrowAt;

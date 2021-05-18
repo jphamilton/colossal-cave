@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Adventure.Net
 {
@@ -8,21 +7,26 @@ namespace Adventure.Net
     {
         private Func<Room, Room> getRoom;
 
-        protected void SetDirection(Expression<Func<Room, Room>> x, params string[] synonyms)
+        protected void SetDirection(Func<Room, Room> mover, params string[] synonyms)
         {
             Name = synonyms.First();
-            getRoom = x.Compile();
+            getRoom = mover;
             Synonyms.Are(synonyms);
-            Grammars.Add(Grammar.Empty, MovePlayer);
         }
 
-        protected bool MovePlayer()
+        public bool Expects()
         {
             var room = getRoom(Context.Story.Location);
+            
             if (room == null)
+            {
                 Print(Context.Story.Location.CantGo);
+            }
             else
-                Library.MovePlayerTo(room);
+            {
+                MovePlayer.To(room);
+            }
+
             return true;
         }
 

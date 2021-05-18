@@ -1,4 +1,4 @@
-﻿using ColossalCave.Objects;
+﻿using ColossalCave.Places;
 using Adventure.Net;
 using Adventure.Net.Verbs;
 
@@ -9,7 +9,9 @@ namespace ColossalCave.Places
         public override void Initialize()
         {
             Name = "At Top of Small Pit";
+            
             Synonyms.Are("top", "of", "small", "pit");
+            
             Description =
                 "At your feet is a small pit breathing traces of white mist. " +
                 "A west passage ends here except for a small crack leading on.\n\n" +
@@ -25,7 +27,9 @@ namespace ColossalCave.Places
 
             DownTo(() =>
                 {
-                    if (Player.Has<LargeGoldNugget>())
+                    var nugget = Get<LargeGoldNugget>();
+                    
+                    if (nugget.InInventory)
                     {
                         //deadflag = 1;
                         Print("You are at the bottom of the pit with a broken neck.");
@@ -36,16 +40,18 @@ namespace ColossalCave.Places
               
                 });
 
-            Before<Enter>(() =>
-                {
-                    if (Noun.Is<PitCrack>())
-                    {
-                        Print("The crack is far too small for you to follow.");
-                        return true;
-                    }
+            // TODO: moved to PitCrack, test
+            //Before<Enter>(() =>
+            //    {
+                    
+            //        if (Noun.Is<PitCrack>())
+            //        {
+            //            Print("The crack is far too small for you to follow.");
+            //            return true;
+            //        }
 
-                    return false;
-                });
+            //        return false;
+            //    });
 
             Has<SmallPit>();
             Has<PitCrack>();

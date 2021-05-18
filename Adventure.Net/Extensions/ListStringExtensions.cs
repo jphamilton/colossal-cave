@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adventure.Net.Verbs;
+using System;
 using System.Collections.Generic;
 
 namespace Adventure.Net.Extensions

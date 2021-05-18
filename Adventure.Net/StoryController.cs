@@ -1,3 +1,4 @@
+using Adventure.Net.Extensions;
 using System;
 
 namespace Adventure.Net
@@ -14,25 +15,51 @@ namespace Adventure.Net
             CommandPrompt.Initialize(Console.Out, Console.In);
 
             Context.Story = story ?? throw new ArgumentNullException("story");
-            Context.Parser = new Parser();
         }
 
         public void Run()
         {
             Context.Story.Initialize();
 
-            //Library.Banner();
-            Library.MovePlayerTo(Context.Story.Location);
+            MovePlayer.To(Context.Story.Location);
 
             while (!Context.Story.IsDone)
             {
-                Context.Parser.Parse(CommandPrompt.GetInput());
+                bool wasLit = CurrentRoom.IsLit();
+
+                // TODO: clean this up
+                var parser = new CommandLineParser();
+                var result = parser.Parse(CommandPrompt.GetInput());
+                
+                if (result.Error.HasValue())
+                {
+                    Output.Print(result.Error);
+                }
+                else
+                {
+                    var handler = result.CommandHandler();
+                    handler.Run();
+                }
+
+                if (!wasLit && CurrentRoom.IsLit())
+                {
+                    CurrentRoom.Look(true);
+                }
+
                 Moves++;
-                Library.RunDaemons();
+                
+                RunDaemons();
             }
 
         }
 
-        
+        public static void RunDaemons()
+        {
+            foreach (var obj in Objects.WithRunningDaemons())
+            { 
+                obj.Daemon();
+            }
+        }
+
     }
 }

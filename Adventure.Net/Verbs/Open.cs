@@ -3,44 +3,79 @@
 namespace Adventure.Net.Verbs
 {
 
+    // TODO: implement
     public class Open : Verb
     {
+        //Verb 'open' 'uncover' 'undo' 'unwrap'
+        //    * noun                                      -> Open
+        //    * noun 'with' held                          -> Unlock;
         public Open()
         {
             Name = "open";
             Synonyms.Are("open, uncover, undo, unwrap");
-            Grammars.Add("<noun>", OpenObject);
-            Grammars.Add("<noun> with <held>", UnlockObject);
+            //Grammars.Add("<noun>", OpenObject);
+            //Grammars.Add("<noun> with <held>", UnlockObject);
         }
 
-        private bool OpenObject()
+        // open
+        public bool Expects(Item obj)
         {
-            if (!Item.IsOpenable)
+            if (!obj.IsOpenable)
             {
-                Print(String.Format("{0} not something you can open.", Item.TheyreOrThats));
+                Print($"{obj.TheyreOrThats} not something you can open.");
             }
-            else if (Item.IsLocked)
+            else if (obj.IsLocked)
             {
-                string seems = Item.HasPluralName ? "They seem" : "It seems";
-                Print(String.Format("{0} to be locked.", seems));
+                string seems = obj.HasPluralName ? "They seem" : "It seems";
+                Print($"{seems} to be locked.");
             }
-            else if (Item.IsOpen)
+            else if (obj.IsOpen)
             {
-                Print(Item.TheyreOrThats + " already open.");
+                Print($"{obj.TheyreOrThats} already open.");
             }
             else
             {
-                Item.IsOpen = true;
-                Print(String.Format("You open the {0}.", Item.Name));
+                obj.IsOpen = true;
+                Print($"You open the {obj.Name}.");
             }
 
             return true;
         }
 
-        private bool UnlockObject()
+        // Unlock: <noun> with <held>
+        public bool Expects(Item obj, Preposition prep, Item indirect)
         {
-            return RedirectTo<Unlock>("<noun> with <held>");
+            throw new MissingMethodException("Open (Unlock) not implemented");
         }
+
+        //private bool OpenObject()
+        //{
+        //    if (!Item.IsOpenable)
+        //    {
+        //        Print(String.Format("{0} not something you can open.", Item.TheyreOrThats));
+        //    }
+        //    else if (Item.IsLocked)
+        //    {
+        //        string seems = Item.HasPluralName ? "They seem" : "It seems";
+        //        Print(String.Format("{0} to be locked.", seems));
+        //    }
+        //    else if (Item.IsOpen)
+        //    {
+        //        Print(Item.TheyreOrThats + " already open.");
+        //    }
+        //    else
+        //    {
+        //        Item.IsOpen = true;
+        //        Print(String.Format("You open the {0}.", Item.Name));
+        //    }
+
+        //    return true;
+        //}
+
+        //private bool UnlockObject()
+        //{
+        //    return RedirectTo<Unlock>("<noun> with <held>");
+        //}
 
     }
 }

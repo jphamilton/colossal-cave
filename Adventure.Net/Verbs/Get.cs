@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Adventure.Net.Verbs
 {
+    // TODO: implement
 
     //Verb 'get'
     //* 'out'/'off'/'up'                          -> Exit
@@ -14,13 +16,17 @@ namespace Adventure.Net.Verbs
     {
         public Get()
         {
-            Name = "get";   
-            Grammars.Add("<multi>", TakeSingle);
+            Name = "get";
+            Multi = true;
+
+            //Grammars.Add("<multi>", TakeSingle);
         }
 
-        private bool TakeSingle()
+        // TODO: test
+        public bool Excepts(Item obj)
         {
-            return RedirectTo<Take>(K.MULTI_TOKEN);
+            return Redirect<Take>(obj, v => v.Expects(obj));
+
         }
     }
 }

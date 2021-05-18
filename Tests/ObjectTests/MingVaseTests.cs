@@ -1,0 +1,61 @@
+﻿using ColossalCave;
+using ColossalCave.Places;
+using Adventure.Net;
+using Xunit;
+
+namespace Tests.ObjectTests
+{
+
+    public class MingVaseTests : BaseTestFixture
+    {
+        private Treasure vase;
+
+        public MingVaseTests()
+        {
+            Context.Story.Location = Rooms.Get<InsideBuilding>();
+            vase = Objects.Get<MingVase>();
+            Inventory.Add(vase);
+        }
+
+        [Fact]
+        public void should_break()
+        {
+            Execute("drop vase");
+            Assert.Contains("The ming vase drops with a delicate crash.", Line(1));
+        }
+
+        [Fact]
+        public void vase_should_not_exist()
+        {
+            Execute("drop vase");
+            Assert.False(Inventory.Contains(vase));
+            Assert.False(CurrentRoom.Objects.Contains(vase));
+        }
+
+        [Fact]
+        public void should_not_break()
+        {
+            var pillow = Objects.Get<VelvetPillow>();
+            CurrentRoom.Objects.Add(pillow);
+            Execute("drop vase");
+            Assert.Contains("(coming to rest, delicately, on the velvet pillow)", Line(1));
+            Assert.Contains("Dropped.", Line(2));
+        }
+
+        [Fact]
+        public void can_attack_the_vase()
+        {
+            Execute("hit vase");
+            Assert.Contains("You have taken the vase and hurled it delicately to the ground.", Line(1));
+        }
+
+        [Fact]
+        public void cannot_fill_vase()
+        {
+            var bottle = Objects.Get<Bottle>();
+            Inventory.Add(bottle);
+            Execute("put bottle in vase");
+            Assert.Contains("The vase is too fragile to use as a container.", Line(1));
+        }
+    }
+}

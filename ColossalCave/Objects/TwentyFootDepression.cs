@@ -1,4 +1,4 @@
-﻿namespace ColossalCave.Objects
+﻿namespace ColossalCave.Places
 {
     public class TwentyFootDepression : Scenic
     {

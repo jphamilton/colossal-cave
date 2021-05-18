@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ColossalCave.Objects;
+using ColossalCave.Places;
 using ColossalCave.Places;
 using Adventure.Net;
 using NUnit.Framework;
@@ -26,7 +26,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void dropping_object_in_room_but_not_held()
         {
-            var bottle = Items.Get<Bottle>();
+            var bottle = Objects.Get<Bottle>();
             Location.Objects.Add(bottle);
             Assert.IsFalse(Inventory.Contains(bottle));
             IList<string> results = parser.Parse("drop bottle");

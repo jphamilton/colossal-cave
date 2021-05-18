@@ -1,7 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class Snake : Item
     {

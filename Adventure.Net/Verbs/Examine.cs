@@ -1,46 +1,45 @@
-﻿using System;
+﻿using Adventure.Net.Extensions;
+using System;
 
 namespace Adventure.Net.Verbs
 {
     public class Examine : Verb
     {
+        // TODO: implement
         public Examine()
         {
             Name = "examine";
             Synonyms.Are("examine", "x", "check", "describe", "watch");
-            Grammars.Add("<noun>", ExamineObject);
+           // Grammars.Add("<noun>", ExamineObject);
         }
 
-        public bool ExamineObject()
+        public bool Expects(Item obj)
         {
-            
-
             if (!CurrentRoom.IsLit())
             {
                 Print("Darkness, noun. An absence of light to see by.");
                 return true;
             }
-            
-            if (Item.IsScenery && string.IsNullOrEmpty(Item.Description))
+
+            if (obj.IsScenery && string.IsNullOrEmpty(obj.Description))
             {
-                Print("You see nothing special about the {0}.", Item.Name);
+                Print($"You see nothing special about the {obj.Name}.");
             }
-            else if (Item is Room)
+            else if (obj is Room)
             {
                 Print("That's not something you need to refer to in the course of this game.");
             }
-            else if (Item.Describe != null)
+            else if (obj.Describe != null)
             {
-                string result = Item.Describe();
-                if (!string.IsNullOrEmpty(result))
+                string result = obj.Describe();
+                if (result.HasValue())
                     Print(result);
                 else
-                    Print(Item.Description);
-                
+                    Print(obj.Description);
             }
-            else if (!string.IsNullOrEmpty(Item.Description))
+            else if (obj.Description.HasValue())
             {
-                Print(Item.Description);
+                Print(obj.Description);
             }
             else
             {

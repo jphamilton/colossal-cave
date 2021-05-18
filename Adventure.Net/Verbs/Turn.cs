@@ -4,30 +4,36 @@ namespace Adventure.Net.Verbs
 {
     public class Turn : Verb
     {
+        // TODO: implement
         public Turn()
         {
             Name = "turn";
             Synonyms.Are("turn", "rotate", "screw", "twist", "unscrew");
-            Grammars.Add("<noun>", TurnObject);
-            Grammars.Add("<noun> on", SwitchOnObject);
-            Grammars.Add("<noun> off", SwitchOffObject);
-            Grammars.Add("on <noun>", SwitchOnObject);
-            Grammars.Add("off <noun>", SwitchOffObject);
+            //Grammars.Add("<noun>", TurnObject);
+
+            //Grammars.Add("<noun> on", SwitchOnObject);
+            //Grammars.Add("<noun> off", SwitchOffObject);
+            //Grammars.Add("on <noun>", SwitchOnObject);
+            //Grammars.Add("off <noun>", SwitchOffObject);
         }
 
-        private bool SwitchOnObject()
+        // handles "<noun> on", "<noun> off"
+        public bool Expects(Item obj, Preposition prep)
         {
-            return RedirectTo<SwitchOn>("on <noun>");
+            return Redirect<Switch>(obj, v => v.Expects(obj, prep));
         }
-        
-        private bool SwitchOffObject()
+
+        // handled "on <noun>", "off <noun>"
+        public bool Expects(Preposition prep, Item obj)
         {
-            return RedirectTo<SwitchOff>("off <noun>");
+            return Redirect<Switch>(obj, v => v.Expects(obj, prep));
         }
-        
-        private bool TurnObject()
+
+        // turn dial, screw, knob, etc.
+        public bool Expects(Item item)
         {
-            throw new Exception("This is not implemented");
+            throw new NotImplementedException();
         }
+
     }
 }

@@ -2,7 +2,7 @@
 using Adventure.Net.Verbs;
 using Adventure.Net;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class WellHouse : Scenic
     {
@@ -22,11 +22,12 @@ namespace ColossalCave.Objects
                         return true;
                     }
                     
-                    Library.MovePlayerTo<InsideBuilding>();
+                    MovePlayer.To<InsideBuilding>();
                     return false;
                 }
             );
 
         }
+       
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class TastyFood : Item
     {
@@ -15,10 +15,10 @@ namespace ColossalCave.Objects
             InitialDescription = "There is tasty food here.";
 
             After<Eat>(() =>
-                {
-                    Print("Delicious!");
-                    return true;
-                });
+            {
+                // TODO: do we need to remove food?
+                Print("Delicious!");
+            });
             
         }
     }

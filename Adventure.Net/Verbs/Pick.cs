@@ -1,4 +1,7 @@
-﻿namespace Adventure.Net.Verbs
+﻿using System;
+using System.Collections.Generic;
+
+namespace Adventure.Net.Verbs
 {
     public class Pick : Verb
     {
@@ -6,15 +9,27 @@
         {
             Name = "pick up";
             Synonyms.Are("pick");
-            Grammars.Add("up <multi>", PickUpObject);
-            Grammars.Add("<multi> up", PickUpObject);
+            Multi = true;
+            //Grammars.Add("up <multi>", PickUpObject);
+            //Grammars.Add("<multi> up", PickUpObject);
         }
 
-        private bool PickUpObject()
+        public bool Expects(Item obj, Preposition prep)
         {
-            return RedirectTo<Take>("<multi>");
+            if (prep == Preposition.Up)
+            {
+                return Redirect<Take>(obj, v => v.Expects(obj));
+            }
+
+            // TODO: how do we handle bad prep?
+            throw new NotImplementedException("pick - bad preposition");
         }
 
-        
+        public bool Expects(IList<Item> objects, Preposition prep)
+        {
+            // TODO: implement Take multi
+            throw new NotImplementedException("pick <multi> up");
+        }
+
     }
 }

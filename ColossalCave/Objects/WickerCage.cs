@@ -1,7 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class WickerCage : Container
     {
@@ -13,31 +13,20 @@ namespace ColossalCave.Objects
             Description = "It's a small wicker cage.";
             IsOpen = true;
             IsOpenable = true;
-            IsTransparent = true;
+            IsTransparent = true; 
 
             After<Open>(() =>
             {
                 if (Contains<LittleBird>())
                 {
-                    Print("(releasing the little bird)"); 
-                    Execute("release bird");
-                    return true;
+                    Print("(releasing the little bird)");
+                    
+                    var bird = Get<LittleBird>();
+                   // bird.Release();
+                    Redirect<Release>(bird, v => v.Expects(bird)); 
                 }
 
-                return false;
             });
         }
     }
 }
-
-//TODO: Item  -> wicker_cage "wicker cage"
-//  with  name 'cage' 'small' 'wicker',
-//        description "It's a small wicker cage.",
-//        initial "There is a small wicker cage discarded nearby.",
-//        after [;
-//          Open:
-//            if (little_bird notin self) rfalse;
-//            print "(releasing the little bird)^";
-//            <<Release little_bird>>;
-//        ],
-//  has   container open openable transparent;

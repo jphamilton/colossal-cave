@@ -21,7 +21,7 @@ namespace Adventure.Net
         
         public void WithKey<T>() where T:Item
         {
-            Key = Net.Items.Get<T>();            
+            Key = Net.Objects.Get<T>();            
         }
 
         protected T Direction<T>() where T:DirectionalVerb
@@ -36,15 +36,15 @@ namespace Adventure.Net
                 return DoorTo();
 
             if (DoorDirection() is Down)
-                Print("You are unable to descend by the {0}.", Name);
+                Print($"You are unable to descend by the {Name}.");
             else if (DoorDirection() is Up)
-                Print("You are unable to ascend by the {0}", Name);
+                Print($"You are unable to ascend by the {Name}");
             else if (DoorDirection() != null)
                 Print("You can't go that way.");
             else
             {
                 string lead = HasPluralName ? "leads" : "lead";
-                Print("You can't since the {0} {1} to nowhere.", Name, lead);
+                Print($"You can't since the {Name} {lead} to nowhere.");
             }
 
             return null;

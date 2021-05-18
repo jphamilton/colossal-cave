@@ -1,7 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class WaterInTheBottle : Item
     {
@@ -14,7 +14,7 @@ namespace ColossalCave.Objects
 
             Before<Drink>(() =>
                 {
-                    var bottle = Items.Get<Bottle>() as Container;
+                    var bottle = Adventure.Net.Objects.Get<Bottle>() as Container;
                     if (bottle.Contents.Contains(this))
                     {
                         

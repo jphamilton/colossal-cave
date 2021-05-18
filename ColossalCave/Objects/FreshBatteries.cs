@@ -1,7 +1,7 @@
 ﻿using Adventure.Net.Verbs;
 using Adventure.Net;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class FreshBatteries : Item
     {

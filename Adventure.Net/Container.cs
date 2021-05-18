@@ -6,7 +6,7 @@ namespace Adventure.Net
     public abstract class Container : Item
     {
         protected readonly List<Item> contents = new List<Item>();
-
+        
         protected Container()
         {
             Describe = () =>
@@ -40,6 +40,7 @@ namespace Adventure.Net
                 return result;
             }
         }
+
         public bool IsEmpty
         {
             get { return contents.Count == 0; }
@@ -52,7 +53,7 @@ namespace Adventure.Net
 
         public void Add<T>() where T:Item
         {
-            Item obj = Net.Items.Get<T>();
+            Item obj = Net.Objects.Get<T>();
             obj.Parent = this;
             contents.Add(obj);
         }
@@ -65,7 +66,7 @@ namespace Adventure.Net
 
         public void Remove<T>() where T : Item
         {
-            Item obj = Items.Get<T>();
+            Item obj = Objects.Get<T>();
             Remove(obj);
         }
 
@@ -75,7 +76,6 @@ namespace Adventure.Net
             contents.Remove(obj);
         }
 
-        // is there a read only list???
         public IList<Item> Contents
         {
             get
@@ -88,7 +88,7 @@ namespace Adventure.Net
 
         public bool Contains<T>() where T:Item
         {
-            Item obj = Items.Get<T>();
+            Item obj = Objects.Get<T>();
             return Contents.Contains(obj);
         }
           

@@ -6,14 +6,13 @@
         {
             Name = "quit";
             Synonyms.Are("q");
-            Grammars.Add(Grammar.Empty, TryQuit);
         }
 
-        private bool TryQuit()
+        public bool Expects()
         {
-            
-            Library.Quit();
+            Context.Story.Quit();
             return true;
         }
+        
     }
 }

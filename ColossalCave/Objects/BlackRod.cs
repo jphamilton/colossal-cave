@@ -2,7 +2,7 @@
 using Adventure.Net.Verbs;
 
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class BlackRod : Item
     {
@@ -14,6 +14,7 @@ namespace ColossalCave.Objects
 
             Before<Wave>(() =>
                 {
+                    // TODO: finish Wave
                     return true;
                 });
         }

@@ -1,13 +1,14 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Extensions;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class BrassLantern : Item
     {
         public int PowerRemaining { get; set; }
 
-        private FreshBatteries freshBatteries = Items.Get<FreshBatteries>();
+        private FreshBatteries freshBatteries = Adventure.Net.Objects.Get<FreshBatteries>();
 
         public override void Initialize()
         {
@@ -34,6 +35,7 @@ namespace ColossalCave.Objects
                     }
 
                     int t = PowerRemaining - 1;
+                    
                     if (t == 0)
                     {
                         HasLight = false;
@@ -47,7 +49,8 @@ namespace ColossalCave.Objects
                         if (t == 0)
                         {
                             result = "Your lamp has run out of power. ";
-                            if (freshBatteries.InInventory && !Location.HasLight)
+                            
+                            if (freshBatteries.InInventory && !CurrentRoom.Location.HasLight)
                             {
                                 // deadflag = 3;
                                 result += "You can't explore the cave without a lamp. So let's call it a day.";
@@ -70,6 +73,7 @@ namespace ColossalCave.Objects
                                 result += " You're also out of spare batteries. You'd best start wrapping this up.";
                             }
 
+                            //TODO: finish BrassLantern implementation
 //                    if (fresh_batteries in VendingMachine && Dead_End_14 has visited)
 //                        " You'd best start wrapping this up,
 //                         unless you can find some fresh batteries.
@@ -105,13 +109,14 @@ namespace ColossalCave.Objects
                     return true;
                 });
 
-            Before<Receive>(() =>
+            // TODO: test Receive handlers
+            Receive((obj) =>
                 {
-                    if (Noun.Is<OldBatteries>())
+                    if (obj.Is<OldBatteries>())
                     {
                         Print("Those batteries are dead; they won't do any good at all.");
                     }
-                    else if (Noun.Is<FreshBatteries>())
+                    else if (obj.Is<FreshBatteries>())
                     {
                         Print(ReplaceBatteries());
                     }
@@ -119,6 +124,7 @@ namespace ColossalCave.Objects
                     {
                         Print("The only thing you might successfully put in the lamp is a fresh pair of batteries.");
                     }
+
                     return true;
                 });
 
@@ -136,25 +142,23 @@ namespace ColossalCave.Objects
                 {
                     HasLight = true;
                     DaemonStarted = true;
-                    return false;
                 });
 
             After<SwitchOff>(() =>
                 {
                     HasLight = false;
-                    return false;
                 });
         }
 
         private string ReplaceBatteries()
         {
-            var fresh = Items.Get<FreshBatteries>();
+            var fresh = Adventure.Net.Objects.Get<FreshBatteries>();
             if (fresh.InScope)
             {
                 fresh.Remove();
                 fresh.HaveBeenUsed = true;
-                var old = Items.Get<OldBatteries>();
-                Location.Objects.Add(old);
+                var old = Adventure.Net.Objects.Get<OldBatteries>();
+                CurrentRoom.Objects.Add(old);
                 PowerRemaining = 2500;
                 return "I'm taking the liberty of replacing the batteries.";
             }

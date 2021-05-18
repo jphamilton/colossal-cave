@@ -1,7 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class MingVase : Treasure
     {
@@ -10,42 +10,41 @@ namespace ColossalCave.Objects
             Name = "ming vase";
             Synonyms.Are("vase", "ming", "delicate");
             Description = "It's a delicate, precious, ming vase!";
-
+            
             DepositPoints = 14;
 
-            After<Drop>(() =>
-                {
-                    if (Location.Contains<VelvetPillow>())
-                    {
-                        Print("(coming to rest, delicately, on the velvet pillow)");
-                        return false;
-                    }
-                    
-                    RepaceVaseWithShards();
-                    Print("The ming vase drops with a delicate crash.");
-                    return true;
-
-                });
-
             Before<Attack>(() =>
-                {
-                    RepaceVaseWithShards();
-                    Print("You have taken the vase and hurled it delicately to the ground.");
-                    return true;
-                });
+            {
+                RepaceVaseWithShards();
+                Print("You have taken the vase and hurled it delicately to the ground.");
+                return true;
+            });
 
-            Before<Receive>(() =>
+            Receive((obj) =>
+            {
+                Print("The vase is too fragile to use as a container.");
+                return true;
+            });
+
+            After<Drop>(() =>
+            {
+                if (CurrentRoom.Location.Contains<VelvetPillow>())
                 {
-                    Print("The vase is too fragile to use as a container.");
-                    return true;
-                });
+                    Print("(coming to rest, delicately, on the velvet pillow)");
+                    return;
+                }
+
+                RepaceVaseWithShards();
+
+                Print("The ming vase drops with a delicate crash.");
+            });
         }
 
         private void RepaceVaseWithShards()
         {
             Remove();
-            var shards = Items.Get<Shards>();
-            Location.Objects.Add(shards);
+            var shards = Adventure.Net.Objects.Get<Shards>();
+            CurrentRoom.Objects.Add(shards);
 
         }
     }

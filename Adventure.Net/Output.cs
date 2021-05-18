@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
@@ -31,6 +32,14 @@ namespace Adventure.Net
             foreach (string line in lines)
             {
                 target.WriteLine(WordWrap(line));
+            }
+        }
+
+        public static void Print(IEnumerable<string> messages)
+        {
+            foreach(var message in messages)
+            {
+                Print(message);
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using ColossalCave.Objects;
+using ColossalCave.Places;
 using ColossalCave.Places;
 using Adventure.Net;
 using NUnit.Framework;
@@ -13,7 +13,7 @@ namespace Advent.Tests.Verbs
         public void when_holding_keys_can_unlock_without_specifying_keys_in_input()
         {
             Location = Rooms.Get<OutsideGrate>();
-            Inventory.Add(Items.Get<SetOfKeys>());
+            Inventory.Add(Objects.Get<SetOfKeys>());
             var results = parser.Parse("unlock grate");
             results.ShouldContain("(with the set of keys)");
             results.ShouldContain("You unlock the steel grate.");
@@ -23,7 +23,7 @@ namespace Advent.Tests.Verbs
         public void should_unlock()
         {
             Location = Rooms.Get<OutsideGrate>();
-            Inventory.Add(Items.Get<SetOfKeys>());
+            Inventory.Add(Objects.Get<SetOfKeys>());
             var results = parser.Parse("unlock grate with keys");
             results.ShouldContain("You unlock the steel grate.");
             results.ShouldNotContain("(first taking the steel grate)"); // from bug
@@ -54,7 +54,7 @@ namespace Advent.Tests.Verbs
         {
 
             Location = Rooms.Get<OutsideGrate>();
-            Inventory.Add(Items.Get<SetOfKeys>());
+            Inventory.Add(Objects.Get<SetOfKeys>());
             
             var grate = Rooms.Get<Grate>();
 

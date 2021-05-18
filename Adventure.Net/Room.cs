@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Adventure.Net
 {
@@ -240,14 +239,19 @@ namespace Adventure.Net
             return room;
         }
 
-        public void Has<T>() where T : Item
+        public Item Has<T>() where T : Item
         {
-            Item obj = Net.Items.Get<T>();
+            Item obj = Net.Objects.Get<T>();
+            
             if (obj == null)
-                obj = Net.Rooms.Get<T>();
+            {
+                obj = Rooms.Get<T>();
+            }
 
             obj.Parent = this;
             Objects.Add(obj);
+            
+            return obj;
         }
 
         public bool Contains<T>() where T : Item
@@ -266,7 +270,7 @@ namespace Adventure.Net
             return Objects.Contains(obj);
         }
 
-        public T Get<T>() where T:Item
+        public new T Get<T>() where T:Item
         {
             foreach (var obj in Objects)
             {

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Adventure.Net
 {
@@ -13,8 +12,16 @@ namespace Adventure.Net
             get { return Context.Story.Location; }
         }
 
+        public static IList<Item> Objects
+        {
+            get { return Location.Objects; }
+        }
+
         public static void Look(bool showFull)
         {
+            // look is special in that it uses extra formatting like bold,
+            // so this is sent directly to the console
+
             Output.PrintLine();
 
             Room room = IsLit() ? Location : Rooms.Get<Darkness>();
@@ -129,6 +136,32 @@ namespace Adventure.Net
             }
         }
 
+        private static void AddContained(List<Item> objects)
+        {
+            var contained = new List<Item>();
+
+            foreach (var obj in objects)
+            {
+                var container = obj as Container;
+                
+                if (container != null)
+                {
+                    contained.AddRange(container.Contents);
+                }
+            }
+
+            objects.AddRange(contained);
+        }
+
+        public static IList<Item> ObjectsInRoom()
+        {
+            var result = new List<Item>();
+            result.AddRange(Location.Objects.Where(x => !x.IsScenery && !x.IsStatic));
+            result.AddRange(Location.Objects.Where(x => x.IsScenery || x.IsStatic));
+            AddContained(result);
+            return result;
+        }
+
         public static List<Item> ObjectsInScope()
         {
             var result = new List<Item>();
@@ -138,18 +171,7 @@ namespace Adventure.Net
             result.AddRange(Inventory.Items);
             result.Add(Location);
 
-            var contained = new List<Item>();
-
-            foreach (var obj in result)
-            {
-                var container = obj as Container;
-                if (container != null)
-                {
-                    contained.AddRange(container.Contents);
-                }
-            }
-
-            result.AddRange(contained);
+            AddContained(result);
 
             return result;
         }

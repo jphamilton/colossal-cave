@@ -14,18 +14,25 @@ Verb 'remove'
         public Remove()
         {
             Name = "remove";
-            Grammars.Add(K.HELD_TOKEN, Disrobe);
-            Grammars.Add(K.MULTI_TOKEN, Take);
+            //Grammars.Add(K.HELD_TOKEN, Disrobe);
+           // Grammars.Add(K.MULTI_TOKEN, Take);
         }
 
-        private bool Disrobe()
+        // TODO: not handling multi
+        public bool Expects(Item obj)
         {
-            throw new Exception("Disrobe verb not implemented");
+            if (obj.InInventory)
+            {
+                return Disrobe(obj);
+            }
+
+            return Redirect<Take>(obj, v => v.Expects(obj));
         }
 
-        private bool Take()
+        private bool Disrobe(Item obj)
         {
-            return RedirectTo<Take>(K.MULTI_TOKEN);
+            // TODO: implement
+            throw new NotImplementedException("remove <held> (disrobe)");
         }
     }
 }

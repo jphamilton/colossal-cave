@@ -1,7 +1,8 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Extensions;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class Stream : Scenic
     {
@@ -25,7 +26,7 @@ namespace ColossalCave.Objects
 
             Before<Take>(() =>
                 {
-                    var bottle = Items.Get<Bottle>();
+                    var bottle = Objects.Get<Bottle>();
                     
                     if (!bottle.InInventory)
                     {
@@ -40,11 +41,11 @@ namespace ColossalCave.Objects
                 });
 
 
-            Before<Receive>(() =>
+            Receive((obj) =>
                 {
-                    if (Noun.Is<Bottle>())
+                    if (obj.Is<Bottle>())
                     {
-                        var bottle = Items.Get<Bottle>();
+                        var bottle = Adventure.Net.Objects.Get<Bottle>();
                         bottle.Fill();
                         return true;
                     }

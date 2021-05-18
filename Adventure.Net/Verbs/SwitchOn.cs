@@ -3,33 +3,48 @@
 namespace Adventure.Net.Verbs
 {
 
+    // TODO: implement
     public class SwitchOn : Verb
     {
         public SwitchOn()
         {
-            Name = "switch";
-            Grammars.Add("<noun>", SwitchOnObject);
-            Grammars.Add("<noun> on", SwitchOnObject);
-            Grammars.Add("on <noun>", SwitchOnObject);
+          //  Name = "switch";
+          //  Grammars.Add("<noun>", SwitchOnObject);
+          //  Grammars.Add("<noun> on", SwitchOnObject);
+          //  Grammars.Add("on <noun>", SwitchOnObject);
         }
 
-        private bool SwitchOnObject()
+        // switch on lamp
+        public bool Expects(Item item)
         {
-            if (Item.IsSwitchable && !Item.IsOn)
+            return SwitchOnObject(item);
+        }
+
+        // switch on lamp
+        public bool Expects(Item item, Preposition prep)
+        {
+            return false;
+        }
+
+        private bool SwitchOnObject(Item obj)
+        {
+            if (obj.IsSwitchable && !obj.IsOn)
             {
-                Item.IsOn = true;
-                Print(String.Format("You switch the {0} on.", Item.Name));
+                obj.IsOn = true;
+                // TODO: use Article instead of "the"? Probably not.
+                Output.Print($"You switch the {obj.Name} on.");
+                return true;
             }
-            else if (Item.IsOn)
+            else if (obj.IsOn)
             {
-                Print("That's already on.");
+                Output.Print("That's already on.");
             }
             else
             {
-                Print("That's not something you can switch.");
+                Output.Print("That's not something you can switch.");
             }
 
-            return true;
+            return false;
         }
     }
 }

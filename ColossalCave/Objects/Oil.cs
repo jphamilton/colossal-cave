@@ -1,7 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class Oil : Scenic
     {
@@ -19,14 +19,18 @@ namespace ColossalCave.Objects
 
             Before<Take>(() =>
                 {
-                    if (!Player.Has<Bottle>())
+                    var bottle = Get<Bottle>();
+
+                    if (bottle.InInventory)
                     {
-                        Print("You have nothing in which to carry the oil.");
+                        // TODO: not sure I like all the object checking in Fill
+                        bottle.Fill();
                     }
                     else
                     {
-                        Execute("fill bottle");
+                        Print("You have nothing in which to carry the oil.");
                     }
+                    
                     return true;
                 });
 

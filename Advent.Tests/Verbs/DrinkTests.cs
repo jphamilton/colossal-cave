@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using ColossalCave.Objects;
+using ColossalCave.Places;
 using ColossalCave.Places;
 using Adventure.Net;
 using NUnit.Framework;
@@ -14,7 +14,7 @@ namespace Advent.Tests.Verbs
         {
             Location = Rooms.Get<BelowTheGrate>();
             IList<string> results = parser.Parse("drink water");
-            Assert.AreEqual(Library.CantSeeObject, results[0]);
+            Assert.AreEqual(Messages.CantSeeObject, results[0]);
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace Advent.Tests.Verbs
         {
             Location = Rooms.Get<BelowTheGrate>();
 
-            Bottle bottle = Items.Get<Bottle>() as Bottle;
+            Bottle bottle = Objects.Get<Bottle>() as Bottle;
             bottle.Add<WaterInTheBottle>();
 
             Inventory.Add(bottle);
@@ -37,7 +37,7 @@ namespace Advent.Tests.Verbs
             // there are two sources of water: the stream and the bottle in inventory
             Location = Rooms.Get<InsideBuilding>();
 
-            Bottle bottle = Items.Get<Bottle>() as Bottle;
+            Bottle bottle = Objects.Get<Bottle>() as Bottle;
             bottle.Add<WaterInTheBottle>();
 
             Inventory.Add(bottle);
@@ -49,7 +49,7 @@ namespace Advent.Tests.Verbs
         [Test]
         public void should_empty_bottle()
         {
-            Bottle bottle = Items.Get<Bottle>() as Bottle;
+            Bottle bottle = Objects.Get<Bottle>() as Bottle;
             bottle.Add<WaterInTheBottle>();
 
             Inventory.Add(bottle);
@@ -86,7 +86,7 @@ namespace Advent.Tests.Verbs
         {
             Location = Rooms.Get<InsideBuilding>();
             IList<string> results = parser.Parse("drink cola");
-            Assert.AreEqual(Library.CantSeeObject, results[0]);
+            Assert.AreEqual(Messages.CantSeeObject, results[0]);
         }
     }
 }

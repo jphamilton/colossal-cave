@@ -1,6 +1,6 @@
 ﻿using System;
 using Adventure.Net;
-using ColossalCave.Objects;
+using ColossalCave.Places;
 using NUnit.Framework;
 
 namespace Advent.Tests.Verbs
@@ -13,10 +13,10 @@ namespace Advent.Tests.Verbs
         {
             CommandPrompt.FakeInput("cage");
 
-            var bird = Items.Get<LittleBird>();
+            var bird = Objects.Get<LittleBird>();
             Location.Objects.Add(bird);
 
-            var cage = Items.Get<WickerCage>();
+            var cage = Objects.Get<WickerCage>();
             Inventory.Add(cage);
                
             var results = parser.Parse("put bird");
@@ -28,10 +28,10 @@ namespace Advent.Tests.Verbs
         {
             CommandPrompt.FakeInput("put bird in cage");
 
-            var bird = Items.Get<LittleBird>();
+            var bird = Objects.Get<LittleBird>();
             Location.Objects.Add(bird);
 
-            var cage = Items.Get<WickerCage>();
+            var cage = Objects.Get<WickerCage>();
             Inventory.Add(cage);
 
             var results = parser.Parse("put bird");
@@ -43,10 +43,10 @@ namespace Advent.Tests.Verbs
         {
             CommandPrompt.FakeInput("keys");
             
-            var bottle = Items.Get<Bottle>();
+            var bottle = Objects.Get<Bottle>();
             Location.Objects.Add(bottle);
 
-            var keys = Items.Get<SetOfKeys>();
+            var keys = Objects.Get<SetOfKeys>();
             Location.Objects.Add(keys);
 
             var results = parser.Parse("put bottle on");
@@ -67,10 +67,10 @@ namespace Advent.Tests.Verbs
         {
             CommandPrompt.FakeInput("bird in cage");
 
-            var cage = Items.Get<WickerCage>();
+            var cage = Objects.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Items.Get<LittleBird>();
+            var bird = Objects.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("put");
@@ -82,10 +82,10 @@ namespace Advent.Tests.Verbs
         {
             CommandPrompt.FakeInput("bird\ncage");
 
-            var cage = Items.Get<WickerCage>();
+            var cage = Objects.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Items.Get<LittleBird>();
+            var bird = Objects.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("put");
@@ -107,10 +107,10 @@ namespace Advent.Tests.Verbs
 
             CommandPrompt.FakeInput("bird");
 
-            var cage = Items.Get<WickerCage>();
+            var cage = Objects.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Items.Get<LittleBird>();
+            var bird = Objects.Get<LittleBird>();
             Location.Objects.Add(bird);
 
             var results = parser.Parse("put");
@@ -132,10 +132,10 @@ namespace Advent.Tests.Verbs
 
             CommandPrompt.FakeInput("bird\ncage");
 
-            var cage = Items.Get<WickerCage>();
+            var cage = Objects.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var bird = Items.Get<LittleBird>();
+            var bird = Objects.Get<LittleBird>();
             cage.Add(bird);
 
             var results = parser.Parse("put");
@@ -173,9 +173,9 @@ namespace Advent.Tests.Verbs
         [Test]
         public void i_dont_understand_that_sentence()
         {
-            var bottle = Items.Get<Bottle>();
+            var bottle = Objects.Get<Bottle>();
             Location.Objects.Add(bottle);
-            var lantern = Items.Get<BrassLantern>();
+            var lantern = Objects.Get<BrassLantern>();
             Location.Objects.Add(lantern);
 
             var results = parser.Parse("put bottle lantern");

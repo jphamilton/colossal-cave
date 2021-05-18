@@ -1,5 +1,6 @@
 ﻿namespace Adventure.Net.Verbs
 {
+    // TODO: test and implement
     public class Look : Verb
     {
         /*
@@ -16,21 +17,27 @@
         {
             Name = "look";
             Synonyms.Are("l");
-            Grammars.Add(Grammar.Empty, LookAtRoom);
-            Grammars.Add("at <noun>", ExamineObject);
-            Grammars.Add("<noun>", ExamineObject);
         }
 
-        private bool LookAtRoom()
+        public bool Expects()
         {
-            
             CurrentRoom.Look(true);
             return true;
         }
 
-        private bool ExamineObject()
+        public bool Expects(Item obj)
         {
-            return RedirectTo<Examine>("<noun>");
+            return Redirect<Examine>(obj, v => v.Expects(obj));
+        }
+
+        public bool Expects(Preposition p, Item obj)
+        {
+            if (p == Preposition.At)
+            {
+                return Redirect<Examine>(obj, v => v.Expects(obj));
+            }
+
+            return false;
         }
     }
 }

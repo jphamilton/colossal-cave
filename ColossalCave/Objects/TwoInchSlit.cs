@@ -1,6 +1,6 @@
 ﻿using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class TwoInchSlit : Scenic
     {

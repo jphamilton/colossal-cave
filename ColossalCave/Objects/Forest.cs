@@ -1,7 +1,7 @@
 ﻿using ColossalCave.Places;
 using Adventure.Net;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class Forest : Item
     {

@@ -17,7 +17,7 @@ namespace Adventure.Net
 
         public static bool Contains<T>() where T : Item
         {
-            Item obj = Net.Items.Get<T>();
+            Item obj = Net.Objects.Get<T>();
             return Contains(obj);
         }
 

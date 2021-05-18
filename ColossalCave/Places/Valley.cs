@@ -1,5 +1,5 @@
 ﻿
-using ColossalCave.Objects;
+using ColossalCave.Places;
 
 namespace ColossalCave.Places
 {

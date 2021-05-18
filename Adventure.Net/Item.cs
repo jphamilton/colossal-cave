@@ -1,42 +1,43 @@
-﻿using System;
+﻿using Adventure.Net.Verbs;
+using System;
 using System.Collections.Generic;
 
 namespace Adventure.Net
 {
-    public abstract class Item : INamed
+    public abstract class Item
     {
-        
-        private readonly Dictionary<Type, Func<bool>> beforeRoutines;
-        private readonly Dictionary<Type, Func<bool>> afterRoutines;
+        private readonly Dictionary<Type, Func<bool>> beforeRoutines = new Dictionary<Type, Func<bool>>();
+        private readonly Dictionary<Type, Action> afterRoutines = new Dictionary<Type, Action>();
+        private readonly Dictionary<Item, Func<Item, bool>> receiveRoutines = new Dictionary<Item, Func<Item, bool>>();
 
         public abstract void Initialize();
 
         protected Item()
         {
-            beforeRoutines = new Dictionary<Type, Func<bool>>();
-            afterRoutines = new Dictionary<Type, Func<bool>>();
             Synonyms = new Synonyms();
             Article = "a";
         }
-        
+
+        public string Name { get; set; }
+        public Synonyms Synonyms { get; set; }
+        public Item Parent { get; set; }
+
+
         public string Article { get; set; }
 
         public Action Daemon { get; set; }
         public bool DaemonStarted { get; set; }
-
         public string Description { get; set; }
-        
         public string InitialDescription { get; set; }
-        
-        public bool HasActionRountines
-        {
-            get { return beforeRoutines.Count > 0 || afterRoutines.Count > 0; }
-        }
 
-        
+        public string TheyreOrThats => HasPluralName ? "They're" : "That's";
+        public string ThatOrThose => HasPluralName ? "Those" : "That";
+        public string IsOrAre => HasPluralName ? "are" : "is";
+
+
+        // attributes
         public bool HasLight { get; set; }
         public bool HasPluralName { get; set; }
-
         public bool IsAnimate { get; set; }
         public bool IsEdible { get; set; }
         public bool IsLockable { get; set; }
@@ -50,16 +51,21 @@ namespace Adventure.Net
         public bool IsTouched { get; set; }
         public bool IsTransparent { get; set; }
 
-        
-        public string Name { get; set; }
-        public Item Parent { get; set; }
-        public Synonyms Synonyms { get; set; }
-        
-
         public Func<string> Describe { get; set; }
 
         public void Before<T>(Func<bool> before) where T : Verb
         {
+            if (typeof(T) == typeof(Receive))
+            {
+                throw new NotSupportedException("Before<Receive> is not supported. Use Receive instead.");
+            }
+
+            // TODO: needed this for testing. do this a different way
+            if (beforeRoutines.ContainsKey(typeof(T)))
+            {
+                beforeRoutines.Remove(typeof(T));
+            }
+
             beforeRoutines.Add(typeof(T), before);
         }
 
@@ -76,77 +82,98 @@ namespace Adventure.Net
             return null;
         }
 
-        public void After<T>(Func<bool> after) where T : Verb
+        public void After<T>(Action after) where T : Verb
         {
             afterRoutines.Add(typeof(T), after);
         }
 
-        public Func<bool> After<T>() where T : Verb
+        public Action After<T>() where T : Verb
         {
             Type verbType = typeof (T);
             return After(verbType);
         }
 
-        public Func<bool> After(Type verbType)
+        public Action After(Type verbType)
         {
             if (afterRoutines.ContainsKey(verbType))
                 return afterRoutines[verbType];
             return null;
         }
 
-        public bool Is<T>()
+        public void Receive(Func<Item, bool> beforeReceive)
         {
-            return (GetType() == typeof(T));
+            receiveRoutines.Add(this, beforeReceive);
         }
 
-        public string TheyreOrThats
+        public Func<Item, bool> Receive()
         {
-            get
+            if (receiveRoutines.TryGetValue(this, out Func<Item, bool> result))
             {
-                return HasPluralName ? "They're" : "That's";
+                return result;
             }
-        }
-
-        public string ThatOrThose
-        {
-            get
-            {
-                return HasPluralName ? "Those" : "That";
-            }
-        }
-
-        public string IsOrAre
-        {
-            get
-            {
-                return HasPluralName ? "are" : "is";
-            }
+            
+            return null;
         }
 
         #region Convenience Methods for Action Routines
 
         protected void Print(string message)
         {
-            Context.Parser.Print(message);
+            Context.Current.Print(message);
         }
 
-        protected void Print(string format, params object[] arg)
+        // current object being handled by the command handler
+        public Item CurrentObject
         {
-            Context.Parser.Print(format, arg);
+            get { return Context.Current.CurrentObject; }
         }
 
-        protected void Execute(string input)
+        // indirect object of current running command
+        public Item IndirectObject
         {
-            var userInput = new UserInput();
-            var inputResult = userInput.Parse(input);
-            var builder = new CommandBuilder(inputResult);
-            var commands = builder.Build();
+            get { return Context.Current.IndirectObject; }
+        }
 
-            foreach (var command in commands)
+        public static T Get<T>() where T: Item
+        {
+            return Objects.Get<T>();
+        }
+
+        public bool Redirect<T>(Item obj, Func<T, bool> callback) where T : Verb
+        {
+            // need to push messages from originating command onto a stack?
+            var command = Context.Current.PushState();
+
+            var handled = false;
+
+            var before = obj.Before<T>();
+
+            if (before != null)
             {
-                Context.Parser.ExecuteCommand(command);
+                command.State = CommandState.Before;
+                handled = before();
             }
-           
+
+            if (!handled)
+            {
+                command.State = CommandState.During;
+                handled = callback(Verb.Get<T>());
+            }
+
+            if (handled)
+            {
+                var after = obj.After<T>();
+
+                if (after != null)
+                {
+                    command.State = CommandState.After;
+                    after();
+                }
+            }
+
+            Context.Current.PopState();
+
+            return handled;
         }
 
         protected bool In<T>() where T:Item
@@ -159,12 +186,7 @@ namespace Adventure.Net
         {
             return Rooms.Get<T>();
         }
-        
-        protected Room Location
-        {
-            get { return Context.Story.Location; }
-        }
-        
+
         public bool InScope
         {
             get
@@ -182,19 +204,19 @@ namespace Adventure.Net
         public void Remove()
         {
             if (InInventory)
+            {
                 Inventory.Remove(this);
+            }
+
             if (InScope)
+            {
                 Context.Story.Location.Objects.Remove(this);
+            }
         }
 
-        public bool AtLocation
+        public bool InRoom
         {
             get { return Context.Story.Location.Objects.Contains(this); }
-        }
-
-        public bool IsContainer
-        {
-            get { return (this as Container != null);  }
         }
 
         public void MoveToLocation()

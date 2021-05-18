@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Adventure.Net.Verbs;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Adventure.Net.Extensions
@@ -36,16 +37,17 @@ namespace Adventure.Net.Extensions
             return Prepositions.Contains(input);
         }
 
-        public static bool IsAction(this string input)
+        public static bool IsDirection(this string input)
         {
-            return input.StartsWith("<<") && input.EndsWith(">>");
+            return Compass.Directions.Contains(input);
         }
 
-        public static bool IsMultiWord(this string input)
+        public static Verb ToVerb(this string input)
         {
-            int start = input.IndexOf("[");
-            return start >= 0 && input.IndexOf("]") > start;
+            return VerbList.GetVerbByName(input);
         }
+
+        
 
     }
 }

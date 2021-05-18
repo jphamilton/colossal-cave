@@ -1,6 +1,6 @@
 ﻿using Adventure.Net;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class VelvetPillow : Item
     {

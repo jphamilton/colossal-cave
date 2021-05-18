@@ -1,6 +1,6 @@
 ﻿using Adventure.Net.Verbs;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Places
 {
     public class VendingMachine : Scenic
     {
@@ -10,17 +10,19 @@ namespace ColossalCave.Objects
             Synonyms.Are("machine", "slot", "vending", "massive", "battery", "coin");
             Description = "The instructions on the vending machine read, \"Insert coins to receive fresh batteries.\"";
 
-            Before<Receive>(() =>
-                {
-                    //            if (noun == rare_coins) {
-                    //                move fresh_batteries to location;
-                    //                remove rare_coins;
-                    //                "Soon after you insert the coins in the coin slot,
-                    //                 the vending machine makes a grinding sound, and a set of fresh batteries falls at your feet.";
-                    //            }
-                    //            "The machine seems to be designed to take coins.";
-                    return true;
-                });
+            Receive((obj) =>
+            {
+                // TODO: implement
+                //            if (noun == rare_coins) {
+                //                move fresh_batteries to location;
+                //                remove rare_coins;
+                //                "Soon after you insert the coins in the coin slot,
+                //                 the vending machine makes a grinding sound, and a set of fresh batteries falls at your feet.";
+                //            }
+                //            "The machine seems to be designed to take coins.";
+                return true;
+            });
+            
         }
     }
 }
