@@ -15,7 +15,7 @@ namespace Tests.VerbTests
         }
 
         [Fact]
-        public void should_eat_inedible_things()
+        public void should_eat_edible_things_in_inventory()
         {
             var tastyFood = Objects.Get<TastyFood>();
 
@@ -23,6 +23,6 @@ namespace Tests.VerbTests
             Execute("eat food");
             Assert.Equal("Delicious!", Line(1));
         }
-        
+
     }
 }

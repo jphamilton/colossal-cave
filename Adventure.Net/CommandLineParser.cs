@@ -72,6 +72,8 @@ namespace Adventure.Net
                 }
                 else if (token == K.ALL && !result.Objects.Any())
                 {
+                    result.IsAll = true;
+
                     if (!verb.Multi && !verb.MultiHeld)
                     {
                         result.Error = Messages.MultiNotAllowed;
@@ -144,7 +146,7 @@ namespace Adventure.Net
                 {
                     obj = result.Objects.FirstOrDefault();
                     
-                    if (obj != null)
+                    if (obj != null && !result.IsAll)
                     {
                         result.Error = Messages.PartialUnderstanding(verb, obj);
                     }

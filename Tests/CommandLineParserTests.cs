@@ -73,7 +73,7 @@ namespace Tests
             Assert.Contains(Objects.GetByName("bottle"), result.Objects);
             Assert.Contains(Objects.GetByName("keys"), result.Objects);
             Assert.DoesNotContain(Objects.GetByName("cage"), result.Objects);
-            Assert.Equal(result.Error, Messages.CantSeeObject);
+            Assert.Equal(Messages.PartialUnderstanding(result.Verb, result.Objects.First()), result.Error);
             
         }
 
@@ -308,7 +308,8 @@ namespace Tests
         public void more_bad_grammar_good_words()
         {
             var result = parser.Parse("take bottle drop");
-            Assert.Equal(Messages.CantSeeObject, result.Error);
+            Assert.True(result.Objects.Single() is Bottle);
+            Assert.Equal(Messages.PartialUnderstanding(result.Verb, result.Objects.Single()), result.Error);
         }
 
         [Fact]
