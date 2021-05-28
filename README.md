@@ -1,6 +1,8 @@
 Colossal Cave
 =============
 
+Update 5/28/2021 - I have been working on this on and off for over 10 years. I coded myself into a hole, so this project largely sat abandoned. I recently arrived at a new abstraction that simplifies all the code and will allow me to finish!
+
 (work in progress)
 
 ![colossal-cave-console](https://user-images.githubusercontent.com/19796/43917521-29018e4a-9bd6-11e8-925b-f34d1a60458d.png)
