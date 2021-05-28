@@ -86,19 +86,23 @@ namespace Adventure.Net
         public Item IndirectObject { get; }
 
        
-        public ICommandState PushState()
+        public ICommandState PushState(CommandOutput commandOutput = null)
         {
-            var commandOutput = new CommandOutput();
+            var state = commandOutput ?? new CommandOutput();
             
-            OutputStack.Push(commandOutput);
+            OutputStack.Push(state);
 
-            return commandOutput;
+            return state;
         }
 
-        public void PopState()
+        public void PopState(CommandOutput commandOutput = null)
         {
-            var commandOutput = OutputStack.Pop();
-            OrderedOutput.Add(commandOutput.Output);
+            var popped = OutputStack.Pop();
+
+            if (commandOutput == null)
+            {
+                OrderedOutput.Add(popped.Output);
+            }
         }
 
         public CommandState State 

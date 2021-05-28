@@ -18,7 +18,9 @@ namespace Adventure.Net
 
             foreach (var type in types)
             {
-                if (type.IsSubclassOf(typeof(Item)) && !type.IsAbstract && !type.IsSubclassOf(typeof(Room)))
+                if (type.IsSubclassOf(typeof(Item)) && 
+                    !type.IsAbstract && 
+                    !type.IsSubclassOf(typeof(Room)))
                 {
                     var obj = Activator.CreateInstance(type) as Item;
                     if (obj != null)

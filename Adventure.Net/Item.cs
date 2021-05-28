@@ -115,8 +115,6 @@ namespace Adventure.Net
             return null;
         }
 
-        #region Convenience Methods for Action Routines
-
         protected void Print(string message)
         {
             Context.Current.Print(message);
@@ -141,9 +139,29 @@ namespace Adventure.Net
 
         public bool Redirect<T>(Item obj, Func<T, bool> callback) where T : Verb
         {
-            // need to push messages from originating command onto a stack?
             var command = Context.Current.PushState();
 
+            var handled = RunCommand(command, obj, callback);
+
+            Context.Current.PopState();
+
+            return handled;
+        }
+
+        internal ExecuteResult Execute<T>(Item obj, Func<T, bool> callback) where T : Verb
+        {
+            var commandOutput = new CommandOutput();
+            var command = Context.Current.PushState(commandOutput);
+
+            var handled = RunCommand(command, obj, callback);
+
+            Context.Current.PopState(commandOutput);
+
+            return new ExecuteResult(handled, commandOutput);
+        }
+
+        private bool RunCommand<T>(ICommandState command, Item obj, Func<T, bool> callback) where T: Verb
+        {
             var handled = false;
 
             var before = obj.Before<T>();
@@ -170,8 +188,6 @@ namespace Adventure.Net
                     after();
                 }
             }
-
-            Context.Current.PopState();
 
             return handled;
         }
@@ -224,8 +240,6 @@ namespace Adventure.Net
             Inventory.Remove(this);
             Context.Story.Location.Objects.Add(this);
         }
-
-        #endregion
 
     }
 }

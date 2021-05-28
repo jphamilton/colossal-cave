@@ -192,7 +192,7 @@ namespace Tests.VerbTests
         }
 
         [Fact]
-        public void should_take_held_object_if_in_room()
+        public void implicit_take()
         {
             // eat command requires that object be in players inventory
             // here it's not, but it is in the room - so take it for
@@ -201,12 +201,29 @@ namespace Tests.VerbTests
 
             Assert.False(Inventory.Contains(tastyFood));
             
-            var result = Execute("eat food");
+            Execute("eat food");
 
             Assert.Equal("(first taking the tasty food)", Line(1));
             Assert.Equal("Delicious!", Line(2));
 
             Assert.False(Room.Contains(tastyFood));
+            Assert.False(Inventory.Contains(tastyFood));
+
+        }
+
+        [Fact]
+        public void no_implicit_take()
+        {
+            var tastyFood = Objects.Get<TastyFood>();
+            Inventory.Add(tastyFood);
+
+            Execute("eat food");
+
+            Assert.Equal("Delicious!", Line(1));
+
+            Assert.False(Room.Contains(tastyFood));
+            Assert.False(Inventory.Contains(tastyFood));
+
         }
     }
 }

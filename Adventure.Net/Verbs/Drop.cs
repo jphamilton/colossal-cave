@@ -20,25 +20,23 @@
         public bool Expects()
         {
             Print("You aren't carrying anything.");
-            return false;
+            return true;
         }
 
         public bool Expects(Item obj)
         {
-            if (Inventory.Contains(obj))
+            if (obj.InInventory)
             {
                 obj.MoveToLocation();
                 Print("Dropped.");
-                return true;
             }
             else if (obj.InRoom)
             {
                 string isAre = obj.HasPluralName ? "are" : "is";
                 Print($"The {obj.Name} {isAre} already here.");
-                return true;
             }
 
-            return false;
+            return true;
         }
 
         //private bool DropObject()

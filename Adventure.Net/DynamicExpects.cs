@@ -1,32 +1,64 @@
-﻿using System;
+﻿using Adventure.Net.Extensions;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using System.Reflection;
 
 namespace Adventure.Net
 {
+
     public partial class CommandHandler
     {
-        private class DynamicExpects
+        private class DynamicExpects : IInvoke
         {
             private readonly Type verbType;
+            private readonly Verb verb;
             private readonly DynamicCall call;
 
-            public DynamicExpects(Type verbType, DynamicCall call)
+            public DynamicExpects(Verb verb, DynamicCall call)
             {
-                this.verbType = verbType;
+                this.verb = verb;
                 this.call = call;
+                
+                verbType = verb.GetType();
             }
 
             public bool Invoke()
             {
+                var invoker = new Invoker();
+
                 var expects = verbType.GetMethod("Expects", call.Types);
 
-                var instance = Activator.CreateInstance(verbType);
 
                 if (expects != null)
                 {
-                    return (bool)expects.Invoke(instance, call.Args);
+                    ParameterInfo[] parameters = expects.GetParameters();
+
+                    parameters.ForEach((parameter, index) =>
+                    {
+                        var held = parameter.GetCustomAttribute<HeldAttribute>();
+                        
+                        if (held != null)
+                        {
+                            var arg = call.Args[index];
+
+                            if (arg is Item)
+                            {
+                                var implicitTake = new ImplicitTake((Item)arg);
+                                invoker.Add(implicitTake);
+                            }
+                            else
+                            {
+                                throw new ArgumentException("[Held] attribute is only for Item");
+                            }
+                        }
+                    });
+                    
+
+                    invoker.Add(new DymamicInvoke(expects, verbType, call.Args));
+
+
+                    return invoker.Invoke();
                 }
 
                 var verb = verbType.ToString().Split('.').Last();

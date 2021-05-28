@@ -1,5 +1,4 @@
 ﻿using Adventure.Net.Extensions;
-using System;
 using System.Linq;
 
 namespace Adventure.Net
@@ -27,7 +26,8 @@ namespace Adventure.Net
 
             Context.Stack.Push(context);
 
-            var verbType = parsed.Verb.GetType();
+            var verb = parsed.Verb;
+            var verbType = verb.GetType();
 
             if (parsed.Objects.Count > 0)
             {
@@ -48,7 +48,7 @@ namespace Adventure.Net
                     if (!handled)
                     {
                         commandState.State = CommandState.During;
-                        bool success = Expects(verbType, obj);
+                        bool success = Expects(verb, obj);
 
                         if (success)
                         {
@@ -64,12 +64,6 @@ namespace Adventure.Net
                         {
                             partial = obj;
                             break;
-                            
-                            //// TODO: better way to handle this?
-                            //if (!context. .Output.Any())
-                            //{
-                            //    context.Print(Messages.PartialUnderstanding(parsed.Verb, obj));
-                            //}
                         }
                     }
 
@@ -79,7 +73,7 @@ namespace Adventure.Net
             else
             {
                 // one word command (e.g. look, inv)
-                Expects(verbType, null);
+                Expects(verb, null);
             }
 
             var result = new CommandResult
@@ -123,10 +117,10 @@ namespace Adventure.Net
             };
         }
 
-        private bool Expects(Type verbType, Item obj)
+        private bool Expects(Verb verb, Item obj)
         {
             var call = new DynamicCall(obj, parsed.Preposition, parsed.IndirectObject);
-            var expects = new DynamicExpects(verbType, call);
+            var expects = new DynamicExpects(verb, call);
 
             var success = expects.Invoke();
             
