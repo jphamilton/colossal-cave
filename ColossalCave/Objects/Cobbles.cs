@@ -1,7 +1,7 @@
 ﻿
 using ColossalCave.Places;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Objects
 {
     public class Cobbles : Scenic
     {

@@ -2,7 +2,7 @@
 using Adventure.Net.Verbs;
 using Adventure.Net;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Objects
 {
     public class WellHouse : Scenic
     {

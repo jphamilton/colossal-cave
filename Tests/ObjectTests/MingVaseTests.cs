@@ -1,5 +1,5 @@
 ﻿using ColossalCave;
-using ColossalCave.Places;
+using ColossalCave.Objects;
 using Adventure.Net;
 using Xunit;
 
@@ -12,7 +12,6 @@ namespace Tests.ObjectTests
 
         public MingVaseTests()
         {
-            Context.Story.Location = Rooms.Get<InsideBuilding>();
             vase = Objects.Get<MingVase>();
             Inventory.Add(vase);
         }

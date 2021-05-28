@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using ColossalCave.Places;
+using ColossalCave.Objects;
 using Xunit;
 
 namespace Tests.VerbTests

@@ -1,7 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Objects
 {
     public class Oil : Scenic
     {

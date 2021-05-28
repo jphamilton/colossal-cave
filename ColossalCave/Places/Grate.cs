@@ -2,7 +2,7 @@ using Adventure.Net;
 using Adventure.Net.Verbs;
 using ColossalCave.Places;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Objects
 {
     public class Grate : Door
     {

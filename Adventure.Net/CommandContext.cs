@@ -113,11 +113,12 @@ namespace Adventure.Net
             }
         }
 
-        public void Print(string message)
+        public void Print(string message, CommandState? state = null)
         {
             var messages = OutputStack.Peek();
+            var process = state ?? State;
 
-            switch (State)
+            switch (process)
             {
                 case CommandState.Before:
                     messages.BeforeOutput.Add(IsMulti ? $"{CurrentObject.Name}: {message}" : message);

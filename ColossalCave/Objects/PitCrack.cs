@@ -1,6 +1,6 @@
 ﻿using Adventure.Net.Verbs;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Objects
 {
     public class PitCrack : Scenic
     {

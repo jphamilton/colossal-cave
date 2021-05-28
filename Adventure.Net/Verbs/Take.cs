@@ -25,53 +25,33 @@ namespace Adventure.Net.Verbs
            // Grammars.Add("<multi>", TakeObject);
         }
 
-        /* TODO: need to handle multi output response with messages from before/after routines
-           brass lantern: Taken.
-           keys: Taken.
-           carrot: It's glued to the floor!
-           small bottle: Taken.
-         */
-
         public bool Expects(Item obj)
         {
-            
-            return TakeObject(obj);
-        }
 
-        public bool Expects(IList<Item> objects)
-        {
-            // TODO: implement Take multi
-            return false;
-        }
-
-        // TODO: Finish Take implementation
-        private bool TakeObject(Item obj, bool fromMulti = false)
-        {
             bool result = false;
-            string prefix = fromMulti ? $"{obj.Name}: " : "";
 
             if (obj.IsScenery)
             {
-                Print($"{prefix}That's hardly portable.");
+                Print($"That's hardly portable.");
             }
             else if (obj.IsStatic)
             {
-                Print($"{prefix}That's fixed in place.");
+                Print($"That's fixed in place.");
             }
             else if (Inventory.Contains(obj))
             {
-                Print($"{prefix}You already have that.");
+                Print($"You already have that.");
             }
             else
             {
                 CurrentRoom.Objects.Remove(obj);
                 Inventory.Add(obj);
-                Print($"{prefix}Taken.");
+                Print($"Taken.");
                 result = true;
             }
 
             return result;
         }
-
+        
     }
 }

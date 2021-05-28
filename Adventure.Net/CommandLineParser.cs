@@ -97,6 +97,8 @@ namespace Adventure.Net
                           Dropped.
 
                         */
+
+                        // TODO: this needs to be handled differently - whatever is done for Eat (held)
                         if (multi.Count == 1)
                         {
                             result.PreOutput.Add($"(the {multi.Single().Name})");
@@ -106,10 +108,6 @@ namespace Adventure.Net
                     result.Objects.AddRange(multi);
 
                 }
-                //else if (token == K.ALL && verb.MultiHeld && !result.Objects.Any())
-                //{
-                //    result.Objects.AddRange(Inventory.Items);
-                //}
                 else if (token == K.EXCEPT && (verb.Multi || verb.MultiHeld) && lastToken == K.ALL)
                 {
                     var index = tokens.IndexOf(token) + 1;

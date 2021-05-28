@@ -2,7 +2,7 @@
 using Adventure.Net.Extensions;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Objects
 {
     public class Stream : Scenic
     {
@@ -26,7 +26,7 @@ namespace ColossalCave.Places
 
             Before<Take>(() =>
                 {
-                    var bottle = Objects.Get<Bottle>();
+                    var bottle = Get<Bottle>();
                     
                     if (!bottle.InInventory)
                     {

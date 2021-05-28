@@ -1,7 +1,6 @@
-﻿using ColossalCave.Places;
-using Adventure.Net;
+﻿using Adventure.Net;
+using ColossalCave.Objects;
 using Xunit;
-
 
 namespace Tests.ObjectTests
 {

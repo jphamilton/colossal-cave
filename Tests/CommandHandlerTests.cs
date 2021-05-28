@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Verbs;
+using ColossalCave.Objects;
 using ColossalCave.Places;
 using Xunit;
 

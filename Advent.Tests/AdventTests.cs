@@ -26,18 +26,7 @@ namespace Advent.Tests
             Assert.AreEqual("I beg your pardon?", results[0]);
         }
 
-        [Test]
-        public void should_take_held_object_if_in_room()
-        {
-            // eat command requires that object be in players inventory
-            // here it's not, but it is in the room - so take it for
-            // the player automatically
-            Location = Rooms.Get<InsideBuilding>();
-            Assert.IsFalse(Inventory.Contains("food"));
-            IList<string> results = parser.Parse("eat food");
-            Assert.AreEqual("(first taking the tasty food)", results[0]);
-            Assert.AreEqual("Delicious!", results[1]);
-        }
+        
 
         
     }

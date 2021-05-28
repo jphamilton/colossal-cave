@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using ColossalCave.Places;
-using Adventure.Net.Verbs;
+﻿using ColossalCave.Objects;
 
 namespace ColossalCave.Places
 {
@@ -26,6 +24,7 @@ namespace ColossalCave.Places
                            Grate grate = Get<Grate>();
                            if (!grate.IsLocked && !grate.IsOpen)
                            {
+                               // TODO: this
                                Print("(first opening the grate)");
                                grate.IsOpen = true;
                            }

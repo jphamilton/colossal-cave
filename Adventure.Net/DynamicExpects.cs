@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Adventure.Net
 {
@@ -20,6 +21,7 @@ namespace Adventure.Net
             public bool Invoke()
             {
                 var expects = verbType.GetMethod("Expects", call.Types);
+
                 var instance = Activator.CreateInstance(verbType);
 
                 if (expects != null)

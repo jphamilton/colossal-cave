@@ -1,6 +1,6 @@
 ﻿using ColossalCave.Places;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Objects
 {
     public class Streambed : Scenic
     {

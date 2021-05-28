@@ -1,4 +1,4 @@
-﻿namespace ColossalCave.Places
+﻿namespace ColossalCave.Objects
 {
     public class Note : Scenic
     {

@@ -34,9 +34,9 @@ namespace Adventure.Net
             return item.Redirect(item, callback);
         }
 
-        protected void Print(string message)
+        protected void Print(string message, CommandState? state = null)
         {
-            Context.Current.Print(message);
+            Context.Current.Print(message, state);
         }
     }
 }

@@ -50,38 +50,6 @@ namespace Adventure.Net
             return null;
 
         }
-
-        //public string Unlock()
-        //{
-        //    return Lock(false);
-        //}
-
-        //public string Lock()
-        //{
-        //    return Lock(true);
-        //}
-
-        //private string Lock(bool locked)
-        //{
-        //    string action = locked ? "lock" : "unlock";
-        //    StringBuilder sb = new StringBuilder();
-
-        //    if (Inventory.Contains(Key))
-        //    {
-        //        if (Context.IndirectObject != Key && Inventory.Objects.Count == 1)
-        //            sb.AppendFormat("(with the {0})\n", Key.Name);
-        //        sb.AppendFormat("You {0} the {1}.", action, Name);
-        //        IsLocked = locked;
-        //    }
-        //    else
-        //    {
-        //        sb.AppendFormat("You have nothing to {0} that with.", action);
-        //    }
-
-        //    return sb.ToString();
-        //}
-
-
     }
 }
 

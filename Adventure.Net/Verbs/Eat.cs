@@ -1,9 +1,10 @@
-﻿using System;
-
-namespace Adventure.Net.Verbs
+﻿namespace Adventure.Net.Verbs
 {
 
     // TODO: implement
+
+    //Verb 'eat'
+    //    * held                                      -> Eat;
     public class Eat : Verb
     {
         public Eat()
@@ -12,27 +13,30 @@ namespace Adventure.Net.Verbs
            // Grammars.Add("<held>", EatObject);
         }
 
-        //private bool EatObject()
-        //{
-        //    if (!Item.IsEdible)
-        //    {
-        //        Print($"{Item.TheyreOrThats} plainly inedible.");
-        //    }
-        //    else if (Inventory.Contains(Item))
-        //    {
-        //        Print($"You eat the {Item.Name}. Not bad.");
-        //    }
-        //    else
-        //    {
-        //        Context.Story.Location.Objects.Remove(Item);
-        //        Inventory.Add(Item);
-        //        Print($"(first taking the {Item.Name})");
-        //    }
-
-        //    Inventory.Remove(Item);
+        public bool Expects(Item obj)
+        {
+            if (!obj.IsEdible)
+            {
+                Print($"{obj.TheyreOrThats} plainly inedible.");
+                return false;
+            }
             
-        //    return true;
-        //}
+            //else if (obj.InInventory)
+            //{
+            //    Print($"You eat the {obj.Name}. Not bad.");
+            //}
+
+            //else
+            //{
+            //    CurrentRoom.Objects.Remove(obj);
+            //    Inventory.Add(obj);
+            //    Print($"(first taking the {obj.Name})");
+            //}
+
+            //Inventory.Remove(obj);
+
+            return true;
+        }
 
     }
 }

@@ -2,7 +2,7 @@
 using Adventure.Net.Extensions;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Objects
 {
     public class LittleBird : Item
     {
@@ -14,8 +14,8 @@ namespace ColossalCave.Places
 
             Before<Examine>(() =>
             {
-                var cage = Objects.Get<WickerCage>();
-                var bird = Objects.Get<LittleBird>();
+                var cage = Get<WickerCage>();
+                var bird = Get<LittleBird>();
 
                 if (cage.Contents.Contains(bird))
                 {
@@ -34,7 +34,7 @@ namespace ColossalCave.Places
 
             Before<Drop>(() =>
                 {
-                    var cage = Objects.Get<WickerCage>();
+                    var cage = Get<WickerCage>();
                     if (cage.Contains<LittleBird>())
                     {
                         Print("(The bird is released from the cage.)");
@@ -63,8 +63,8 @@ namespace ColossalCave.Places
 
             Before<Attack>(() =>
                 {
-                    var cage = Objects.Get<WickerCage>();
-                    var bird = Objects.Get<LittleBird>();
+                    var cage = Get<WickerCage>();
+                    var bird = Get<LittleBird>();
 
                     if (cage.Contents.Contains(bird))
                     {
@@ -86,9 +86,9 @@ namespace ColossalCave.Places
 
         private bool Take()
         {
-            var cage = Objects.Get<WickerCage>();
-            var bird = Objects.Get<LittleBird>();
-            var blackRod = Objects.Get<BlackRod>();
+            var cage = Get<WickerCage>();
+            var bird = Get<LittleBird>();
+            var blackRod = Get<BlackRod>();
 
             if (blackRod.InInventory)
             {
@@ -120,8 +120,8 @@ namespace ColossalCave.Places
 
         public bool Release()
         {
-            var cage = Objects.Get<WickerCage>();
-            var bird = Objects.Get<LittleBird>();
+            var cage = Get<WickerCage>();
+            var bird = Get<LittleBird>();
 
             if (!cage.Contents.Contains(bird))
             {
@@ -135,7 +135,7 @@ namespace ColossalCave.Places
                 cage.Remove(bird);
                 bird.MoveToLocation();
 
-                var snake = Objects.Get<Snake>();
+                var snake = Get<Snake>();
 
                 if (snake.InRoom)
                 {
@@ -145,7 +145,7 @@ namespace ColossalCave.Places
                     return true;
                 }
 
-                var dragon = Objects.Get<Dragon>();
+                var dragon = Get<Dragon>();
 
                 if (dragon.InRoom)
                 {

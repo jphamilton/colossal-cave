@@ -1,7 +1,6 @@
 ﻿using Adventure.Net;
+using ColossalCave.Objects;
 using ColossalCave.Places;
-using System;
-using System.Linq;
 using Xunit;
 
 namespace Tests.ObjectTests

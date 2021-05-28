@@ -1,6 +1,6 @@
 ﻿using Adventure.Net;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Objects
 {
     public abstract class Scenic : Item
     {

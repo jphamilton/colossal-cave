@@ -23,6 +23,7 @@ namespace Adventure.Net
 
             var context = new CommandContext(parsed);
             var commandState = context.PushState();
+            Item partial = null;
 
             Context.Stack.Push(context);
 
@@ -61,11 +62,14 @@ namespace Adventure.Net
                         }
                         else
                         {
-                            // TODO: better way to handle this?
-                            if (!context.Output.Any())
-                            {
-                                context.Print(Messages.PartialUnderstanding(parsed.Verb, obj));
-                            }
+                            partial = obj;
+                            break;
+                            
+                            //// TODO: better way to handle this?
+                            //if (!context. .Output.Any())
+                            //{
+                            //    context.Print(Messages.PartialUnderstanding(parsed.Verb, obj));
+                            //}
                         }
                     }
 
@@ -86,17 +90,26 @@ namespace Adventure.Net
             context = Context.Stack.Pop();
             context.PopState();
 
-            if (parsed.PreOutput.Any())
+            //// TODO: better way to handle this?
+            if (partial != null && !context.Output.Any())
             {
-                result.Output.AddRange(parsed.PreOutput);
-                Output.Print(parsed.PreOutput);
+                result.Success = false;
+                Output.Print(Messages.PartialUnderstanding(parsed.Verb, partial));
             }
+            else
+            {
+                if (parsed.PreOutput.Any())
+                {
+                    result.Output.AddRange(parsed.PreOutput);
+                    Output.Print(parsed.PreOutput);
+                }
 
-            var output = context.Output;
-            
-            result.Output.AddRange(output);
+                var output = context.Output;
 
-            Output.Print(output);
+                result.Output.AddRange(output);
+
+                Output.Print(output);
+            }
 
             return result;
         }

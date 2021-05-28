@@ -15,6 +15,36 @@ namespace Adventure.Net.Verbs
          //   Grammars.Add("<noun>", UnlockObject);
         }
 
+        public bool Excepts(Item obj)
+        {
+            if (!obj.IsLockable)
+            {
+                Print("That doesn't seem to be something you can unlock.");
+            }
+            else if (!obj.IsLocked)
+            {
+                Print("It's unlocked at the moment.");
+            }
+            else if (obj is Door) // TODO: need to refactor so this works for all lockable things
+            {
+                var door = obj as Door;
+                return UnlockDoor(door, null);
+            }
+
+            return true;
+        }
+
+        public bool Excepts(Item obj, Preposition prep, Item indirect)
+        {
+            if (prep == Preposition.With)
+            {
+                //return UnlockDoor(obj)
+            }
+
+            // TODO: test wrong preposition here
+            throw new NotImplementedException("Unlock: wrong preposition");
+        }
+
         //private bool UnlockObject()
         //{
         //    if (!Item.IsLockable)
@@ -30,41 +60,70 @@ namespace Adventure.Net.Verbs
         //    return true;
         //}
 
-        //private void UnlockDoor(Door door)
-        //{
-        //    if (!Inventory.Contains(door.Key))
-        //    {
-        //        Print("You have nothing to unlock that with.");
-        //        return;
-        //    }
+        private bool UnlockDoor(Door door, Item indirect)
+        {
+            var key = door.Key;
 
-        //    if (IndirectItem == null)
-        //    {
-        //        if (Inventory.Items.Count == 1 && Inventory.Items[0] == door.Key)
-        //        {
-        //            Print("(with the {0})", door.Key.Name);
-        //            Print("You unlock the {0}.", Item.Name);
-        //            Item.IsLocked = false;
-        //            return;
-        //        }
+            if (indirect == null)
+            {
+                if (key.InInventory)
+                {
+                    Print($"(with the {key.Name})");
+                }
+            }
 
-        //        ObjectNotSpecified();
-        //    }
-        //    else if (IndirectItem == door.Key)
-        //    {
-        //        Print("You unlock the {0}.", Item.Name);
-        //        Item.IsLocked = false;
-        //    }
+            if (indirect != key)
+            {
+                Print("That doesn't seem to fit the lock.");
+                return false;
+            }
 
-        //}
+            if (key.InInventory)
+            {
+                Print($"You unlock the {door}.");
+                door.IsLocked = false;
+                return true;
+            }
 
+            Print("You have nothing to unlock that with.");
+            return false;
+
+
+            //if (!door.Key.InInventory)
+            //{
+            //    Print("You have nothing to unlock that with.");
+            //    return;
+            //}
+
+            //if (IndirectItem == null)
+            //{
+            //    if (Inventory.Items.Count == 1 && Inventory.Items[0] == door.Key)
+            //    {
+            //        // TODO: more HELD after message stuff
+            //        Print("(with the {0})", door.Key.Name);
+            //        Print("You unlock the {0}.", Item.Name);
+            //        Item.IsLocked = false;
+            //        return;
+            //    }
+
+            //    ObjectNotSpecified();
+            //}
+            //else if (IndirectItem == door.Key)
+            //{
+            //    Print("You unlock the {0}.", Item.Name);
+            //    Item.IsLocked = false;
+            //}
+
+        }
+
+        // TODO:"What do you want to unlock the {0} with?"
         //// this method basically shows a serious design flaw. because the parser does not
         //// currently remember the last command
         //private void ObjectNotSpecified()
         //{
         //    // do not use Print, go directly to output
         //    Output.Print("What do you want to unlock the {0} with?", Item.Name);
-            
+
         //    string input = CommandPrompt.GetInput();
         //    if (string.IsNullOrEmpty(input))
         //    {

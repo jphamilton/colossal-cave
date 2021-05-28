@@ -2,7 +2,7 @@
 using Adventure.Net.Extensions;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Objects
 {
     public class BrassLantern : Item
     {

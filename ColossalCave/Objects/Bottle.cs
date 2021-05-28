@@ -2,7 +2,7 @@
 using Adventure.Net.Extensions;
 using Adventure.Net.Verbs;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Objects
 {
     public class Bottle : Container
     {
@@ -60,9 +60,9 @@ namespace ColossalCave.Places
             }
             else
             {
-                var stream = Objects.Get<Stream>();
-                var spring = Objects.Get<Spring>();
-                var oil = Objects.Get<Oil>();
+                var stream = Get<Stream>();
+                var spring = Get<Spring>();
+                var oil = Get<Oil>();
 
                 if (stream.InScope || spring.InScope)
                 {
