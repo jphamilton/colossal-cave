@@ -180,7 +180,7 @@ namespace Tests.VerbTests
         public void take_except()
         {
             Execute("take except");
-            Assert.Equal(Messages.CantSeeObject, Line(1));
+            Assert.Equal(Messages.CantSeeObject, ConsoleOut);
 
         }
 
@@ -188,18 +188,7 @@ namespace Tests.VerbTests
         public void take_bottle_lantern_food_except_bottle()
         {
             Execute("take bottle lantern food except bottle");
-            Assert.Contains("tasty food: Taken.", Line(1));
-            Assert.Contains("brass lantern: Taken.", Line(2));
-            Assert.DoesNotContain("bottle", ConsoleOut);
-        }
-
-        [Fact]
-        public void take_bottle_lantern_food_except_bottle_with_better_grammer()
-        {
-            Execute("take bottle, lantern and food except bottle");
-            Assert.Contains("tasty food: Taken.", Line(1));
-            Assert.Contains("brass lantern: Taken.", Line(2));
-            Assert.DoesNotContain("bottle", ConsoleOut);
+            Assert.Contains("I only understood you as far as wanting to take the small bottle.", ConsoleOut);
         }
 
         [Fact]

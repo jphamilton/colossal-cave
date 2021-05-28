@@ -15,7 +15,7 @@ namespace Adventure.Net.Verbs
          //   Grammars.Add("<noun>", UnlockObject);
         }
 
-        public bool Excepts(Item obj)
+        public bool Expects(Item obj)
         {
             if (!obj.IsLockable)
             {
@@ -30,35 +30,42 @@ namespace Adventure.Net.Verbs
                 var door = obj as Door;
                 return UnlockDoor(door, null);
             }
+            else
+            {
+                return UnlockObject(obj);
+            }
 
             return true;
         }
 
-        public bool Excepts(Item obj, Preposition prep, Item indirect)
+        public bool Expects(Item obj, Preposition prep, Item indirect)
         {
-            if (prep == Preposition.With)
+            if (obj is Door && prep == Preposition.With)
             {
-                //return UnlockDoor(obj)
+                return UnlockDoor((Door)obj, indirect);
             }
 
             // TODO: test wrong preposition here
             throw new NotImplementedException("Unlock: wrong preposition");
         }
 
-        //private bool UnlockObject()
-        //{
-        //    if (!Item.IsLockable)
-        //        Print("That doesn't seem to be something you can unlock.");
-        //    else if (!Item.IsLocked)
-        //        Print("It's unlocked at the moment.");
-        //    else if (Item is Door) // need to refactor so this works for all lockable things
-        //    {
-        //        var door = Item as Door;
-        //        UnlockDoor(door);
-        //    }
+        private bool UnlockObject(Item obj)
+        {
+            if (!obj.IsLocked)
+            {
+                Print("It's unlocked at the moment.");
+                return true;
+            }
 
-        //    return true;
-        //}
+            if (obj.IsLockable)
+            {
+                // locking and unlock needs to be handled by the object in Before/After routines
+                return true;
+            }
+
+            Print("That doesn't seem to be something you can unlock.");
+            return true;
+        }
 
         private bool UnlockDoor(Door door, Item indirect)
         {
@@ -72,48 +79,21 @@ namespace Adventure.Net.Verbs
                 }
             }
 
-            if (indirect != key)
+            if (indirect != null && indirect != key)
             {
                 Print("That doesn't seem to fit the lock.");
-                return false;
+                return true;
             }
 
             if (key.InInventory)
             {
-                Print($"You unlock the {door}.");
+                Print($"You unlock the {door.Name}.");
                 door.IsLocked = false;
                 return true;
             }
 
             Print("You have nothing to unlock that with.");
-            return false;
-
-
-            //if (!door.Key.InInventory)
-            //{
-            //    Print("You have nothing to unlock that with.");
-            //    return;
-            //}
-
-            //if (IndirectItem == null)
-            //{
-            //    if (Inventory.Items.Count == 1 && Inventory.Items[0] == door.Key)
-            //    {
-            //        // TODO: more HELD after message stuff
-            //        Print("(with the {0})", door.Key.Name);
-            //        Print("You unlock the {0}.", Item.Name);
-            //        Item.IsLocked = false;
-            //        return;
-            //    }
-
-            //    ObjectNotSpecified();
-            //}
-            //else if (IndirectItem == door.Key)
-            //{
-            //    Print("You unlock the {0}.", Item.Name);
-            //    Item.IsLocked = false;
-            //}
-
+            return true;
         }
 
         // TODO:"What do you want to unlock the {0} with?"

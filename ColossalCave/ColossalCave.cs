@@ -1,6 +1,5 @@
 using ColossalCave.Places;
 using Adventure.Net;
-using ColossalCave.Objects;
 
 namespace ColossalCave
 {
@@ -25,10 +24,7 @@ namespace ColossalCave
 
             Output.PrintLine();
 
-            //Location = Rooms.Get<EndOfRoad>();
-            Inventory.Add(Item.Get<SetOfKeys>());
-            Location = Rooms.Get<OutsideGrate>();
-
+            Location = Rooms.Get<EndOfRoad>();
         }
 
     

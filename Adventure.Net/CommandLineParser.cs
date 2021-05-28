@@ -142,7 +142,17 @@ namespace Adventure.Net
                 }
                 else
                 {
-                    result.Error = Messages.CantSeeObject;
+                    obj = result.Objects.FirstOrDefault();
+                    
+                    if (obj != null)
+                    {
+                        result.Error = Messages.PartialUnderstanding(verb, obj);
+                    }
+                    else
+                    {
+                        result.Error = Messages.CantSeeObject;
+                    }
+
                     return result;
                 }
 
@@ -169,6 +179,15 @@ namespace Adventure.Net
                 where o.InScope
                 select o
             ).ToList();
+
+            // special case: token refers to a Door which is handled as a Room
+            var doors = (
+                from r in Rooms.WithName(token)
+                where r.InScope && r is Door
+                select r
+            ).ToList();
+
+            objects.AddRange(doors);
 
             if (objects.Count == 1)
             {

@@ -28,8 +28,6 @@ namespace Adventure.Net.Verbs
         public bool Expects(Item obj)
         {
 
-            bool result = false;
-
             if (obj.IsScenery)
             {
                 Print($"That's hardly portable.");
@@ -47,10 +45,9 @@ namespace Adventure.Net.Verbs
                 CurrentRoom.Objects.Remove(obj);
                 Inventory.Add(obj);
                 Print($"Taken.");
-                result = true;
             }
 
-            return result;
+            return true;
         }
         
     }

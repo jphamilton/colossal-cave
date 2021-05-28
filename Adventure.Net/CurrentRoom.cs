@@ -169,6 +169,7 @@ namespace Adventure.Net
             result.AddRange(Location.Objects.Where(x => !x.IsScenery && !x.IsStatic));
             result.AddRange(Location.Objects.Where(x => x.IsScenery || x.IsStatic));
             result.AddRange(Inventory.Items);
+            // note: location is added to scope to support things like Door
             result.Add(Location);
 
             AddContained(result);
