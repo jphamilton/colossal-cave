@@ -15,13 +15,17 @@ namespace Adventure.Net
         {
             if (!obj.InInventory)
             {
-                // Context.Current.Print($"(first taking the {obj.Name})");
-
                 var result = obj.Execute<Take>(obj, v => v.Expects(obj));
 
                 if (result.Success)
                 {
                     Context.Current.Print($"(first taking the {obj.Name})", CommandState.After);
+                    
+                    foreach(var message in result.CommandOutput.Output)
+                    {
+                        Context.Current.Print(message);
+                    }
+
                     return true;
                 }
 

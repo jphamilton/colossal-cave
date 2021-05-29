@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace Adventure.Net
 {
+    // TODO: make sure Verbs are loaded from all assemblies in the AppDomain
     public abstract class Verb 
     {
         public string Name { get; protected set; }

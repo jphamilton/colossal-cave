@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Verbs;
 using ColossalCave.Objects;
 using ColossalCave.Places;
 using Xunit;
@@ -210,6 +211,35 @@ namespace Tests.VerbTests
             Assert.False(Inventory.Contains(tastyFood));
 
         }
+
+        [Fact]
+        public void implicit_take_is_blocked_by_before()
+        {
+            var blocked = "The food disappears before you can take it.";
+
+            // eat command requires that object be in players inventory
+            // here it's not, but it is in the room - so take it for
+            // the player automatically
+            var tastyFood = Objects.Get<TastyFood>();
+
+            tastyFood.Before<Take>(() =>
+            {
+                Print(blocked);
+                return true;
+            });
+
+            Assert.False(Inventory.Contains(tastyFood));
+
+            var result = Execute("eat food");
+
+            Assert.Equal("(first taking the tasty food)", Line(1));
+            Assert.Equal(blocked, Line(2));
+
+            Assert.False(Room.Contains(tastyFood));
+            Assert.False(Inventory.Contains(tastyFood));
+
+        }
+
 
         [Fact]
         public void no_implicit_take()
