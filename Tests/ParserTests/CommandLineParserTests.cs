@@ -5,7 +5,7 @@ using ColossalCave.Places;
 using System.Linq;
 using Xunit;
 
-namespace Tests
+namespace Tests.ParserTests
 {
     public partial class CommandLineParserTests : BaseTestFixture
     {

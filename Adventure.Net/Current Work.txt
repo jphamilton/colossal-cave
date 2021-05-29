@@ -1,63 +1,29 @@
-﻿
-Overview
---------------
---------------
-Simplify parser by trying to get rid of Grammars and crazy rules in the parser
+﻿Implicit Actions
+----------------
+Need to figure out how to map [Held] attribute to implicit handlers. Only Take is supported.
+Works for Eat
 
-"turn on lamp", "turn lamp off" -> should match Switch as verb
+> eat food
+(first taking the tasty food)
+Delicious
 
-Switch figures out whether to turn object on or off based on tokens.
+But there is no way to currently figure out which "implicit" action to run for other situations
 
-Find verb, pass tokens to Verb for further processing.
+MAYBE this is done by the Verb itself when the [Held] is an indirect object (e.g. unlock grate)
 
-Basic Workflow
----------------
-"put lamp in box"
+DROP: Implicit drop works if there is only 1 item in inventory - works with just "drop" and also "drop all" 
 
-// verb is always first token
-var token = tokens.RemoveAt(0);
-var put =  VerbList.GetVerbByName(token);
+UNLOCK: Implicit unlock works if the key is the only item in inventory, otherwise "What do you want to unlock the <object> with?"
 
-// scan remainging tokens for object and indirect object, everything else is a string that will  be interpreted by
-// the Verb. This way there are no crazy rules for things like "in" which can be a preposition or a direction
+Nested command handling
+---------------------------------
+> "turn on"
+What do you want to turn on?
 
-list: obj1 = lamp, "in", obj2 = table // verb figures out whether "in" is valid or not
 
-// pass to verb to handle
-Put.Process(list)
+// user can respond "lamp" and previous command is still in context
+// or user can type "turn on lamp" and a whole new command is generated
 
-// base Verb class handles the execution of Before, During, After workflow
-// each verb class can handle it's weird special cases
-
-"put batteries in lamp"
-Put verb knows, based on "in" that lamp is really the target object here
-
-"turn on"
-> What do you want to turn on?
-
-"switch on"
-> What do you want to switch on?
-
-Verb can handle capturing the input and forwarding to the object
-* The prompt uses the synonymn supplied by the user
-
-All/Except
---------------
-<multi> = multiple objects (list of objects, all and except)
-
-Parser figures out if objects are in/out of scope and displays the appropriate error messages
-or
-Verb evaluates if it is items in inventory or items in scope (drop vs. take)
-or
-Parser asks Verb 
-
-"take all" (objects in scope) - parser handles evaluating all to all in scope objects and
-builds object list to pass to Take
-
-"drop all" (objects in inventory)
-
-"take all except xyz" - parser just removes the objects from the list
-before passing it to Take.
 
 ---------
 <noun> - can be held, in the room or up to the code to decide

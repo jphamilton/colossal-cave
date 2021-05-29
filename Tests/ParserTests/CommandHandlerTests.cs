@@ -4,30 +4,22 @@ using ColossalCave.Objects;
 using ColossalCave.Places;
 using Xunit;
 
-namespace Tests
+namespace Tests.ParserTests
 {
     public class CommandHandlerTests : BaseTestFixture
     {
         [Fact]
         public void should_not_run()
         {
-            var result = parser.Parse("");
+            var result = Execute("");
             Assert.Equal(Messages.DoNotUnderstand, result.Error);
-            
-            var command = result.CommandHandler();
-            command.Run();
-
             Assert.Contains(Messages.DoNotUnderstand, ConsoleOut);
         }
 
         [Fact]
         public void should_not_recognize_verb()
         {
-            var result = parser.Parse("snark");
-            
-            var command = result.CommandHandler();
-            command.Run();
-
+            var result = Execute("snark");
             Assert.Contains(Messages.VerbNotRecognized, ConsoleOut);
         }
 
@@ -36,11 +28,8 @@ namespace Tests
         {
             Context.Story.Location = Room<EndOfRoad>();
 
-            var result = parser.Parse("go house");
-
-            var command = result.CommandHandler();
-            command.Run();
-
+            Execute("go house");
+            
             Assert.Equal(Room<InsideBuilding>(), Context.Story.Location);
         }
 
@@ -55,24 +44,18 @@ namespace Tests
         [Fact]
         public void i_only_understood_you_as_far_as_wanting_to_2()
         {
-            var result = parser.Parse("turn lamp down");
-
-            var command = result.CommandHandler();
-            command.Run();
-
+            Execute("turn lamp down");
+            
             Assert.Contains(Messages.PartialUnderstanding(Verb.Get<Turn>(), Objects.Get<BrassLantern>()), ConsoleOut);
         }
 
         [Fact]
         public void turn_to_switch_redirect()
         {
-            var result = parser.Parse("turn lamp on");
-
             var lamp = Objects.Get<BrassLantern>();
             Assert.False(lamp.IsOn);
 
-            var command = result.CommandHandler();
-            command.Run();
+            Execute("turn lamp on");
 
             Assert.True(lamp.IsOn);
         }
@@ -80,13 +63,10 @@ namespace Tests
         [Fact]
         public void switch_to_switchon_lamp_redirect()
         {
-            var result = parser.Parse("switch lamp on");
-
             var lamp = Objects.Get<BrassLantern>();
             Assert.False(lamp.IsOn);
 
-            var command = result.CommandHandler();
-            command.Run();
+            Execute("switch lamp on");
 
             Assert.True(lamp.IsOn);
         }
@@ -94,10 +74,7 @@ namespace Tests
         [Fact]
         public void before_enter_shared()
         {
-            var result = parser.Parse("enter spring");
-
-            var command = result.CommandHandler();
-            command.Run();
+            Execute("enter spring");
 
             // no exception means this passed
         }
@@ -122,10 +99,7 @@ namespace Tests
 
             Assert.True(Location.Contains<BrassLantern>());
 
-            var result = parser.Parse("take lamp");
-
-            var command = result.CommandHandler();
-            command.Run();
+            Execute("take lamp");
 
             Assert.True(Inventory.Contains<BrassLantern>());
             Assert.False(Location.Contains<BrassLantern>());
@@ -154,10 +128,7 @@ namespace Tests
 
             Assert.True(Location.Contains<BrassLantern>());
 
-            var result = parser.Parse("take lamp");
-
-            var command = result.CommandHandler();
-            command.Run();
+            Execute("take lamp");
 
             Assert.False(after);
             Assert.False(Inventory.Contains<BrassLantern>());
@@ -169,10 +140,7 @@ namespace Tests
         [Fact]
         public void multiple_object_should_show_message_for_each_object()
         {
-            var result = parser.Parse("take all");
-
-            var command = result.CommandHandler();
-            command.Run();
+            Execute("take all");
 
             Assert.Contains("set of keys: Taken.", ConsoleOut);
             Assert.Contains("tasty food: Taken.", ConsoleOut);
@@ -191,10 +159,7 @@ namespace Tests
             CurrentRoom.Objects.Remove(lamp);
             Inventory.Add(lamp);
 
-            var result = parser.Parse("drop all");
-
-            var command = result.CommandHandler();
-            command.Run();
+            Execute("drop all");
 
             Assert.Contains($"(the {lamp.Name})", ConsoleOut);
             Assert.Contains("Dropped.", ConsoleOut);

@@ -14,7 +14,7 @@ namespace Tests
         protected CommandLineParser parser;
         protected StringBuilder fakeConsole;
         private string _output;
-        private CommandResult _currentCommandResult;
+        private CommandResult _commandResult;
 
         public BaseTestFixture()
         {
@@ -26,6 +26,12 @@ namespace Tests
             Context.Story.Initialize();
             Context.Story.Location = Room<InsideBuilding>();
             Inventory.Clear();
+            fakeConsole.Clear(); ;
+        }
+
+        protected void Clear()
+        {
+            _output = null;
             fakeConsole.Clear();
         }
 
@@ -69,13 +75,19 @@ namespace Tests
         {
             var result = parser.Parse(input);
             var command = result.CommandHandler();
-            _currentCommandResult = command.Run();
-            return _currentCommandResult;
+            _commandResult = command.Run();
+            return _commandResult;
         }
 
         protected string Line(int number)
         {
-            return _currentCommandResult != null ? _currentCommandResult.Output[number - 1] : null;
+            if (_commandResult != null && 
+                _commandResult.Output.Count >= number )
+            {
+                return _commandResult.Output[number - 1];
+            }
+
+            return null;
         }
 
        

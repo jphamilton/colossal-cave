@@ -78,6 +78,7 @@ namespace Advent.Tests.Verbs
             Assert.AreEqual("You can't see any such thing.", results[0]);
         }
 
+
         [Test]
         public void can_drop_everything_except_bottle()
         {

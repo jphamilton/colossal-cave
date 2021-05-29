@@ -56,7 +56,7 @@ namespace Tests.ObjectTests
 
             Assert.True(cage.Contains<LittleBird>());
 
-            Execute("drop bird");
+            var result = Execute("drop bird");
 
             Assert.Equal("(The bird is released from the cage.)", Line(1));
             Assert.Equal("The little bird flies free.", Line(2));

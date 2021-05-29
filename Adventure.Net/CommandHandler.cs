@@ -24,8 +24,6 @@ namespace Adventure.Net
             var commandState = context.PushState();
             var failed = false;
 
-            //var partial = false;
-
             Context.Stack.Push(context);
 
             var verb = parsed.Verb;
@@ -59,12 +57,11 @@ namespace Adventure.Net
                             if (after != null)
                             {
                                 commandState.State = CommandState.After;
-                                after(); // TODO: messages printed in After need to be
+                                after(); 
                             }
                         }
                         else
                         {
-                            // only a complete failure if there is no output
                             failed = true;
                             break;
                         }
@@ -105,30 +102,9 @@ namespace Adventure.Net
                     result.Output.Add(Messages.CantSeeObject);
                     Output.Print(Messages.CantSeeObject);
                 }
-                //result.Success = false;
-
-                //if (parsed.Preposition == null)
-                //{
-                //    // e.g. take bottle nonsense nonsense
-                //    var partialUnderstanding = Messages.PartialUnderstanding(parsed.Verb, partial);
-                //    result.Output.Add(partialUnderstanding);
-                //    Output.Print(partialUnderstanding) ;
-                //}
-                //else
-                //{
-                //    // e.g. close on nonsense nonsense
-                //    result.Output.Add(Messages.CantSeeObject);
-                //    Output.Print(Messages.CantSeeObject);
-                //}
             }
             else
             {
-                if (parsed.PreOutput.Any())
-                {
-                    result.Output.AddRange(parsed.PreOutput);
-                    Output.Print(parsed.PreOutput);
-                }
-
                 var output = context.Output;
 
                 result.Output.AddRange(output);
@@ -141,11 +117,15 @@ namespace Adventure.Net
 
         private CommandResult Error(string error)
         {
-            return new CommandResult
+            var result = new CommandResult
             {
                 Error = error,
                 Success = false
             };
+
+            result.Output.Add(error);
+
+            return result;
         }
 
         private bool Expects(Verb verb, Item obj)

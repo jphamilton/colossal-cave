@@ -13,8 +13,10 @@ namespace Adventure.Net
         public static void Load(IStory story)
         {
             rooms.Clear();
+
             Assembly ax = story.GetType().Assembly;
             rooms.AddRange(ax.SubclassOf<Room>());
+            
             ax = Assembly.GetExecutingAssembly();
             rooms.AddRange(ax.SubclassOf<Room>());
         }

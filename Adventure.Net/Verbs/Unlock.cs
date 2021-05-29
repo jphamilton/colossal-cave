@@ -1,9 +1,4 @@
-﻿using Adventure.Net.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Adventure.Net.Verbs
+﻿namespace Adventure.Net.Verbs
 {
     // TODO: implement
     public class Unlock : Verb
@@ -11,65 +6,47 @@ namespace Adventure.Net.Verbs
         public Unlock()
         {
             Name = "unlock";
-         //   Grammars.Add("<noun> with <held>", UnlockObject);
-         //   Grammars.Add("<noun>", UnlockObject);
         }
 
+       
+        // implicit unlock
+        // if the key is in inventory and is the only item, the
         public bool Expects(Item obj)
         {
-            if (!obj.IsLockable)
-            {
-                Print("That doesn't seem to be something you can unlock.");
-            }
-            else if (!obj.IsLocked)
-            {
-                Print("It's unlocked at the moment.");
-            }
-            else if (obj is Door) // TODO: need to refactor so this works for all lockable things
-            {
-                var door = obj as Door;
-                return UnlockDoor(door, null);
-            }
-            else
-            {
-                return UnlockObject(obj);
-            }
+            return UnlockObject(obj);
+            //if (!obj.IsLockable)
+            //{
+            //    Print("That doesn't seem to be something you can unlock.");
+            //}
+            //else if (!obj.IsLocked)
+            //{
+            //    Print("It's unlocked at the moment.");
+            //}
 
-            return true;
+
+
         }
 
-        public bool Expects(Item obj, Preposition.With with, Item indirect)
+        public bool Expects(Item obj, Preposition.With with, [Held]Item indirect)
         {
-            return UnlockDoor((Door)obj, indirect);
+            return UnlockObject(obj, indirect);
         }
 
-        private bool UnlockObject(Item obj)
+        private bool UnlockObject(Item obj, Item indirect = null)
         {
-            if (!obj.IsLocked)
-            {
-                Print("It's unlocked at the moment.");
-                return true;
-            }
-
-            if (obj.IsLockable)
-            {
-                // locking and unlock needs to be handled by the object in Before/After routines
-                return true;
-            }
-
-            Print("That doesn't seem to be something you can unlock.");
-            return true;
-        }
-
-        private bool UnlockDoor(Door door, Item indirect)
-        {
-            var key = door.Key;
+            var key = obj.Key;
 
             if (indirect == null)
             {
-                if (key.InInventory)
+                // implicit unlock
+                if (key != null && key.InInventory && Inventory.Count == 1)
                 {
                     Print($"(with the {key.Name})");
+                }
+                else
+                {
+                    Print($"What do you want to unlock {obj.Article} {obj.Name} with?");
+                    return true;
                 }
             }
 
@@ -79,10 +56,18 @@ namespace Adventure.Net.Verbs
                 return true;
             }
 
-            if (key.InInventory)
+            if (key != null && key.InInventory)
             {
-                Print($"You unlock the {door.Name}.");
-                door.IsLocked = false;
+                if (obj.IsLocked)
+                {
+                    Print($"You unlock the {obj.Name}.");
+                    obj.IsLocked = false;
+                }
+                else
+                {
+                    Print("That's unlocked at the moment.");
+                }
+
                 return true;
             }
 

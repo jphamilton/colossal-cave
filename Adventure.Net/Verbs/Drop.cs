@@ -1,4 +1,6 @@
-﻿namespace Adventure.Net.Verbs
+﻿using System.Linq;
+
+namespace Adventure.Net.Verbs
 {
 
     //Verb 'drop' 'discard' 'throw'
@@ -17,9 +19,24 @@
             MultiHeld = true;
         }
 
+        // implict drop
         public bool Expects()
         {
-            Print("You aren't carrying anything.");
+            if (Inventory.Count == 0)
+            {
+                Print("What do you want to drop those things in?");
+            }
+            else if (Inventory.Count == 1)
+            {
+                // implicit drop
+                var obj = Inventory.Items.Single();
+                Print($"({obj.Article} {obj.Name})");
+                return Expects(obj);
+            }
+            else
+            {
+                Print("What do you want to drop?");
+            }
             return true;
         }
 
@@ -27,6 +44,11 @@
         {
             if (obj.InInventory)
             {
+                //if (Inventory.Count == 1)
+                //{
+                //    Print($"({obj.Article} {obj.Name})");
+                //}
+
                 obj.MoveToLocation();
                 Print("Dropped.");
             }

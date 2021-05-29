@@ -40,7 +40,7 @@ namespace Adventure.Net
         public bool HasPluralName { get; set; }
         public bool IsAnimate { get; set; }
         public bool IsEdible { get; set; }
-        public bool IsLockable { get; set; }
+        public bool IsLockable { get; private set; }
         public bool IsLocked { get; set; }
         public bool IsOn { get; set; }    // on or off?
         public bool IsOpen { get; set; }
@@ -50,6 +50,19 @@ namespace Adventure.Net
         public bool IsSwitchable { get; set; }
         public bool IsTouched { get; set; }
         public bool IsTransparent { get; set; }
+
+        // Locking/Unlocking
+        
+        public void LocksWithKey<T>(bool isLocked) where T : Item
+        {
+            IsLockable = true;
+            IsLocked = isLocked;
+            Key = Net.Objects.Get<T>();
+        }
+
+        public Item Key { get; private set; }
+        
+        //
 
         public Func<string> Describe { get; set; }
 
@@ -180,7 +193,7 @@ namespace Adventure.Net
 
                 var after = obj.After<T>();
 
-                if (after != null)
+                if (success && after != null)
                 {
                     command.State = CommandState.After;
                     after();

@@ -1,7 +1,7 @@
 ﻿using Adventure.Net;
 using Xunit;
 
-namespace Tests
+namespace Tests.ParserTests
 {
 
     [Collection("Sequential")]

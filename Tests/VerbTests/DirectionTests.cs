@@ -13,6 +13,14 @@ namespace Tests.Verbs
         }
 
         [Fact]
+        public void can_go_in()
+        {
+            Location = Room<EndOfRoad>();
+            Execute("go in");
+            Assert.Equal(Room<InsideBuilding>(), Location);
+        }
+
+        [Fact]
         public void can_travel_valid_directions()
         {
             Execute("w");

@@ -1,5 +1,6 @@
 ﻿using Adventure.Net.Extensions;
 using Adventure.Net.Verbs;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +9,8 @@ namespace Adventure.Net
 
     public class CommandLineParser
     {
+        private static CommandLineParserResult previous;
+
         public CommandLineParserResult Parse(string input)
         {
             var tokenizer = new InputTokenizer();
@@ -22,13 +25,47 @@ namespace Adventure.Net
 
             if (verb == null)
             {
-                return new CommandLineParserResult { Error = Messages.VerbNotRecognized };
+                // this allows the parser to handle partial response
+                // > take
+                // What do you want to take?
+                //
+                // > bottle
+                // Taken.
+                if (previous != null && previous.Verb != null)
+                {
+                    verb = previous.Verb;
+                }
+                else
+                {
+                    return new CommandLineParserResult { Error = Messages.VerbNotRecognized };
+                }
+            }
+            else
+            {
+                // remove verb token
+                tokens.RemoveAt(0);
             }
 
-            // remove verb token
-            tokens.RemoveAt(0);
 
-            return Parse(verb, tokens);
+            // store result and return
+            var result = Parse(verb, tokens);
+
+            if (verb != null && tokens.Count == 0)
+            {
+                // check if this is a single word command
+                var verbType = verb.GetType();
+                var expects = verbType.GetMethod("Expects", new Type[] { });
+
+                if (expects == null)
+                {
+                    result.Error = $"What do you want to {result.Verb.Name}?";
+                }
+            }
+
+            // if previous command is not null, clear it, otherwise store it
+            previous = previous != null ? null : result;
+
+            return result;
         }
 
         private CommandLineParserResult Parse(Verb verb, TokenizedInput tokens)
@@ -66,17 +103,13 @@ namespace Adventure.Net
                     }
                 }
 
-                else if ((result.Verb is IDirectionProxy) && token.IsDirection() && !result.Objects.Any()) // distinguish between "go south", "put bottle down", "close up grate"
+                // distinguish between "go south", "put bottle down", "close up grate"
+                else if ((result.Verb is IDirectionProxy) && token.IsDirection() && !result.Objects.Any()) 
                 {
                     var v = token.ToVerb();
                     result.Ordered.Add(v);
                     result.Verb = v;
                 }
-
-                //else if ((result.Verb is Enter || result.Verb is Go) && token.IsDirection())
-                //{
-                //    result.Objects.Add(VerbList.GetVerbByName(token));
-                //}
 
                 else if (token.IsPreposition())
                 {
@@ -92,7 +125,8 @@ namespace Adventure.Net
                     if (!verb.Multi && !verb.MultiHeld)
                     {
                         result.Error = Messages.MultiNotAllowed;
-                        return result;
+                        //return result;
+                        break;
                     }
 
                     var multi = new List<Item>();
@@ -105,58 +139,23 @@ namespace Adventure.Net
                     if (verb.MultiHeld)
                     {
                         multi.AddRange(Inventory.Items);
-
-                        /*  
-                        Special Case for multiheld commands where only 1 item is in inventory.
-                            
-                          > drop all
-                          (the small lantern)
-                          Dropped.
-
-                        */
-
-                        // TODO: this needs to be handled differently - whatever is done for Eat (held)
-                        if (multi.Count == 1)
-                        {
-                            result.PreOutput.Add($"(the {multi.Single().Name})");
-                        }
                     }
 
-                    result.Objects.AddRange(multi);
+                    // if object count is only 1, we don't add it so it can be handled in the verb using implict
+                    // messages e.g. (the small bottle)
+                    if (multi.Count > 1)
+                    {
+                        result.Objects.AddRange(multi);
+                    }
 
                 }
+
                 else if (token == K.EXCEPT && (verb.Multi || verb.MultiHeld) && lastToken == K.ALL)
                 {
-                    var index = tokens.IndexOf(token) + 1;
-                    var except = new List<Item>();
-
-                    // process rest of the tokens as objects
-                    for (int i = index; i < tokens.Count; i++)
-                    {
-                        // TODO: handle multiple objects with same name
-                        var t = tokens[i];
-
-                        if (t.IsPreposition() && result.Preposition == null)
-                        {
-                            result.Preposition = Prepositions.Get(t);
-                            continue;
-                        }
-
-                        obj = GetObject(result, t);
-
-                        if (obj == null)
-                        {
-                            result.Error = Messages.CantSeeObject;
-                            return result;
-                        }
-
-                        except.Add(obj);
-                    }
-
-                    result.Objects = result.Objects.Where(x => !except.Contains(x)).ToList();
-
-                    return result;
+                    HandleExcept(result, tokens, token);
+                    break;
                 }
+
                 else
                 {
                     obj = result.Objects.FirstOrDefault();
@@ -179,13 +178,51 @@ namespace Adventure.Net
             return result;
         }
 
-        private CommandLineParserResult Parse(Verb verb, string input)
+        private void HandleExcept(CommandLineParserResult result, TokenizedInput tokens, string currentToken)
         {
-            var tokenizer = new InputTokenizer();
-            var tokens = tokenizer.Tokenize(input);
-            return Parse(verb, tokens);
+            var index = tokens.IndexOf(currentToken) + 1;
+
+            if (index >= tokens.Count)
+            {
+                //result.Error = $"What do you want to {result.Verb.Name}?";
+                return;
+            }
+
+            var except = new List<Item>();
+
+            // process rest of the tokens as objects
+            for (int i = index; i < tokens.Count; i++)
+            {
+                // TODO: handle multiple objects with same name
+                var t = tokens[i];
+
+                if (t.IsPreposition() && result.Preposition == null)
+                {
+                    result.Preposition = Prepositions.Get(t);
+                    continue;
+                }
+
+                var obj = GetObject(result, t);
+
+                if (obj == null)
+                {
+                    result.Error = Messages.CantSeeObject;
+                    break;
+                }
+
+                except.Add(obj);
+            }
+
+            var success = !result.Error.HasValue();
+
+            if (success)
+            {
+                result.Objects = result.Objects.Where(x => !except.Contains(x)).ToList();
+            }
+
+            return;
         }
-        
+
         private Item GetObject(CommandLineParserResult result, string token)
         {
             //TODO: I have a feeling we are not done here

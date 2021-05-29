@@ -134,5 +134,10 @@ namespace Adventure.Net
         {
             get { return objects.AsReadOnly(); }
         }
+
+        public static int Count
+        {
+            get { return objects.Count; }
+        }
     }
 }

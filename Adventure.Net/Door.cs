@@ -10,20 +10,12 @@ namespace Adventure.Net
         {
             IsStatic = true;
             IsOpenable = true;
-            IsLockable = true;
         }
 
-        public Item Key { get; private set; }
-        
         public Func<Room> DoorTo { get; set; }
 
         public Func<DirectionalVerb> DoorDirection { get; set; } 
         
-        public void WithKey<T>() where T:Item
-        {
-            Key = Net.Objects.Get<T>();            
-        }
-
         protected T Direction<T>() where T:DirectionalVerb
         {
             Type t = typeof (T);

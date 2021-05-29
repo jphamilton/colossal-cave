@@ -14,6 +14,7 @@ namespace ColossalCave.Objects
         {
             Name = "brass lantern";
             Synonyms.Are("lamp", "headlamp", "headlight", "lantern", "light", "shiny", "brass");
+            Article = "the";
             IsOn = false;
             IsSwitchable = true;
             DaemonStarted = true;

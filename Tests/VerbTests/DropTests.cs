@@ -14,10 +14,7 @@ namespace Tests.VerbTests
             Inventory.Add(bottle);
 
             // not holding bottle, but bottle is in the room
-            var result = parser.Parse("drop bottle");
-
-            var command = result.CommandHandler();
-            command.Run();
+            var result = Execute("drop bottle");
 
             Assert.Contains($"Dropped.", ConsoleOut);
         }
@@ -28,22 +25,79 @@ namespace Tests.VerbTests
             var bottle = Objects.Get<Bottle>();
 
             // not holding bottle, but bottle is in the room
-            var result = parser.Parse("drop bottle");
-
-            var command = result.CommandHandler();
-            command.Run();
+            var result = Execute("drop bottle");
 
             Assert.Contains($"The {bottle.Name} is already here.", ConsoleOut);
         }
 
         [Fact]
-        public void shoud_handle_drop_all__with_no_inventory()
+        public void should_not_drop_something_not_in_scope()
         {
-            var result = parser.Parse("drop all");
-            var command = result.CommandHandler();
+            Assert.False(Inventory.Contains("cage"));
+            Execute("drop cage");
+            Assert.Equal(Messages.CantSeeObject, Line(1));
+        }
 
-            command.Run();
-            Assert.Contains("You aren't carrying anything.", ConsoleOut);
+        [Fact]
+        public void should_drop_everything()
+        {
+            Execute("take all");
+
+            Assert.True(Inventory.Contains("bottle"));
+            Assert.True(Inventory.Contains("food"));
+            Assert.True(Inventory.Contains("keys"));
+            Assert.True(Inventory.Contains("lamp"));
+
+            Execute("drop all");
+            
+            Assert.False(Inventory.Contains("bottle"));
+            Assert.False(Inventory.Contains("food"));
+            Assert.False(Inventory.Contains("keys"));
+            Assert.False(Inventory.Contains("lamp"));
+
+            Assert.Contains("set of keys: Dropped.", ConsoleOut);
+            Assert.Contains("tasty food: Dropped.", ConsoleOut);
+            Assert.Contains("brass lantern: Dropped.", ConsoleOut);
+            Assert.Contains("small bottle: Dropped.", ConsoleOut);
+        }
+
+        [Fact]
+        public void drop_all_except_object_not_specified()
+        {
+            var result = Execute("drop all except");
+            Assert.Equal("What do you want to drop those things in?", Line(1));
+        }
+
+        [Fact]
+        public void drop_all_when_inventory_is_empty()
+        {
+            Execute("drop all");
+            Assert.Equal("What do you want to drop those things in?", Line(1));
+        }
+
+        [Fact]
+        public void drop_except_all_is_invalid_order()
+        {
+            var result = Execute("drop except all");
+            Assert.Equal(Messages.CantSeeObject, Line(1));
+        }
+
+        [Fact]
+        public void should_implicit_drop_with_1_item_in_inventory()
+        {
+            Inventory.Add(Objects.Get<Bottle>());
+            var result = Execute("drop");
+            Assert.Equal("(the small bottle)", Line(1));
+            Assert.Equal("Dropped.", Line(2));
+        }
+
+        [Fact]
+        public void should_implicit_drop_with_1_item_in_inventory_all()
+        {
+            Inventory.Add(Objects.Get<Bottle>());
+            var result = Execute("drop all");
+            Assert.Equal("(the small bottle)", Line(1));
+            Assert.Equal("Dropped.", Line(2));
         }
     }
 }

@@ -11,9 +11,9 @@ namespace ColossalCave.Objects
             Name = "steel grate";
             Synonyms.Are("grate", "lock", "gate", "grille", "metal", "string", "steel", "grating");
             Description = "It just looks like an ordinary grate mounted in concrete.";
+            Article = "the";
 
-            IsLocked = true;
-            WithKey<SetOfKeys>();
+            LocksWithKey<SetOfKeys>(true);
 
             DoorDirection = () =>
                 {

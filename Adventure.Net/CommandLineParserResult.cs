@@ -19,10 +19,6 @@ namespace Adventure.Net
 
         public List<object> Ordered { get; } = new List<object>();
 
-        // TODO: something better?
-        // These are messages that need to be displayed before the command is run
-        public IList<string> PreOutput { get; } = new List<string>();
-
         public CommandHandler CommandHandler()
         {
             return new CommandHandler(this);
