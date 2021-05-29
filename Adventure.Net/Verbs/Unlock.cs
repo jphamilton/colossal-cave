@@ -38,15 +38,9 @@ namespace Adventure.Net.Verbs
             return true;
         }
 
-        public bool Expects(Item obj, Preposition prep, Item indirect)
+        public bool Expects(Item obj, Preposition.With with, Item indirect)
         {
-            if (obj is Door && prep == Preposition.With)
-            {
-                return UnlockDoor((Door)obj, indirect);
-            }
-
-            // TODO: test wrong preposition here
-            throw new NotImplementedException("Unlock: wrong preposition");
+            return UnlockDoor((Door)obj, indirect);
         }
 
         private bool UnlockObject(Item obj)

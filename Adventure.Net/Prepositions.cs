@@ -1,73 +1,87 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Adventure.Net
 {
-    public enum Preposition
-    {
-        About,
-        Against,
-        Apart,
-        At,
-        Down,
-        For,
-        From,
-        In,
-        Inside,
-        Into,
-        Of,
-        Off,
-        On,
-        Onto,
-        Out,
-        Over,
-        Through,
-        To,
-        Top,
-        Under,
-        Up,
-        With,
-    }
+    public abstract class Prep { }
 
-    public class Prepositions : IEnumerable<string>
+    public static class Preposition
     {
-        private static readonly List<string> prepositions = new List<string>() { 
-                "on", "off", "about", "for", "to", "with", "up", 
-                "in", "into", "onto", "against", "out", 
-                "over", "inside", "through", "under", "apart", 
-                "down", "from", "top", "of", "at" 
+        public class About : Prep { }
+        public class Against : Prep { }
+        public class Apart : Prep { }
+        public class At : Prep { }
+        public class Down : Prep { }
+        public class For : Prep { }
+        public class From : Prep { }
+        public class In : Prep { }
+        public class Inside : Prep { }
+        public class Into : Prep { }
+        public class Of : Prep { }
+        public class Off : Prep { }
+        public class On : Prep { }
+        public class Onto : Prep { }
+        public class Out : Prep { }
+        public class Over : Prep { }
+        public class Through : Prep { }
+        public class To : Prep { }
+        public class Top : Prep { }
+        public class Under : Prep { }
+        public class Up : Prep { }
+        public class With : Prep { }
+    }
+    
+
+    public class Prepositions 
+    {
+
+        private static Dictionary<string, Prep> map = new()
+        {
+            {"about", new Preposition.About()},
+            {"against", new Preposition.Against()},
+            {"apart", new Preposition.Apart()},
+            {"at",  new Preposition.At()},
+            {"down", new Preposition.Down()},
+            {"for", new Preposition.For()},
+            {"from", new Preposition.From()},
+            {"in", new Preposition.In()},
+            {"inside", new Preposition.Inside()},
+            {"into", new Preposition.Into()},
+            {"of", new Preposition.Of()},
+            {"off", new Preposition.Off()},
+            {"on", new Preposition.On()},
+            {"onto", new Preposition.Onto()},
+            {"out", new Preposition.Out()},
+            {"over", new Preposition.Over()},
+            {"through", new Preposition.Through()},
+            {"to", new Preposition.To()},
+            {"top", new Preposition.Top()},
+            {"under", new Preposition.Under()},
+            {"up", new Preposition.Up()},
+            {"with", new Preposition.With()},
         };
 
-        public static void Add(string newPreposition)
+        public static void Add(string token, Prep prep)
         {
-            if (!prepositions.Contains(newPreposition))
-                prepositions.Add(newPreposition);
+            if (!map.ContainsKey(token))
+            {
+                map.Add(token, prep);
+            }
         }
 
-        public static Preposition? Get(string value)
+        public static Prep Get(string token)
         {
-            if (Enum.TryParse(value, true, out Preposition result))
+            if (map.ContainsKey(token))
             {
-                return result;
+                return map[token];
             }
 
             return null;
         }
 
-        public static bool Contains(string preposition)
+        public static bool Contains(string token)
         {
-            return prepositions.Contains(preposition);
+            return map.ContainsKey(token);
         }
-
-        public IEnumerator<string> GetEnumerator()
-        {
-            return prepositions.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        
     }
 }

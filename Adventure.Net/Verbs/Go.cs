@@ -1,7 +1,7 @@
 ﻿namespace Adventure.Net.Verbs
 {
     // TODO: implement
-    public class Go : Verb
+    public class Go : Verb, IDirectionProxy
     {
         /*
          Verb 'go' 'run' 'walk'
@@ -16,16 +16,9 @@
         {
             Name = "go";
             Synonyms.Are("walk", "run");
-            //Grammars.Add(Grammar.Empty,VagueGo);
            // Grammars.Add(K.DIRECTION_TOKEN, ()=> false);
             //Grammars.Add(K.NOUN_TOKEN, EnterIt);
         }
-
-        //private bool VagueGo()
-        //{
-        //    Print("You'll have to say which compass direction to go in.");
-        //    return true;
-        //}
 
         //private bool EnterIt()
         //{
@@ -35,7 +28,7 @@
         // TODO: This is new
         public bool Expects()
         {
-           // Print("You'll have to say which compass direction to go in.");
+            Print("You'll have to say which compass direction to go in.");
             return true;
         }
 

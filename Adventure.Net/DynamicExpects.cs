@@ -61,15 +61,16 @@ namespace Adventure.Net
                     return invoker.Invoke();
                 }
 
-                var verb = verbType.ToString().Split('.').Last();
-                var args = new List<string>();
-                
-                foreach(var type in call.Types)
-                {
-                    args.Add(type.ToString().Split('.').Last());
-                }
+                //var verb = verbType.ToString().Split('.').Last();
+                //var args = new List<string>();
 
-                throw new MissingMethodException($"{verb}.Expects({string.Join(",", args)}) is missing");
+                //foreach(var type in call.Types)
+                //{
+                //    args.Add(type.ToString().Split('.').Last());
+                //}
+
+                //throw new MissingMethodException($"{verb}.Expects({string.Join(",", args)}) is missing");
+                return false;
             }
         }
     }

@@ -10,7 +10,7 @@ namespace Adventure.Net
             public Type[] Types { get; }
             public object[] Args { get; }
 
-            public DynamicCall(Item obj, Preposition? prep, Item indirect)
+            public DynamicCall(Item obj, Prep prep, Item indirect)
             {
                 var types = new List<Type>();
                 var args = new List<object>();
@@ -23,7 +23,7 @@ namespace Adventure.Net
 
                 if (prep != null)
                 {
-                    types.Add(typeof(Preposition));
+                    types.Add(prep.GetType());
                     args.Add(prep);
                 }
 

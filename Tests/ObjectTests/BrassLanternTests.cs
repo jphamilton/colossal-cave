@@ -67,6 +67,55 @@ namespace Tests.ObjectTests
             Assert.Contains("Unfortunately, the batteries seem to be dead.", ConsoleOut);
         }
 
-        
+        [Fact]
+        public void can_turn_on_lamp()
+        {
+            lamp.IsOn = false;
+
+            Assert.False(lamp.HasLight);
+
+            Execute("turn on lamp");
+
+            Assert.True(lamp.IsOn);
+            Assert.True(lamp.HasLight);
+        }
+
+        [Fact]
+        public void can_turn_off_lamp()
+        {
+            lamp.IsOn = true;
+
+            Execute("turn off lamp");
+
+            Assert.False(lamp.IsOn);
+            Assert.False(lamp.HasLight);
+        }
+
+        [Fact]
+        public void cannot_turn_on_lamp_twice()
+        {
+            lamp.IsOn = true;
+            lamp.HasLight = true;
+
+            Execute("turn on lamp");
+
+            Assert.True(lamp.IsOn);
+            Assert.True(lamp.HasLight);
+            Assert.Equal("That's already on.", Line(1));
+        }
+
+        [Fact]
+        public void cannot_turn_off_lamp_twice()
+        {
+            lamp.IsOn = false;
+            lamp.HasLight = false;
+
+            var result = Execute("turn off lamp");
+
+            Assert.False(lamp.IsOn);
+            Assert.False(lamp.HasLight);
+            Assert.Equal("That's already off.", Line(1));
+        }
+
     }
 }

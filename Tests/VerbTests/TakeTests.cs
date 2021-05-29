@@ -18,7 +18,7 @@ namespace Tests.VerbTests
             Assert.Equal("Taken.", Line(1));
 
             Assert.True(Inventory.Contains(bottle));
-            Assert.False(Room.Objects.Contains(bottle));
+            Assert.False(Location.Objects.Contains(bottle));
         }
 
         [Fact]
@@ -44,7 +44,7 @@ namespace Tests.VerbTests
         [Fact]
         public void cannot_take_static_objects()
         {
-            Room = Rooms.Get<OutsideGrate>();
+            Location = Room<OutsideGrate>();
             var result = Execute("take grate");
             Assert.Equal("That's fixed in place.", Line(1));
         }
@@ -168,7 +168,7 @@ namespace Tests.VerbTests
         {
             var bottle = Objects.Get<Bottle>();
 
-            Room.Objects.Remove(bottle);
+            Location.Objects.Remove(bottle);
             Inventory.Add(bottle);
 
             Execute("take bottle");
@@ -207,7 +207,7 @@ namespace Tests.VerbTests
             Assert.Equal("(first taking the tasty food)", Line(1));
             Assert.Equal("Delicious!", Line(2));
 
-            Assert.False(Room.Contains(tastyFood));
+            Assert.False(Location.Contains(tastyFood));
             Assert.False(Inventory.Contains(tastyFood));
 
         }
@@ -235,7 +235,7 @@ namespace Tests.VerbTests
             // Assert.Equal("(first taking the tasty food)", Line(1));
             Assert.Equal(blocked, Line(1));
 
-            Assert.True(Room.Contains(tastyFood));
+            Assert.True(Location.Contains(tastyFood));
             Assert.False(Inventory.Contains(tastyFood));
 
         }
@@ -251,7 +251,7 @@ namespace Tests.VerbTests
 
             Assert.Equal("Delicious!", Line(1));
 
-            Assert.False(Room.Contains(tastyFood));
+            Assert.False(Location.Contains(tastyFood));
             Assert.False(Inventory.Contains(tastyFood));
 
         }

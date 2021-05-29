@@ -30,14 +30,9 @@
             return Redirect<Examine>(obj, v => v.Expects(obj));
         }
 
-        public bool Expects(Preposition p, Item obj)
+        public bool Expects(Item obj, Preposition.At at)
         {
-            if (p == Preposition.At)
-            {
-                return Redirect<Examine>(obj, v => v.Expects(obj));
-            }
-
-            return false;
+            return Redirect<Examine>(obj, v => v.Expects(obj));
         }
     }
 }

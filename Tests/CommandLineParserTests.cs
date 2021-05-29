@@ -51,7 +51,7 @@ namespace Tests
             var result = parser.Parse("turn lamp on");
 
             Assert.Contains(Objects.Get<BrassLantern>(), result.Objects);
-            Assert.Equal(Preposition.On, result.Preposition);
+            Assert.True(result.Preposition is Preposition.On);
             Assert.True(result.Verb is Turn);
         }
 
@@ -82,7 +82,7 @@ namespace Tests
         {
             var result = parser.Parse("put bottle in lamp"); 
             Assert.Contains(Objects.Get<Bottle>(), result.Objects);
-            Assert.Equal(Preposition.In, result.Preposition);
+            Assert.True(result.Preposition is Preposition.In);
             Assert.Equal(Objects.Get<BrassLantern>(), result.IndirectObject);
         }
 
@@ -93,7 +93,7 @@ namespace Tests
 
             Assert.Contains(Objects.Get<BrassLantern>(), result.Objects);
             Assert.Equal(Objects.Get<TastyFood>(), result.IndirectObject);
-            Assert.Equal(Preposition.With, result.Preposition);
+            Assert.True(result.Preposition is Preposition.With);
             Assert.True(result.Verb is Rub);
         }
 
@@ -114,7 +114,7 @@ namespace Tests
             Assert.Contains(Objects.GetByName("spring"), result.Objects);
             
             // should not pick up the room!
-            Assert.DoesNotContain(Rooms.Get<InsideBuilding>(), result.Objects);
+            Assert.DoesNotContain(Room<InsideBuilding>(), result.Objects);
 
         }
 
@@ -202,7 +202,20 @@ namespace Tests
 
             Assert.True(result.Verb is Put);
             Assert.Contains(Objects.GetByName("bottle"), result.Objects);
-            Assert.Equal(Preposition.Down, result.Preposition);
+            Assert.True(result.Preposition is Preposition.Down);
+            Assert.True(string.IsNullOrEmpty(result.Error));
+        }
+
+        [Fact]
+        public void should_handle_preposition_that_matches_direction_2()
+        {
+            // this conflicts with "go east" which replaces go with east at the verb
+            // down is a direction and a preposition
+            var result = parser.Parse("put down bottle");
+
+            Assert.True(result.Verb is Put);
+            Assert.Contains(Objects.GetByName("bottle"), result.Objects);
+            Assert.True(result.Preposition is Preposition.Down);
             Assert.True(string.IsNullOrEmpty(result.Error));
         }
 
@@ -215,7 +228,7 @@ namespace Tests
             Assert.Contains(Objects.GetByName("bottle"), result.Objects);
             Assert.Contains(Objects.GetByName("keys"), result.Objects);
             Assert.Contains(Objects.GetByName("lamp"), result.Objects);
-            Assert.Equal(Preposition.Down, result.Preposition);
+            Assert.True(result.Preposition is Preposition.Down);
             Assert.True(string.IsNullOrEmpty(result.Error));
         }
 
@@ -236,7 +249,7 @@ namespace Tests
 
             Assert.True(result.Verb is Put);
             Assert.DoesNotContain(Objects.GetByName("keys"), result.Objects);
-            Assert.Equal(Preposition.Down, result.Preposition);
+            Assert.True(result.Preposition is Preposition.Down);
             Assert.True(string.IsNullOrEmpty(result.Error));
         }
 
@@ -285,7 +298,7 @@ namespace Tests
         [Fact]
         public void room_as_object()
         {
-            Context.Story.Location = Rooms.Get<EndOfRoad>();
+            Context.Story.Location = Room<EndOfRoad>();
             var wellHouse = Objects.Get<WellHouse>();
 
             var result = parser.Parse("go house");
@@ -355,7 +368,19 @@ namespace Tests
             Assert.Equal(Messages.CantSeeObject, result.Error);
         }
 
-        
+        [Fact]
+        public void can_distinguish_prepositions_from_directions()
+        {
+            Location = Room<OutsideGrate>();
+            
+            var result = parser.Parse("close up grate");
+            
+            Assert.Equal(Verb.Get<Close>(), result.Verb);
+            Assert.True(result.Preposition is Preposition.Up);
+            Assert.True(result.Objects.Single() is Grate);
+
+        }
+
     }
 }
 

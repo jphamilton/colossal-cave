@@ -24,12 +24,17 @@ namespace Tests
             Output.Initialize(new StringWriter(fakeConsole));
             CommandPrompt.Initialize(new StringWriter(), new StringReader(""));
             Context.Story.Initialize();
-            Context.Story.Location = Rooms.Get<InsideBuilding>();
+            Context.Story.Location = Room<InsideBuilding>();
             Inventory.Clear();
             fakeConsole.Clear();
         }
 
-        protected Room Room
+        protected Room Room<T>() where T : Room
+        {
+            return Rooms.Get<T>();
+        }
+
+        protected Room Location
         {
             get
             {

@@ -34,25 +34,21 @@ namespace Tests
         [Fact]
         public void go_house()
         {
-            Context.Story.Location = Rooms.Get<EndOfRoad>();
+            Context.Story.Location = Room<EndOfRoad>();
 
             var result = parser.Parse("go house");
 
             var command = result.CommandHandler();
             command.Run();
 
-            Assert.Equal(Rooms.Get<InsideBuilding>(), Context.Story.Location);
+            Assert.Equal(Room<InsideBuilding>(), Context.Story.Location);
         }
 
         [Fact]
         public void i_only_understood_you_as_far_as_wanting_to()
         {
             // invalid command: instead of "switch lamp on" we try to "switch lamp down"
-            var result = parser.Parse("switch lamp down");
-
-            var command = result.CommandHandler();
-            command.Run();
-
+            Execute("switch lamp down");
             Assert.Contains(Messages.PartialUnderstanding(Verb.Get<Switch>(), Objects.Get<BrassLantern>()), ConsoleOut);
         }
 
@@ -124,7 +120,7 @@ namespace Tests
                 after = true;
             });
 
-            Assert.True(Room.Contains<BrassLantern>());
+            Assert.True(Location.Contains<BrassLantern>());
 
             var result = parser.Parse("take lamp");
 
@@ -132,7 +128,7 @@ namespace Tests
             command.Run();
 
             Assert.True(Inventory.Contains<BrassLantern>());
-            Assert.False(Room.Contains<BrassLantern>());
+            Assert.False(Location.Contains<BrassLantern>());
 
             Assert.True(before);
             Assert.True(after);
@@ -156,7 +152,7 @@ namespace Tests
                 after = true;
             });
 
-            Assert.True(Room.Contains<BrassLantern>());
+            Assert.True(Location.Contains<BrassLantern>());
 
             var result = parser.Parse("take lamp");
 
@@ -165,7 +161,7 @@ namespace Tests
 
             Assert.False(after);
             Assert.False(Inventory.Contains<BrassLantern>());
-            Assert.True(Room.Contains<BrassLantern>());
+            Assert.True(Location.Contains<BrassLantern>());
 
             Assert.Contains(message, ConsoleOut);
         }

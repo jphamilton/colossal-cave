@@ -1,38 +1,36 @@
-﻿using System;
-
-namespace Adventure.Net.Verbs
+﻿namespace Adventure.Net.Verbs
 {
     public class Turn : Verb
     {
-        // TODO: implement
+        //Verb 'turn' 'rotate' 'screw' 'twist' 'unscrew'
+        //    * noun                                      -> Turn
+        //    * noun 'on'                                 -> Switchon
+        //    * noun 'off'                                -> Switchoff
+        //    * 'on' noun                                 -> Switchon
+        //    * 'off' noun                                -> Switchoff;
+
         public Turn()
         {
             Name = "turn";
             Synonyms.Are("turn", "rotate", "screw", "twist", "unscrew");
-            //Grammars.Add("<noun>", TurnObject);
-
-            //Grammars.Add("<noun> on", SwitchOnObject);
-            //Grammars.Add("<noun> off", SwitchOffObject);
-            //Grammars.Add("on <noun>", SwitchOnObject);
-            //Grammars.Add("off <noun>", SwitchOffObject);
         }
 
-        // handles "<noun> on", "<noun> off"
-        public bool Expects(Item obj, Preposition prep)
+        public bool Expects(Item obj, Preposition.On on)
         {
-            return Redirect<Switch>(obj, v => v.Expects(obj, prep));
+            return Redirect<Switch>(obj, v => v.Expects(obj, on));
         }
 
-        // handled "on <noun>", "off <noun>"
-        public bool Expects(Preposition prep, Item obj)
+        public bool Expects(Item obj, Preposition.Off off)
         {
-            return Redirect<Switch>(obj, v => v.Expects(obj, prep));
+            return Redirect<Switch>(obj, v => v.Expects(obj, off));
         }
 
-        // turn dial, screw, knob, etc.
+        // turn dial, knob, etc.
         public bool Expects(Item item)
         {
-            throw new NotImplementedException();
+            // must implemented using Before/After
+            Print("Nothing obvious happens.");
+            return true;
         }
 
     }

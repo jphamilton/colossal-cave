@@ -43,7 +43,7 @@ namespace Adventure.Net.Verbs
         }
 
         // Unlock: <noun> with <held>
-        public bool Expects(Item obj, Preposition prep, Item indirect)
+        public bool Expects(Item obj, Preposition.With with, Item indirect)
         {
             throw new MissingMethodException("Open (Unlock) not implemented");
         }

@@ -18,7 +18,7 @@ namespace Adventure.Net.Verbs
             throw new MissingMethodException($"{obj.Name} is missing Before<Fill> implementation");
         }
 
-        public bool Expects(Item obj, Preposition prep, Item indirect)
+        public bool Expects(Item obj, Preposition.From from, Item indirect)
         {
             throw new MissingMethodException($"{indirect.Name} is missing Before<Fill> implementation");
         }

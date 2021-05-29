@@ -16,24 +16,29 @@ namespace Adventure.Net.Verbs
             //Grammars.Add("<multi> in <noun>", InsertObject);
         }
 
-        public bool Expects(Item obj, Preposition prep, Item indirect)
+        public bool Expects(Item obj, Preposition.In @in, Item indirect)
         {
-            if (prep == Preposition.In || prep == Preposition.Into)
+            return Receive(obj, indirect);
+        }
+
+        public bool Expects(Item obj, Preposition.Into into, Item indirect)
+        {
+            return Receive(obj, indirect);
+        }
+
+        private bool Receive(Item obj, Item indirect)
+        {
+            // receive
+            var receive = indirect.Receive();
+
+            if (receive != null)
             {
-                // receive
-                var receive = indirect.Receive();
-
-                if (receive != null)
-                {
-                    return receive(obj);
-                }
-
-                // TODO: this isn't quite right. It could be a container without a Receive
-                Print("That can't contain things.");
-                return true;
+                return receive(obj);
             }
 
-            return false;
+            // TODO: this isn't quite right. It could be a container without a Receive
+            Print("That can't contain things.");
+            return true;
         }
 
         //private bool InsertObject()

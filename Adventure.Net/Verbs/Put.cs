@@ -17,32 +17,33 @@ namespace Adventure.Net.Verbs
             Name = "put";
             Multi = true;
             MultiHeld = true;
-
-            //Grammars.Add("<multi> in <noun>", InsertObject);
-            //Grammars.Add("<multiheld> on <noun>", PutOnObject);
-            //Grammars.Add("on <held>", WearObject);
-            //Grammars.Add("down <multiheld>", DropObject);
-            //Grammars.Add("<multiheld> down", DropObject);
         }
 
         // insert
-        public bool Expects(Item obj, Preposition prep, Item indirect)
+        public bool Expects(Item obj, Preposition.In @in, Item indirect)
         {
-            if (prep == Preposition.In)
-            {
-                return Redirect<Insert>(obj, v => v.Expects(obj, prep, indirect)); //Insert(obj, indirect);
-            }
-            else if (prep == Preposition.On)
-            {
-                return PutOn(obj, indirect);
-            }
-            return true;
-
-            // TODO: maybe exception?
-            // throw new PartialUnderstandingException()
+            return Redirect<Insert>(obj, v => v.Expects(obj, @in, indirect));
         }
 
-        private bool PutOn(Item obj, Item indirect)
+        // put something on top of something else
+        public bool Expects(Item obj, Preposition.On on, Item indirect)
+        {
+            return PutOnTop(obj, indirect);
+        }
+
+        // put object down
+        public bool Expects(Item obj, Preposition.Down down)
+        {
+            return Redirect<Drop>(obj, v => v.Expects(obj));
+        }
+
+        // wear
+        public bool Expects(Item obj, Preposition.On on)
+        {
+            return Redirect<Wear>(obj, v => v.Expects(obj));
+        }
+
+        private bool PutOnTop(Item obj, Item indirect)
         {
             if (!obj.InInventory)
             {
@@ -50,30 +51,8 @@ namespace Adventure.Net.Verbs
                 return true;
             }
 
-            // TODO: Implement "put on"
-            throw new NotImplementedException("put on <object> (wear)");    
+            throw new NotImplementedException("Put (on) not implemented");
         }
-
-        //private bool InsertObject()
-        //{
-        //    return RedirectTo<Insert>("<multi> in <noun>");
-        //}
-
-        //private bool PutOnObject()
-        //{
-
-        //}
-
-        //private bool WearObject()
-        //{
-        //    // TODO: Implement "wear cape"
-        //    throw new Exception("This is not implemented!!!!!");
-        //}
-
-        //private bool DropObject()
-        //{
-        //    return RedirectTo<Drop>("<multiheld>");
-        //}
 
 
     }

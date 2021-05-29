@@ -1,63 +1,27 @@
-﻿using System;
-
-namespace Adventure.Net.Verbs
+﻿namespace Adventure.Net.Verbs
 {
-    // TODO: implement
     public class SwitchOff : Verb
     {
-        public SwitchOff()
+        public bool Expects(Item obj, Preposition.Off off)
         {
-           // Name = "switch";
-           // Grammars.Add("<noun> off", SwitchOffObject);
-           // Grammars.Add("off <noun>", SwitchOffObject);
-        }
-
-        // <noun> off
-        // off <noun>
-
-        public bool Expects(Item item)
-        {
-            return false;
-        }
-
-        // <noun> off
-        // off <noun>
-        public bool Expects(Item item, Preposition prep)
-        {
-            if (prep == Preposition.On)
+            if (obj.IsSwitchable)
             {
+                if (obj.IsOn)
+                {
+                    obj.IsOn = false;
+                    Print($"You switch the {obj.Name} off.");
+                }
+                else
+                {
+                    Print("That's already off.");
+                }
 
+                return true;
             }
-            else if (prep == Preposition.Off)
-            {
-
-            }
-            else
-            {
-                // would say "switch" instead of "turn
-                // I only understand you as far as wanting to "turn" "the" "brass lantern"
-            }
-
-            return false;
+            
+            Print("That's not something you can switch.");
+            return true;
         }
-
-        //private bool SwitchOffObject()
-        //{
-        //    if (Item.IsSwitchable && Item.IsOn)
-        //    {
-        //        Print(String.Format("You switch the {0} off.", Item.Name));
-        //    }
-        //    else if (!Item.IsOn)
-        //    {
-        //        Print("That's already off.");
-        //    }
-        //    else
-        //    {
-        //        Print("That's not something you can switch.");
-        //    }
-
-        //    return true;
-        //}
 
     }
 }

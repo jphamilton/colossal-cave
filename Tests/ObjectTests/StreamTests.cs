@@ -10,7 +10,7 @@ namespace Tests.ObjectTests
     {
         public StreamTests()
         {
-            Room = Rooms.Get<InsideBuilding>();
+            Location = Room<InsideBuilding>();
         }
 
         [Fact]

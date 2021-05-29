@@ -22,13 +22,15 @@ namespace Adventure.Net
 
             var context = new CommandContext(parsed);
             var commandState = context.PushState();
-            Item partial = null;
+            var failed = false;
+
+            //var partial = false;
 
             Context.Stack.Push(context);
 
             var verb = parsed.Verb;
             var verbType = verb.GetType();
-
+            
             if (parsed.Objects.Count > 0)
             {
                 foreach (var obj in parsed.Objects)
@@ -62,7 +64,8 @@ namespace Adventure.Net
                         }
                         else
                         {
-                            partial = obj;
+                            // only a complete failure if there is no output
+                            failed = true;
                             break;
                         }
                     }
@@ -78,17 +81,45 @@ namespace Adventure.Net
 
             var result = new CommandResult
             {
-                Success = true,
+                Success = !failed,
             };
 
             context = Context.Stack.Pop();
             context.PopState();
 
-            //// TODO: better way to handle this?
-            if (partial != null && !context.Output.Any())
+            // TODO: better way to handle this?
+            
+            if (failed && !context.Output.Any())
             {
-                result.Success = false;
-                Output.Print(Messages.PartialUnderstanding(parsed.Verb, partial));
+                if (parsed.Ordered.Any() && parsed.Ordered.First() is Item)
+                {
+                    var obj = (Item)parsed.Ordered.First();
+
+                    //    // e.g. take bottle nonsense nonsense
+                    var partialUnderstanding = Messages.PartialUnderstanding(parsed.Verb, obj);
+                    result.Output.Add(partialUnderstanding);
+                    Output.Print(partialUnderstanding);
+                }
+                else
+                {
+                    result.Output.Add(Messages.CantSeeObject);
+                    Output.Print(Messages.CantSeeObject);
+                }
+                //result.Success = false;
+
+                //if (parsed.Preposition == null)
+                //{
+                //    // e.g. take bottle nonsense nonsense
+                //    var partialUnderstanding = Messages.PartialUnderstanding(parsed.Verb, partial);
+                //    result.Output.Add(partialUnderstanding);
+                //    Output.Print(partialUnderstanding) ;
+                //}
+                //else
+                //{
+                //    // e.g. close on nonsense nonsense
+                //    result.Output.Add(Messages.CantSeeObject);
+                //    Output.Print(Messages.CantSeeObject);
+                //}
             }
             else
             {

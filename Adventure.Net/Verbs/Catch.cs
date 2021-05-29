@@ -16,7 +16,7 @@
             return YouCantCatchThat(obj);
         }
 
-        public bool Expects(Item obj, Preposition prep, Item indirect)
+        public bool Expects(Item obj, Preposition.With with, Item indirect)
         {
             return YouCantCatchThat(obj);
         }

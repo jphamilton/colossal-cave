@@ -22,18 +22,14 @@
             return CloseObject(obj);
         }
 
-        public bool Expects(Item obj, Preposition prep)
+        public bool Expects(Item obj, Preposition.Off off)
         {
-            if (prep == Preposition.Off)
-            {
-                return Redirect<SwitchOn>(obj, v => v.Expects(obj));
-            }
-            else if (prep == Preposition.Up)
-            {
-                return CloseObject(obj);
-            }
+            return Redirect<SwitchOff>(obj, v => v.Expects(obj, off));
+        }
 
-            return false;
+        public bool Expects(Item obj, Preposition.Up up)
+        {
+            return CloseObject(obj);
         }
 
         private bool CloseObject(Item obj)

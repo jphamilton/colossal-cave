@@ -7,22 +7,14 @@
             Name = "switch";
         }
 
-        // <noun> on/off
-        // on/off <noun>
-        public bool Expects(Item item, Preposition prep)
+        public bool Expects(Item obj, Preposition.On on)
         {
-            var result = false;
+            return Redirect<SwitchOn>(obj, v => v.Expects(obj, on));
+        }
 
-            if (prep == Preposition.On)
-            {
-                result = Redirect<SwitchOn>(item, v => v.Expects(item));
-            }
-            else if (prep == Preposition.Off)
-            {
-                result = Redirect<SwitchOff>(item, v => v.Expects(item));
-            }
-
-            return result;
+        public bool Expects(Item obj, Preposition.Off off)
+        {
+            return Redirect<SwitchOff>(obj, v => v.Expects(obj, off));
         }
     }
 }

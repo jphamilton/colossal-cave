@@ -10,7 +10,7 @@ namespace Tests.VerbTests
         [Fact]
         public void cannot_catch_inanimate_objects()
         {
-            Room = Rooms.Get<InsideBuilding>();
+            Location = Room<InsideBuilding>();
             Execute("catch bottle");
             Assert.Equal("You can only do that to something animate.", Line(1));
         }
@@ -18,12 +18,12 @@ namespace Tests.VerbTests
         [Fact]
         public void cant_catch_this()
         {
-            Room = Rooms.Get<InsideBuilding>();
+            Location = Room<InsideBuilding>();
 
             var shark = new Shark();
             shark.Initialize();
             Objects.Add(shark);
-            Room.Objects.Add(shark);
+            Location.Objects.Add(shark);
 
             Execute("catch shark");
             Assert.Equal("You can't catch that.", Line(1));
@@ -32,12 +32,12 @@ namespace Tests.VerbTests
         [Fact]
         public void can_catch_this()
         {
-            Room = Rooms.Get<InsideBuilding>();
+            Location = Room<InsideBuilding>();
 
             var octopus = new Octopus();
             octopus.Initialize();
             Objects.Add(octopus);
-            Room.Objects.Add(octopus);
+            Location.Objects.Add(octopus);
 
             Execute("catch octopus");
             Assert.Equal("Yeah right!", Line(1));

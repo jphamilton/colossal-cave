@@ -9,56 +9,56 @@ namespace Tests.PlacesTests
     {
         public EndOfRoadTests()
         {
-            Room = Rooms.Get<EndOfRoad>();
+            Location = Room<EndOfRoad>();
         }
 
         [Fact]
         public void can_go_west()
         {
             Execute("west");
-            Assert.Equal(Rooms.Get<HillInRoad>(), Room);
+            Assert.Equal(Room<HillInRoad>(), Location);
         }
 
         [Fact]
         public void can_go_east()
         {
             Execute("east");
-            Assert.Equal(Rooms.Get<InsideBuilding>(), Room);
+            Assert.Equal(Room<InsideBuilding>(), Location);
         }
 
         [Fact]
         public void can_go_down()
         {
             Execute("down");
-            Assert.Equal(Rooms.Get<Valley>(), Room);
+            Assert.Equal(Room<Valley>(), Location);
         }
 
         [Fact]
         public void can_go_south()
         {
             Execute("south");
-            Assert.Equal(Rooms.Get<Valley>(), Room);
+            Assert.Equal(Room<Valley>(), Location);
         }
 
         [Fact]
         public void can_go_north()
         {
             Execute("north");
-            Assert.Equal(Rooms.Get<Forest1>(), Room);
+            Assert.Equal(Room<Forest1>(), Location);
         }
 
         [Fact]
         public void can_go_in()
         {
             Execute("in");
-            Assert.Equal(Rooms.Get<InsideBuilding>(), Room);
+            Assert.Equal(Room<InsideBuilding>(), Location);
         }
 
         [Fact]
         public void can_enter()
         {
             Execute("enter");
-            Assert.Equal(Rooms.Get<InsideBuilding>(), Room);
+            Assert.Equal(Room<InsideBuilding>(), Location);
         }
     }
 }

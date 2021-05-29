@@ -11,16 +11,18 @@
 
         public bool Expects([Held] Item obj)
         {
-            // use Before/After routines on object to handle specific implementations
 
-            if (!obj.IsEdible)
+            if (obj.IsEdible)
+            {
+                // use Before/After routines on object to handle specific messages
+
+                CurrentRoom.Objects.Remove(obj);
+                Inventory.Remove(obj);
+            }
+            else
             {
                 Print($"{obj.TheyreOrThats} plainly inedible.");
-                return false;
             }
-
-            CurrentRoom.Objects.Remove(obj);
-            Inventory.Remove(obj);
 
             return true;
         }

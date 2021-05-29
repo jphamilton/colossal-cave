@@ -9,19 +9,30 @@ namespace Adventure.Net
     {
         private static readonly List<Verb> verbs;
 
+        /*
+            need a map to Expects calls 
+            Verb ->
+                    Excepts(A)
+                    Excepts(B)
+                    Excepts(C)
+         
+         */
+
         static VerbList()
         {
             verbs = new List<Verb>();
 
             Action<IEnumerable<Type>> add = (list) =>
+            {
+                foreach (var type in list)
                 {
-                    foreach (var type in list)
+                    if (type.IsSubclassOf(typeof(Verb)) && !type.IsAbstract)
                     {
-                        if (type.IsSubclassOf(typeof(Verb)) && !type.IsAbstract)
-                            verbs.Add(Activator.CreateInstance(type) as Verb);
+                        verbs.Add(Activator.CreateInstance(type) as Verb);
                     }
+                }
                 
-                };
+            };
 
             Type[] types = Assembly.GetExecutingAssembly().GetTypes();
             add(types);

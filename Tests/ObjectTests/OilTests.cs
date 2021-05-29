@@ -11,7 +11,7 @@ namespace Tests.ObjectTests
 
         public OilTests()
         {
-            Context.Story.Location = Rooms.Get<DebrisRoom>();
+            Context.Story.Location = Room<DebrisRoom>();
             oil = Objects.Get<Oil>();
             CurrentRoom.Objects.Add(oil);
         }

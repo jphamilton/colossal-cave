@@ -1,4 +1,5 @@
 ﻿using Adventure.Net.Extensions;
+using Adventure.Net.Verbs;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -47,12 +48,14 @@ namespace Adventure.Net
                 {
                     if (obj.InScope)
                     {
-                        if (result.Preposition == null)
+                        if (result.Preposition == null || !result.Objects.Any())
                         {
+                            result.Ordered.Add(obj);
                             result.Objects.Add(obj);
                         }
                         else
                         {
+                            result.Ordered.Add(obj);
                             result.IndirectObject = obj;
                         }
                     }
@@ -62,14 +65,26 @@ namespace Adventure.Net
                         return result;
                     }
                 }
-                else if (token.IsDirection() && !result.Objects.Any()) // distinguish between "go south" and "put bottle down"
+
+                else if ((result.Verb is IDirectionProxy) && token.IsDirection() && !result.Objects.Any()) // distinguish between "go south", "put bottle down", "close up grate"
                 {
-                    result.Verb = token.ToVerb();
+                    var v = token.ToVerb();
+                    result.Ordered.Add(v);
+                    result.Verb = v;
                 }
+
+                //else if ((result.Verb is Enter || result.Verb is Go) && token.IsDirection())
+                //{
+                //    result.Objects.Add(VerbList.GetVerbByName(token));
+                //}
+
                 else if (token.IsPreposition())
                 {
-                    result.Preposition = Prepositions.Get(token);
+                    var p = Prepositions.Get(token);
+                    result.Ordered.Add(p);
+                    result.Preposition = p;
                 }
+
                 else if (token == K.ALL && !result.Objects.Any())
                 {
                     result.IsAll = true;
@@ -145,7 +160,7 @@ namespace Adventure.Net
                 else
                 {
                     obj = result.Objects.FirstOrDefault();
-                    
+
                     if (obj != null && !result.IsAll)
                     {
                         result.Error = Messages.PartialUnderstanding(verb, obj);
