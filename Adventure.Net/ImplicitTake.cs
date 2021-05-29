@@ -17,19 +17,19 @@ namespace Adventure.Net
             {
                 var result = obj.Execute<Take>(obj, v => v.Expects(obj));
 
+                // only return result.Success
+
                 if (result.Success)
                 {
                     Context.Current.Print($"(first taking the {obj.Name})", CommandState.After);
-                    
-                    foreach(var message in result.CommandOutput.Output)
-                    {
-                        Context.Current.Print(message);
-                    }
-
-                    return true;
                 }
 
-                return false;
+                foreach (var message in result.CommandOutput.Output)
+                {
+                    Context.Current.Print(message);
+                }
+
+                return result.Success;
             }
 
             return true;

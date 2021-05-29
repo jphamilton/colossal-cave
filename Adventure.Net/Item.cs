@@ -163,6 +163,7 @@ namespace Adventure.Net
         private bool RunCommand<T>(ICommandState command, Item obj, Func<T, bool> callback) where T: Verb
         {
             var handled = false;
+            var success = false;
 
             var before = obj.Before<T>();
 
@@ -175,11 +176,8 @@ namespace Adventure.Net
             if (!handled)
             {
                 command.State = CommandState.During;
-                handled = callback(Verb.Get<T>());
-            }
+                success = callback(Verb.Get<T>());
 
-            if (handled)
-            {
                 var after = obj.After<T>();
 
                 if (after != null)
@@ -189,7 +187,7 @@ namespace Adventure.Net
                 }
             }
 
-            return handled;
+            return success;
         }
 
         protected bool In<T>() where T:Item

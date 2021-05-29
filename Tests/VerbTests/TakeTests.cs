@@ -232,10 +232,10 @@ namespace Tests.VerbTests
 
             var result = Execute("eat food");
 
-            Assert.Equal("(first taking the tasty food)", Line(1));
-            Assert.Equal(blocked, Line(2));
+            // Assert.Equal("(first taking the tasty food)", Line(1));
+            Assert.Equal(blocked, Line(1));
 
-            Assert.False(Room.Contains(tastyFood));
+            Assert.True(Room.Contains(tastyFood));
             Assert.False(Inventory.Contains(tastyFood));
 
         }

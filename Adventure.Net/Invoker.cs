@@ -18,15 +18,18 @@ namespace Adventure.Net
 
         public bool Invoke()
         {
+            bool success = true;
+
             foreach(var routine in routines)
             {
                 if (!routine.Invoke())
                 {
-                    return false;
+                    success = false;
+                    break;
                 }
             }
 
-            return true;
+            return success;
         }
     }
 }
