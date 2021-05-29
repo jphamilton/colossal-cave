@@ -24,6 +24,7 @@ namespace Adventure.Net
                     Context.Current.Print($"(first taking the {obj.Name})", CommandState.After);
                 }
 
+                // need to print messages regardless of success/fail
                 foreach (var message in result.CommandOutput.Output)
                 {
                     Context.Current.Print(message);
@@ -32,6 +33,7 @@ namespace Adventure.Net
                 return result.Success;
             }
 
+            // pass thru - keep on processing
             return true;
         }
     }
