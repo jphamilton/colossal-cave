@@ -38,9 +38,13 @@ namespace Tests.Verbs
         public void can_close_up()
         {
             Location = Room<OutsideGrate>();
+            
             Door grate = Room<Grate>() as Door;
+            
             grate.IsOpen = true;
-            var result = Execute("close up grate");
+            
+            Execute("close up grate");
+            
             Assert.Equal("You close the steel grate.", Line(1));
         }
 
@@ -52,7 +56,7 @@ namespace Tests.Verbs
             var lamp = Objects.Get<BrassLantern>();
             lamp.IsOn = true;
 
-            var result = Execute("close off lamp");
+            Execute("close off lamp");
 
             Assert.Equal("You switch the brass lantern off.", Line(1));
         }
@@ -62,9 +66,7 @@ namespace Tests.Verbs
         {
             Location = Room<InsideBuilding>();
 
-            var lamp = Objects.Get<BrassLantern>();
-
-            var result = Execute("close on lamp");
+            Execute("close on lamp");
 
             Assert.Equal(Messages.CantSeeObject, Line(1));
         }

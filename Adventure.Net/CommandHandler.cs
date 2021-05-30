@@ -1,74 +1,52 @@
 ﻿using Adventure.Net.Extensions;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 
 namespace Adventure.Net
 {
     public partial class CommandHandler
     {
-        private CommandLineParserResult parsed;
+        private readonly CommandLineParserResult parsed;
+        private readonly CommandResult result;
+        private readonly List<Item> objects;
+        private readonly Item indirectObject;
+        private readonly Verb verb;
+        private readonly Type verbType;
+        private readonly Prep preposition;
 
         public CommandHandler(CommandLineParserResult parsed)
         {
             this.parsed = parsed;
+
+            verb = parsed.Verb;
+            objects = parsed.Objects;
+            preposition = parsed.Preposition;
+            indirectObject = parsed.IndirectObject;
+            verbType = verb?.GetType();
+
+            result = new CommandResult
+            {
+                Success = false,
+            };
         }
 
         public CommandResult Run()
         {
             if (parsed.Error.HasValue())
             {
-                Output.Print(parsed.Error);
-                return Error(parsed.Error);
+                HandleError(parsed.Error);
+                return result;
             }
 
             var context = new CommandContext(parsed);
             var commandState = context.PushState();
             var failed = false;
 
-            Context.Stack.Push(context);
+            Context.Current = context;
 
-            var verb = parsed.Verb;
-            var verbType = verb.GetType();
-            
-            if (parsed.Objects.Count > 0)
+            if (objects.Count > 0)
             {
-                foreach (var obj in parsed.Objects)
-                {
-                    context.CurrentObject = obj;
-
-                    bool handled = false;
-
-                    var before = obj.Before(verbType);
-
-                    if (before != null)
-                    {
-                        commandState.State = CommandState.Before;
-                        handled = before();
-                    }
-
-                    if (!handled)
-                    {
-                        commandState.State = CommandState.During;
-                        bool success = Expects(verb, obj);
-
-                        if (success)
-                        {
-                            var after = obj.After(verbType);
-
-                            if (after != null)
-                            {
-                                commandState.State = CommandState.After;
-                                after(); 
-                            }
-                        }
-                        else
-                        {
-                            failed = true;
-                            break;
-                        }
-                    }
-
-                }
-
+                failed = HandleObjects(context, commandState);
             }
             else
             {
@@ -76,66 +54,94 @@ namespace Adventure.Net
                 Expects(verb, null);
             }
 
-            var result = new CommandResult
-            {
-                Success = !failed,
-            };
-
-            context = Context.Stack.Pop();
             context.PopState();
 
-            // TODO: better way to handle this?
-            
-            if (failed && !context.Output.Any())
-            {
-                if (parsed.Ordered.Any() && parsed.Ordered.First() is Item)
-                {
-                    var obj = (Item)parsed.Ordered.First();
+            result.Success = !failed;
 
-                    //    // e.g. take bottle nonsense nonsense
-                    var partialUnderstanding = Messages.PartialUnderstanding(parsed.Verb, obj);
-                    result.Output.Add(partialUnderstanding);
-                    Output.Print(partialUnderstanding);
-                }
-                else
-                {
-                    result.Output.Add(Messages.CantSeeObject);
-                    Output.Print(Messages.CantSeeObject);
-                }
-            }
-            else
-            {
-                var output = context.Output;
+            Print(context.Output);
 
-                result.Output.AddRange(output);
-
-                Output.Print(output);
-            }
+            Context.Current = null;
 
             return result;
         }
 
-        private CommandResult Error(string error)
+        private bool HandleObjects(CommandContext context, ICommandState commandState)
         {
-            var result = new CommandResult
+            bool failed = false;
+
+            foreach (var obj in objects)
             {
-                Error = error,
-                Success = false
-            };
+                context.CurrentObject = obj;
 
-            result.Output.Add(error);
+                bool handled = false;
 
-            return result;
+                var before = obj.Before(verbType);
+
+                if (before != null)
+                {
+                    commandState.State = CommandState.Before;
+                    handled = before();
+                }
+
+                if (!handled)
+                {
+                    commandState.State = CommandState.During;
+                    bool success = Expects(verb, obj);
+
+                    if (success)
+                    {
+                        var after = obj.After(verbType);
+
+                        if (after != null)
+                        {
+                            commandState.State = CommandState.After;
+                            after();
+                        }
+                    }
+                    else
+                    {
+                        failed = true;
+                        break;
+                    }
+                }
+
+            }
+
+            return failed;
+        }
+
+        private void HandleError(string error)
+        {
+            Context.Current = null;
+
+            result.Error = error;
+            result.Success = false;
+
+            Print(error);
         }
 
         private bool Expects(Verb verb, Item obj)
         {
-            var call = new DynamicCall(obj, parsed.Preposition, parsed.IndirectObject);
+            var call = new DynamicCall(obj, preposition, indirectObject);
             var expects = new DynamicExpects(verb, call);
 
             var success = expects.Invoke();
             
             return success;
+        }
+
+        private void Print(string message)
+        {
+            Output.Print(message);
+            result.Output.Add(message);
+
+        }
+
+        private void Print(IEnumerable<string> messages)
+        {
+            Output.Print(messages);
+            result.Output.AddRange(messages);
+
         }
     }
 }

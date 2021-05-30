@@ -117,6 +117,8 @@ namespace Adventure.Net
             }
         }
 
+        public bool Partial { get; internal set; }
+
         public void Print(string message, CommandState? state = null)
         {
             var messages = OutputStack.Peek();

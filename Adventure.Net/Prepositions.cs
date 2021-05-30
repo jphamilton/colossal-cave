@@ -1,8 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Adventure.Net
 {
-    public abstract class Prep { }
+    public abstract class Prep : IEquatable<Prep>
+    {
+        public bool Equals(Prep other)
+        {
+            return GetType() == other.GetType();
+        }
+    }
 
     public static class Preposition
     {

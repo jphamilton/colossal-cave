@@ -2,6 +2,7 @@
 using Adventure.Net.Verbs;
 using ColossalCave.Objects;
 using ColossalCave.Places;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Tests.ParserTests
@@ -19,8 +20,9 @@ namespace Tests.ParserTests
         [Fact]
         public void should_not_recognize_verb()
         {
-            var result = Execute("snark");
-            Assert.Contains(Messages.VerbNotRecognized, ConsoleOut);
+            Execute("snark");
+            // will be one or the depending if this was a partial command response or not
+            Assert.Contains(Line(1), new List<string> { Messages.VerbNotRecognized, Messages.CantSeeObject });
         }
 
         [Fact]

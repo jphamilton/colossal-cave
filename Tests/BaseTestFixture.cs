@@ -8,20 +8,27 @@ using Xunit;
 
 namespace Tests
 {
-    [Collection("Sequential")]
-    public abstract class BaseTestFixture
+    public class TestFormatter : IOutputFormatter
     {
-        protected CommandLineParser parser;
-        protected StringBuilder fakeConsole;
-        private string _output;
-        private CommandResult _commandResult;
+        public string Format(string text)
+        {
+            return text;
+        }
+    }
 
+    [Collection("Sequential")]
+    public abstract class BaseTestFixture : IDisposable
+    {
+        private StringBuilder fakeConsole;
+        private string output;
+
+        protected CommandResult CommandResult { get; set; }
+        
         public BaseTestFixture()
         {
-            parser = new CommandLineParser();
             fakeConsole = new StringBuilder();
             Context.Story = new ColossalCaveStory();
-            Output.Initialize(new StringWriter(fakeConsole));
+            Output.Initialize(new StringWriter(fakeConsole), new TestFormatter());
             CommandPrompt.Initialize(new StringWriter(), new StringReader(""));
             Context.Story.Initialize();
             Context.Story.Location = Room<InsideBuilding>();
@@ -29,9 +36,18 @@ namespace Tests
             fakeConsole.Clear(); ;
         }
 
-        protected void Clear()
+        public void Dispose()
         {
-            _output = null;
+            Context.Current = null;
+            fakeConsole.Clear();
+            CommandResult = null;
+            output = null;
+            Inventory.Clear();
+        }
+
+        protected void ClearOutput()
+        {
+            output = null;
             fakeConsole.Clear();
         }
 
@@ -56,13 +72,13 @@ namespace Tests
         {
             get
             {
-                if (!string.IsNullOrEmpty(_output))
+                if (!string.IsNullOrEmpty(output))
                 {
-                    return _output;
+                    return output;
                 }
 
-                _output = fakeConsole.ToString().Replace(Environment.NewLine, "");
-                return _output;
+                output = fakeConsole.ToString().Replace(Environment.NewLine, "");
+                return output;
             }
         }
 
@@ -71,25 +87,33 @@ namespace Tests
             Context.Current.Print(message);
         }
 
+        protected CommandLineParserResult Parse(string input)
+        {
+            var parser = new CommandLineParser();
+            return parser.Parse(input);
+        }
+
         protected CommandResult Execute(string input)
         {
-            var result = parser.Parse(input);
+            var result = Parse(input);
+
             var command = result.CommandHandler();
-            _commandResult = command.Run();
-            return _commandResult;
+            
+            CommandResult = command.Run();
+            
+            return CommandResult;
         }
 
         protected string Line(int number)
         {
-            if (_commandResult != null && 
-                _commandResult.Output.Count >= number )
+            if (CommandResult != null && 
+                CommandResult.Output.Count >= number )
             {
-                return _commandResult.Output[number - 1];
+                return CommandResult.Output[number - 1];
             }
 
             return null;
         }
 
-       
     }
 }

@@ -12,6 +12,11 @@
 
         }
 
+        public bool Expects(Item obj, Preposition.About about, Item indirect)
+        {
+            return true;
+        }
+
         //private bool OnAsk()
         //{
         //    return Default();

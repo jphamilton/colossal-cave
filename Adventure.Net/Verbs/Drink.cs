@@ -2,18 +2,19 @@
 {
     public class Drink : Verb
     {
-        // TODO: implement
+        //Verb 'drink' 'sip' 'swallow'
+        //  * noun                                      -> Drink;
         public Drink()
         {
             Name = "drink";
             Synonyms.Are("sip", "swallow");
-            //Grammars.Add("<noun>", DrinkObject);
         }
 
-        //public bool DrinkObject()
-        //{
-        //    Print("You can't drink that.");
-        //    return true;
-        //}
+        public bool Expects(Item obj)
+        {
+            // implement specific behavior in Before/After routines
+            Print("You can't drink that.");
+            return true;
+        }
     }
 }

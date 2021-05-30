@@ -11,7 +11,7 @@ namespace Adventure.Net
         {
             Console.Title = story.Story;
             
-            Output.Initialize(Console.Out);
+            Output.Initialize(Console.Out, new WordWrap());
             CommandPrompt.Initialize(Console.Out, Console.In);
 
             Context.Story = story ?? throw new ArgumentNullException("story");

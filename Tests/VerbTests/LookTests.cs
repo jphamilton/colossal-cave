@@ -7,7 +7,7 @@ namespace Tests.VerbTests
         [Fact]
         public void can_look()
         {
-            var result = parser.Parse("look");
+            var result = Parse("look");
 
             var command = result.CommandHandler();
             command.Run();

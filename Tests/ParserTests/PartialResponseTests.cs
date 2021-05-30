@@ -17,48 +17,41 @@ namespace Tests.ParserTests
         [Fact]
         public void should_handle_partial_response()
         {
-            var result = Execute("take");
+            CommandPrompt.FakeInput("bottle");
 
-            Assert.Equal("What do you want to take?", result.Output.Single());
+            Execute("take");
 
-            result = Execute("bottle");
-
-            Assert.Equal("Taken.", result.Output.Single());
-
+            Assert.Contains("What do you want to take?", ConsoleOut);
+            Assert.Contains("Taken.", ConsoleOut);
             Assert.Contains(Objects.Get<Bottle>(), Inventory.Items);
         }
 
         [Fact]
         public void should_allow_multiple_partial_commands()
         {
+            CommandPrompt.FakeInput("take");
+
             var result = Execute("take");
 
-            Assert.Equal("What do you want to take?", result.Output.Single());
+            var responses = ConsoleOut.Split('?').Select(x => $"{x}?").ToList();
 
-            result = Execute("take");
-
-            Assert.Equal("What do you want to take?", result.Output.Single());
-
-            result = Execute("take");
-
-            Assert.Equal("What do you want to take?", result.Output.Single());
-
+            Assert.Equal("What do you want to take?", responses[0]);
+            Assert.Equal("What do you want to take?", responses[1]);
         }
 
         [Fact]
         public void should_allow_multiple_partial_responses()
         {
-            var result = Execute("take");
 
-            Assert.Equal("What do you want to take?", result.Output.Single());
+            CommandPrompt.FakeInput("bottle");
 
-            result = Execute("bottle");
+            Execute("take");
 
-            Assert.Equal("Taken.", result.Output.Single());
-
+            Assert.Contains("What do you want to take?", ConsoleOut);
+            Assert.Contains("Taken.", ConsoleOut);
             Assert.Contains(Objects.Get<Bottle>(), Inventory.Items);
 
-            result = Execute("bottle");
+            var result = Execute("bottle");
 
             Assert.Equal(Messages.VerbNotRecognized, result.Output.Single());
         }
@@ -70,18 +63,20 @@ namespace Tests.ParserTests
 
             Assert.DoesNotContain("What do you want to", ConsoleOut);
 
-            Clear();
-
+            ClearOutput();
             Execute("west");
 
             Assert.DoesNotContain("What do you want to", ConsoleOut);
 
-            Clear();
-
+            ClearOutput();
             Execute("enter");
 
             Assert.DoesNotContain("What do you want to", ConsoleOut);
 
+            ClearOutput();
+            Execute("i");
+
+            Assert.DoesNotContain("What do you want to", ConsoleOut);
         }
     }
 }
