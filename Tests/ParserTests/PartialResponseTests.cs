@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using ColossalCave.Objects;
+using System;
 using System.Linq;
 using Xunit;
 
@@ -75,6 +76,62 @@ namespace Tests.ParserTests
             Execute("i");
 
             Assert.DoesNotContain("What do you want to", ConsoleOut);
+        }
+
+        [Fact]
+        public void should_handle_partial_command_with_preposition()
+        {
+            var lamp = Objects.Get<BrassLantern>();
+            var fresh = Objects.Get<FreshBatteries>();
+            Inventory.Add(fresh);
+
+            lamp.PowerRemaining = 0;
+
+            CommandPrompt.FakeInput("lamp");
+
+            Execute("put batteries in");
+            Assert.Contains($"What do you want to put {fresh} in?", Line(1));
+            Assert.Contains("I'm taking the liberty of replacing the batteries.", Line(2));
+
+            Assert.Equal(2500, lamp.PowerRemaining);
+
+
+            var old = Objects.Get<OldBatteries>();
+
+            Assert.True(old.InScope);
+            Assert.True(fresh.HaveBeenUsed);
+        }
+
+        [Fact]
+        public void should_use_default_proposition_in_partial_command()
+        {
+            var lamp = Objects.Get<BrassLantern>();
+            var fresh = Objects.Get<FreshBatteries>();
+            Inventory.Add(fresh);
+
+            lamp.PowerRemaining = 0;
+
+            CommandPrompt.FakeInput("lamp");
+
+            Execute("put batteries");
+
+            Assert.Contains($"What do you want to put {fresh} in?", Line(1));
+            Assert.Contains("I'm taking the liberty of replacing the batteries.", Line(2));
+
+            Assert.Equal(2500, lamp.PowerRemaining);
+
+            var old = Objects.Get<OldBatteries>();
+
+            Assert.True(old.InScope);
+            Assert.True(fresh.HaveBeenUsed);
+        }
+
+        [Fact]
+        public void should_handle_this_ridiculous_partial_command_sequence()
+        {
+            CommandPrompt.FakeInput("stream\rbottle");
+            Execute("put");
+            Assert.Contains("The bottle is now full of water.", ConsoleOut);
         }
     }
 }

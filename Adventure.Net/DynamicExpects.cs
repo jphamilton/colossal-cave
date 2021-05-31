@@ -60,17 +60,21 @@ namespace Adventure.Net
             return false;
         }
 
-        //public IList<Prep> AcceptedPrepositions()
-        //{
-        //    return (
-        //            from m in verbType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
-        //            from p in m.GetParameters()
-        //            where m.Name == "Expects" && p.ParameterType.IsSubclassOf(typeof(Prep))
-        //            select p
-        //        )
-        //        .Select(x => (Prep)Activator.CreateInstance(x.ParameterType))
-        //        .ToList();
-        //}
+        public IList<Prep> AcceptedPrepositions()
+        {
+            return (
+                    from m in verbType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                    from p in m.GetParameters()
+                    where m.Name == "Expects" && p.ParameterType.IsSubclassOf(typeof(Prep))
+                    select p.ParameterType
+                )
+                .Distinct()
+                .Select(prep => (Prep)Activator.CreateInstance(prep))
+                .OrderByDescending(o => o is Preposition.In)
+                .ThenByDescending(o => o is Preposition.On)
+                // then let God sort it out
+                .ToList();
+        }
 
     }
 }

@@ -9,10 +9,18 @@ namespace Adventure.Net
 
     public partial class CommandLineParser
     {
+        private class Skip : Item
+        {
+            public override void Initialize()
+            {
+                // no op
+            }
+        }
+
+
         public CommandLineParserResult Parse(string input)
         {
-            var tokenizer = new InputTokenizer();
-            var tokens = tokenizer.Tokenize(input);
+            var tokens = SanitizeInput(input);
 
             if (tokens.Count == 0)
             {
@@ -34,6 +42,7 @@ namespace Adventure.Net
                 
                 if (partial != null)
                 {
+                    ValidateResult(partial);
                     return partial;
                 }
             }
@@ -43,6 +52,14 @@ namespace Adventure.Net
             ValidateResult(result);
 
             return result;
+        }
+
+        private TokenizedInput SanitizeInput(string input)
+        {
+            var tokenizer = new InputTokenizer();
+            var tokens = tokenizer.Tokenize(input);
+
+            return tokens;
         }
 
         private CommandLineParserResult Parse(Verb verb, TokenizedInput tokens)
@@ -56,7 +73,12 @@ namespace Adventure.Net
 
             foreach (string token in tokens)
             {
-                var obj = GetObject(result.Objects, token);
+                var obj = GetObject(result.Ordered?.LastOrDefault(), token);
+
+                if (obj is Skip)
+                {
+                    continue;
+                }
 
                 if (result.Objects.Contains(obj))
                 {
@@ -194,7 +216,7 @@ namespace Adventure.Net
                     continue;
                 }
 
-                var obj = GetObject(result.Objects, next);
+                var obj = GetObject(result.Ordered.LastOrDefault(), next);
 
                 if (obj == null)
                 {
@@ -231,10 +253,9 @@ namespace Adventure.Net
             return null;
         }
 
-        private Item GetObject(List<Item> orville, string token)
+        private Item GetObject(object last, string token)
         {
-            //TODO: I have a feeling we are not done here
-
+            //TODO: This is crazy train
             
             // objects may have the same synonyms, so multiple items could be returned here
             var objects = (
@@ -279,7 +300,20 @@ namespace Adventure.Net
             }
             else if (objects.Count > 1)
             {
-                return new MultipleObjectsFound(objects);
+                if (last != null && last is Item obj)
+                {
+                    if (!obj.Name.Contains(token) && !obj.Synonyms.Contains(token))
+                    {
+                        return new MultipleObjectsFound(objects);
+                    }
+
+                    return new Skip();
+                }
+                else
+                {
+                    return new MultipleObjectsFound(objects);
+                }
+
             }
 
             return null;
@@ -309,8 +343,8 @@ namespace Adventure.Net
         private CommandLineParserResult GetInput(Verb verb)
         {
             var response = CommandPrompt.GetInput();
-            var tokenizer = new InputTokenizer();
-            var tokens = tokenizer.Tokenize(response);
+            
+            var tokens = SanitizeInput(response);
 
             if (tokens.Count == 0)
             {
@@ -334,23 +368,55 @@ namespace Adventure.Net
                 return;
             }
 
+            var verb = result.Verb;
             var call = new DynamicCall(result);
-            var expects = new DynamicExpects(result.Verb, call);
+            var expects = new DynamicExpects(verb, call);
+
+            IList<Prep> acceptedPreps;
+
+            bool HasAcceptedPreps()
+            {
+                acceptedPreps = expects.AcceptedPrepositions();
+                return acceptedPreps.Count > 0;
+            }
+
+            void WhatDoYouWantTo(Item obj, Prep prep)
+            {
+                Output.Print($"What do you want to {verb.Name} {obj} {prep ?? result.Preposition}?");
+                var input = GetInput(verb);
+
+                if (input.Objects.Count == 1)
+                {
+                    result.Preposition = prep;
+                    result.IndirectObject = input.Objects[0];
+                }
+                else
+                {
+                    result.Error = Messages.DidntUnderstandSentence;
+                }
+            }
 
             if (expects.Expects == null)
             {
-                // this is just observed Inform 6 behavior
-                if (result.Ordered.Count > 0)
+                if (result.Ordered.Count == 0)
                 {
-                    if (result.Ordered[0] is Item)
+                    result.Error = Messages.CantSeeObject;
+                }
+
+                if (result.Ordered[0] is Item obj)
+                {
+                    if (result.Preposition != null)
                     {
-                        result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects.First());
+                        WhatDoYouWantTo(obj, null);
+                    }
+                    else if (HasAcceptedPreps())
+                    {
+                        WhatDoYouWantTo(obj, acceptedPreps[0]);
                     }
                     else
                     {
-                        result.Error = Messages.CantSeeObject;
+                        result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects.First());
                     }
-
                 }
             }
 

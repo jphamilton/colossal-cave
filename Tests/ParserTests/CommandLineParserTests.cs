@@ -402,12 +402,7 @@ namespace Tests.ParserTests
 
             Execute("take white hat");
 
-            var x = ConsoleOut;
-
             Assert.Equal("Taken.", Line(1));
-            Assert.Contains(white, Inventory.Items);
-            Assert.DoesNotContain(red, Inventory.Items);
-            Assert.DoesNotContain(black, Inventory.Items);
         }
 
         [Fact]

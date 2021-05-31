@@ -1,29 +1,29 @@
-﻿using System;
-using Adventure.Net;
-using ColossalCave.Places;
-using NUnit.Framework;
+﻿using Adventure.Net;
+using ColossalCave.Objects;
+using Xunit;
 
-namespace Advent.Tests.Verbs
+namespace Tests.Verbs
 {
-    [TestFixture]
-    public class PutTests : AdventTestFixture
+
+    public class PutTests : BaseTestFixture
     {
-        [Test]
+        [Fact]
         public void what_do_you_want_to_put_the_bottle_in()
         {
-            CommandPrompt.FakeInput("cage");
 
             var bird = Objects.Get<LittleBird>();
-            Location.Objects.Add(bird);
+            CurrentRoom.Objects.Add(bird);
 
             var cage = Objects.Get<WickerCage>();
             Inventory.Add(cage);
-               
-            var results = parser.Parse("put bird");
-            Assert.AreEqual("You catch the bird in the wicker cage.", results[0]);
+
+            CommandPrompt.FakeInput("cage");
+
+            Execute("put bird");
+            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
         }
 
-        [Test]
+        [Fact]
         public void restate_command_after_incomplete_question()
         {
             CommandPrompt.FakeInput("put bird in cage");
@@ -34,35 +34,35 @@ namespace Advent.Tests.Verbs
             var cage = Objects.Get<WickerCage>();
             Inventory.Add(cage);
 
-            var results = parser.Parse("put bird");
-            Assert.AreEqual("You catch the bird in the wicker cage.", results[0]);
+            Execute("put bird");
+            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
         }
 
-        [Test]
+        [Fact]
         public void what_do_you_want_to_put_the_bottle_on()
         {
             CommandPrompt.FakeInput("keys");
-            
+
             var bottle = Objects.Get<Bottle>();
             Location.Objects.Add(bottle);
 
             var keys = Objects.Get<SetOfKeys>();
             Location.Objects.Add(keys);
 
-            var results = parser.Parse("put bottle on");
-            Assert.AreEqual("You need to be holding the small bottle before you can put it on top of something else.", results[0]);
+            Execute("put bottle on");
+            Assert.Equal("You need to be holding the small bottle before you can put it on top of something else.", Line(1));
         }
 
-        [Test]
+        [Fact]
         public void just_put_object_not_present()
         {
             CommandPrompt.FakeInput("bird in cage");
 
-            var results = parser.Parse("put");
-            Assert.AreEqual("You can't see any such thing.", results[0]);
+            Execute("put");
+            Assert.Equal("You can't see any such thing.", Line(1));
         }
 
-        [Test]
+        [Fact]
         public void just_put_object_present()
         {
             CommandPrompt.FakeInput("bird in cage");
@@ -73,11 +73,11 @@ namespace Advent.Tests.Verbs
             var bird = Objects.Get<LittleBird>();
             Location.Objects.Add(bird);
 
-            var results = parser.Parse("put");
-            Assert.AreEqual("You catch the bird in the wicker cage.", results[0]);
+            Execute("put");
+            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
         }
 
-        [Test]
+        [Fact]
         public void start_with_bird()
         {
             CommandPrompt.FakeInput("bird\ncage");
@@ -88,11 +88,11 @@ namespace Advent.Tests.Verbs
             var bird = Objects.Get<LittleBird>();
             Location.Objects.Add(bird);
 
-            var results = parser.Parse("put");
-            Assert.AreEqual("You catch the bird in the wicker cage.", results[0]); 
+            Execute("put");
+            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
         }
 
-        [Test]
+        [Fact]
         public void start_with_bird_should_actually_do_implicit_put()
         {
             // bird has a Before<Insert> action defined so the parser should implicitly call it:
@@ -105,7 +105,6 @@ namespace Advent.Tests.Verbs
             //
             // However, the Before<Insert> action on the bird should be rewritten to disallow this specific case.
 
-            CommandPrompt.FakeInput("bird");
 
             var cage = Objects.Get<WickerCage>();
             Inventory.Add(cage);
@@ -113,13 +112,15 @@ namespace Advent.Tests.Verbs
             var bird = Objects.Get<LittleBird>();
             Location.Objects.Add(bird);
 
-            var results = parser.Parse("put");
-            
-            Assert.AreEqual("(in the little bird)", results[0]);
-            Assert.AreEqual("Don't put the poor bird in the little bird!", results[1]);
+            CommandPrompt.FakeInput("bird");
+
+            Execute("put");
+            var x = ConsoleOut;
+            Assert.Equal("(in the little bird)", Line(1));
+            Assert.Equal("Don't put the poor bird in the little bird!", Line(2));
         }
 
-        [Test]
+        [Fact]
         public void what_do_you_want_to_put_the_bird_in()
         {
             // inventory = bird in cage
@@ -138,39 +139,32 @@ namespace Advent.Tests.Verbs
             var bird = Objects.Get<LittleBird>();
             cage.Add(bird);
 
-            var results = parser.Parse("put");
-            Assert.AreEqual("You already have the little bird.", results[0]);
-            Assert.AreEqual("If you take it out of the cage it will likely fly away from you.", results[1]);
+            Execute("put");
+            Assert.Equal("You already have the little bird.", Line(1));
+            Assert.Equal("If you take it out of the cage it will likely fly away from you.", Line(2));
         }
 
 
-        [Test]
+        [Fact]
         public void just_put_all()
         {
             // need to look at inform source. where does "those things in" come from?
-            var results = parser.Parse("put all");
-            Assert.AreEqual("What do you want to put those things in?", results[0]);
+            Execute("put all");
+            Assert.Equal("What do you want to put those things in?", Line(1));
         }
 
-        [Test]
+        [Fact]
         public void just_put_all_except()
         {
             CommandPrompt.FakeInput("bird");
 
-            var results = parser.Parse("put all except");
-            Assert.AreEqual(1, results.Count);
+            Execute("put all except");
 
-            var output = Output.Buffer.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-
-            Assert.AreEqual("What do you want to put?", output[0]); // bird
-            Assert.AreEqual("You can't see any such thing.", output[1]);
-            //Assert.AreEqual("", output[2]);
-
-            // Do I need to pass the results up to the first parse?????
-            //Assert.AreEqual("You can't see any such thing.", results[0]);
+            Assert.Equal("What do you want to put?", Line(1)); 
+            Assert.Equal(Messages.CantSeeObject, Line(2));
         }
 
-        [Test]
+        [Fact]
         public void i_dont_understand_that_sentence()
         {
             var bottle = Objects.Get<Bottle>();
@@ -178,14 +172,10 @@ namespace Advent.Tests.Verbs
             var lantern = Objects.Get<BrassLantern>();
             Location.Objects.Add(lantern);
 
-            var results = parser.Parse("put bottle lantern");
-            Assert.AreEqual("I didn't understand that sentence.", results[0]);
+            var result = Execute("put bottle lantern");
+            Assert.Equal(Messages.DidntUnderstandSentence, Line(1));
         }
 
-        [Test]
-        public void can_put_down_object()
-        {
 
-        }
     }
 }

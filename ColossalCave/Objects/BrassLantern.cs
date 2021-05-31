@@ -21,11 +21,13 @@ namespace ColossalCave.Objects
             PowerRemaining = 330;
 
             Describe = () =>
-                           {
-                               if (IsOn)
-                                   return "Your lamp is here, gleaming brightly.";
-                               return "There is a shiny brass lamp nearby.";
-                           };
+                {
+                    if (IsOn)
+                    {
+                        return "Your lamp is here, gleaming brightly.";
+                    }
+                    return "There is a shiny brass lamp nearby.";
+                };
 
             Daemon = () =>
                 {
@@ -110,7 +112,6 @@ namespace ColossalCave.Objects
                     return true;
                 });
 
-            // TODO: test Receive handlers
             Receive((obj) =>
                 {
                     if (obj.Is<OldBatteries>())
@@ -119,7 +120,7 @@ namespace ColossalCave.Objects
                     }
                     else if (obj.Is<FreshBatteries>())
                     {
-                        Print(ReplaceBatteries());
+                        return ReplaceBatteries();
                     }
                     else
                     {
@@ -151,20 +152,26 @@ namespace ColossalCave.Objects
                 });
         }
 
-        private string ReplaceBatteries()
+        private bool ReplaceBatteries()
         {
-            var fresh = Adventure.Net.Objects.Get<FreshBatteries>();
+            var fresh = Get<FreshBatteries>();
+            
             if (fresh.InScope)
             {
                 fresh.Remove();
                 fresh.HaveBeenUsed = true;
-                var old = Adventure.Net.Objects.Get<OldBatteries>();
+                
+                var old = Get<OldBatteries>();
+                
                 CurrentRoom.Objects.Add(old);
+                
                 PowerRemaining = 2500;
-                return "I'm taking the liberty of replacing the batteries.";
+                
+                Print("I'm taking the liberty of replacing the batteries.");
+                return true;
             }
 
-            return null;
+            return false;
         }
 
     }

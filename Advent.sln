@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColossalCave", "ColossalCav
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{50FAC4DF-D62C-4469-99FE-EECD77B03E2B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Advent.Tests", "Advent.Tests\Advent.Tests.csproj", "{3A8B3D71-237A-4D1B-A578-FD42CB7ED21A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,9 +27,6 @@ Global
 		{50FAC4DF-D62C-4469-99FE-EECD77B03E2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50FAC4DF-D62C-4469-99FE-EECD77B03E2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50FAC4DF-D62C-4469-99FE-EECD77B03E2B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3A8B3D71-237A-4D1B-A578-FD42CB7ED21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3A8B3D71-237A-4D1B-A578-FD42CB7ED21A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3A8B3D71-237A-4D1B-A578-FD42CB7ED21A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
