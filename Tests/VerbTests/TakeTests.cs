@@ -28,7 +28,7 @@ namespace Tests.VerbTests
             
             Execute("take cage");
 
-            Assert.Equal("You can't see any such thing.", ConsoleOut);
+            Assert.Equal("You can't see any such thing.", Line(1));
 
             Assert.False(Inventory.Contains(cage));
         }
@@ -181,7 +181,7 @@ namespace Tests.VerbTests
         public void take_except()
         {
             Execute("take except");
-            Assert.Equal(Messages.CantSeeObject, ConsoleOut);
+            Assert.Equal(Messages.CantSeeObject, Line(1));
 
         }
 

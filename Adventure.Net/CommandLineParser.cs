@@ -3,15 +3,12 @@ using Adventure.Net.Verbs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 
 namespace Adventure.Net
 {
 
-    public class CommandLineParser
+    public partial class CommandLineParser
     {
-        //private static CommandLineParserResult previous;
-
         public CommandLineParserResult Parse(string input)
         {
             var tokenizer = new InputTokenizer();
@@ -41,15 +38,9 @@ namespace Adventure.Net
                 }
             }
 
-            // store result and return
             var result = Parse(verb, tokens);
 
-            // validate result before command handler gets it
-            // handle errors here too
-            if (!result.Error.HasValue())
-            {
-                ValidateResult(result);
-            }
+            ValidateResult(result);
 
             return result;
         }
@@ -65,7 +56,13 @@ namespace Adventure.Net
 
             foreach (string token in tokens)
             {
-                var obj = GetObject(token);
+                var obj = GetObject(result.Objects, token);
+
+                if (result.Objects.Contains(obj))
+                {
+                    // will happen for something like "take the brass lamp"
+                    continue;
+                }
 
                 if (obj != null)
                 {
@@ -83,6 +80,10 @@ namespace Adventure.Net
                             result.IndirectObject = obj;
                         }
                     }
+                    else if (obj is MultipleObjectsFound)
+                    {
+                        return ResolveMultipleObjects(verb, (MultipleObjectsFound)obj);
+                    }
                     else
                     {
                         result.Error = Messages.CantSeeObject;
@@ -90,7 +91,7 @@ namespace Adventure.Net
                     }
                 }
 
-                // distinguish between "go south", "put bottle down", "close up grate"
+                // distinguish between prepositions and movement - "go south", "put bottle down", "close up grate"
                 else if ((result.Verb is IDirectionProxy) && token.IsDirection() && !result.Objects.Any()) 
                 {
                     var v = token.ToVerb();
@@ -138,7 +139,13 @@ namespace Adventure.Net
 
                 else if (token == K.EXCEPT && (verb.Multi || verb.MultiHeld) && lastToken == K.ALL)
                 {
-                    HandleExcept(result, tokens, token);
+                    var except = HandleExcept(result, tokens, token);
+                    
+                    if (except != null)
+                    {
+                        return except;
+                    }
+
                     break;
                 }
 
@@ -164,14 +171,13 @@ namespace Adventure.Net
             return result;
         }
 
-        private void HandleExcept(CommandLineParserResult result, TokenizedInput tokens, string currentToken)
+        private CommandLineParserResult HandleExcept(CommandLineParserResult result, TokenizedInput tokens, string currentToken)
         {
             var index = tokens.IndexOf(currentToken) + 1;
 
             if (index >= tokens.Count)
             {
-                //result.Error = $"What do you want to {result.Verb.Name}?";
-                return;
+                return null;
             }
 
             var except = new List<Item>();
@@ -188,31 +194,48 @@ namespace Adventure.Net
                     continue;
                 }
 
-                var obj = GetObject(next);
+                var obj = GetObject(result.Objects, next);
 
                 if (obj == null)
                 {
                     result.Error = Messages.CantSeeObject;
-                    break;
+                    return result;
                 }
+                else if (obj is MultipleObjectsFound)
+                {
+                    var input = GetInput(result.Verb);
+                    
+                    if (input.Error.HasValue())
+                    {
+                        return input;
+                    }
 
-                except.Add(obj);
+                    if (input.Objects.Count > 0)
+                    {
+                        except.AddRange(input.Objects);
+                    }
+                }
+                else
+                {
+                    except.Add(obj);
+                }
             }
 
-            var success = !result.Error.HasValue();
+            //var success = !result.Error.HasValue();
 
-            if (success)
-            {
-                result.Objects = result.Objects.Where(x => !except.Contains(x)).ToList();
-            }
+            //if (success)
+            //{
+            result.Objects = result.Objects.Where(x => !except.Contains(x)).ToList();
+            //}
 
-            return;
+            return null;
         }
 
-        private Item GetObject(string token)
+        private Item GetObject(List<Item> orville, string token)
         {
             //TODO: I have a feeling we are not done here
 
+            
             // objects may have the same synonyms, so multiple items could be returned here
             var objects = (
                 from o in Objects.WithName(token)
@@ -256,12 +279,18 @@ namespace Adventure.Net
             }
             else if (objects.Count > 1)
             {
-                throw new NotImplementedException("Which do you mean?");
+                return new MultipleObjectsFound(objects);
             }
 
             return null;
         }
-    
+
+        private CommandLineParserResult ResolveMultipleObjects(Verb verb, MultipleObjectsFound multiple)
+        {
+            Output.Print($"Which do you mean, {multiple.List()}?");
+            return GetInput(verb);
+        }
+
         private CommandLineParserResult CheckForPossiblePartial(Verb verb)
         {
             // one-word command or partial command
@@ -271,37 +300,45 @@ namespace Adventure.Net
             if (expects == null)
             {
                 Output.Print($"What do you want to {verb.Name}?");
-
-                var response = CommandPrompt.GetInput();
-                var tokenizer = new InputTokenizer();
-                var tokens = tokenizer.Tokenize(response);
-
-                if (tokens.Count == 0)
-                {
-                    return new CommandLineParserResult { Error = Messages.DoNotUnderstand };
-                }
-
-                if (tokens[0].ToVerb() != null)
-                {
-                    // a new command was entered instead of a partial response
-                    return Parse(string.Join(' ', tokens));
-                }
-
-                // parse original verb with the entered tokens
-                return Parse(verb, tokens);
+                return GetInput(verb);
             }
 
             return null;
         }
 
+        private CommandLineParserResult GetInput(Verb verb)
+        {
+            var response = CommandPrompt.GetInput();
+            var tokenizer = new InputTokenizer();
+            var tokens = tokenizer.Tokenize(response);
+
+            if (tokens.Count == 0)
+            {
+                return new CommandLineParserResult { Error = Messages.DoNotUnderstand };
+            }
+
+            if (tokens[0].ToVerb() != null)
+            {
+                // a new command was entered instead of a partial response
+                return Parse(string.Join(' ', tokens));
+            }
+
+            // parse original verb with the entered tokens
+            return Parse(verb, tokens);
+        }
+
         private void ValidateResult(CommandLineParserResult result)
         {
+            if (result.Error.HasValue())
+            {
+                return;
+            }
+
             var call = new DynamicCall(result);
             var expects = new DynamicExpects(result.Verb, call);
 
             if (expects.Expects == null)
             {
-
                 // this is just observed Inform 6 behavior
                 if (result.Ordered.Count > 0)
                 {

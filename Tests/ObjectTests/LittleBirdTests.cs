@@ -15,7 +15,7 @@ namespace Tests.ObjectTests
 
             Execute("release bird");
 
-            Assert.Equal("The bird is not caged now.", ConsoleOut);
+            Assert.Equal("The bird is not caged now.", Line(1));
         }
 
         [Fact]
@@ -30,7 +30,7 @@ namespace Tests.ObjectTests
 
             Execute("examine bird");
 
-            Assert.Equal("The little bird looks unhappy in the cage.", ConsoleOut);
+            Assert.Equal("The little bird looks unhappy in the cage.", Line(1));
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace Tests.ObjectTests
 
             Execute("examine bird");
 
-            Assert.Equal("The cheerful little bird is sitting here singing.", ConsoleOut);
+            Assert.Equal("The cheerful little bird is sitting here singing.", Line(1));
         }
 
         [Fact]
@@ -171,7 +171,7 @@ namespace Tests.ObjectTests
 
             Execute("take bird");
             
-            Assert.Equal("You catch the bird in the wicker cage.", ConsoleOut);
+            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
             Assert.False(CurrentRoom.Objects.Contains(bird));
             Assert.True(cage.Contains<LittleBird>());
             Assert.True(bird.InInventory);
@@ -188,7 +188,7 @@ namespace Tests.ObjectTests
 
             Execute("release bird");
 
-            Assert.Equal("The bird is not caged now.", ConsoleOut);
+            Assert.Equal("The bird is not caged now.", Line(1));
 
         }
 
@@ -266,7 +266,7 @@ namespace Tests.ObjectTests
 
             Execute("put bird into cage");
 
-            Assert.Equal("You catch the bird in the wicker cage.", ConsoleOut);
+            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
         }
 
         [Fact]
@@ -280,7 +280,7 @@ namespace Tests.ObjectTests
 
             Execute("catch bird");
 
-            Assert.Equal("You catch the bird in the wicker cage.", ConsoleOut);
+            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
         }
 
         [Fact]
@@ -294,7 +294,7 @@ namespace Tests.ObjectTests
 
             Execute("attack bird");
 
-            Assert.Equal("Oh, leave the poor unhappy bird alone.", ConsoleOut);
+            Assert.Equal("Oh, leave the poor unhappy bird alone.", Line(1));
         }
 
         [Fact]
@@ -305,7 +305,7 @@ namespace Tests.ObjectTests
 
             Execute("attack bird");
 
-            Assert.Equal("The little bird is now dead. Its body disappears.", ConsoleOut);
+            Assert.Equal("The little bird is now dead. Its body disappears.", Line(1));
         }
 
         [Fact]
@@ -320,7 +320,7 @@ namespace Tests.ObjectTests
 
             Execute("ask bird about snake");
 
-            Assert.Equal("Cheep! Chirp!", ConsoleOut);
+            Assert.Equal("Cheep! Chirp!", Line(1));
         }
 
         

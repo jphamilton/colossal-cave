@@ -33,10 +33,8 @@ namespace Tests.ParserTests
 
             var result = Execute("take");
 
-            var responses = ConsoleOut.Split('?').Select(x => $"{x}?").ToList();
-
-            Assert.Equal("What do you want to take?", responses[0]);
-            Assert.Equal("What do you want to take?", responses[1]);
+            Assert.Equal("What do you want to take?", Line(1));
+            Assert.Equal("What do you want to take?", Line(2));
         }
 
         [Fact]

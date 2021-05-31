@@ -38,7 +38,7 @@ namespace Tests.ParserTests
         public void multiple_objects_specified()
         {
             var result = Parse("take bottle, keys and lamp");
-            
+
             Assert.Contains(Objects.GetByName("bottle"), result.Objects);
             Assert.Contains(Objects.GetByName("keys"), result.Objects);
             Assert.Contains(Objects.GetByName("lamp"), result.Objects);
@@ -74,13 +74,13 @@ namespace Tests.ParserTests
             Assert.Contains(Objects.GetByName("keys"), result.Objects);
             Assert.DoesNotContain(Objects.GetByName("cage"), result.Objects);
             Assert.Equal(Messages.PartialUnderstanding(result.Verb, result.Objects.First()), result.Error);
-            
+
         }
 
         [Fact]
         public void object_indirect_object()
         {
-            var result = Parse("put bottle in lamp"); 
+            var result = Parse("put bottle in lamp");
             Assert.Contains(Objects.Get<Bottle>(), result.Objects);
             Assert.True(result.Preposition is Preposition.In);
             Assert.Equal(Objects.Get<BrassLantern>(), result.IndirectObject);
@@ -112,7 +112,7 @@ namespace Tests.ParserTests
             Assert.Contains(Objects.GetByName("pipes"), result.Objects);
             Assert.Contains(Objects.GetByName("wellhouse"), result.Objects);
             Assert.Contains(Objects.GetByName("spring"), result.Objects);
-            
+
             // should not pick up the room!
             Assert.DoesNotContain(Room<InsideBuilding>(), result.Objects);
 
@@ -236,7 +236,7 @@ namespace Tests.ParserTests
         public void multi_preposition_grammars()
         {
             var result = Parse("put keys on bottle");
-            
+
             Assert.Contains(Objects.Get<SetOfKeys>(), result.Objects);
             Assert.Equal(Objects.Get<Bottle>(), result.IndirectObject);
             Assert.True(result.Verb is Put);
@@ -254,10 +254,10 @@ namespace Tests.ParserTests
         }
 
         [Fact]
-        public void should_handle_multiple_objects_with_same_name()
+        public void should_handle_two_objects_with_same_name()
         {
             var room = Context.Story.Location;
-            
+
             var red = new RedHat();
             red.Initialize();
 
@@ -266,14 +266,215 @@ namespace Tests.ParserTests
 
             Objects.Add(red);
             Objects.Add(black);
+
             room.Objects.Add(red);
             room.Objects.Add(black);
 
-            var result = Parse("take hat");
+            CommandPrompt.FakeInput("red");
 
-            Assert.True(result.Verb is Take);
-            
-            // TODO: implement which do you mean
+            Execute("take hat");
+
+            Assert.Contains("Which do you mean, the red hat or the black hat?", ConsoleOut);
+            Assert.Contains("Taken.", ConsoleOut);
+            Assert.Contains(red, Inventory.Items);
+        }
+
+        [Fact]
+        public void should_handle_more_than_two_objects_with_same_name()
+        {
+            var room = Context.Story.Location;
+
+            var red = new RedHat();
+            red.Initialize();
+
+            var black = new BlackHat();
+            black.Initialize();
+
+            var white = new WhiteHat();
+            white.Initialize();
+
+            Objects.Add(red);
+            Objects.Add(black);
+            Objects.Add(white);
+
+            room.Objects.Add(red);
+            room.Objects.Add(black);
+            room.Objects.Add(white);
+
+            CommandPrompt.FakeInput("white");
+
+            Execute("take hat");
+
+            Assert.Contains("Which do you mean, the red hat, the black hat or the white hat?", ConsoleOut);
+            Assert.Contains("Taken.", ConsoleOut);
+            Assert.Contains(white, Inventory.Items);
+        }
+
+        [Fact]
+        public void should_handle_two_objects_with_same_name_in_except_clause()
+        {
+            var room = Context.Story.Location;
+
+            var red = new RedHat();
+            red.Initialize();
+
+            var black = new BlackHat();
+            black.Initialize();
+
+            var white = new WhiteHat();
+            white.Initialize();
+
+            Objects.Add(red);
+            Objects.Add(black);
+            Objects.Add(white);
+
+            room.Objects.Add(red);
+            room.Objects.Add(black);
+            room.Objects.Add(white);
+
+            CommandPrompt.FakeInput("white");
+
+            Execute("take all except hat");
+
+            // need to for bad responses and stuff
+
+            Assert.DoesNotContain("white hat: Taken.", ConsoleOut);
+            Assert.DoesNotContain(white, Inventory.Items);
+            Assert.Contains(red, Inventory.Items);
+            Assert.Contains(black, Inventory.Items);
+
+        }
+
+        [Fact]
+        public void should_handle_command_reentry_in_except_clause_that_has_multiple_matching_items()
+        {
+            var room = Context.Story.Location;
+
+            var red = new RedHat();
+            red.Initialize();
+
+            var black = new BlackHat();
+            black.Initialize();
+
+            var white = new WhiteHat();
+            white.Initialize();
+
+            Objects.Add(red);
+            Objects.Add(black);
+            Objects.Add(white);
+
+            room.Objects.Add(red);
+            room.Objects.Add(black);
+            room.Objects.Add(white);
+
+            // this should bail out of the except clause handler
+            CommandPrompt.FakeInput("take white hat");
+
+            Execute("take all except hat");
+
+            Assert.DoesNotContain("white hat: Taken.", ConsoleOut);
+            Assert.DoesNotContain(white, Inventory.Items);
+            Assert.Contains(red, Inventory.Items);
+            Assert.Contains(black, Inventory.Items);
+        }
+
+        [Fact]
+        public void should_handle_a_specific_multiple_matched_item_entered_using_two_words()
+        {
+            var room = Context.Story.Location;
+
+            var red = new RedHat();
+            red.Initialize();
+
+            var black = new BlackHat();
+            black.Initialize();
+
+            var white = new WhiteHat();
+            white.Initialize();
+
+            Objects.Add(red);
+            Objects.Add(black);
+            Objects.Add(white);
+
+            room.Objects.Add(red);
+            room.Objects.Add(black);
+            room.Objects.Add(white);
+
+            Execute("take white hat");
+
+            var x = ConsoleOut;
+
+            Assert.Equal("Taken.", Line(1));
+            Assert.Contains(white, Inventory.Items);
+            Assert.DoesNotContain(red, Inventory.Items);
+            Assert.DoesNotContain(black, Inventory.Items);
+        }
+
+        [Fact]
+        public void should_handle_bad_command_reentry_in_except_clause_that_has_multiple_matching_items()
+        {
+            var room = Context.Story.Location;
+
+            var red = new RedHat();
+            red.Initialize();
+
+            var black = new BlackHat();
+            black.Initialize();
+
+            var white = new WhiteHat();
+            white.Initialize();
+
+            Objects.Add(red);
+            Objects.Add(black);
+            Objects.Add(white);
+
+            room.Objects.Add(red);
+            room.Objects.Add(black);
+            room.Objects.Add(white);
+
+            CommandPrompt.FakeInput("donkey");
+
+            Execute("take all except hat");
+
+            Assert.Equal(Messages.CantSeeObject, Line(1));
+        }
+
+        [Fact]
+        public void should_repeatedly_try_to_resolve_multiple_objects()
+        {
+            var room = Context.Story.Location;
+
+            var red = new RedHat();
+            red.Initialize();
+
+            var black = new BlackHat();
+            black.Initialize();
+
+            var white = new WhiteHat();
+            white.Initialize();
+
+            Objects.Add(red);
+            Objects.Add(black);
+            Objects.Add(white);
+
+            room.Objects.Add(red);
+            room.Objects.Add(black);
+            room.Objects.Add(white);
+
+            CommandPrompt.FakeInput("hat");
+
+            Execute("take hat");
+
+            Assert.Contains("Which do you mean, the red hat, the black hat or the white hat?", Line(1));
+            Assert.Contains("Which do you mean, the red hat, the black hat or the white hat?", Line(2));
+        }
+
+        [Fact]
+        public void should_not_resolve_multi_word_object_entry_to_single_object()
+        {
+            // brass and lamp both resolve to BrassLantern
+            var result = Execute("take the brass lamp");
+            Assert.Single(result.Output);
         }
 
         [Fact]

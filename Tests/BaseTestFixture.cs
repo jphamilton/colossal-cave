@@ -2,7 +2,9 @@
 using ColossalCave;
 using ColossalCave.Places;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -21,9 +23,8 @@ namespace Tests
     {
         private StringBuilder fakeConsole;
         private string output;
+        private List<string> list;
 
-        protected CommandResult CommandResult { get; set; }
-        
         public BaseTestFixture()
         {
             fakeConsole = new StringBuilder();
@@ -38,9 +39,9 @@ namespace Tests
 
         public void Dispose()
         {
+            list = null;
             Context.Current = null;
             fakeConsole.Clear();
-            CommandResult = null;
             output = null;
             Inventory.Clear();
         }
@@ -77,7 +78,8 @@ namespace Tests
                     return output;
                 }
 
-                output = fakeConsole.ToString().Replace(Environment.NewLine, "");
+                output = fakeConsole.ToString();
+
                 return output;
             }
         }
@@ -99,17 +101,19 @@ namespace Tests
 
             var command = result.CommandHandler();
             
-            CommandResult = command.Run();
-            
-            return CommandResult;
+            return command.Run();
         }
 
         protected string Line(int number)
         {
-            if (CommandResult != null && 
-                CommandResult.Output.Count >= number )
+            if (list == null)
             {
-                return CommandResult.Output[number - 1];
+                list = ConsoleOut.Split(Environment.NewLine).ToList();
+            }
+
+            if (list.Count > number)
+            {
+                return list[number - 1];
             }
 
             return null;

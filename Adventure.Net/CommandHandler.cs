@@ -134,14 +134,12 @@ namespace Adventure.Net
         {
             Output.Print(message);
             result.Output.Add(message);
-
         }
 
         private void Print(IEnumerable<string> messages)
         {
             Output.Print(messages);
             result.Output.AddRange(messages);
-
         }
     }
 }
