@@ -68,6 +68,7 @@ namespace Tests.Verbs
 
             Execute("close on lamp");
 
+            Assert.NotNull(ConsoleOut); 
             Assert.Equal(Messages.CantSeeObject, Line(1));
         }
     }

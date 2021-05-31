@@ -110,7 +110,7 @@ namespace Tests.ObjectTests
             lamp.IsOn = false;
             lamp.HasLight = false;
 
-            var result = Execute("turn off lamp");
+            Execute("turn off lamp");
 
             Assert.False(lamp.IsOn);
             Assert.False(lamp.HasLight);
@@ -130,6 +130,21 @@ namespace Tests.ObjectTests
 
             Assert.True(lamp.IsOn);
             Assert.True(lamp.HasLight);
+        }
+
+        [Fact]
+        public void should_turn_on_lamp_with_just_off()
+        {
+            lamp.IsOn = true;
+            lamp.HasLight = true;
+
+            Execute("off");
+
+            // implicit switch
+            Assert.Equal("You switch the brass lantern off.", Line(1));
+
+            Assert.False(lamp.IsOn);
+            Assert.False(lamp.HasLight);
         }
     }
 }

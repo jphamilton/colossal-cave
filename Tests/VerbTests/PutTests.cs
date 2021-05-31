@@ -146,14 +146,6 @@ namespace Tests.Verbs
 
 
         [Fact]
-        public void just_put_all()
-        {
-            // need to look at inform source. where does "those things in" come from?
-            Execute("put all");
-            Assert.Equal("What do you want to put those things in?", Line(1));
-        }
-
-        [Fact]
         public void just_put_all_except()
         {
             CommandPrompt.FakeInput("bird");
@@ -164,17 +156,7 @@ namespace Tests.Verbs
             Assert.Equal(Messages.CantSeeObject, Line(2));
         }
 
-        [Fact]
-        public void i_dont_understand_that_sentence()
-        {
-            var bottle = Objects.Get<Bottle>();
-            Location.Objects.Add(bottle);
-            var lantern = Objects.Get<BrassLantern>();
-            Location.Objects.Add(lantern);
-
-            var result = Execute("put bottle lantern");
-            Assert.Equal(Messages.DidntUnderstandSentence, Line(1));
-        }
+        
 
 
     }

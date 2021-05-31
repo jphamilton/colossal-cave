@@ -137,6 +137,7 @@ namespace ColossalCave.Objects
                         Print("Unfortunately, the batteries seem to be dead.");
                         return true;
                     }
+
                     return false;
                 });
 

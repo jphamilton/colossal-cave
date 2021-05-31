@@ -372,17 +372,9 @@ namespace Adventure.Net
             var call = new DynamicCall(result);
             var expects = new DynamicExpects(verb, call);
 
-            IList<Prep> acceptedPreps;
-
-            bool HasAcceptedPreps()
-            {
-                acceptedPreps = expects.AcceptedPrepositions();
-                return acceptedPreps.Count > 0;
-            }
-
             void WhatDoYouWantTo(Item obj, Prep prep)
             {
-                Output.Print($"What do you want to {verb.Name} {obj} {prep ?? result.Preposition}?");
+                Output.Print($"What do you want to {verb.Name} {obj} {prep}?");
                 var input = GetInput(verb);
 
                 if (input.Objects.Count == 1)
@@ -398,18 +390,35 @@ namespace Adventure.Net
 
             if (expects.Expects == null)
             {
+
+                // take all vs. put all (by itself) - HOW?
+                if (result.IsAll && result.IndirectObject == null)
+                {
+
+                }
+
                 if (result.Ordered.Count == 0)
                 {
                     result.Error = Messages.CantSeeObject;
                 }
 
-                if (result.Ordered[0] is Item obj)
+                if (result.Ordered[0] is Item obj && result.Objects.Count == 1)
                 {
+                    
+                    var acceptedPreps = expects.AcceptedPrepositions();
+
                     if (result.Preposition != null)
                     {
-                        WhatDoYouWantTo(obj, null);
+                        if (acceptedPreps.Contains(result.Preposition))
+                        {
+                            WhatDoYouWantTo(obj, result.Preposition);
+                        }
+                        else
+                        {
+                            result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects.First());
+                        }
                     }
-                    else if (HasAcceptedPreps())
+                    else if (acceptedPreps.Count > 0)
                     {
                         WhatDoYouWantTo(obj, acceptedPreps[0]);
                     }
@@ -417,6 +426,14 @@ namespace Adventure.Net
                     {
                         result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects.First());
                     }
+                }
+                else if (result.Preposition != null)
+                {
+                    result.Error = Messages.CantSeeObject;
+                }
+                else
+                {
+                    result.Error = Messages.DidntUnderstandSentence;
                 }
             }
 
