@@ -11,6 +11,7 @@ namespace Adventure.Net
             DarkToDark = () => Print("It's pitch black, and you can't see a thing.");
             CantGo = "You can't go that way.";
             Visited = false;
+            Article = "";
         }
 
         public IList<Item> Objects { get; private set;}

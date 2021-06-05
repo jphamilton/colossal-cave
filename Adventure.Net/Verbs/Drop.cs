@@ -4,9 +4,9 @@ namespace Adventure.Net.Verbs
 {
 
     //Verb 'drop' 'discard' 'throw'
-    //* multiheld                                 -> Drop
-    //* multiexcept 'in'/'into'/'down' noun       -> Insert
-    //* multiexcept 'on'/'onto' noun              -> PutOn
+    //* multiheld                                 -> Drop           keys, all, all except keys  (Drop)
+    //* multiexcept 'in'/'into'/'down' noun       -> Insert         keys, all, all except [in/into/down] or keys down well
+    //* multiexcept 'on'/'onto' noun              -> PutOn          all except keys on/onto table, keys on table
     //* held 'at'/'against'/'on'/'onto' noun      -> ThrowAt;
 
     // TODO: implement Insert, PutOn, ThrowAt
@@ -44,11 +44,6 @@ namespace Adventure.Net.Verbs
         {
             if (obj.InInventory)
             {
-                //if (Inventory.Count == 1)
-                //{
-                //    Print($"({obj.Article} {obj.Name})");
-                //}
-
                 obj.MoveToLocation();
                 Print("Dropped.");
             }

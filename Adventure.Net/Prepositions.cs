@@ -9,6 +9,11 @@ namespace Adventure.Net
         {
             return GetType() == other.GetType();
         }
+
+        public override string ToString()
+        {
+            return GetType().Name.ToLower();
+        }
     }
 
     public static class Preposition

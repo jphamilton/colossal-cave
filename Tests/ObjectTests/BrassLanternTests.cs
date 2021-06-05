@@ -45,7 +45,7 @@ namespace Tests.ObjectTests
         }
 
         [Fact]
-        public void cannot_accept_anything_other_than_batteries()
+        public void should_not_accept_anything_other_than_batteries()
         {
             var bottle = Objects.Get<Bottle>();
             Inventory.Add(bottle);
@@ -92,7 +92,7 @@ namespace Tests.ObjectTests
         }
 
         [Fact]
-        public void cannot_turn_on_lamp_twice()
+        public void should_not_turn_on_lamp_twice()
         {
             lamp.IsOn = true;
             lamp.HasLight = true;
@@ -105,17 +105,46 @@ namespace Tests.ObjectTests
         }
 
         [Fact]
-        public void cannot_turn_off_lamp_twice()
+        public void should_not_turn_off_lamp_twice()
         {
             lamp.IsOn = false;
             lamp.HasLight = false;
 
-            var result = Execute("turn off lamp");
+            Execute("turn off lamp");
 
             Assert.False(lamp.IsOn);
             Assert.False(lamp.HasLight);
             Assert.Equal("That's already off.", Line(1));
         }
 
+        [Fact]
+        public void should_turn_on_lamp_with_just_on()
+        {
+            lamp.IsOn = false;
+            lamp.HasLight = false;
+
+            Execute("on");
+
+            // implicit switch
+            Assert.Equal("You switch the brass lantern on.", Line(1));
+
+            Assert.True(lamp.IsOn);
+            Assert.True(lamp.HasLight);
+        }
+
+        [Fact]
+        public void should_turn_on_lamp_with_just_off()
+        {
+            lamp.IsOn = true;
+            lamp.HasLight = true;
+
+            Execute("off");
+
+            // implicit switch
+            Assert.Equal("You switch the brass lantern off.", Line(1));
+
+            Assert.False(lamp.IsOn);
+            Assert.False(lamp.HasLight);
+        }
     }
 }

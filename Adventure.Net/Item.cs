@@ -15,7 +15,12 @@ namespace Adventure.Net
         protected Item()
         {
             Synonyms = new Synonyms();
-            Article = "a";
+            Article = "the";
+        }
+
+        public override string ToString()
+        {
+            return $"{Article} {Name}";
         }
 
         public string Name { get; set; }

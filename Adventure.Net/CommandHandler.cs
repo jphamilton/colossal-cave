@@ -1,6 +1,7 @@
 ﻿using Adventure.Net.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Adventure.Net
 {
@@ -10,6 +11,7 @@ namespace Adventure.Net
         private readonly CommandResult result;
         private readonly List<Item> objects;
         private readonly Item indirectObject;
+        private readonly List<object> ordered;
         private readonly Verb verb;
         private readonly Type verbType;
         private readonly Prep preposition;
@@ -20,6 +22,7 @@ namespace Adventure.Net
 
             verb = parsed.Verb;
             objects = parsed.Objects;
+            ordered = parsed.Ordered;
             preposition = parsed.Preposition;
             indirectObject = parsed.IndirectObject;
             verbType = verb?.GetType();
@@ -58,7 +61,14 @@ namespace Adventure.Net
 
             result.Success = !failed;
 
-            Print(context.Output);
+            if (context.Output.Count > 0)
+            {
+                Print(context.Output);
+            }
+            else
+            {
+                Print(Messages.CantSeeObject);
+            }
 
             Context.Current = null;
 
@@ -134,12 +144,14 @@ namespace Adventure.Net
         {
             Output.Print(message);
             result.Output.Add(message);
+
         }
 
         private void Print(IEnumerable<string> messages)
         {
             Output.Print(messages);
             result.Output.AddRange(messages);
+
         }
     }
 }
