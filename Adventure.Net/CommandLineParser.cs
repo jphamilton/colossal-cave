@@ -243,12 +243,7 @@ namespace Adventure.Net
                 }
             }
 
-            //var success = !result.Error.HasValue();
-
-            //if (success)
-            //{
             result.Objects = result.Objects.Where(x => !except.Contains(x)).ToList();
-            //}
 
             return null;
         }
@@ -391,20 +386,12 @@ namespace Adventure.Net
             if (expects.Expects == null)
             {
 
-                // take all vs. put all (by itself) - HOW?
-                if (result.IsAll && result.IndirectObject == null)
-                {
-
-                }
-
                 if (result.Ordered.Count == 0)
                 {
                     result.Error = Messages.CantSeeObject;
-                }
-
-                if (result.Ordered[0] is Item obj && result.Objects.Count == 1)
+                } 
+                else if (result.Ordered[0] is Item obj && result.Objects.Count == 1)
                 {
-                    
                     var acceptedPreps = expects.AcceptedPrepositions();
 
                     if (result.Preposition != null)

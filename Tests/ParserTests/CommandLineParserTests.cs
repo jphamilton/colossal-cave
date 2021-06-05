@@ -592,7 +592,7 @@ namespace Tests.ParserTests
         [Fact]
         public void just_put_all()
         {
-            // need to look at inform source. where does "those things in" come from?
+            // This one test would require A LOT of work to handle like I6
             var result = Execute("put all");
             Assert.Equal("What do you want to put those things in?", Line(1));
         }
