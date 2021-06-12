@@ -8,7 +8,7 @@ namespace Adventure.Net
         public Room Location { get; set; }
         public bool IsDone { get; set; }
 
-        protected abstract void OnInitialize();
+        protected abstract void Start();
 
         protected StoryBase()
         {
@@ -19,6 +19,7 @@ namespace Adventure.Net
         {
             Rooms.Load(this);
             Objects.Load(this);
+            VerbList.Load();
 
             foreach (var obj in Rooms.All)
             {
@@ -30,7 +31,8 @@ namespace Adventure.Net
                 obj.Initialize();
             }
 
-            OnInitialize();
+
+            Start();
         }
 
         public virtual void Quit()

@@ -10,7 +10,7 @@ namespace ColossalCave
             Story = "ADVENTURE";
         }
 
-        protected override void OnInitialize()
+        protected override void Start()
         {
             Output.Bold("ADVENTURE");
 

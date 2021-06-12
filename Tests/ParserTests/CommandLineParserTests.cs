@@ -590,7 +590,7 @@ namespace Tests.ParserTests
         }
 
         [Fact]
-        public void just_put_all()
+        public void put_all()
         {
             // This one test would require A LOT of work to handle like I6
             var result = Execute("put all");

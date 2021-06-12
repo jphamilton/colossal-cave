@@ -7,18 +7,9 @@ namespace Adventure.Net
 {
     public static class VerbList 
     {
-        private static readonly List<Verb> verbs;
+        private static List<Verb> verbs;
 
-        /*
-            need a map to Expects calls 
-            Verb ->
-                    Excepts(A)
-                    Excepts(B)
-                    Excepts(C)
-         
-         */
-
-        static VerbList()
+        public static void Load()
         {
             verbs = new List<Verb>();
 

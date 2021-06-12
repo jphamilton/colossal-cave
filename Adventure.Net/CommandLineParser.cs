@@ -128,7 +128,7 @@ namespace Adventure.Net
                     result.Preposition = p;
                 }
 
-                else if (token == K.ALL && !result.Objects.Any())
+                else if (token == "all" && !result.Objects.Any())
                 {
                     result.IsAll = true;
 
@@ -159,7 +159,7 @@ namespace Adventure.Net
 
                 }
 
-                else if (token == K.EXCEPT && (verb.Multi || verb.MultiHeld) && lastToken == K.ALL)
+                else if (token == "except" && (verb.Multi || verb.MultiHeld) && lastToken == "all")
                 {
                     var except = HandleExcept(result, tokens, token);
                     
