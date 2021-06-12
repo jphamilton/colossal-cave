@@ -61,14 +61,7 @@ namespace Adventure.Net
 
             result.Success = !failed;
 
-            if (context.Output.Count > 0)
-            {
-                Print(context.Output);
-            }
-            else
-            {
-                Print(Messages.CantSeeObject);
-            }
+            Print(context.Output);
 
             Context.Current = null;
 
@@ -149,9 +142,11 @@ namespace Adventure.Net
 
         private void Print(IEnumerable<string> messages)
         {
-            Output.Print(messages);
-            result.Output.AddRange(messages);
-
+            if (messages.Any())
+            {
+                Output.Print(messages);
+                result.Output.AddRange(messages);
+            }
         }
     }
 }
