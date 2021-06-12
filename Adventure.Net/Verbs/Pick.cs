@@ -12,7 +12,7 @@
             Multi = true;
         }
 
-        public bool Expects(Item obj, Up up)
+        public bool Expects(Item obj, Preposition.Up up)
         {
             return Redirect<Take>(obj, v => v.Expects(obj));
         }

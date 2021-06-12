@@ -13,14 +13,14 @@ namespace Adventure.Net
         
         public MethodInfo Expects { get; private set; }
 
-        public DynamicExpects(Verb verb, DynamicCall call)
+        public DynamicExpects(Verb verb, MethodInfo handler, DynamicCall call)
         {
             this.call = call;
             this.call = call;
 
             verbType = verb.GetType();
-            
-            Expects = verbType.GetMethod("Expects", call.Types);
+
+            Expects = handler; 
         }
 
         public bool Invoke()

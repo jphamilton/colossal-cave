@@ -32,12 +32,6 @@
             return true;
         }
 
-        public bool Expects(DirectionalVerb verb)
-        {
-            // TODO: move player
-            return true;
-        }
-
         public bool Expects(Item obj)
         {
             return Redirect<Enter>(obj, v => v.Expects(obj));

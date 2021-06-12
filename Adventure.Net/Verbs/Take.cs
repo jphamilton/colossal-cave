@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Adventure.Net.Verbs
+﻿namespace Adventure.Net.Verbs
 {
     public class Take : Verb
     {
@@ -20,9 +18,7 @@ namespace Adventure.Net.Verbs
         {
             Name = "take";
             Synonyms.Are("take", "carry", "hold");
-            // TODO: do we really even need to know that something is "Multi"?
             Multi = true;
-           // Grammars.Add("<multi>", TakeObject);
         }
 
         public bool Expects(Item obj)

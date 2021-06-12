@@ -363,9 +363,32 @@ namespace Adventure.Net
                 return;
             }
 
+            Parameters parameters = result;
             var verb = result.Verb;
-            var call = new DynamicCall(result);
-            var expects = new DynamicExpects(verb, call);
+            
+            var expects = verb.GetHandler(result);
+
+            void WhatDoYouWantToDo(Prep prep)
+            {
+                var message = result.Objects.Count > 1 ?
+                    $"What do you want to {verb.Name} those things {prep}?" :
+                    $"What do you want to {verb.Name} {result.Objects.First()} {prep}?";
+
+                Output.Print(message);
+
+                var input = GetInput(verb);
+
+                if (input.Objects.Count == 1)
+                {
+                    result.Preposition = prep;
+                    result.IndirectObject = input.Objects[0];
+                    ValidateResult(result);
+                }
+                else
+                {
+                    result.Error = Messages.DidntUnderstandSentence;
+                }
+            }
 
             void WhatDoYouWantTo(Item obj, Prep prep)
             {
@@ -376,6 +399,7 @@ namespace Adventure.Net
                 {
                     result.Preposition = prep;
                     result.IndirectObject = input.Objects[0];
+                    ValidateResult(result);
                 }
                 else
                 {
@@ -383,33 +407,43 @@ namespace Adventure.Net
                 }
             }
 
-            if (expects.Expects == null)
+            if (expects == null)
             {
-
-                if (result.Ordered.Count == 0)
+                if (parameters.Key.Count == 1 && verb.AcceptedPrepositions.Count > 0)
                 {
-                    result.Error = Messages.CantSeeObject;
-                } 
-                else if (result.Ordered[0] is Item obj && result.Objects.Count == 1)
-                {
-                    var acceptedPreps = expects.AcceptedPrepositions();
-
-                    if (result.Preposition != null)
+                    // possible partial command entry
+                    foreach(var prep in verb.AcceptedPrepositions)
                     {
-                        if (acceptedPreps.Contains(result.Preposition))
+                        var key = $"obj.{prep}.obj";
+
+                        if (verb.GetHandler(key) != null)
                         {
-                            WhatDoYouWantTo(obj, result.Preposition);
-                        }
-                        else
-                        {
-                            result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects.First());
+                            WhatDoYouWantToDo(prep);
+                            break;
                         }
                     }
-                    else if (acceptedPreps.Count > 0)
+                }
+                else if (parameters.Key.Count == 2)
+                {
+                    // possible partial command entry
+                    var key = $"{parameters}.obj";
+                    
+                    if (verb.GetHandler(key) != null)
                     {
-                        WhatDoYouWantTo(obj, acceptedPreps[0]);
+                        WhatDoYouWantToDo(result.Preposition);
                     }
                     else
+                    {
+                        result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects.First());
+                    }
+
+                }
+                else if (parameters.Key.Count == 3)
+                {
+                    // possible partial command entry
+                    var key = $"obj";
+
+                    if (verb.GetHandler(key) != null)
                     {
                         result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects.First());
                     }
@@ -423,7 +457,10 @@ namespace Adventure.Net
                     result.Error = Messages.DidntUnderstandSentence;
                 }
             }
-
+            else
+            {
+                result.Expects = expects;
+            }
         }
     }
 }

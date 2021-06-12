@@ -95,6 +95,7 @@ namespace Tests.ParserTests
             Assert.Equal(Objects.Get<TastyFood>(), result.IndirectObject);
             Assert.True(result.Preposition is Preposition.With);
             Assert.True(result.Verb is Rub);
+            Assert.Contains(Messages.PartialUnderstanding(result.Verb, result.Objects.First()), result.Error); 
         }
 
         [Fact]
@@ -578,7 +579,7 @@ namespace Tests.ParserTests
         }
 
         [Fact]
-        public void i_didnt_understand_that_sentence()
+        public void put_bottle_lantern()
         {
             var bottle = Objects.Get<Bottle>();
             Location.Objects.Add(bottle);
@@ -586,13 +587,12 @@ namespace Tests.ParserTests
             Location.Objects.Add(lantern);
 
             var result = Execute("put bottle lantern");
-            Assert.Equal(Messages.DidntUnderstandSentence, Line(1));
+            Assert.Equal("What do you want to put those things in?", Line(1));
         }
 
         [Fact]
         public void put_all()
         {
-            // This one test would require A LOT of work to handle like I6
             var result = Execute("put all");
             Assert.Equal("What do you want to put those things in?", Line(1));
         }

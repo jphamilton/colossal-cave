@@ -14,7 +14,7 @@ namespace Adventure.Net
             Initialize(obj, prep, indirect);
         }
 
-        public DynamicCall(CommandLineParserResult result)
+        public DynamicCall(Parameters result)
         {
             Initialize(result.Objects.FirstOrDefault(), result.Preposition, result.IndirectObject);
         }

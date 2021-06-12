@@ -11,7 +11,6 @@ namespace Adventure.Net
         private readonly CommandResult result;
         private readonly List<Item> objects;
         private readonly Item indirectObject;
-        private readonly List<object> ordered;
         private readonly Verb verb;
         private readonly Type verbType;
         private readonly Prep preposition;
@@ -22,7 +21,6 @@ namespace Adventure.Net
 
             verb = parsed.Verb;
             objects = parsed.Objects;
-            ordered = parsed.Ordered;
             preposition = parsed.Preposition;
             indirectObject = parsed.IndirectObject;
             verbType = verb?.GetType();
@@ -53,7 +51,7 @@ namespace Adventure.Net
             }
             else
             {
-                // one word command (e.g. look, inv)
+                // one word command (e.g. look, i, south)
                 Expects(verb, null);
             }
 
@@ -126,7 +124,7 @@ namespace Adventure.Net
         private bool Expects(Verb verb, Item obj)
         {
             var call = new DynamicCall(obj, preposition, indirectObject);
-            var expects = new DynamicExpects(verb, call);
+            var expects = new DynamicExpects(verb, parsed.Expects, call);
 
             var success = expects.Invoke();
             

@@ -1,23 +1,58 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 
 namespace Adventure.Net
 {
-    public class CommandLineParserResult
+    public class Parameters
     {
-        public Verb Verb { get; set; }
-
-        public List<Item> Objects { get; set;  } = new List<Item>();
+        public List<Item> Objects { get; set; } = new List<Item>();
 
         public Prep Preposition { get; set; }
 
         public Item IndirectObject { get; set; }
 
+        public List<string> Key
+        {
+            get
+            {
+                var key = new List<string>();
+
+                if (Objects.Count > 0)
+                {
+                    key.Add("obj");
+                }
+
+                if (Preposition != null)
+                {
+                    key.Add($"{Preposition}");
+                }
+
+                if (IndirectObject != null)
+                {
+                    key.Add("obj");
+                }
+
+                return key;
+            }
+        }
+
+        public override string ToString()
+        {
+            return string.Join('.', Key);
+        }
+    }
+
+    public class CommandLineParserResult : Parameters
+    {
+        public Verb Verb { get; set; }
+
         public string Error { get; set; }
 
-        // "all" has been specified on command line
         public bool IsAll { get; set; }
 
         public List<object> Ordered { get; } = new List<object>();
+        
+        public MethodInfo Expects { get; set; }
 
         public CommandHandler CommandHandler()
         {

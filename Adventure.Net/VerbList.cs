@@ -19,7 +19,11 @@ namespace Adventure.Net
                 {
                     if (type.IsSubclassOf(typeof(Verb)) && !type.IsAbstract)
                     {
-                        verbs.Add(Activator.CreateInstance(type) as Verb);
+                        var instance = Activator.CreateInstance(type) as Verb;
+                        
+                        instance.Initialize();
+                        
+                        verbs.Add(instance);
                     }
                 }
                 

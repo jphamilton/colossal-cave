@@ -1,18 +1,17 @@
 ﻿namespace Adventure.Net.Verbs
 {
-    // TODO: implement
     public class Rub : Verb
     {
         public Rub()
         {
             Name = "rub";
-            //Grammars.Add("<noun>", RubObject);
+            Synonyms.Are("rub", "clean", "dust", "polish", "scrub", "shine", "sweep", "wipe");
         }
 
-        //private bool RubObject()
-        //{
-        //    Print("You achieve nothing by this.");
-        //    return true;
-        //}
+        public bool Expects(Item obj)
+        {
+            Print("You achieve nothing by this.");
+            return true;
+        }
     }
 }

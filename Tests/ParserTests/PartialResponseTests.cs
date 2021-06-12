@@ -91,6 +91,8 @@ namespace Tests.ParserTests
 
             Execute("put batteries in");
 
+            var x = ConsoleOut;
+
             Assert.Contains($"What do you want to put {fresh} in?", Line(1));
             Assert.Contains("I'm taking the liberty of replacing the batteries.", Line(2));
 
@@ -101,6 +103,13 @@ namespace Tests.ParserTests
 
             Assert.True(old.InScope);
             Assert.True(fresh.HaveBeenUsed);
+        }
+
+        [Fact]
+        public void put_all_in()
+        {
+            Execute("put all in");
+            Assert.Contains($"What do you want to put those things in?", Line(1));
         }
 
         [Fact]

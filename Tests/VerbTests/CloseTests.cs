@@ -1,6 +1,7 @@
 ﻿using Adventure.Net;
 using ColossalCave.Objects;
 using ColossalCave.Places;
+using System.Linq;
 using Xunit;
 
 namespace Tests.Verbs
@@ -66,10 +67,9 @@ namespace Tests.Verbs
         {
             Location = Room<InsideBuilding>();
 
-            Execute("close on lamp");
+            var result = Parse("close on lamp");
 
-            Assert.NotNull(ConsoleOut); 
-            Assert.Equal(Messages.CantSeeObject, Line(1));
+            Assert.Contains(Messages.PartialUnderstanding(result.Verb, result.Objects.First()), result.Error);
         }
     }
 }

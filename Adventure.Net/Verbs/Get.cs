@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Adventure.Net.Verbs
+﻿namespace Adventure.Net.Verbs
 {
     // TODO: implement
 
@@ -22,8 +19,7 @@ namespace Adventure.Net.Verbs
             //Grammars.Add("<multi>", TakeSingle);
         }
 
-        // TODO: test
-        public bool Excepts(Item obj)
+        public bool Expects(Item obj)
         {
             return Redirect<Take>(obj, v => v.Expects(obj));
 
