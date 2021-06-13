@@ -1,6 +1,6 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Verbs;
-using ColossalCave.Objects;
+using Adventure.Net.Actions;
+using ColossalCave.Things;
 using ColossalCave.Places;
 using System.Collections.Generic;
 using Xunit;

@@ -1,8 +1,8 @@
 using Adventure.Net;
-using Adventure.Net.Verbs;
+using Adventure.Net.Actions;
 using ColossalCave.Places;
 
-namespace ColossalCave.Objects
+namespace ColossalCave.Things
 {
     public class Grate : Door
     {

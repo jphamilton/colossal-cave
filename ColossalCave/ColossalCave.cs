@@ -1,7 +1,7 @@
-using ColossalCave.Objects;
+using ColossalCave.Things;
 using ColossalCave.Places;
 using Adventure.Net;
-using ColossalCave.Verbs;
+using ColossalCave.Actions;
 
 namespace ColossalCave
 {
@@ -36,12 +36,6 @@ namespace ColossalCave
              */
 
             Output.PrintLine();
-
-            var vase = Adventure.Net.Objects.Get<MingVase>();
-            var pillow = Adventure.Net.Objects.Get<VelvetPillow>();
-
-            Inventory.Add(vase);
-            Inventory.Add(pillow);
 
             Location = Rooms.Get<EndOfRoad>();
         }

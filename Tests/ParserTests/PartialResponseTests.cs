@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using ColossalCave.Objects;
+using ColossalCave.Things;
 using System;
 using System.Linq;
 using Xunit;

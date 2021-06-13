@@ -5,4 +5,4 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>", Scope = "member", Target = "~M:Adventure.Net.Verbs.Empty.Expects(Adventure.Net.Item,Adventure.Net.Preposition.Out)~System.Boolean")]
+[assembly: SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>", Scope = "member", Target = "~M:Adventure.Net.Actions.Empty.Expects(Adventure.Net.Item,Adventure.Net.Preposition.Out)~System.Boolean")]

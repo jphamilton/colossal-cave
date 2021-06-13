@@ -1,4 +1,6 @@
-﻿namespace ColossalCave.Places
+﻿using Adventure.Net;
+
+namespace ColossalCave.Places
 {
     public class CrossOver : BelowGround
     {
@@ -7,7 +9,7 @@
             Name = "N/S and E/W Crossover";
             Synonyms.Are("n/s", "and", "e/w", "crossover");
 
-            Has<Objects.CrossOver>();
+            Has<Things.CrossOver>();
 
             WestTo<EastEndOfLongHall>();
             NorthTo<DeadEnd7>();

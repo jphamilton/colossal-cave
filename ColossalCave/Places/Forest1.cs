@@ -1,6 +1,6 @@
 ﻿using System;
 using Adventure.Net;
-using ColossalCave.Objects;
+using ColossalCave.Things;
 
 namespace ColossalCave.Places
 {

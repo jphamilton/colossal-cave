@@ -1,7 +1,7 @@
-﻿using Adventure.Net.Verbs;
+﻿using Adventure.Net.Actions;
 using Adventure.Net;
-using ColossalCave.Objects;
-using ColossalCave.Verbs;
+using ColossalCave.Things;
+using ColossalCave.Actions;
 
 namespace ColossalCave.Places
 {

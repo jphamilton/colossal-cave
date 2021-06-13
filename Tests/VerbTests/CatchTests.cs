@@ -1,7 +1,7 @@
 ﻿using ColossalCave.Places;
 using Adventure.Net;
 using Xunit;
-using Adventure.Net.Verbs;
+using Adventure.Net.Actions;
 
 namespace Tests.VerbTests
 { 
