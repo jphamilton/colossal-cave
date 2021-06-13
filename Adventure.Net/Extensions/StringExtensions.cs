@@ -44,7 +44,7 @@ namespace Adventure.Net.Extensions
 
         public static Verb ToVerb(this string input)
         {
-            return VerbList.GetVerbByName(input);
+            return Verbs.Get(input);
         }
 
         

@@ -1,6 +1,6 @@
 namespace Adventure.Net.Actions
 {
-    public class Up : DirectionalVerb
+    public class Up : Direction
     {
         public Up()
         {

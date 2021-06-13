@@ -29,12 +29,12 @@ namespace ColossalCave.Places
 
         public void BridgeAppears()
         {
-            Objects.Add(Get<CrystalBridge>());
+            Contents.Add(Get<CrystalBridge>());
             EastTo<CrystalBridge>();
         }
         public void BridgeDisappears()
         {
-            Objects.Remove(Get<CrystalBridge>());
+            Contents.Remove(Get<CrystalBridge>());
             EastTo(CannotCross);
         }
 

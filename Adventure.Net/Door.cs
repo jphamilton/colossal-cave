@@ -14,9 +14,9 @@ namespace Adventure.Net
 
         public Func<Room> DoorTo { get; set; }
 
-        public Func<DirectionalVerb> DoorDirection { get; set; } 
+        public Func<Direction> DoorDirection { get; set; } 
         
-        protected T Direction<T>() where T:DirectionalVerb
+        protected T Direction<T>() where T:Direction
         {
             Type t = typeof (T);
             return Activator.CreateInstance(t) as T;

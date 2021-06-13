@@ -1,4 +1,5 @@
-﻿using Adventure.Net.Extensions;
+﻿using Adventure.Net.Utilities;
+using System.Collections.Generic;
 
 namespace Adventure.Net
 {
@@ -9,9 +10,16 @@ namespace Adventure.Net
         public bool IsDone { get; set; }
         public int Moves { get; set; } = 0;
         public int CurrentScore { get; set; } = 0;
-        public int TotalScore { get; set; } = 0;
+        public int PossibleScore { get; set; } = 0;
+
+        public Dictionary<string, bool> Flags { get; } = new Dictionary<string, bool>();
 
         protected abstract void Start();
+        
+        public virtual void AfterTurn()
+        {
+
+        }
 
         protected StoryBase()
         {
@@ -22,7 +30,7 @@ namespace Adventure.Net
         {
             Rooms.Load(this);
             Objects.Load(this);
-            VerbList.Load();
+            Verbs.Load();
 
             foreach (var obj in Rooms.All)
             {
@@ -40,27 +48,12 @@ namespace Adventure.Net
 
         public virtual void Quit()
         {
-            if (YesOrNo("Are you sure you want to quit?"))
+            if (YesOrNo.Ask("Are you sure you want to quit?"))
             {
                 IsDone = true;
             }
         }
 
-        // TODO: This needs to go somewhere else
-        private static bool YesOrNo(string question)
-        {
-            Output.Print(question);
-
-            while (true)
-            {
-                string[] affirmative = new[] { "y", "yes", "yep", "yeah" };
-                string[] negative = new[] { "n", "no", "nope", "nah", "naw", "nada" };
-                string response = CommandPrompt.GetInput();
-                if (!response.In(affirmative) && !response.In(negative))
-                    Output.Print("Please answer yes or no.");
-                else
-                    return (response.In(affirmative));
-            }
-        }
+        
     }
 }

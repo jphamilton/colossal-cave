@@ -5,7 +5,7 @@ namespace Adventure.Net
 {
     public abstract class Container : Item
     {
-        protected readonly List<Item> contents = new List<Item>();
+        protected List<Item> contents = new List<Item>();
         
         protected Container()
         {
@@ -80,9 +80,7 @@ namespace Adventure.Net
         {
             get
             {
-                var result = new List<Item>();
-                result.AddRange(contents);
-                return result;
+                return contents;
             }
         }
 

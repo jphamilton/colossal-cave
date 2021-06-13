@@ -17,15 +17,17 @@ namespace Adventure.Net
 
         public void Run()
         {
-            Context.Story.Initialize();
+            var story = Context.Story;
 
-            MovePlayer.To(Context.Story.Location);
+            story.Initialize();
 
-            while (!Context.Story.IsDone)
+            MovePlayer.To(story.Location);
+
+            while (!story.IsDone)
             {
+                var room = CurrentRoom.Location;
                 bool wasLit = CurrentRoom.IsLit();
 
-                // TODO: clean this up
                 var parser = new CommandLineParser();
                 var result = parser.Parse(CommandPrompt.GetInput());
                 
@@ -39,14 +41,21 @@ namespace Adventure.Net
                     handler.Run();
                 }
 
-                if (!wasLit && CurrentRoom.IsLit())
+                if (!wasLit && CurrentRoom.IsLit() && CurrentRoom.Location == room)
                 {
                     CurrentRoom.Look(true);
                 }
 
-                Context.Story.Moves++;
+                if (wasLit && !CurrentRoom.IsLit())
+                {
+                    Output.Print("\r\nIt is now pitch dark in here!");
+                }
+
+                story.Moves++;
                 
                 RunDaemons();
+
+                story.AfterTurn();
             }
 
         }

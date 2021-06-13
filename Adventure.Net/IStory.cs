@@ -9,10 +9,13 @@ namespace Adventure.Net
         string Story { get; set; }
         int Moves { get; set; }
         int CurrentScore { get; set; }
-        int TotalScore { get; set; }
+        int PossibleScore { get; set; }
+        Dictionary<string, bool> Flags { get; }
 
         void Initialize();
 
         void Quit();
+
+        void AfterTurn();
     }
 }

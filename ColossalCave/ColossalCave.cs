@@ -11,7 +11,8 @@ namespace ColossalCave
         {
             Story = "ADVENTURE";
             CurrentScore = 0;
-            TotalScore = 350;
+            PossibleScore = 350;
+            Flags.Add("dead", false);
         }
 
         protected override void Start()
@@ -37,10 +38,40 @@ namespace ColossalCave
 
             Output.PrintLine();
 
+            //var grate = Rooms.Get<Grate>();
+            //grate.IsOpen = true;
+            //grate.IsLocked = false;
+
+            //var lamp = Objects.Get<BrassLantern>();
+            //lamp.Remove();
+            //lamp.IsOn = true;
+            //lamp.HasLight = true;
+
+            //Inventory.Add(lamp);
+
+            //var keys = Objects.Get<SetOfKeys>();
+            //keys.Remove();
+            //Inventory.Add(keys);
+
+            //var food = Objects.Get<TastyFood>();
+            //food.Remove();
+            //Inventory.Add(food);
+
+            //Location = Rooms.Get<DebrisRoom>();
+            
             Location = Rooms.Get<EndOfRoad>();
         }
 
-    
+        public override void AfterTurn()
+        {
+            if (Flags["dead"])
+            {
+                AfterLife.Death();
+                return;
+            }
+
+
+        }
     }
 }
 

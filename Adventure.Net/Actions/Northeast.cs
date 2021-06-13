@@ -1,6 +1,6 @@
 namespace Adventure.Net.Actions
 {
-    public class Northeast : DirectionalVerb
+    public class Northeast : Direction
     {
         public Northeast()
         {

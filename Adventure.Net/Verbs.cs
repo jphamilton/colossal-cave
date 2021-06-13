@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Adventure.Net
 {
-    public static class VerbList 
+    public static class Verbs 
     {
         private static List<Verb> verbs;
 
@@ -43,15 +43,12 @@ namespace Adventure.Net
             get { return verbs; }
         }
 
-        public static Verb GetVerbByName(string name)
+        public static Verb Get(string name)
         {
             return List.Where(x => x.Name == name || x.Synonyms.Contains(name)).FirstOrDefault();
         }
 
-        public static IList<Verb> GetVerbsByName(string name)
-        {
-            return List.Where(x => x.Name == name || x.Synonyms.Contains(name)).ToList();
-        }
+        
 
     }
 }

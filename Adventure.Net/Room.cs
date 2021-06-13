@@ -1,3 +1,4 @@
+using Adventure.Net.Actions;
 using System;
 using System.Collections.Generic;
 
@@ -5,16 +6,18 @@ namespace Adventure.Net
 {
     public abstract class Room : Item
     {
+        private readonly Dictionary<Type, Func<Direction, bool>> beforeMoveRoutines = new Dictionary<Type, Func<Direction, bool>>();
+
         protected Room() 
         {
-            Objects = new List<Item>();
+            Contents = new List<Item>();
             DarkToDark = () => Print("It's pitch black, and you can't see a thing.");
             CantGo = "You can't go that way.";
             Visited = false;
             Article = "";
         }
 
-        public IList<Item> Objects { get; private set;}
+        public List<Item> Contents { get; private set;}
 
         public string CantGo { get; set; }
 
@@ -40,6 +43,12 @@ namespace Adventure.Net
                 roomMap.Remove(direction);
                 roomMap.Add(direction, () => room);
             }
+        }
+
+        public void Before<T>(Func<Direction, bool> before) where T : IDirectionProxy
+        {
+            beforeMoveRoutines.Remove(typeof(T));
+            beforeMoveRoutines.Add(typeof(T), before);
         }
 
         private void AddToRoomMap(string direction, Func<Room> getRoom)
@@ -235,14 +244,34 @@ namespace Adventure.Net
 
         protected virtual Room TryMove(string dir)
         {
-
             if (!roomMap.ContainsKey(dir))
                 return null;
 
+            var direction = (Direction)Verbs.Get(dir);
+            var goType = typeof(Go);
+            
+            if (beforeMoveRoutines.ContainsKey(goType))
+            {
+                var before = beforeMoveRoutines[goType];
+
+                if (before != null && before(direction))
+                {
+                    return null;
+                }
+            }
+
             var getRoom = roomMap[dir];
             var room = getRoom();
+
             if (room != null)
             {
+                var beforeEnter = room.Before<Enter>();
+
+                if (beforeEnter != null && beforeEnter())
+                {
+                    return this;
+                }
+
                 room = room.HandleMove() ?? this;
             }
             
@@ -251,7 +280,7 @@ namespace Adventure.Net
 
         public Item Has<T>() where T : Item
         {
-            Item obj = Net.Objects.Get<T>();
+            Item obj = Objects.Get<T>();
             
             if (obj == null)
             {
@@ -259,14 +288,14 @@ namespace Adventure.Net
             }
 
             obj.Parent = this;
-            Objects.Add(obj);
+            Contents.Add(obj);
             
             return obj;
         }
 
         public bool Contains<T>() where T : Item
         {
-            foreach(var obj in Objects)
+            foreach(var obj in Contents)
             {
                 if (obj is T)
                     return true;
@@ -277,12 +306,12 @@ namespace Adventure.Net
 
         public bool Contains(Item obj) 
         {
-            return Objects.Contains(obj);
+            return Contents.Contains(obj);
         }
 
         public new T Get<T>() where T:Item
         {
-            foreach (var obj in Objects)
+            foreach (var obj in Contents)
             {
                 if (obj is T)
                     return obj as T;

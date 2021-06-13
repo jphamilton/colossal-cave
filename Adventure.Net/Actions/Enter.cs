@@ -4,7 +4,7 @@
     //Verb 'enter' 'cross'
     //    *                                           -> GoIn
     //    * noun                                      -> Enter;
-    public class Enter : DirectionalVerb, IDirectionProxy
+    public class Enter : Direction, IDirectionProxy
     {
         public Enter()
         {

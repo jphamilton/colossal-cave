@@ -268,8 +268,8 @@ namespace Tests.ParserTests
             Objects.Add(red);
             Objects.Add(black);
 
-            room.Objects.Add(red);
-            room.Objects.Add(black);
+            room.Contents.Add(red);
+            room.Contents.Add(black);
 
             CommandPrompt.FakeInput("red");
 
@@ -298,9 +298,9 @@ namespace Tests.ParserTests
             Objects.Add(black);
             Objects.Add(white);
 
-            room.Objects.Add(red);
-            room.Objects.Add(black);
-            room.Objects.Add(white);
+            room.Contents.Add(red);
+            room.Contents.Add(black);
+            room.Contents.Add(white);
 
             CommandPrompt.FakeInput("white");
 
@@ -329,9 +329,9 @@ namespace Tests.ParserTests
             Objects.Add(black);
             Objects.Add(white);
 
-            room.Objects.Add(red);
-            room.Objects.Add(black);
-            room.Objects.Add(white);
+            room.Contents.Add(red);
+            room.Contents.Add(black);
+            room.Contents.Add(white);
 
             CommandPrompt.FakeInput("white");
 
@@ -364,9 +364,9 @@ namespace Tests.ParserTests
             Objects.Add(black);
             Objects.Add(white);
 
-            room.Objects.Add(red);
-            room.Objects.Add(black);
-            room.Objects.Add(white);
+            room.Contents.Add(red);
+            room.Contents.Add(black);
+            room.Contents.Add(white);
 
             // this should bail out of the except clause handler
             CommandPrompt.FakeInput("take white hat");
@@ -397,9 +397,9 @@ namespace Tests.ParserTests
             Objects.Add(black);
             Objects.Add(white);
 
-            room.Objects.Add(red);
-            room.Objects.Add(black);
-            room.Objects.Add(white);
+            room.Contents.Add(red);
+            room.Contents.Add(black);
+            room.Contents.Add(white);
 
             Execute("take white hat");
 
@@ -424,9 +424,9 @@ namespace Tests.ParserTests
             Objects.Add(black);
             Objects.Add(white);
 
-            room.Objects.Add(red);
-            room.Objects.Add(black);
-            room.Objects.Add(white);
+            room.Contents.Add(red);
+            room.Contents.Add(black);
+            room.Contents.Add(white);
 
             CommandPrompt.FakeInput("donkey");
 
@@ -453,9 +453,9 @@ namespace Tests.ParserTests
             Objects.Add(black);
             Objects.Add(white);
 
-            room.Objects.Add(red);
-            room.Objects.Add(black);
-            room.Objects.Add(white);
+            room.Contents.Add(red);
+            room.Contents.Add(black);
+            room.Contents.Add(white);
 
             CommandPrompt.FakeInput("hat");
 
@@ -582,9 +582,9 @@ namespace Tests.ParserTests
         public void put_bottle_lantern()
         {
             var bottle = Objects.Get<Bottle>();
-            Location.Objects.Add(bottle);
+            Location.Contents.Add(bottle);
             var lantern = Objects.Get<BrassLantern>();
-            Location.Objects.Add(lantern);
+            Location.Contents.Add(lantern);
 
             var result = Execute("put bottle lantern");
             Assert.Equal("What do you want to put those things in?", Line(1));

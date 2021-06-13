@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using System;
 
 namespace ColossalCave.Actions
 {
@@ -11,11 +12,11 @@ namespace ColossalCave.Actions
 
         public bool Expects()
         {
-            Print($"You have so far scored {Context.Story.CurrentScore} out of a possible {Context.Story.TotalScore}, in {Context.Story.Moves} turns, earning you the rank of {GetRank()}");
+            Print($"You have so far scored {Context.Story.CurrentScore} out of a possible {Context.Story.PossibleScore}, in {Context.Story.Moves} turns, earning you the rank of {GetRank()}");
             return true;
         }
 
-        private string GetRank()
+        public static string GetRank()
         {
             var score = Context.Story.CurrentScore;
             if (score >= 348) return "Grandmaster Adventurer!";
@@ -39,7 +40,7 @@ namespace ColossalCave.Actions
             if (display)
             {
                 var direction = Context.Story.CurrentScore > currentScore ? "up" : "down";
-                var output = $"\r\n[the score has just gone {direction} by {value} points.]\r\n";
+                var output = $"\r\n[the score has just gone {direction} by {Math.Abs(value)} points.]\r\n";
                 if (Context.Current != null)
                 {
                     Context.Current.Print(output);

@@ -18,7 +18,7 @@ namespace Tests.VerbTests
             Assert.Equal("Taken.", Line(1));
 
             Assert.True(Inventory.Contains(bottle));
-            Assert.False(Location.Objects.Contains(bottle));
+            Assert.False(Location.Contents.Contains(bottle));
         }
 
         [Fact]
@@ -168,7 +168,7 @@ namespace Tests.VerbTests
         {
             var bottle = Objects.Get<Bottle>();
 
-            Location.Objects.Remove(bottle);
+            Location.Contents.Remove(bottle);
             Inventory.Add(bottle);
 
             Execute("take bottle");

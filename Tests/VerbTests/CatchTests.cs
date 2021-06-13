@@ -23,7 +23,7 @@ namespace Tests.VerbTests
             var shark = new Shark();
             shark.Initialize();
             Objects.Add(shark);
-            Location.Objects.Add(shark);
+            Location.Contents.Add(shark);
 
             Execute("catch shark");
             Assert.Equal("You can't catch that.", Line(1));
@@ -37,7 +37,7 @@ namespace Tests.VerbTests
             var octopus = new Octopus();
             octopus.Initialize();
             Objects.Add(octopus);
-            Location.Objects.Add(octopus);
+            Location.Contents.Add(octopus);
 
             Execute("catch octopus");
             Assert.Equal("Yeah right!", Line(1));

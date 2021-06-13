@@ -130,9 +130,9 @@ namespace Adventure.Net
             return sb.ToString();
         }
 
-        public static IList<Item> Items
+        public static List<Item> Items
         {
-            get { return objects.AsReadOnly(); }
+            get { return objects; }
         }
 
         public static int Count

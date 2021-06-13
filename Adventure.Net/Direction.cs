@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Adventure.Net
 {
-    public abstract class DirectionalVerb : Verb
+    public abstract class Direction : Verb
     {
         private Func<Room, Room> getRoom;
 

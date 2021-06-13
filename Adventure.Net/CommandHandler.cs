@@ -84,6 +84,17 @@ namespace Adventure.Net
                     handled = before();
                 }
 
+                if (indirectObject != null)
+                {
+                    before = indirectObject.Before(verbType);
+
+                    if (before != null)
+                    {
+                        commandState.State = CommandState.Before;
+                        handled = before();
+                    }
+                }
+
                 if (!handled)
                 {
                     commandState.State = CommandState.During;
@@ -97,6 +108,17 @@ namespace Adventure.Net
                         {
                             commandState.State = CommandState.After;
                             after();
+                        }
+
+                        if (indirectObject != null)
+                        {
+                            after = indirectObject.After(verbType);
+
+                            if (after != null)
+                            {
+                                commandState.State = CommandState.After;
+                                after();
+                            }
                         }
                     }
                     else

@@ -1,6 +1,7 @@
 ﻿using Adventure.Net.Actions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Adventure.Net
 {
@@ -59,7 +60,8 @@ namespace Adventure.Net
 
         public override string ToString()
         {
-            return $"{Article} {Name}";
+            // TODO: How is it decided when/where to use Article?
+            return $"{Name}";
         }
 
         public string Name { get; set; }
@@ -172,7 +174,14 @@ namespace Adventure.Net
 
         public void Print(string message)
         {
-            Context.Current.Print(message);
+            if (Context.Current != null)
+            {
+                Context.Current.Print(message);
+            }
+            else
+            {
+                Output.Print(message);
+            }
         }
 
         // current object being handled by the command handler
@@ -277,21 +286,37 @@ namespace Adventure.Net
                 Inventory.Remove(this);
             }
 
-            if (InScope)
+            var containers = Inventory.Items.Where(obj => obj is Container);
+
+            foreach(Container container in containers)
             {
-                Context.Story.Location.Objects.Remove(this);
+                if (container.Contents.Contains(this))
+                {
+                    container.Contents.Remove(this);
+                    break;
+                }
             }
+
+            foreach(var room in Rooms.All)
+            {
+                room.Contents.Remove(this);
+            }
+
+            //if (InScope)
+            //{
+            //    Context.Story.Location.Contents.Remove(this);
+            //}
         }
 
         public bool InRoom
         {
-            get { return Context.Story.Location.Objects.Contains(this); }
+            get { return Context.Story.Location.Contents.Contains(this); }
         }
 
         public void MoveToLocation()
         {
             Inventory.Remove(this);
-            Context.Story.Location.Objects.Add(this);
+            Context.Story.Location.Contents.Add(this);
         }
 
     }

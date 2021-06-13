@@ -30,7 +30,7 @@ namespace Adventure.Net.Extensions
             bool result = false;
 
             if (words.Count > 0)
-                result = (VerbList.GetVerbByName(words[0]) != null);
+                result = (Verbs.Get(words[0]) != null);
 
             return result;
         }

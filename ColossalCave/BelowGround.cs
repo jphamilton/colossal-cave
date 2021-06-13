@@ -1,5 +1,5 @@
-﻿using System;
-using Adventure.Net;
+﻿using Adventure.Net;
+using Adventure.Net.Utilities;
 
 namespace ColossalCave
 {
@@ -27,11 +27,10 @@ namespace ColossalCave
                     }
                     else
                     {
-                        var rnd = new Random();
-                        if (rnd.Next(1, 4) == 1)
+                        if (Random.Number(1, 4) == 1)
                         {
-                            //TODO: dead = true; ????
                             Print("You fell into a pit and broke every bone in your body!");
+                            Context.Story.Flags["dead"] = true;
                         }    
                     }
                     

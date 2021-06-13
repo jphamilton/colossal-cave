@@ -211,12 +211,12 @@ namespace Adventure.Net
 
         public static T Get<T>() where T : Verb
         {
-            return (T)VerbList.List.Single(x => x is T);
+            return (T)Verbs.List.Single(x => x is T);
         }
 
         public static Verb Get(Type type) 
         {
-            return VerbList.List.Single(x => x.GetType() == type);
+            return Verbs.List.Single(x => x.GetType() == type);
         }
 
         public static bool Redirect<T>(Item item, Func<T, bool> callback) where T : Verb

@@ -14,7 +14,7 @@ namespace Adventure.Net
 
         public static IList<Item> Objects
         {
-            get { return Location.Objects; }
+            get { return Location.Contents; }
         }
 
         public static void Look(bool showFull)
@@ -42,6 +42,11 @@ namespace Adventure.Net
             if (Location.HasLight)
                 return true;
 
+            if (Location.Contents.Any(obj => obj.HasLight))
+            {
+                return true;
+            }
+
             foreach (var obj in Inventory.Items)
             {
                 if (obj.HasLight)
@@ -67,7 +72,7 @@ namespace Adventure.Net
             var ordinary = new List<Item>();
             int total = 0;
 
-            foreach (var obj in Location.Objects)
+            foreach (var obj in Location.Contents)
             {
                 if (obj.IsScenery && obj.Describe == null)
                     continue;
@@ -156,8 +161,8 @@ namespace Adventure.Net
         public static IList<Item> ObjectsInRoom()
         {
             var result = new List<Item>();
-            result.AddRange(Location.Objects.Where(x => !x.IsScenery && !x.IsStatic));
-            result.AddRange(Location.Objects.Where(x => x.IsScenery || x.IsStatic));
+            result.AddRange(Location.Contents.Where(x => !x.IsScenery && !x.IsStatic));
+            result.AddRange(Location.Contents.Where(x => x.IsScenery || x.IsStatic));
             AddContained(result);
             return result;
         }
@@ -166,8 +171,8 @@ namespace Adventure.Net
         {
             var result = new List<Item>();
 
-            result.AddRange(Location.Objects.Where(x => !x.IsScenery && !x.IsStatic));
-            result.AddRange(Location.Objects.Where(x => x.IsScenery || x.IsStatic));
+            result.AddRange(Location.Contents.Where(x => !x.IsScenery && !x.IsStatic));
+            result.AddRange(Location.Contents.Where(x => x.IsScenery || x.IsStatic));
             result.AddRange(Inventory.Items);
             // note: location is added to scope to support things like Door
             result.Add(Location);

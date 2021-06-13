@@ -142,7 +142,12 @@ namespace Adventure.Net
 
                     if (verb.Multi)
                     {
-                        multi.AddRange(CurrentRoom.ObjectsInRoom());
+                        var objectsInRoom =
+                            from o in CurrentRoom.ObjectsInRoom()
+                            where !o.IsAnimate
+                            select o;
+
+                        multi.AddRange(objectsInRoom);
                     }
 
                     if (verb.MultiHeld)
