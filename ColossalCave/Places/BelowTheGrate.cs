@@ -2,7 +2,7 @@
 
 namespace ColossalCave.Places
 {
-    public class BelowTheGrate : AdventRoom
+    public class BelowTheGrate : BelowGround
     {
         public override void Initialize()
         {

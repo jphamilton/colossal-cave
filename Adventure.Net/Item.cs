@@ -4,10 +4,49 @@ using System.Collections.Generic;
 
 namespace Adventure.Net
 {
+    public class AfterRoutines
+    {
+        private Dictionary<Type, Action> routines = new Dictionary<Type, Action>();
+
+        public void Add(Type type, Action after)
+        {
+            if (routines.ContainsKey(type))
+            {
+                var routine = routines[type];
+
+                Action wrapper = () =>
+                {
+                    routine();
+                    after();
+                };
+
+                routines.Remove(type);
+
+                routines.Add(type, wrapper);
+            }
+            else
+            {
+                routines.Add(type, after);
+            }
+            
+        }
+
+        public Action Get(Type verbType)
+        {
+            if (routines.ContainsKey(verbType))
+            {
+                return routines[verbType];
+            }
+
+            return null;
+        }
+    }
+
     public abstract class Item
     {
         private readonly Dictionary<Type, Func<bool>> beforeRoutines = new Dictionary<Type, Func<bool>>();
-        private readonly Dictionary<Type, Action> afterRoutines = new Dictionary<Type, Action>();
+        private readonly AfterRoutines afterRoutines = new AfterRoutines();
+
         private readonly Dictionary<Item, Func<Item, bool>> receiveRoutines = new Dictionary<Item, Func<Item, bool>>();
 
         public abstract void Initialize();
@@ -15,7 +54,7 @@ namespace Adventure.Net
         protected Item()
         {
             Synonyms = new Synonyms();
-            Article = "the";
+            Article = "a";
         }
 
         public override string ToString()
@@ -113,9 +152,7 @@ namespace Adventure.Net
 
         public Action After(Type verbType)
         {
-            if (afterRoutines.ContainsKey(verbType))
-                return afterRoutines[verbType];
-            return null;
+            return afterRoutines.Get(verbType);
         }
 
         public void Receive(Func<Item, bool> beforeReceive)
@@ -133,7 +170,7 @@ namespace Adventure.Net
             return null;
         }
 
-        protected void Print(string message)
+        public void Print(string message)
         {
             Context.Current.Print(message);
         }
@@ -208,7 +245,7 @@ namespace Adventure.Net
             return success;
         }
 
-        protected bool In<T>() where T:Item
+        protected bool In<T>() where T:Room
         {
             Item obj = Rooms.Get<T>();
             return (CurrentRoom.Location == obj);
@@ -216,7 +253,7 @@ namespace Adventure.Net
 
         protected Room Room<T>()
         {
-            return Rooms.Get<T>();
+            return Rooms.Get(typeof(T));
         }
 
         public bool InScope

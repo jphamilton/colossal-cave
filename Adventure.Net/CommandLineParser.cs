@@ -390,23 +390,6 @@ namespace Adventure.Net
                 }
             }
 
-            void WhatDoYouWantTo(Item obj, Prep prep)
-            {
-                Output.Print($"What do you want to {verb.Name} {obj} {prep}?");
-                var input = GetInput(verb);
-
-                if (input.Objects.Count == 1)
-                {
-                    result.Preposition = prep;
-                    result.IndirectObject = input.Objects[0];
-                    ValidateResult(result);
-                }
-                else
-                {
-                    result.Error = Messages.DidntUnderstandSentence;
-                }
-            }
-
             if (expects == null)
             {
                 if (parameters.Key.Count == 1 && verb.AcceptedPrepositions.Count > 0)

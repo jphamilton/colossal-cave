@@ -21,6 +21,7 @@
 
             if (!room.Visited && room.Initial != null)
             {
+                CurrentRoom.Look(true);
                 room.Initial();
             }
             else

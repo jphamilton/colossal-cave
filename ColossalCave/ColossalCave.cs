@@ -1,5 +1,7 @@
+using ColossalCave.Objects;
 using ColossalCave.Places;
 using Adventure.Net;
+using ColossalCave.Verbs;
 
 namespace ColossalCave
 {
@@ -8,6 +10,8 @@ namespace ColossalCave
         public ColossalCaveStory()
         {
             Story = "ADVENTURE";
+            CurrentScore = 0;
+            TotalScore = 350;
         }
 
         protected override void Start()
@@ -22,7 +26,22 @@ namespace ColossalCave
                 "[In memoriam Stephen Bishop (1820?-1857): GN]\n"
             );
 
+            // just for showing up!
+            Score.Add(36);
+
+            /*
+               StartDaemon(dwarf);
+               StartDaemon(pirate);
+               StartDaemon(cave_closer);
+             */
+
             Output.PrintLine();
+
+            var vase = Adventure.Net.Objects.Get<MingVase>();
+            var pillow = Adventure.Net.Objects.Get<VelvetPillow>();
+
+            Inventory.Add(vase);
+            Inventory.Add(pillow);
 
             Location = Rooms.Get<EndOfRoad>();
         }

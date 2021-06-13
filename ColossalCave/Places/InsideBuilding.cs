@@ -35,6 +35,17 @@ namespace ColossalCave.Places
             Has<SewerPipes>()
                 .Before<Enter>(cannotEnter);
 
+            Before<Plugh>(() =>
+            {
+                if (!Room<Y2>().Visited)
+                {
+                    return false;
+                }
+
+                MovePlayer.To<Y2>();
+                
+                return true;
+            });
 
             Before<Xyzzy>(() =>
                 {

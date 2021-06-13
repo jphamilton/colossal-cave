@@ -37,6 +37,7 @@ namespace Adventure.Net
             var parameters = key.Split('.').ToList();
             return GetHandler(parameters);
         }
+
         public MethodInfo GetHandler(Parameters parameters)
         {
             return GetHandler(parameters.Key);
@@ -45,6 +46,8 @@ namespace Adventure.Net
         private MethodInfo GetHandler(IList<string> parameters)
         {
             string key = string.Join('.', parameters);
+            bool checkReverse = false;
+
             Dictionary<string, MethodInfo> map = null;
 
             switch (parameters.Count)
@@ -59,6 +62,7 @@ namespace Adventure.Net
 
                 case 2:
                     map = TwoArgs;
+                    checkReverse = true;
                     break;
 
                 case 3:
@@ -69,6 +73,16 @@ namespace Adventure.Net
             if (map.ContainsKey(key))
             {
                 return map[key];
+            }
+
+            if (checkReverse)
+            {
+                key = string.Join('.', parameters.Reverse());
+
+                if (map.ContainsKey(key))
+                {
+                    return map[key];
+                }
             }
 
             return null;
@@ -98,37 +112,40 @@ namespace Adventure.Net
                     throw new Exception($"{Name}: Expects method can only have 0-3 parameters.");
                 }
 
+                void Add(Type t)
+                {
+                    if (t == typeof(Item))
+                    {
+                        list.Add("obj");
+                    }
+                    else if (t.BaseType == typeof(Prep))
+                    {
+                        var prep = Activator.CreateInstance(t);
+
+                        if (!AcceptedPrepositions.Contains(prep))
+                        {
+                            AcceptedPrepositions.Add((Prep)prep);
+                        }
+
+                        list.Add($"{prep}");
+                    }
+                    else
+                    {
+                        throw new ArgumentException($"{t} is not a valid type for Expects call");
+                    }
+                    
+                }
+
                 for (var i = 0; i < parameters.Length; i++)
                 {
                     if (i == 0)
                     {
-                        if (parameters[0].ParameterType != typeof(Item))
-                        {
-                            throw new Exception($"{Name}: Expects method must have Item type as first parameter.");
-                        }
-                        else
-                        {
-                            list.Add("obj");
-                        }
+                        Add(parameters[0].ParameterType);
                     }
 
                     if (i == 1)
                     {
-                        if (parameters[1].ParameterType.BaseType != typeof(Prep))
-                        {
-                            throw new Exception($"{Name}: Expects method requires Preposition as second parameter.");
-                        }
-                        else
-                        {
-                            var prep = Activator.CreateInstance(parameters[i].ParameterType);
-                            
-                            if (!AcceptedPrepositions.Contains(prep))
-                            {
-                                AcceptedPrepositions.Add((Prep)prep);
-                            }
-
-                            list.Add($"{prep}");
-                        }
+                        Add(parameters[1].ParameterType);
                     }
 
                     if (i == 2)

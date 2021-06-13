@@ -6,11 +6,11 @@ namespace ColossalCave
     /// <summary>
     /// Base class for Room (as far as *this* game is concerned)
     /// </summary>
-    public abstract class AdventRoom : Room
+    public abstract class BelowGround : Room
     {
         private static bool darkWarning;
 
-        protected AdventRoom() 
+        protected BelowGround() 
         {
             // we generally allow dwarves and their ilk to freely roam at will
             NoDwarf = false;

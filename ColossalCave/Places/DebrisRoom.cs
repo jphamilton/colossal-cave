@@ -4,7 +4,7 @@ using ColossalCave.Verbs;
 
 namespace ColossalCave.Places
 {
-    public class DebrisRoom : AdventRoom
+    public class DebrisRoom : BelowGround
     {
         public override void Initialize()
         {

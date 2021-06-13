@@ -18,7 +18,11 @@ namespace Adventure.Net
         {
             var room = getRoom(Context.Story.Location);
             
-            if (room == null)
+            if (room == Context.Story.Location)
+            {
+                // do nothing
+            }
+            else if (room == null)
             {
                 Print(Context.Story.Location.CantGo);
             }

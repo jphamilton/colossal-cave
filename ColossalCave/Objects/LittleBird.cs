@@ -82,6 +82,21 @@ namespace ColossalCave.Objects
                     Print("Cheep! Chirp!");
                     return true;
                 });
+
+            /*
+                //    life [;
+                //      Give:
+                //        "It's not hungry. (It's merely pinin' for the fjords).
+                //         Besides, I suspect it would prefer bird seed.";
+                //      Order, Ask, Answer:
+                //        "Cheep! Chirp!";
+                //      Attack:
+                //        if (self in wicker_cage)
+                //            "Oh, leave the poor unhappy bird alone.";
+                //        remove self;
+                //        "The little bird is now dead. Its body disappears.";
+                //    ],
+             */
         }
 
         private bool Take()

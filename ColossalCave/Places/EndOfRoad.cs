@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using ColossalCave.Objects;
+using ColossalCave.Verbs;
 
 namespace ColossalCave.Places
 {
@@ -8,7 +9,9 @@ namespace ColossalCave.Places
         public override void Initialize()
         {
             Name = "At End Of Road";
+            
             Synonyms.Are("end, of, road, street, path, gully");
+            
             Description = "You are standing at the end of a road before a small brick building. " +
                           "Around you is a forest. " +
                           "A small stream flows out of the building and down a gully.";

@@ -26,7 +26,7 @@ namespace Adventure.Net
 
                 if (i < words.Length - 1)
                 {
-                    if (charsInLine + words[i + 1].Length >= 79)
+                    if (charsInLine + words[i + 1].Length >= 120)
                     {
                         sb.Append(Environment.NewLine);
                         charsInLine = 0;

@@ -1,6 +1,6 @@
 ﻿namespace ColossalCave
 {
-    public abstract class AboveGround : AdventRoom
+    public abstract class AboveGround : BelowGround
     {
         protected AboveGround() 
         {

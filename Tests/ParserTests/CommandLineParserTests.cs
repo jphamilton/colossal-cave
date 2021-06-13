@@ -597,6 +597,13 @@ namespace Tests.ParserTests
             Assert.Equal("What do you want to put those things in?", Line(1));
         }
 
+        [Fact]
+        public void jump_over_fissure()
+        {
+            Location = Room<WestSideOfFissure>();
+            var result = Parse("jump over fissure");
+
+        }
     }
 }
 

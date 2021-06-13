@@ -36,7 +36,16 @@ namespace Adventure.Net
         {
             Room room = Rooms.Get<T>();
             if (room != null)
+            {
+                roomMap.Remove(direction);
                 roomMap.Add(direction, () => room);
+            }
+        }
+
+        private void AddToRoomMap(string direction, Func<Room> getRoom)
+        {
+            roomMap.Remove(direction);
+            roomMap.Add(direction, getRoom);
         }
 
         public void NorthTo<T>() where T : Room
@@ -46,7 +55,7 @@ namespace Adventure.Net
 
         public void NorthTo(Func<Room> getRoom)
         {
-            roomMap.Add("n", getRoom);
+            AddToRoomMap("n", getRoom);
         }
 
         public Room N()
@@ -61,7 +70,7 @@ namespace Adventure.Net
 
         public void SouthTo(Func<Room> getRoom)
         {
-            roomMap.Add("s", getRoom);
+            AddToRoomMap("s", getRoom);
         }
 
         public Room S()
@@ -76,7 +85,7 @@ namespace Adventure.Net
 
         public void EastTo(Func<Room> getRoom)
         {
-            roomMap.Add("e", getRoom);
+            AddToRoomMap("e", getRoom);
         }
 
         public Room E()
@@ -91,7 +100,7 @@ namespace Adventure.Net
 
         public void WestTo(Func<Room> getRoom)
         {
-            roomMap.Add("w", getRoom);
+            AddToRoomMap("w", getRoom);
         }
 
         public Room W()
@@ -106,7 +115,7 @@ namespace Adventure.Net
 
         public void NorthWestTo(Func<Room> getRoom)
         {
-            roomMap.Add("nw", getRoom);
+            AddToRoomMap("nw", getRoom);
         }
 
         public Room NW()
@@ -121,7 +130,7 @@ namespace Adventure.Net
 
         public void NorthEastTo(Func<Room> getRoom)
         {
-            roomMap.Add("ne", getRoom);
+            AddToRoomMap("ne", getRoom);
         }
 
         public Room NE()
@@ -136,7 +145,7 @@ namespace Adventure.Net
 
         public void SouthWestTo(Func<Room> getRoom)
         {
-            roomMap.Add("sw", getRoom);
+            AddToRoomMap("sw", getRoom);
         }
 
         public Room SW()
@@ -151,7 +160,7 @@ namespace Adventure.Net
 
         public void SouthEastTo(Func<Room> getRoom)
         {
-            roomMap.Add("se", getRoom);
+            AddToRoomMap("se", getRoom);
         }
 
         public Room SE()
@@ -166,7 +175,7 @@ namespace Adventure.Net
 
         public void InTo(Func<Room> getRoom)
         {
-            roomMap.Add("in", getRoom);
+            AddToRoomMap("in", getRoom);
         }
 
         public Room IN()
@@ -181,7 +190,7 @@ namespace Adventure.Net
 
         public void OutTo(Func<Room> getRoom)
         {
-            roomMap.Add("out", getRoom);
+            AddToRoomMap("out", getRoom);
         }
 
         public Room OUT()
@@ -196,7 +205,7 @@ namespace Adventure.Net
 
         public void UpTo(Func<Room> getRoom)
         {
-            roomMap.Add("up", getRoom);
+            AddToRoomMap("up", getRoom);
         }
 
         public Room UP()
@@ -211,7 +220,7 @@ namespace Adventure.Net
 
         public void DownTo(Func<Room> getRoom)
         {
-            roomMap.Add("down", getRoom);
+            AddToRoomMap("down", getRoom);
         }
 
         public Room DOWN()
@@ -246,7 +255,7 @@ namespace Adventure.Net
             
             if (obj == null)
             {
-                obj = Rooms.Get<T>();
+                obj = Rooms.Get(typeof(T));
             }
 
             obj.Parent = this;

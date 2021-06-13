@@ -22,7 +22,7 @@ namespace ColossalCave.Objects
                     Print("(releasing the little bird)");
                     
                     var bird = Get<LittleBird>();
-                   // bird.Release();
+                    
                     Redirect<Release>(bird, v => v.Expects(bird)); 
                 }
 

@@ -38,9 +38,9 @@ namespace Adventure.Net
             return null;
         }
 
-        public static Room Get<T>()
+        public static T Get<T>() where T : Room
         {
-            return Get(typeof (T));
+            return (T)Get(typeof(T));
         }
 
         public static Room GetByName(string name)

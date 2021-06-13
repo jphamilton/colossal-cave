@@ -37,8 +37,7 @@ namespace Tests.ObjectTests
             Execute("open cage");
 
             Assert.Equal("(releasing the little bird)", Line(1));
-            Assert.Equal("You open the wicker cage.", Line(2));
-            Assert.Equal("The little bird flies free.", Line(3));
+            Assert.Equal("The little bird flies free.", Line(2));
 
             Assert.DoesNotContain("You can't release that.", ConsoleOut);
             Assert.False(cage.Contains<LittleBird>());

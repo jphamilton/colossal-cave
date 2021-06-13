@@ -77,7 +77,7 @@ namespace Adventure.Net
 
                 total++;
 
-                if (!obj.IsTouched && !String.IsNullOrEmpty(obj.InitialDescription))
+                if (!obj.IsTouched && !string.IsNullOrEmpty(obj.InitialDescription))
                 {
                     Output.PrintLine();
                     Output.Print(obj.InitialDescription);

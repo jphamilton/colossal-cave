@@ -5,8 +5,6 @@ namespace Adventure.Net
 {
     public class StoryController 
     {
-        public int Moves { get; private set; }
-
         public StoryController(IStory story) 
         {
             Console.Title = story.Story;
@@ -46,7 +44,7 @@ namespace Adventure.Net
                     CurrentRoom.Look(true);
                 }
 
-                Moves++;
+                Context.Story.Moves++;
                 
                 RunDaemons();
             }

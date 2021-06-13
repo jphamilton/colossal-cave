@@ -2,19 +2,17 @@
 
 namespace ColossalCave.Verbs
 {
-    // TODO: implement
     public class Xyzzy : Verb
     {
         public Xyzzy()
         {
             Name = "xyzzy";
-            //Grammars.Add("", OnXyzzy);
         }
 
-        //private bool OnXyzzy()
-        //{
-        //    Print("Nothing happens.");
-        //    return true;
-        //}
+        public bool Expects()
+        {
+            Print("Nothing happens.");
+            return true;
+        }
     }
 }

@@ -26,17 +26,19 @@ namespace ColossalCave.Objects
                 return true;
             });
 
-            After<Drop>(() =>
+            Before<Drop>(() =>
             {
                 if (CurrentRoom.Location.Contains<VelvetPillow>())
                 {
                     Print("(coming to rest, delicately, on the velvet pillow)");
-                    return;
+                    return false;
                 }
 
                 RepaceVaseWithShards();
 
                 Print("The ming vase drops with a delicate crash.");
+                
+                return true;
             });
         }
 
@@ -49,28 +51,4 @@ namespace ColossalCave.Objects
         }
     }
 }
-
-//Treasure -> ming_vase "ming vase"
-//  with  name 'vase' 'ming' 'delicate',
-//        description "It's a delicate, precious, ming vase!",
-//        after [;
-//          Drop:
-//            if (velvet_pillow in location) {
-//                print "(coming to rest, delicately, on the velvet pillow)^";
-//                rfalse;
-//            }
-//            remove ming_vase;
-//            move shards to location;
-//            "The ming vase drops with a delicate crash.";
-//        ],
-//        before [;
-//          Attack:
-//            remove ming_vase;
-//            move shards to location;
-//            "You have taken the vase and
-//            hurled it delicately to the ground.";
-//          Receive:
-//            "The vase is too fragile to use as a container.";
-//        ],
-//        depositpoints 14;
 

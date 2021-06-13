@@ -37,8 +37,7 @@ namespace Tests.ObjectTests
             var pillow = Objects.Get<VelvetPillow>();
             CurrentRoom.Objects.Add(pillow);
             var result = Execute("drop vase");
-            Assert.Contains("(coming to rest, delicately, on the velvet pillow)", Line(1));
-            Assert.Contains("Dropped.", Line(2));
+            Assert.Contains("(coming to rest, delicately, on the velvet pillow)", ConsoleOut);
         }
 
         [Fact]

@@ -135,6 +135,7 @@ namespace Adventure.Net
                     break;
 
                 case CommandState.After:
+                    messages.DuringOutput.Clear();
                     messages.AfterOutput.Add(message);
                     break;
             }

@@ -1,6 +1,6 @@
 ﻿namespace ColossalCave.Places
 {
-    public class AwkwardSlopingEWCanyon : AdventRoom
+    public class AwkwardSlopingEWCanyon : BelowGround
     {
         public override void Initialize()
         {

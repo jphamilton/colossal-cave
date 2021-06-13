@@ -7,6 +7,9 @@ namespace Adventure.Net
         public string Story { get; set; }
         public Room Location { get; set; }
         public bool IsDone { get; set; }
+        public int Moves { get; set; } = 0;
+        public int CurrentScore { get; set; } = 0;
+        public int TotalScore { get; set; } = 0;
 
         protected abstract void Start();
 

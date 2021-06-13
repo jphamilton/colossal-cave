@@ -125,8 +125,31 @@ namespace Adventure.Net
         {
             var call = new DynamicCall(obj, preposition, indirectObject);
             var expects = new DynamicExpects(verb, parsed.Expects, call);
+            var handled = false;
+            var success = false;
 
-            var success = expects.Invoke();
+            var before = CurrentRoom.Location.Before(verb.GetType());
+
+            if (before != null)
+            {
+                handled = before();
+            }
+
+            if (!handled)
+            {
+                success = expects.Invoke();
+
+                if (success)
+                {
+                    var after = CurrentRoom.Location.After(verb.GetType());
+
+                    if (after != null)
+                    {
+                        after();
+                    }
+                }
+            }
+            
             
             return success;
         }

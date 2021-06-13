@@ -2,7 +2,7 @@
 
 namespace ColossalCave.Places
 {
-    public class CobbleCrawl : AdventRoom
+    public class CobbleCrawl : BelowGround
     {
         public override void Initialize()
         {
