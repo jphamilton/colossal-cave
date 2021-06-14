@@ -77,7 +77,7 @@ namespace Adventure.Net
                 if (obj.IsScenery && obj.Describe == null)
                     continue;
 
-                if (obj.IsStatic && obj.Describe == null)
+                if (obj.IsStatic && (obj.Describe == null && obj.InitialDescription == null))
                     continue;
 
                 total++;

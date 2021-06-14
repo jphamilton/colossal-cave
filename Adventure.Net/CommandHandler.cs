@@ -145,8 +145,9 @@ namespace Adventure.Net
 
         private bool Expects(Verb verb, Item obj)
         {
-            var call = new DynamicCall(obj, preposition, indirectObject);
+            var call = new DynamicCall(parsed.Expects, obj, preposition, indirectObject);
             var expects = new DynamicExpects(verb, parsed.Expects, call);
+
             var handled = false;
             var success = false;
 

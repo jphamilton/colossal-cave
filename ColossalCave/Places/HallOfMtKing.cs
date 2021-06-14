@@ -18,10 +18,10 @@ namespace ColossalCave.Places
 
             UpTo<HallOfMists>();
             EastTo<HallOfMists>();
-            //NorthTo<LowNSPassage>();
-            //SouthTo<SouthSideChamber>();
-            //WestTo<WestSideChamber>();
-            //SouthWestTo<SecretEWCanyon>();
+            NorthTo<LowNSPassage>();
+            SouthTo<SouthSideChamber>();
+            WestTo<WestSideChamber>();
+            SouthWestTo<SecretEWCanyon>();
 
             Before<Go>((Direction direction) =>
             {

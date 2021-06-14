@@ -1,9 +1,12 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Actions;
 
 namespace ColossalCave.Things
 {
     public class Dragon : Item
     {
+        public bool IsBeingAttacked { get; set; }
+
         public override void Initialize()
         {
             Name = "dragon";
@@ -11,6 +14,34 @@ namespace ColossalCave.Things
             Description = "I wouldn't mess with it if I were you.";
             InitialDescription = "A huge green fierce dragon bars the way!";
             IsAnimate = true;
+
+            Before<Attack>(() =>
+            {
+                IsBeingAttacked = true;
+                Print("With what? Your bare hands?");
+                return true;
+            });
+
+            Before<Give>(() =>
+            {
+                Print("The dragon is implacable.");
+                return true;
+            });
+
+            Before<ThrowAt>(() =>
+            {
+                if (CurrentObject is Axe)
+                {
+                    CurrentObject.MoveToLocation();
+                    Print("The axe bounces harmlessly off the dragon's thick scales.");
+                }
+                else
+                {
+                    Print("You'd probably be better off using your bare hands than that thing!");
+                }
+
+                return true;
+            });
         }
     }
 }

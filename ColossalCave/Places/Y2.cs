@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Utilities;
 using ColossalCave.Things;
 using ColossalCave.Actions;
 
@@ -19,7 +20,10 @@ namespace ColossalCave.Places
 
             After<Look>(() =>
             {
-
+                if (Random.Number(1, 100) < 25)
+                {
+                    Print("\r\nA hollow voice says, \"Plugh.\"\r\n");
+                }
             });
 
             Before<Plugh>(() =>

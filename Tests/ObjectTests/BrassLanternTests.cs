@@ -59,7 +59,8 @@ namespace Tests.ObjectTests
         public void should_not_switch_on_if_batteries_are_dead()
         {
             lamp.PowerRemaining = 0;
-            
+            lamp.IsOn = false;
+
             Execute("turn on lamp");
 
             Assert.False(lamp.IsOn);

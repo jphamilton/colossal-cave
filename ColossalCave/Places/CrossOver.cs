@@ -13,7 +13,7 @@ namespace ColossalCave.Places
 
             WestTo<EastEndOfLongHall>();
             NorthTo<DeadEnd7>();
-            //EastTo<WestSideChamber>();
+            EastTo<WestSideChamber>();
             SouthTo<WestEndOfLongHall>();
         }
     }

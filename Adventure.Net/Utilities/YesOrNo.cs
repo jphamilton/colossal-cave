@@ -14,7 +14,7 @@ namespace Adventure.Net.Utilities
             while (true)
             {
                 string[] affirmative = new[] { "y", "yes", "yep", "yeah" };
-                string[] negative = new[] { "n", "no", "nope", "nah", "naw", "nada" };
+                string[] negative = new[] { "n", "no", "nope", "nah", "naw" };
                 string response = CommandPrompt.GetInput();
                 if (!response.In(affirmative) && !response.In(negative))
                 {

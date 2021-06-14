@@ -42,12 +42,12 @@ namespace ColossalCave
             //grate.IsOpen = true;
             //grate.IsLocked = false;
 
-            //var lamp = Objects.Get<BrassLantern>();
-            //lamp.Remove();
-            //lamp.IsOn = true;
-            //lamp.HasLight = true;
+            var lamp = Objects.Get<BrassLantern>();
+            lamp.Remove();
+            lamp.IsOn = true;
+            lamp.HasLight = true;
 
-            //Inventory.Add(lamp);
+            Inventory.Add(lamp);
 
             //var keys = Objects.Get<SetOfKeys>();
             //keys.Remove();
@@ -57,9 +57,9 @@ namespace ColossalCave
             //food.Remove();
             //Inventory.Add(food);
 
-            //Location = Rooms.Get<DebrisRoom>();
-            
-            Location = Rooms.Get<EndOfRoad>();
+            Location = Rooms.Get<SecretCanyon>();
+
+            //Location = Rooms.Get<EndOfRoad>();
         }
 
         public override void AfterTurn()

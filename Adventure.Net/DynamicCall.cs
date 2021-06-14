@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Adventure.Net
 {
@@ -9,37 +10,40 @@ namespace Adventure.Net
         public Type[] Types { get; private set; }
         public object[] Args { get; private set; }
 
-        public DynamicCall(Item obj, Prep prep, Item indirect)
+        public DynamicCall(MethodInfo method, Item obj, Prep prep, Item indirect)
         {
-            Initialize(obj, prep, indirect);
+            Initialize(method, obj, prep, indirect);
         }
-
-        public DynamicCall(Parameters result)
+                
+        private void Initialize(MethodInfo method, Item obj, Prep prep, Item indirect)
         {
-            Initialize(result.Objects.FirstOrDefault(), result.Preposition, result.IndirectObject);
-        }
+            var parameters = method.GetParameters();
 
-        private void Initialize(Item obj, Prep prep, Item indirect)
-        {
             var types = new List<Type>();
             var args = new List<object>();
 
-            if (obj != null)
+            foreach(var parameter in parameters)
             {
-                types.Add(typeof(Item));
-                args.Add(obj);
-            }
+                if (parameter.ParameterType == typeof(Item))
+                {
+                    if (args.Contains(obj))
+                    {
+                        args.Add(indirect);
+                    }
+                    else
+                    {
+                        args.Add(obj);
+                    }
 
-            if (prep != null)
-            {
-                types.Add(prep.GetType());
-                args.Add(prep);
-            }
+                    types.Add(parameter.ParameterType);
+                }
+                else if (parameter.ParameterType.IsSubclassOf(typeof(Prep)))
+                {
+                    args.Add(prep);
+                    types.Add(parameter.ParameterType);
+                }
 
-            if (indirect != null)
-            {
-                types.Add(typeof(Item));
-                args.Add(indirect);
+
             }
 
             Types = types.ToArray();

@@ -25,6 +25,11 @@
             return true;
         }
 
+        public bool Expects(Preposition.Under under, Item obj)
+        {
+            return Redirect<LookUnder>(obj, v => v.Expects(obj));    
+        }
+
         public bool Expects(Item obj)
         {
             return Redirect<Examine>(obj, v => v.Expects(obj));

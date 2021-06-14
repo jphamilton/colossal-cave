@@ -20,6 +20,7 @@ namespace ColossalCave.Places
 
             Initial = () =>
             {
+                // TODO: Pirate shit
                 //StopDaemon(Pirate);
 
                 //if (treasure_chest in self && treasure_chest hasnt moved)

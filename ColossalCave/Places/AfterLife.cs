@@ -7,11 +7,9 @@ namespace ColossalCave.Places
 {
     public static class AfterLife
     {
-        private static int deaths = 0;
-
         public static void Death()
         {
-            deaths++;
+            Global.Deaths++; // this is models after the inform source which is why it's not just a private variable here
             int score = -10;
 
             Output.Print("\r\n\r\n");
@@ -20,7 +18,7 @@ namespace ColossalCave.Places
             //if (caves_closed)
             //    "It looks as though you're dead. Well, seeing as how it's so close to closing time anyway,
             //    I think we'll just call it a day.";
-            switch (deaths)
+            switch (Global.Deaths)
             {
                 case 1:
                     Output.Print("Oh dear, you seem to have gotten yourself killed. " +
@@ -47,7 +45,7 @@ namespace ColossalCave.Places
             {
                 Context.Story.Flags["dead"] = false;
 
-                switch (deaths)
+                switch (Global.Deaths)
                 {
                     case 1:
                         Output.Print(
@@ -98,7 +96,7 @@ namespace ColossalCave.Places
             }
             else
             {
-                switch (deaths)
+                switch (Global.Deaths)
                 {
                     case 1:
                         Output.Print("Very well.");
