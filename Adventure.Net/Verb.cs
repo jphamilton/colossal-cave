@@ -224,6 +224,12 @@ namespace Adventure.Net
             return item.Redirect(item, callback);
         }
 
+        public static bool Redirect<T>(Func<T, bool> callback) where T : Verb
+        {
+            var room = CurrentRoom.Location;
+            return room.Redirect(room, callback);
+        }
+
         protected void Print(string message, CommandState? state = null)
         {
             Context.Current.Print(message, state);

@@ -66,16 +66,14 @@ namespace Adventure.Net
 
         public string Name { get; set; }
         public Synonyms Synonyms { get; set; }
-        public Item Parent { get; set; }
 
-
-        public string Article { get; set; }
 
         public Action Daemon { get; set; }
         public bool DaemonStarted { get; set; }
         public string Description { get; set; }
         public string InitialDescription { get; set; }
 
+        public string Article { get; set; }
         public string TheyreOrThats => HasPluralName ? "They're" : "That's";
         public string ThatOrThose => HasPluralName ? "Those" : "That";
         public string IsOrAre => HasPluralName ? "are" : "is";
@@ -84,6 +82,7 @@ namespace Adventure.Net
         // attributes
         public bool HasLight { get; set; }
         public bool HasPluralName { get; set; }
+        public bool IsAbsent { get; set; }
         public bool IsAnimate { get; set; }
         public bool IsEdible { get; set; }
         public bool IsLockable { get; private set; }
@@ -277,6 +276,12 @@ namespace Adventure.Net
         public bool InInventory
         {
             get { return Inventory.Contains(this); }    
+        }
+
+        public void Remove<T>() where T : Item
+        {
+            var obj = Get<T>();
+            obj.Remove();
         }
 
         public void Remove()

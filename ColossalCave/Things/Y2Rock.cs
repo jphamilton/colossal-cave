@@ -8,7 +8,7 @@ namespace ColossalCave.Things
         {
             Name = "rock";
             Synonyms.Are("rock", "y2");
-            Description = "There is a large ~Y2~ painted on the rock.";
+            Description = "There is a large \"Y2\" painted on the rock.";
         }
     }
 }

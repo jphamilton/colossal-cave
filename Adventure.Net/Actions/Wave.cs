@@ -10,15 +10,24 @@ namespace Adventure.Net.Actions
 
         public bool Expects()
         {
-            Print("You wave, feeling foolish.");
-            return true;
+            return Redirect<WaveHands>(v => v.Expects());
+        }
+
+        public bool Expects(Preposition.At at, Item obj)
+        {
+            return Redirect<WaveHands>(obj, v => v.Expects(at, obj));
         }
 
         public bool Expects(Item obj)
         {
-            Print($"You look ridiculous waving {obj}.");
+            Print($"You look ridiculous waving the {obj}.");
             return true;
         }
 
+        public bool Expects(Item obj, Preposition.At at, Item indirect)
+        {
+            Print($"You wave the {obj} at the {indirect}, feeling foolish.");
+            return true;
+        }
     }
 }

@@ -16,7 +16,8 @@ namespace ColossalCave.Places
             Has<DustyRocks>();
 
             EastTo<DirtyPassage>();
-            //DownTo<ComplexJunction>();
+
+            DownTo<ComplexJunction>();
         }
     }
 }

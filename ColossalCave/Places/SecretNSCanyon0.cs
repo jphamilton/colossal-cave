@@ -11,9 +11,9 @@ namespace ColossalCave.Places
             Synonyms.Are("secret", "n/s", "canyon");
             Description = "You are in a secret N/S canyon above a large room.";
 
-            //DownTo<SlabRoom>();
+            DownTo<SlabRoom>();
             SouthTo<SecretCanyon>();
-            //NorthTo<MirrorCanyon>();
+            NorthTo<MirrorCanyon>();
 
             Before<Go>((Direction direction) =>
             {

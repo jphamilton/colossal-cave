@@ -54,13 +54,11 @@ namespace Adventure.Net
         public void Add<T>() where T:Item
         {
             Item obj = Net.Objects.Get<T>();
-            obj.Parent = this;
             contents.Add(obj);
         }
 
         public void Add(Item obj) 
         {
-            obj.Parent = this;
             contents.Add(obj);
         }
 
@@ -72,7 +70,6 @@ namespace Adventure.Net
 
         public void Remove(Item obj) 
         {
-            obj.Parent = null;
             contents.Remove(obj);
         }
 

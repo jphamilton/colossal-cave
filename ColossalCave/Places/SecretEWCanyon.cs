@@ -18,7 +18,7 @@ namespace ColossalCave.Places
 
             WestTo<SecretCanyon>();
 
-            //DownTo<NorthSouthCanyon>();
+            DownTo<NSCanyon>();
 
             Before<Go>((Direction direction) =>
             {

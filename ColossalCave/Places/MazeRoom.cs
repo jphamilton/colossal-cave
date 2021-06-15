@@ -90,6 +90,17 @@ namespace ColossalCave.Places
         }
     }
 
+    public class DeadEnd8 : DeadEnd
+    {
+        public override void Initialize()
+        {
+            Description = "The canyon runs into a mass of boulders -- dead end.";
+
+            SouthTo<TallEWCanyon>();
+            OutTo<TallEWCanyon>();
+        }
+    }
+
     public class DeadEnd12 : DeadEnd
     {
         public override void Initialize()

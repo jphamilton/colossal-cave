@@ -6,18 +6,20 @@ namespace Adventure.Net
 {
     public abstract class Room : Item
     {
+        private List<Item> absent { get; } = new List<Item>();
+
         private readonly Dictionary<Type, Func<Direction, bool>> beforeMoveRoutines = new Dictionary<Type, Func<Direction, bool>>();
+        public List<Item> Contents { get; private set; }
 
         protected Room() 
         {
+            Contents = new List<Item>();
             Contents = new List<Item>();
             DarkToDark = () => Print("It's pitch black, and you can't see a thing.");
             CantGo = "You can't go that way.";
             Visited = false;
             Article = "";
         }
-
-        public List<Item> Contents { get; private set;}
 
         public string CantGo { get; set; }
 
@@ -287,7 +289,6 @@ namespace Adventure.Net
                 obj = Rooms.Get(typeof(T));
             }
 
-            obj.Parent = this;
             Contents.Add(obj);
             
             return obj;

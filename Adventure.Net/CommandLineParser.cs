@@ -410,6 +410,8 @@ namespace Adventure.Net
                             break;
                         }
                     }
+
+                    result.Error = Messages.PartialUnderstanding(result.Verb);
                 }
                 else if (parameters.Key.Count == 2)
                 {
