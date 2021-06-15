@@ -19,8 +19,8 @@ namespace ColossalCave.Places
             Has<Y2Rock>();
 
             SouthTo<LowNSPassage>();
-            EastTo<JumbleOfRock>();
-            WestTo<WindowOnPit1>();
+            //EastTo<JumbleOfRock>();
+            //WestTo<WindowOnPit1>();
 
 
             After<Look>(() =>

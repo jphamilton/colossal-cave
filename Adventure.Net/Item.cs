@@ -307,10 +307,6 @@ namespace Adventure.Net
                 room.Contents.Remove(this);
             }
 
-            //if (InScope)
-            //{
-            //    Context.Story.Location.Contents.Remove(this);
-            //}
         }
 
         public bool InRoom
@@ -324,5 +320,23 @@ namespace Adventure.Net
             Context.Story.Location.Contents.Add(this);
         }
 
+        public void FoundIn<R>() where R: Room
+        {
+            var room = Room<R>();
+            room.Contents.Add(this);
+        }
+
+        public void FoundIn<R1, R2>() where R1 : Room where R2: Room
+        {
+            FoundIn<R1>();
+            FoundIn<R2>();
+        }
+
+        public void FoundIn<R1, R2, R3>() where R1 : Room where R2 : Room where R3 : Room
+        {
+            FoundIn<R1>();
+            FoundIn<R2>();
+            FoundIn<R3>();
+        }
     }
 }

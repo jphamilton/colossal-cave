@@ -52,7 +52,7 @@ namespace ColossalCave.Things
                 }
 
                 Print("You clamber up the plant and scurry through the hole at the top.\r\n");
-                MovePlayer.To<NarrowCorridor>();
+                //MovePlayer.To<NarrowCorridor>();
                 return true;
             });
 
@@ -87,7 +87,7 @@ namespace ColossalCave.Things
                 {
                     case PlantSize.Tiny:
                         Print("The plant spurts into furious growth for a few seconds.\r\n\r\n");
-                        give PlantStickingUp ~absent;
+                        //give PlantStickingUp ~absent;
                         break;
 
                     case PlantSize.Tall:
@@ -97,14 +97,15 @@ namespace ColossalCave.Things
                     case PlantSize.Huge:
                         Print("You've over-watered the plant! It's shriveling up! It's, it's...\r\n\r\n");
                         
-                        give PlantStickingUp absent;
-                        remove PlantStickingUp;
+                        //give PlantStickingUp absent;
+                        //remove PlantStickingUp;
                         Height = PlantSize.Tiny;
                         break;
                 }
 
                 // <<Examine self>>;
 
+                return true;
             });
 
             //Before Oil:

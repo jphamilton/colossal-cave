@@ -25,9 +25,11 @@ namespace ColossalCave.Things
                 return "There is a huge beanstalk growing out of the west pit up to the hole.";
             };
 
-            //Examine:
-            //RunRoutines(self, describe);
-            //rtrue;
+            Before<Examine>(() =>
+            {
+                Describe();
+                return true;
+            });
 
             Before<Climb>(() =>
             {

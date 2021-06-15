@@ -12,12 +12,12 @@ namespace Adventure.Net
             Describe = () =>
                {
                    if (IsEmpty)
-                       return String.Format("The {0} is empty.", Name);
+                       return $"The {Name} is empty.";
                    
                    if (contents.Count == 1)
                    {
                        Item child = contents[0];
-                       return String.Format("In the {0} is {1} {2}.", Name, child.Article, child.Name);
+                       return $"In the {Name} {IsOrAre} {child.Article} {child.Name}.";
                    }
                    
                    throw new Exception("Don't know how to deal with containers with more than one thing.");
@@ -53,19 +53,13 @@ namespace Adventure.Net
 
         public void Add<T>() where T:Item
         {
-            Item obj = Net.Objects.Get<T>();
+            Item obj = Objects.Get<T>();
             contents.Add(obj);
         }
 
         public void Add(Item obj) 
         {
             contents.Add(obj);
-        }
-
-        public void Remove<T>() where T : Item
-        {
-            Item obj = Objects.Get<T>();
-            Remove(obj);
         }
 
         public void Remove(Item obj) 

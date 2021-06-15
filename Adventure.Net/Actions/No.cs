@@ -5,7 +5,7 @@
         public No()
         {
             Name = "No";
-            Synonyms.Are("n", "no", "nope", "nah", "naw");
+            Synonyms.Are("no", "nope", "nah", "naw");
         }
 
         public bool Expects()

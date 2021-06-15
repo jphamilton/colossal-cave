@@ -271,7 +271,7 @@ namespace Adventure.Net
 
                 if (beforeEnter != null && beforeEnter())
                 {
-                    return this;
+                    return CurrentRoom.Location;
                 }
 
                 room = room.HandleMove() ?? this;

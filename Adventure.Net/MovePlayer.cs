@@ -19,10 +19,14 @@
 
             Context.Story.Location = room;
 
-            if (!room.Visited && room.Initial != null)
+            if (!room.Visited)
             {
                 CurrentRoom.Look(true);
-                room.Initial();
+                
+                if (room.Initial != null)
+                {
+                    room.Initial();
+                }
             }
             else
             {

@@ -9,6 +9,8 @@ namespace ColossalCave.Things
             Name = "road";
             Synonyms.Are("road", "street", "path", "dirt");
             Description = "The road is dirt, not yellow brick.";
+
+            FoundIn<EndOfRoad, HillInRoad, Forest2>();
         }
     }
 }

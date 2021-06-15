@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using ColossalCave.Actions;
+using Adventure.Net.Actions;
 
 namespace ColossalCave.Things
 {

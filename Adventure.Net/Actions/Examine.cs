@@ -10,9 +10,9 @@ namespace Adventure.Net.Actions
         {
             Name = "examine";
             Synonyms.Are("examine", "x", "check", "describe", "watch");
-           // Grammars.Add("<noun>", ExamineObject);
         }
 
+        // TODO: move all of this to base class Before<Examine> routines
         public bool Expects(Item obj)
         {
             if (!CurrentRoom.IsLit())
@@ -33,9 +33,13 @@ namespace Adventure.Net.Actions
             {
                 string result = obj.Describe();
                 if (result.HasValue())
+                {
                     Print(result);
+                }
                 else
+                {
                     Print(obj.Description);
+                }
             }
             else if (obj.Description.HasValue())
             {
