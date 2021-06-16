@@ -21,7 +21,7 @@ namespace ColossalCave.Places
 
             DownTo(() =>
                        {
-                           Grate grate = Get<Grate>();
+                           Grate grate = Room<Grate>();
                            if (!grate.IsLocked && !grate.IsOpen)
                            {
                                // TODO: this

@@ -5,9 +5,52 @@ using System.Reflection;
 
 namespace Adventure.Net
 {
+    public class ObjectMap
+    {
+        private static IDictionary<Item, IList<Room>> ObjectToRooms = new Dictionary<Item, IList<Room>>();
+        private static IDictionary<Room, IList<Item>> RoomToObjects = new Dictionary<Room, IList<Item>>();
+
+        // get rid of Has<>
+        // FoundIn<>
+        
+        public void Add(Item obj, Room room)
+        {
+            if (!ObjectToRooms.ContainsKey(obj))
+            {
+                ObjectToRooms.Add(obj, new List<Room>());
+            }
+
+            ObjectToRooms[obj].Add(room);
+
+            if (!RoomToObjects.ContainsKey(room))
+            {
+                RoomToObjects.Add(room, new List<Item>());
+            }
+
+            RoomToObjects[room].Add(obj);
+        }
+
+        /// <summary>
+        /// remove item from object mapping
+        /// </summary>
+        /// <param name="obj"></param>
+        public void Remove(Item obj)
+        {
+            var rooms = ObjectToRooms[obj];
+            
+            foreach(var room in rooms)
+            {
+                RoomToObjects[room].Remove(obj);
+            }
+
+            ObjectToRooms.Remove(obj);
+        }
+    }
+
     public class Objects
     {
         private static IList<Item> items = new List<Item>();
+
 
         public static void Load(IStory story)
         {

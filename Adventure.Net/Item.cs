@@ -102,7 +102,7 @@ namespace Adventure.Net
         {
             IsLockable = true;
             IsLocked = isLocked;
-            Key = Net.Objects.Get<T>();
+            Key = Objects.Get<T>();
         }
 
         public Item Key { get; private set; }
@@ -259,9 +259,9 @@ namespace Adventure.Net
             return (CurrentRoom.Location == obj);
         }
 
-        protected Room Room<T>()
+        protected T Room<T>() where T : Room
         {
-            return Rooms.Get(typeof(T));
+            return Rooms.Get(typeof(T)) as T;
         }
 
         public bool InScope

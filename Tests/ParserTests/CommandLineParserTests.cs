@@ -403,7 +403,7 @@ namespace Tests.ParserTests
 
             Execute("take white hat");
 
-            Assert.Equal("Taken.", Line(1));
+            Assert.Contains("Taken.", ConsoleOut);
         }
 
         [Fact]

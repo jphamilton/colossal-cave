@@ -39,7 +39,7 @@ namespace ColossalCave.Things
             Before<Take>(() =>
             {
                 Print("It takes you instead. Glrp!");
-                Context.Story.Flags["dead"] = true;
+                AfterLife.GoTo();
                 return true;
             });
         }

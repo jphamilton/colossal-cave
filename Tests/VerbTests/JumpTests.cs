@@ -9,8 +9,8 @@ namespace Tests.VerbTests
         public void before_jump_handled()
         {
             Location = Room<EastBankOfFissure>();
-            var result = Execute("jump");
-
+            Execute("jump");
+            Assert.Contains("You didn't make it.", ConsoleOut);
         }
     }
 }

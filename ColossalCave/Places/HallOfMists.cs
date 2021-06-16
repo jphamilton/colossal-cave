@@ -36,6 +36,15 @@ namespace ColossalCave.Places
 
             UpTo(() =>
             {
+                //Get<LargeGoldNugget>()
+
+                //IsCarrying<LargeGoldNugget>(() =>
+                //{
+                //    Output.Print("The dome is unclimbable.");
+                //    return this;
+                //});
+
+
                 if (Inventory.Contains<LargeGoldNugget>())
                 {
                     Output.Print("The dome is unclimbable.");

@@ -44,7 +44,7 @@ namespace Tests.PlacesTests
         public void can_go_north()
         {
             Execute("north");
-            Assert.Equal(Room<Forest1>(), Location);
+            Assert.True(Location == Room<Forest1>() || Location == Room<Forest2>());
         }
 
         [Fact]

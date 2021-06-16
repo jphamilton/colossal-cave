@@ -21,9 +21,11 @@ namespace ColossalCave.Places
                     return true;
                 }
 
-                Print("You didn't make it");
-                throw new Exception("Need to implement DEATH!");
-
+                Print("You didn't make it.");
+                
+                AfterLife.GoTo();
+                
+                return true;
             });
 
             DownTo(() =>

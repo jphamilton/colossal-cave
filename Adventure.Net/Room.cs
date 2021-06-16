@@ -294,6 +294,7 @@ namespace Adventure.Net
             return obj;
         }
 
+        
         public bool Contains<T>() where T : Item
         {
             foreach(var obj in Contents)
@@ -308,17 +309,6 @@ namespace Adventure.Net
         public bool Contains(Item obj) 
         {
             return Contents.Contains(obj);
-        }
-
-        public new T Get<T>() where T:Item
-        {
-            foreach (var obj in Contents)
-            {
-                if (obj is T)
-                    return obj as T;
-            }
-
-            return default(T);
         }
 
     }

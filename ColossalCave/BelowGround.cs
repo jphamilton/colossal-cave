@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Utilities;
+using ColossalCave.Places;
 
 namespace ColossalCave
 {
@@ -30,7 +31,7 @@ namespace ColossalCave
                         if (Random.Number(1, 4) == 1)
                         {
                             Print("You fell into a pit and broke every bone in your body!");
-                            Context.Story.Flags["dead"] = true;
+                            AfterLife.GoTo();
                         }    
                     }
                     

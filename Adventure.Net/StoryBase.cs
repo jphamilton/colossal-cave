@@ -28,8 +28,8 @@ namespace Adventure.Net
 
         public void Initialize()
         {
-            Rooms.Load(this);
             Objects.Load(this);
+            Rooms.Load(this);
             Verbs.Load();
 
             foreach (var obj in Rooms.All)

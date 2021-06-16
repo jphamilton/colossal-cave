@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using Adventure.Net.Actions;
 
 namespace Adventure.Net

@@ -3,21 +3,14 @@
 namespace Adventure.Net.Actions
 {
 
-    // TODO: implement
     public class Open : Verb
     {
-        //Verb 'open' 'uncover' 'undo' 'unwrap'
-        //    * noun                                      -> Open
-        //    * noun 'with' held                          -> Unlock;
         public Open()
         {
             Name = "open";
             Synonyms.Are("open, uncover, undo, unwrap");
-            //Grammars.Add("<noun>", OpenObject);
-            //Grammars.Add("<noun> with <held>", UnlockObject);
         }
 
-        // open
         public bool Expects(Item obj)
         {
             if (!obj.IsOpenable)
@@ -42,40 +35,10 @@ namespace Adventure.Net.Actions
             return true;
         }
 
-        // Unlock: <noun> with <held>
         public bool Expects(Item obj, Preposition.With with, Item indirect)
         {
-            throw new MissingMethodException("Open (Unlock) not implemented");
+            return Redirect<Unlock>(obj, v => v.Expects(obj, with, indirect));
         }
-
-        //private bool OpenObject()
-        //{
-        //    if (!Item.IsOpenable)
-        //    {
-        //        Print(String.Format("{0} not something you can open.", Item.TheyreOrThats));
-        //    }
-        //    else if (Item.IsLocked)
-        //    {
-        //        string seems = Item.HasPluralName ? "They seem" : "It seems";
-        //        Print(String.Format("{0} to be locked.", seems));
-        //    }
-        //    else if (Item.IsOpen)
-        //    {
-        //        Print(Item.TheyreOrThats + " already open.");
-        //    }
-        //    else
-        //    {
-        //        Item.IsOpen = true;
-        //        Print(String.Format("You open the {0}.", Item.Name));
-        //    }
-
-        //    return true;
-        //}
-
-        //private bool UnlockObject()
-        //{
-        //    return RedirectTo<Unlock>("<noun> with <held>");
-        //}
 
     }
 }

@@ -25,8 +25,8 @@ namespace ColossalCave.Places
 
             Before<Jump>(() =>
             {
-                Context.Story.Flags["dead"] = true;
                 Print("You jump and break your neck!");
+                AfterLife.GoTo();
                 return true;
             });
 

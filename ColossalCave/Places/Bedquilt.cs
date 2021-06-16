@@ -15,7 +15,7 @@ namespace ColossalCave.Places
                 "To explore at random select north, south, up, or down.";
 
             EastTo<ComplexJunction>();
-           // WestTo<SwissCheeseRoom>();
+            WestTo<SwissCheeseRoom>();
             SouthTo<SlabRoom>();
             UpTo<DustyRockRoom>();
             NorthTo<JunctionOfThree>();

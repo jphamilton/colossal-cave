@@ -7,7 +7,7 @@ namespace ColossalCave.Things
     {
         public override void Initialize()
         {
-            Name = "water"; // used to be "bottled water"
+            Name = "bottled water"; 
             Synonyms.Are("bottled", "water", "h2o");
             Article = "some";
             Description = "It looks like ordinary water to me.";

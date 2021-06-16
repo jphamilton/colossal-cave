@@ -73,7 +73,7 @@ namespace Adventure.Net
 
             foreach (string token in tokens)
             {
-                var obj = GetObject(result.Ordered?.LastOrDefault(), token);
+                var obj = GetObject(result, token);
 
                 if (obj is Skip)
                 {
@@ -221,7 +221,7 @@ namespace Adventure.Net
                     continue;
                 }
 
-                var obj = GetObject(result.Ordered.LastOrDefault(), next);
+                var obj = GetObject(result, next);
 
                 if (obj == null)
                 {
@@ -253,14 +253,14 @@ namespace Adventure.Net
             return null;
         }
 
-        private Item GetObject(object last, string token)
+        private Item GetObject(CommandLineParserResult result, string token)
         {
             //TODO: This is crazy train
             
             // objects may have the same synonyms, so multiple items could be returned here
             var objects = (
                 from o in Objects.WithName(token)
-                where o.InScope
+                where result.Verb.InScopeOnly ? o.InScope : true
                 select o
             ).ToList();
 
@@ -300,6 +300,8 @@ namespace Adventure.Net
             }
             else if (objects.Count > 1)
             {
+                var last = result.Ordered?.LastOrDefault();
+
                 if (last != null && last is Item obj)
                 {
                     if (!obj.Name.Contains(token) && !obj.Synonyms.Contains(token))

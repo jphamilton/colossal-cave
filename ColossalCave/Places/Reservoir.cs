@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Things;
 
 namespace ColossalCave.Places
 {
@@ -15,6 +16,8 @@ namespace ColossalCave.Places
                 "The lake is fed by a stream, which tumbles out of a hole in the wall about 10 feet overhead " +
                 "The only passage goes back toward the south. " +
                 "and splashes noisily into the water somewhere within the mist.";
+
+            Has<Stream>();
 
             SouthTo<MirrorCanyon>();
             OutTo<MirrorCanyon>();

@@ -7,6 +7,11 @@ namespace ColossalCave.Places
 {
     public static class AfterLife
     {
+        public static void GoTo()
+        {
+            Context.Story.Flags["dead"] = true;
+        }
+
         public static void Death()
         {
             Global.Deaths++; // this is models after the inform source which is why it's not just a private variable here

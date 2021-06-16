@@ -30,7 +30,7 @@ namespace Tests.VerbTests
 
             Execute("on");
 
-            Assert.Equal($"You switch {lamp} on.", Line(1));
+            Assert.Contains($"You switch {lamp.Article} {lamp} on.", ConsoleOut);
             Assert.True(lamp.IsOn);
         }
 
@@ -44,7 +44,7 @@ namespace Tests.VerbTests
 
             Execute("off");
 
-            Assert.Equal($"You switch {lamp} off.", Line(1));
+            Assert.Contains($"You switch {lamp.Article} {lamp} off.", ConsoleOut);
             Assert.False(lamp.IsOn);
         }
     }
