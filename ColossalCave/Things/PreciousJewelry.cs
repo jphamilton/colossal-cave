@@ -1,4 +1,6 @@
-﻿namespace ColossalCave.Things
+﻿using ColossalCave.Places;
+
+namespace ColossalCave.Things
 {
     public class PreciousJewelry : Treasure
     {
@@ -8,6 +10,8 @@
             Synonyms.Are("jewel", "jewels", "jewelry", "precious", "exquisite");
             Description = "It's all quite exquisite!";
             InitialDescription = "There is precious jewelry here!";
+
+            FoundIn<SouthSideChamber>();
         }
     }
 }

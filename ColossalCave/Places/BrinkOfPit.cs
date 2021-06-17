@@ -12,9 +12,6 @@ namespace ColossalCave.Places
                 "You could climb down here but you could not get back up. " +
                 "The maze continues at this level.";
 
-            Has<MassiveOrangeColumn>();
-            Has<Pit>();
-
             DownTo<BirdChamber>();
             WestTo<AlikeMaze10>();
             SouthTo<DeadEnd6>();

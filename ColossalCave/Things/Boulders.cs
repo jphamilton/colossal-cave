@@ -1,4 +1,6 @@
-﻿namespace ColossalCave.Things
+﻿using ColossalCave.Places;
+
+namespace ColossalCave.Things
 {
     public class Boulders : Scenic
     {
@@ -8,6 +10,8 @@
             Synonyms.Are("boulder", "boulders", "rocks", "stones");
             Description = "They're just ordinary boulders.";
             // has multitude
+
+            FoundIn<SlabRoom>();
         }
     }
 }

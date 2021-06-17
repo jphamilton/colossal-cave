@@ -1,6 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Extensions;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -11,6 +12,8 @@ namespace ColossalCave.Things
             Name = "little bird";
             Synonyms.Are("cheerful", "mournful", "little", "bird");
             IsAnimate = true;
+
+            FoundIn<BirdChamber>();
 
             Before<Examine>(() =>
             {
@@ -123,7 +126,7 @@ namespace ColossalCave.Things
 
                 Print("You catch the bird in the wicker cage.");
                 cage.IsOpen = false;
-                CurrentRoom.Objects.Remove(bird);
+                bird.Remove();
                 cage.Add(bird);
                 return true;
             }
@@ -156,7 +159,7 @@ namespace ColossalCave.Things
                 {
                     Print("The little bird attacks the green snake,");
                     Print("and in an astounding flurry drives the snake away.");
-                    CurrentRoom.Objects.Remove(snake);
+                    snake.Remove();
                     return true;
                 }
 

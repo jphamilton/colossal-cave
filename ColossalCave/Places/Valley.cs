@@ -1,6 +1,4 @@
-﻿using ColossalCave.Things;
-
-namespace ColossalCave.Places
+﻿namespace ColossalCave.Places
 {
     public class Valley : AboveGround
     {
@@ -15,11 +13,6 @@ namespace ColossalCave.Places
             UpTo<Forest1>();
             SouthTo<SlitInStreambed>();
             DownTo<SlitInStreambed>();
-
-            Has<Stream>();
-            Has<Forest>();
-            Has<Streambed>();
-
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -13,6 +14,8 @@ namespace ColossalCave.Things
             InitialDescription = 
                 "A sign in midair here says \"Cave under construction beyond this point. " +
                 "Proceed at own risk. [Witt Construction Company]\"";
+
+            FoundIn<Anteroom>();
 
             Before<Take>(() =>
             {

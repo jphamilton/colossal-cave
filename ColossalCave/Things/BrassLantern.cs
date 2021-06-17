@@ -1,6 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Extensions;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -8,7 +9,7 @@ namespace ColossalCave.Things
     {
         public int PowerRemaining { get; set; }
 
-        private FreshBatteries freshBatteries = Adventure.Net.Objects.Get<FreshBatteries>();
+        private FreshBatteries freshBatteries = Objects.Get<FreshBatteries>();
 
         public override void Initialize()
         {
@@ -19,6 +20,8 @@ namespace ColossalCave.Things
             IsSwitchable = true;
             DaemonStarted = true;
             PowerRemaining = 330;
+
+            FoundIn<InsideBuilding>();
 
             Describe = () =>
                 {
@@ -164,8 +167,8 @@ namespace ColossalCave.Things
                 
                 var old = Get<OldBatteries>();
                 
-                CurrentRoom.Objects.Add(old);
-                
+                old.MoveToLocation();
+
                 PowerRemaining = 2500;
                 
                 Print("I'm taking the liberty of replacing the batteries.");

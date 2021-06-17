@@ -1,4 +1,6 @@
-﻿namespace ColossalCave.Things
+﻿using ColossalCave.Places;
+
+namespace ColossalCave.Things
 {
     public class TwentyFootDepression : Scenic
     {
@@ -7,6 +9,8 @@
             Name = "20-foot depression";
             Synonyms.Are("depression", "dirt", "twenty", "foot", "bare", "20-foot");
             Description = "You're standing in it.";
+
+            FoundIn<OutsideGrate>();
         }
     }
 }

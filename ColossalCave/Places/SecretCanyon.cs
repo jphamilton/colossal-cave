@@ -12,10 +12,6 @@ namespace ColossalCave.Places
             Synonyms.Are("secret", "canyon");
             Description = "You are in a secret canyon which exits to the north and east.";
 
-            Has<Dragon>();
-
-            Has<PersianRug>();
-
             Before<Yes>(() =>
             {
                 if (Dragon.IsBeingAttacked)

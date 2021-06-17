@@ -18,7 +18,8 @@ namespace Tests.VerbTests
             Assert.Equal("Taken.", Line(1));
 
             Assert.True(Inventory.Contains(bottle));
-            Assert.False(Location.Contents.Contains(bottle));
+
+            Assert.False(ObjectMap.Contains(Location, bottle));
         }
 
         [Fact]
@@ -168,7 +169,7 @@ namespace Tests.VerbTests
         {
             var bottle = Objects.Get<Bottle>();
 
-            Location.Contents.Remove(bottle);
+            bottle.Remove();
             Inventory.Add(bottle);
 
             Execute("take bottle");
@@ -207,7 +208,7 @@ namespace Tests.VerbTests
             Assert.Equal("(first taking the tasty food)", Line(1));
             Assert.Equal("Delicious!", Line(2));
 
-            Assert.False(Location.Contains(tastyFood));
+            Assert.False(CurrentRoom.Has<TastyFood>());
             Assert.False(Inventory.Contains(tastyFood));
 
         }
@@ -235,9 +236,8 @@ namespace Tests.VerbTests
             // Assert.Equal("(first taking the tasty food)", Line(1));
             Assert.Equal(blocked, Line(1));
 
-            Assert.True(Location.Contains(tastyFood));
+            Assert.True(CurrentRoom.Has<TastyFood>());
             Assert.False(Inventory.Contains(tastyFood));
-
         }
 
 
@@ -245,13 +245,14 @@ namespace Tests.VerbTests
         public void no_implicit_take()
         {
             var tastyFood = Objects.Get<TastyFood>();
+            
             Inventory.Add(tastyFood);
 
             Execute("eat food");
 
             Assert.Equal("Delicious!", Line(1));
 
-            Assert.False(Location.Contains(tastyFood));
+            Assert.False(CurrentRoom.Has<TastyFood>());
             Assert.False(Inventory.Contains(tastyFood));
 
         }

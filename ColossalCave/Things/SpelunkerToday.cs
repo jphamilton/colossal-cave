@@ -16,6 +16,8 @@ namespace ColossalCave.Things
             Article = "a few";
             // multitude
 
+            FoundIn<Anteroom>();
+
             After<Take>(() =>
             {
                 if (CurrentRoom.Location is WittsEnd)

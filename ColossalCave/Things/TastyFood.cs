@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -13,6 +14,8 @@ namespace ColossalCave.Things
             IsEdible = true;
             Description = "Sure looks yummy!";
             InitialDescription = "There is tasty food here.";
+
+            FoundIn<InsideBuilding>();
 
             After<Eat>(() =>
             {

@@ -1,6 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Extensions;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -13,7 +14,9 @@ namespace ColossalCave.Things
             Article = "the";
             IsOpen = true;
             InitialDescription = "There is an empty bottle here.";
-            
+
+            FoundIn<InsideBuilding>();
+
             Before<Fill>(() =>
                 {
                     Fill();

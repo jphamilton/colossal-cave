@@ -30,8 +30,11 @@ namespace Adventure.Net
             get
             {
                 string result;
+                
                 if (!IsOpen)
+                {
                     result = "which is closed";
+                }
                 else
                 {
                     result = Contents.Count > 0 ? "which is open" : "which is open but empty";
@@ -64,6 +67,12 @@ namespace Adventure.Net
 
         public void Remove(Item obj) 
         {
+            contents.Remove(obj);
+        }
+
+        public new void Remove<T>() where T : Item
+        {
+            var obj = Objects.Get<T>();
             contents.Remove(obj);
         }
 

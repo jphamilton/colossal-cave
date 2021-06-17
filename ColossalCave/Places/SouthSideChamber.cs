@@ -1,6 +1,4 @@
-﻿using ColossalCave.Things;
-
-namespace ColossalCave.Places
+﻿namespace ColossalCave.Places
 {
     public class SouthSideChamber : BelowGround
     {
@@ -10,10 +8,7 @@ namespace ColossalCave.Places
             Synonyms.Are("south", "side", "chamber");
             Description = "You are in the south side chamber.";
 
-            Has<PreciousJewelry>();
-
             NorthTo<HallOfMtKing>();
-
         }
     }
 }

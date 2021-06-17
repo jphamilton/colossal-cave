@@ -11,7 +11,8 @@ namespace Tests.ObjectTests
         public void cannot_release_bird_when_its_not_in_the_cage()
         {
             var bird = Objects.Get<LittleBird>();
-            CurrentRoom.Objects.Add(bird);
+            
+            ObjectMap.MoveObject(bird, CurrentRoom.Location);
 
             Execute("release bird");
 
@@ -37,7 +38,7 @@ namespace Tests.ObjectTests
         public void bird_should_be_happy()
         {
             var bird = Objects.Get<LittleBird>();
-            CurrentRoom.Objects.Add(bird);
+            ObjectMap.MoveObject(bird, CurrentRoom.Location);
 
             Execute("examine bird");
 
@@ -61,7 +62,7 @@ namespace Tests.ObjectTests
             Assert.Equal("(The bird is released from the cage.)", Line(1));
             Assert.Equal("The little bird flies free.", Line(2));
 
-            Assert.True(CurrentRoom.Objects.Contains(bird));
+            Assert.True(CurrentRoom.Has<LittleBird>());
             Assert.False(cage.Contains<LittleBird>());
 
         }
@@ -83,7 +84,7 @@ namespace Tests.ObjectTests
             Assert.Equal("(The bird is released from the cage.)", Line(1));
             Assert.Equal("The little bird flies free.", Line(2));
             
-            Assert.True(CurrentRoom.Objects.Contains(bird));
+            Assert.True(CurrentRoom.Has<LittleBird>());
             Assert.False(cage.Contains<LittleBird>());
 
         }
@@ -132,9 +133,8 @@ namespace Tests.ObjectTests
         public void cannot_catch_bird_without_cage()
         {
             var bird = Objects.Get<LittleBird>();
-            
-            CurrentRoom.Objects.Add(bird);
-            
+            ObjectMap.MoveObject(bird, CurrentRoom.Location);
+
             Execute("catch bird");
             
             Assert.Equal("You can catch the bird, but you cannot carry it.", Line(1));
@@ -151,7 +151,7 @@ namespace Tests.ObjectTests
             Inventory.Add(cage);
 
             var bird = Objects.Get<LittleBird>();
-            CurrentRoom.Objects.Add(bird);
+            ObjectMap.MoveObject(bird, CurrentRoom.Location);
 
             Execute("catch bird");
 
@@ -167,12 +167,12 @@ namespace Tests.ObjectTests
             Inventory.Add(cage);
 
             var bird = Objects.Get<LittleBird>();
-            CurrentRoom.Objects.Add(bird);
+            ObjectMap.MoveObject(bird, CurrentRoom.Location);
 
             Execute("take bird");
             
             Assert.Equal("You catch the bird in the wicker cage.", Line(1));
-            Assert.False(CurrentRoom.Objects.Contains(bird));
+            Assert.False(CurrentRoom.Has<LittleBird>());
             Assert.True(cage.Contains<LittleBird>());
             Assert.True(bird.InInventory);
         }
@@ -184,7 +184,7 @@ namespace Tests.ObjectTests
             Inventory.Add(cage);
 
             var bird = Objects.Get<LittleBird>();
-            CurrentRoom.Objects.Add(bird);
+            ObjectMap.MoveObject(bird, CurrentRoom.Location);
 
             Execute("release bird");
 
@@ -202,15 +202,15 @@ namespace Tests.ObjectTests
             cage.Add(bird);
 
             var snake = Objects.Get<Snake>();
-            CurrentRoom.Objects.Add(snake);
+            ObjectMap.MoveObject(snake, CurrentRoom.Location);
 
             Execute("release bird");
 
             Assert.Equal("The little bird attacks the green snake,", Line(1));
             Assert.Equal("and in an astounding flurry drives the snake away.", Line(2));
-            Assert.False(CurrentRoom.Objects.Contains(snake));
+            Assert.False(CurrentRoom.Has<Snake>());
             Assert.False(cage.Contains<LittleBird>());
-            Assert.Contains(Objects.Get<LittleBird>(), CurrentRoom.Objects);
+            Assert.True(CurrentRoom.Has<LittleBird>());
         }
 
         [Fact]
@@ -223,7 +223,7 @@ namespace Tests.ObjectTests
             cage.Add(bird);
 
             var dragon = Objects.Get<Dragon>();
-            CurrentRoom.Objects.Add(dragon);
+            ObjectMap.MoveObject(dragon, CurrentRoom.Location);
 
             Execute("release bird");
 
@@ -231,7 +231,7 @@ namespace Tests.ObjectTests
             Assert.Contains("and in an astounding flurry gets burnt to a cinder.", ConsoleOut);
             Assert.Contains("The ashes blow away.", ConsoleOut);
 
-            Assert.False(CurrentRoom.Location.Contains(bird));
+            Assert.False(CurrentRoom.Has<LittleBird>());
             Assert.False(bird.InInventory);
             Assert.False(bird.InScope);
 
@@ -243,11 +243,11 @@ namespace Tests.ObjectTests
             var oven = new Oven();
             oven.Initialize();
 
-            Objects.Add(oven);
-            CurrentRoom.Objects.Add(oven);
+            Objects.Add(oven, CurrentRoom.Location);
 
             var bird = Objects.Get<LittleBird>();
-            CurrentRoom.Objects.Add(bird);
+            //Objects.Add for testing
+            ObjectMap.MoveObject(bird, CurrentRoom.Location);
 
             Execute("put bird into oven");
 
@@ -262,7 +262,7 @@ namespace Tests.ObjectTests
             Inventory.Add(cage);
 
             var bird = Objects.Get<LittleBird>();
-            CurrentRoom.Objects.Add(bird);
+            ObjectMap.MoveObject(bird, CurrentRoom.Location);
 
             Execute("put bird into cage");
 
@@ -276,7 +276,8 @@ namespace Tests.ObjectTests
             Inventory.Add(cage);
 
             var bird = Objects.Get<LittleBird>();
-            CurrentRoom.Objects.Add(bird);
+            
+            ObjectMap.MoveObject(bird, CurrentRoom.Location);
 
             Execute("catch bird");
 
@@ -301,7 +302,8 @@ namespace Tests.ObjectTests
         public void the_bird_is_dead()
         {
             var bird = Objects.Get<LittleBird>();
-            CurrentRoom.Objects.Add(bird);
+            
+            ObjectMap.MoveObject(bird, CurrentRoom.Location);
 
             Execute("attack bird");
 
@@ -312,11 +314,11 @@ namespace Tests.ObjectTests
         public void cannot_ask_bird_about_stuff()
         {
             var bird = Objects.Get<LittleBird>();
-            CurrentRoom.Objects.Add(bird);
+            ObjectMap.MoveObject(bird, CurrentRoom.Location);
 
             var snake = Objects.Get<Snake>();
-            
-            CurrentRoom.Objects.Add(snake);
+
+            ObjectMap.MoveObject(snake, CurrentRoom.Location);
 
             Execute("ask bird about snake");
 

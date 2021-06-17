@@ -1,4 +1,4 @@
-﻿using System;
+﻿using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -6,18 +6,15 @@ namespace ColossalCave.Things
     {
         public override void Initialize()
         {
-            
+            Name = "mist";
+            Synonyms.Are("mist", "vapor", "wisps", "white");
+            Description = 
+                "Mist is a white vapor, usually water, seen from time to time in caverns. " +
+                "It can be found anywhere but is frequently a sign of a deep pit leading down to water.";
+
+            FoundIn<TopOfSmallPit, HallOfMists, EastBankOfFissure, WestEndOfHallOfMists, MirrorCanyon, Reservoir, WindowOnPit2>();
+            // TODO: At_Window_On_Pit_1 In_Misty_Cavern On_Sw_Side_Of_Chasm
         }
     }
-
-//Scenic  "mist"
-//  with  name 'mist' 'vapor' 'wisps' 'white',
-//        description
-//            "Mist is a white vapor, usually water, seen from time to time in caverns.
-//             It can be found anywhere but is frequently a sign of a deep pit leading down to water.",
-//        found_in
-//            At_Top_Of_Small_Pit In_Hall_Of_Mists On_East_Bank_Of_Fissure
-//            At_Window_On_Pit_1 At_West_End_Of_Hall_Of_Mists In_Misty_Cavern
-//            In_Mirror_Canyon At_Reservoir At_Window_On_Pit_2 On_Sw_Side_Of_Chasm;
 
 }

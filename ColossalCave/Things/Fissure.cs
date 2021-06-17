@@ -1,5 +1,4 @@
-﻿using Adventure.Net.Actions;
-using System;
+﻿using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -11,12 +10,7 @@ namespace ColossalCave.Things
             Synonyms.Are("wide", "fissure");
             Description = "The fissure looks far too wide to jump.";
 
-            //Scenic  "fissure"
-            //with name 'wide' 'fissure',
-            //description "The fissure looks far too wide to jump.",
-            //found_in On_East_Bank_Of_Fissure West_Side_Of_Fissure;
-
-            
+            FoundIn<WestSideOfFissure, EastBankOfFissure>();
         }
     }
 }

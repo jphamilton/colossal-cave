@@ -1,4 +1,6 @@
-﻿namespace ColossalCave.Things
+﻿using ColossalCave.Places;
+
+namespace ColossalCave.Things
 {
     public class BarsOfSilver : Treasure
     {
@@ -9,6 +11,8 @@
             Description = "They're probably worth a fortune!";
             Article = "some";
             InitialDescription = "There are bars of silver here!";
+
+            FoundIn<LowNSPassage>();
         }
     }
 }

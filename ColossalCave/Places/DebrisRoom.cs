@@ -16,21 +16,20 @@ namespace ColossalCave.Places
                 "but an awkward canyon leads upward and west.\n\n" +
                 "A note on the wall says, \"Magic word XYZZY.\"";
 
+            NoDwarf = true;
+
             EastTo<CobbleCrawl>();
+            
             UpTo<AwkwardSlopingEWCanyon>();
+            
             WestTo<AwkwardSlopingEWCanyon>();
 
             Before<Xyzzy>(() =>
-                {
-                    MovePlayer.To<InsideBuilding>();
-                    return true;
-                });
+            {
+                MovePlayer.To<InsideBuilding>();
+                return true;
+            });
 
-            NoDwarf = true;
-
-            Has<Debris>();
-            Has<Cobbles>();
-            Has<Note>();
         }
     }
 }

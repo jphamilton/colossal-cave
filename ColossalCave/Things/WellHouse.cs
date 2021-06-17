@@ -12,6 +12,8 @@ namespace ColossalCave.Things
             Synonyms.Are("well", "house", "brick", "building", "small", "wellhouse");
             Description = "It's a small brick building. It seems to be a well house.";
 
+            FoundIn<EndOfRoad, HillInRoad, InsideBuilding>();
+
             Before<Enter>(() =>
                 {
                     var insideBuilding = Room<InsideBuilding>();

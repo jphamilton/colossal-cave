@@ -1,4 +1,6 @@
-﻿namespace ColossalCave.Things
+﻿using ColossalCave.Places;
+
+namespace ColossalCave.Things
 {
     public class OtherSideOfHill : Scenic
     {
@@ -7,6 +9,8 @@
             Name  = "other side of hill";
             Synonyms.Are("side", "other", "of");
             Description = "Why not explore it yourself?";
+
+            FoundIn<HillInRoad>();
         }
     }
 }

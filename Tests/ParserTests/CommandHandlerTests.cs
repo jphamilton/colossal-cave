@@ -158,7 +158,9 @@ namespace Tests.ParserTests
         public void handle_multiheld_with_one_item_in_inventory()
         {
             var lamp = Objects.Get<BrassLantern>();
-            CurrentRoom.Objects.Remove(lamp);
+            
+            lamp.Remove();
+
             Inventory.Add(lamp);
 
             Execute("drop all");

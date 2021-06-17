@@ -41,16 +41,7 @@ namespace ColossalCave.Places
                     return Rooms.Get<HallOfMists>(); 
               
                 });
-
-            Has<SmallPit>();
             
-            Has<PitCrack>().Before<Enter>(() =>
-            {
-                Print("The crack is far too small for you to follow.");
-                return true;
-            });
-
-            Has<Mist>();
         }
     }
 }

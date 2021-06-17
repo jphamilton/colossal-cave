@@ -16,8 +16,6 @@ namespace ColossalCave.Places
                 "Obvious passages go west, east, ne, and nw. " +
                 "Part of the room is occupied by a large bedrock block.";
 
-            Has<BedrockBlock>();
-
             WestTo<EastEndOfTwoPitRoom>();
             SouthTo<TallEWCanyon>();
             NorthEastTo<Bedquilt>();

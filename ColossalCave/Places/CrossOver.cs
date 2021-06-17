@@ -9,8 +9,6 @@ namespace ColossalCave.Places
             Name = "N/S and E/W Crossover";
             Synonyms.Are("n/s", "and", "e/w", "crossover");
 
-            Has<Things.CrossOver>();
-
             WestTo<EastEndOfLongHall>();
             NorthTo<DeadEnd7>();
             EastTo<WestSideChamber>();

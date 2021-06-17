@@ -19,8 +19,6 @@ namespace ColossalCave.Places
             WestTo<Forest1>();
             SouthTo<Forest1>();
 
-            Has<Forest>();
-
             Before<Enter>(() => {
 
                 var rnd = new Random(DateTime.Now.Second);

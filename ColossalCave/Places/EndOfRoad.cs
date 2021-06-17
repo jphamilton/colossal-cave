@@ -1,6 +1,4 @@
 ﻿using Adventure.Net;
-using ColossalCave.Things;
-using ColossalCave.Actions;
 
 namespace ColossalCave.Places
 {
@@ -22,11 +20,6 @@ namespace ColossalCave.Places
             SouthTo<Valley>();
             NorthTo<Forest1>();
             InTo<InsideBuilding>();
-
-            Has<Road>();
-            Has<WellHouse>();
-            Has<Stream>();
-            Has<Forest>();
         }
     }
 }

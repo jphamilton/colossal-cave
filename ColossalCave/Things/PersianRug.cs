@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -9,7 +10,9 @@ namespace ColossalCave.Things
         {
             Name = "Persian rug";
             Synonyms.Are("rug", "persian", "persian", "fine", "finest", "dragon's");
-            
+
+            FoundIn<SecretCanyon>();
+
             Describe = () =>
             {
                 if (DragonIsHere)

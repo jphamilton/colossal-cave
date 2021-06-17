@@ -8,6 +8,8 @@ namespace ColossalCave.Things
         {
             Name = "streambed";
             Synonyms.Are("bed", "streambed", "rock", "small", "rocky", "bare", "dry");
+
+            FoundIn<Valley>();
         }
     }
 }

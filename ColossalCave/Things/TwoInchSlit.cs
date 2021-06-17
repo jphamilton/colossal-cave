@@ -1,4 +1,5 @@
 ﻿using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -9,6 +10,8 @@ namespace ColossalCave.Things
             Name = "2-inch slit"; 
             Synonyms.Are("slit", "two", "inch", "2-inch");
             Description = "It's just a 2-inch slit in the rock, through which the stream is flowing.";
+
+            FoundIn<SlitInStreambed>();
 
             Before<Enter>(()=>
                 {

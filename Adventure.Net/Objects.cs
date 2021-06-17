@@ -5,15 +5,17 @@ using System.Reflection;
 
 namespace Adventure.Net
 {
-    public class ObjectMap
+    public static class ObjectMap
     {
+        // CONTAINERS?????
+
         private static IDictionary<Item, IList<Room>> ObjectToRooms = new Dictionary<Item, IList<Room>>();
         private static IDictionary<Room, IList<Item>> RoomToObjects = new Dictionary<Room, IList<Item>>();
 
         // get rid of Has<>
         // FoundIn<>
         
-        public void Add(Item obj, Room room)
+        public static void Add(Item obj, Room room)
         {
             if (!ObjectToRooms.ContainsKey(obj))
             {
@@ -34,17 +36,47 @@ namespace Adventure.Net
         /// remove item from object mapping
         /// </summary>
         /// <param name="obj"></param>
-        public void Remove(Item obj)
+        public static void Remove(Item obj)
         {
-            var rooms = ObjectToRooms[obj];
-            
-            foreach(var room in rooms)
+            // item may not necessarily be anywhere 
+            if (ObjectToRooms.TryGetValue(obj, out IList<Room> rooms))
             {
-                RoomToObjects[room].Remove(obj);
-            }
+                foreach (var room in rooms)
+                {
+                    RoomToObjects[room].Remove(obj);
+                }
 
-            ObjectToRooms.Remove(obj);
+                ObjectToRooms.Remove(obj);
+            }
         }
+
+        public static T Remove<T>() where T : Item
+        {
+            var obj = ObjectToRooms.Keys.SingleOrDefault(x => x.GetType() == typeof(T));
+
+            Remove(obj);
+
+            return (T)obj;
+        }
+
+        public static bool Contains(Room room, Item obj)
+        {
+            return RoomToObjects[room].Contains(obj);
+        }
+
+
+        public static void MoveObject(Item obj, Room to)
+        {
+            Remove(obj);
+            Add(obj, to);
+        }
+
+        public static IReadOnlyList<Item> GetObjects(Room room)
+        {
+            return (IReadOnlyList<Item>)RoomToObjects[room];
+        }
+
+            
     }
 
     public class Objects
@@ -112,9 +144,18 @@ namespace Adventure.Net
             return items.Where(x => x.Daemon != null && x.DaemonStarted == true).ToList();
         }
 
-        public static void Add(Item obj)
+        /// <summary>
+        /// This should only be used for testing
+        /// </summary>
+        /// <param name="obj"></param>
+        public static void Add(Item obj, Room room = null)
         {
             items.Add(obj);
+
+            if (room != null)
+            {
+                ObjectMap.Add(obj, room);
+            }
         }
     }
 }

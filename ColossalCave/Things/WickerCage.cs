@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -13,7 +14,9 @@ namespace ColossalCave.Things
             Description = "It's a small wicker cage.";
             IsOpen = true;
             IsOpenable = true;
-            IsTransparent = true; 
+            IsTransparent = true;
+
+            FoundIn<CobbleCrawl>();
 
             After<Open>(() =>
             {

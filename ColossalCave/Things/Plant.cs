@@ -21,7 +21,9 @@ namespace ColossalCave.Things
             Name = "plant";
             Synonyms.Are("plant", "beanstalk", "stalk", "bean", "giant", "tiny", "little", "murmuring", "twelve", "foot", "tall", "bellowing");
             Height = PlantSize.Tiny;
-            
+
+            FoundIn<WestPit>();
+
             Describe = () =>
             {
                 if (Height == PlantSize.Tiny)

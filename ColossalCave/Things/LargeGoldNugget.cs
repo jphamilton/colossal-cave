@@ -1,4 +1,6 @@
-﻿namespace ColossalCave.Things
+﻿using ColossalCave.Places;
+
+namespace ColossalCave.Things
 {
     public class LargeGoldNugget : Treasure
     {
@@ -8,6 +10,8 @@
             Synonyms.Are("gold", "nugget", "large", "heavy");
             Description = "It's a large sparkling nugget of gold!";
             InitialDescription = "There is a large sparkling nugget of gold here!";
+
+            FoundIn<NuggetOfGoldRoom>();
         }
     }
 

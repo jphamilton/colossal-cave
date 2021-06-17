@@ -12,12 +12,6 @@ namespace ColossalCave.Places
                           "The road slopes back down the other side of the hill. " +
                           "There is a building in the distance.";
 
-            Has<Hill>();
-            Has<OtherSideOfHill>();
-            Has<Road>();
-            Has<WellHouse>();
-            Has<Forest>();
-
             EastTo<EndOfRoad>();
             NorthTo<EndOfRoad>();
             DownTo<EndOfRoad>();

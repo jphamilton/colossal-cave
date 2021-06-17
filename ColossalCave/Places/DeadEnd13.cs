@@ -12,8 +12,6 @@ namespace ColossalCave.Places
 
             Description = "This is the pirate's dead end.";
 
-            Has<TreasureChest>();
-
             SouthEastTo<AlikeMaze13>();
             
             OutTo<AlikeMaze13>();

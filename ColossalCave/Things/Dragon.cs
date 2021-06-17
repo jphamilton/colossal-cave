@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -14,6 +15,8 @@ namespace ColossalCave.Things
             Description = "I wouldn't mess with it if I were you.";
             InitialDescription = "A huge green fierce dragon bars the way!";
             IsAnimate = true;
+
+            FoundIn<SecretCanyon>();
 
             Before<Attack>(() =>
             {

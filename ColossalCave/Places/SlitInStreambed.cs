@@ -1,5 +1,4 @@
 ﻿using Adventure.Net.Actions;
-using ColossalCave.Things;
 
 namespace ColossalCave.Places
 {
@@ -28,8 +27,6 @@ namespace ColossalCave.Places
                     return true;
                 });
 
-            Has<TwoInchSlit>();
-            Has<Stream>();
         }
     }
 }

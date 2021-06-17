@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -11,7 +12,9 @@ namespace ColossalCave.Things
             Synonyms.Are("slabs", "slab", "rocks", "stairs", "thin", "rock");
             Description = "They almost form natural stairs down into the pit.";
             // has multitude
-            
+
+            FoundIn<EastEndOfTwoPitRoom>();
+
             Before<LookUnder>(DontCallMeShirley);
             Before<Push>(DontCallMeShirley);
             Before<Pull>(DontCallMeShirley);

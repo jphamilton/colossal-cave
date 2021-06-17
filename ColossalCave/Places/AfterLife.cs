@@ -71,16 +71,16 @@ namespace ColossalCave.Places
                 }
 
                 // lamp is moved to At End of Road
-                var lamp = Objects.Get<BrassLantern>();
-                lamp.Remove();
+                var lamp = ObjectMap.Remove<BrassLantern>();
                 lamp.IsOn = false;
                 lamp.HasLight = false;
 
                 var endOfRoad = Rooms.Get<EndOfRoad>();
-                endOfRoad.Contents.Add(lamp);
+                
+                ObjectMap.MoveObject(lamp, endOfRoad);
 
                 // remaining inventory items are dropped in the room where you died
-                foreach(var obj in Inventory.Items)
+                foreach (var obj in Inventory.Items)
                 {
                     if (obj is Treasure)
                     {
@@ -88,7 +88,10 @@ namespace ColossalCave.Places
                     }
                 }
 
-                Context.Story.Location.Contents.AddRange(Inventory.Items);
+                foreach(var item in Inventory.Items)
+                {
+                    ObjectMap.MoveObject(item, CurrentRoom.Location);
+                }
 
                 Inventory.Items.Clear();
 

@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -10,6 +11,8 @@ namespace ColossalCave.Things
             Name = "slab";
             Synonyms.Are("slab", "immense");
             Description = "It is now the floor here.";
+
+            FoundIn<SlabRoom>();
 
             Before<LookUnder>(() => Joking());
             Before<Push>(() => Joking());

@@ -18,9 +18,6 @@ namespace ColossalCave.Places
             
             NoDwarf = true;
 
-            Has<HoleAbovePit>();
-            Has<Plant>();
-
             Before<Climb>(() =>
             {
                 if (CurrentObject is Plant)

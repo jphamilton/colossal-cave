@@ -12,7 +12,8 @@ namespace Tests.ObjectTests
         {
             var cage = Objects.Get<WickerCage>();
             var bird = Objects.Get<LittleBird>();
-            CurrentRoom.Objects.Add(bird);
+
+            bird.MoveToLocation();
 
             cage.IsOpen = false;
             Inventory.Add(cage);

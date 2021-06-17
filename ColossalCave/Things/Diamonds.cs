@@ -1,4 +1,6 @@
-﻿namespace ColossalCave.Things
+﻿using ColossalCave.Places;
+
+namespace ColossalCave.Things
 {
     public class Diamonds : Treasure
     {
@@ -10,6 +12,8 @@
             InitialDescription = "There are diamonds here!";
             Article = "some";
             // has multitude
+
+            FoundIn<WestSideOfFissure>();
         }
     }
 }

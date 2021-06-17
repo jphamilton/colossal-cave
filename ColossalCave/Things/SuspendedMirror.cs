@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -14,6 +15,8 @@ namespace ColossalCave.Things
             InitialDescription = "The mirror is obviously provided for the use of the dwarves who, " +
                 "as you know, are extremely vain.";
             IsStatic = true;
+
+            FoundIn<MirrorCanyon>();
 
             Before<Attack>(() => CantReach());
             Before<Remove>(() => CantReach());

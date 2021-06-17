@@ -14,9 +14,6 @@ namespace ColossalCave.Places
             WestTo<Valley>();
             DownTo<Valley>();
             SouthTo<Forest1>();
-
-            Has<Road>();
-            Has<Forest>();
         }
     }
 }

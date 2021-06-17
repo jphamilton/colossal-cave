@@ -13,8 +13,6 @@ namespace ColossalCave.Places
                 "You are in the west side chamber of the hall of the mountain king. " +
                 "A passage continues west and up here.";
 
-            Has<RareCoins>();
-
             WestTo<CrossOver>();
             UpTo<CrossOver>();
             EastTo<HallOfMtKing>();

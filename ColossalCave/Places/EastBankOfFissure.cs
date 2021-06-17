@@ -19,13 +19,19 @@ namespace ColossalCave.Places
 
         public void BridgeAppears()
         {
-            Contents.Add(Get<CrystalBridge>());
+            var bridge = Get<CrystalBridge>();
+            
+            bridge.Remove();
+
+            ObjectMap.Add(bridge, this);
+
             WestTo<CrystalBridge>();
         }
 
         public void BridgeDisappears()
         {
-            Contents.Remove(Get<CrystalBridge>());
+            Get<CrystalBridge>().Remove();
+
             WestTo(CannotCross);
         }
     }

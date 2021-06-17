@@ -1,4 +1,5 @@
 ﻿using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -9,6 +10,8 @@ namespace ColossalCave.Things
             Name = "crack";
             Synonyms.Are("crack", "small");
             Description = "The crack is very small -- far too small for you to follow.";
+
+            FoundIn<TopOfSmallPit>();
 
             Before<Enter>(() =>
             {

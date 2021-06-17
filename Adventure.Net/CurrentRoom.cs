@@ -12,10 +12,10 @@ namespace Adventure.Net
             get { return Context.Story.Location; }
         }
 
-        public static IList<Item> Objects
-        {
-            get { return Location.Contents; }
-        }
+        //public static IList<Item> Objects
+        //{
+        //    get { return Location.Contents; }
+        //}
 
         public static void Look(bool showFull)
         {
@@ -42,7 +42,9 @@ namespace Adventure.Net
             if (Location.HasLight)
                 return true;
 
-            if (Location.Contents.Any(obj => obj.HasLight))
+            var objects = ObjectMap.GetObjects(Location);
+
+            if (objects.Any(obj => obj.HasLight))
             {
                 return true;
             }
@@ -72,7 +74,9 @@ namespace Adventure.Net
             var ordinary = new List<Item>();
             int total = 0;
 
-            foreach (var obj in Location.Contents)
+            var objects = ObjectMap.GetObjects(Location);
+
+            foreach (var obj in objects)
             {
                 if (obj.IsScenery && obj.Describe == null)
                     continue;
@@ -161,8 +165,10 @@ namespace Adventure.Net
         public static IList<Item> ObjectsInRoom()
         {
             var result = new List<Item>();
-            result.AddRange(Location.Contents.Where(x => !x.IsScenery && !x.IsStatic));
-            result.AddRange(Location.Contents.Where(x => x.IsScenery || x.IsStatic));
+            var objects = ObjectMap.GetObjects(Location);
+
+            result.AddRange(objects.Where(x => !x.IsScenery && !x.IsStatic));
+            result.AddRange(objects.Where(x => x.IsScenery || x.IsStatic));
             AddContained(result);
             return result;
         }
@@ -171,15 +177,29 @@ namespace Adventure.Net
         {
             var result = new List<Item>();
 
-            result.AddRange(Location.Contents.Where(x => !x.IsScenery && !x.IsStatic));
-            result.AddRange(Location.Contents.Where(x => x.IsScenery || x.IsStatic));
+            var objects = ObjectMap.GetObjects(Location);
+
+            result.AddRange(objects.Where(x => !x.IsScenery && !x.IsStatic));
+            result.AddRange(objects.Where(x => x.IsScenery || x.IsStatic));
+           
             result.AddRange(Inventory.Items);
+            
             // note: location is added to scope to support things like Door
             result.Add(Location);
 
             AddContained(result);
 
             return result;
+        }
+
+        public static bool Is<T>() where T : Room
+        {
+            return Location.GetType() == typeof(T);
+        }
+
+        public static bool Has<T>() where T : Item
+        {
+            return Location.Contains<T>();
         }
     }
 }

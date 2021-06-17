@@ -14,8 +14,6 @@ namespace ColossalCave.Places
             Description = "You are in the hall of the mountain king, with passages off in all directions.";
             CantGo = "Well, perhaps not quite all directions.";
 
-            Has<Snake>();
-
             UpTo<HallOfMists>();
             EastTo<HallOfMists>();
             NorthTo<LowNSPassage>();

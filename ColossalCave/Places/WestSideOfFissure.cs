@@ -1,5 +1,4 @@
 ﻿using Adventure.Net;
-using ColossalCave.Things;
 
 namespace ColossalCave.Places
 {
@@ -12,8 +11,6 @@ namespace ColossalCave.Places
             Name = "West Side of Fissure";
             Synonyms.Are("west", "w", "bank", "side", "of", "fissure");
             Description = "You are on the west side of the fissure in the hall of mists.";
-
-            Has<Diamonds>();
 
             WestTo<WestEndOfHallOfMists>();
             
@@ -29,12 +26,18 @@ namespace ColossalCave.Places
 
         public void BridgeAppears()
         {
-            Contents.Add(Get<CrystalBridge>());
+            var bridge = Get<CrystalBridge>();
+
+            bridge.Remove();
+
+            ObjectMap.Add(bridge, this);
+
             EastTo<CrystalBridge>();
         }
         public void BridgeDisappears()
         {
-            Contents.Remove(Get<CrystalBridge>());
+            Get<CrystalBridge>().Remove();
+
             EastTo(CannotCross);
         }
 

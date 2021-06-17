@@ -1,6 +1,4 @@
-﻿using ColossalCave.Things;
-
-namespace ColossalCave.Places
+﻿namespace ColossalCave.Places
 {
     public class CobbleCrawl : BelowGround
     {
@@ -12,10 +10,8 @@ namespace ColossalCave.Places
             HasLight = true;
 
             EastTo<BelowTheGrate>();
+            
             WestTo<DebrisRoom>();
-
-            Has<WickerCage>();
-            Has<Cobbles>();
         }
     }
 }

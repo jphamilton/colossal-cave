@@ -1,6 +1,4 @@
-﻿using Adventure.Net.Actions;
-using Adventure.Net;
-using ColossalCave.Things;
+﻿using Adventure.Net;
 using ColossalCave.Actions;
 
 namespace ColossalCave.Places
@@ -16,24 +14,21 @@ namespace ColossalCave.Places
             WestTo<EndOfRoad>();
             OutTo<EndOfRoad>();
 
-            // define shared Before<Enter> here rather than in the objects themselves
-            bool cannotEnter()
-            {
-                Print("The stream flows out through a pair of 1 foot diameter sewer pipes. " +
-                       "It would be advisable to use the exit.");
-                return true;
-            }
+            // TODO: Check "enter" - should output "the pipes are too small";
 
-            Has<SetOfKeys>();
-            Has<TastyFood>();
-            Has<BrassLantern>();
-            Has<Bottle>();
-            Has<Stream>();
-            Has<WellHouse>();
-            Has<Spring>()
-                .Before<Enter>(cannotEnter);
-            Has<SewerPipes>()
-                .Before<Enter>(cannotEnter);
+            // TODO: Try to move this here
+            //before[;
+            //    Enter:
+            //        if (noun == Spring or SewerPipes)
+            //            "The stream flows out through a pair of 1 foot diameter sewer pipes.
+            //             It would be advisable to use the exit.";
+
+            
+            InTo(() =>
+            {
+                Print("The pipes are too small");
+                return this;
+            });
 
             Before<Plugh>(() =>
             {

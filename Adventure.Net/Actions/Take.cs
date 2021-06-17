@@ -38,7 +38,7 @@
             }
             else
             {
-                CurrentRoom.Objects.Remove(obj);
+                obj.Remove();
                 Inventory.Add(obj);
                 Print($"Taken.");
             }

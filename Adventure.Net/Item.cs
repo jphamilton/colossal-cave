@@ -302,28 +302,28 @@ namespace Adventure.Net
                 }
             }
 
-            foreach(var room in Rooms.All)
-            {
-                room.Contents.Remove(this);
-            }
-
+            ObjectMap.Remove(this);
         }
 
         public bool InRoom
         {
-            get { return Context.Story.Location.Contents.Contains(this); }
+            get 
+            {
+                
+                return ObjectMap.Contains(CurrentRoom.Location, this);
+            }
         }
 
         public void MoveToLocation()
         {
             Inventory.Remove(this);
-            Context.Story.Location.Contents.Add(this);
+            ObjectMap.MoveObject(this, CurrentRoom.Location);
         }
 
         public void FoundIn<R>() where R: Room
         {
             var room = Room<R>();
-            room.Contents.Add(this);
+            ObjectMap.Add(this, room);
         }
 
         public void FoundIn<R1, R2>() where R1 : Room where R2: Room
@@ -334,9 +334,37 @@ namespace Adventure.Net
 
         public void FoundIn<R1, R2, R3>() where R1 : Room where R2 : Room where R3 : Room
         {
-            FoundIn<R1>();
-            FoundIn<R2>();
+            FoundIn<R1, R2>();
             FoundIn<R3>();
+        }
+
+        public void FoundIn<R1, R2, R3, R4>() where R1 : Room where R2 : Room where R3 : Room where R4 : Room
+        {
+            FoundIn<R1,R2,R3>();
+            FoundIn<R4>();
+        }
+
+        public void FoundIn<R1, R2, R3, R4, R5>() 
+            where R1 : Room where R2 : Room where R3 : Room where R4 : Room where R5 : Room
+        {
+            FoundIn<R1, R2, R3, R4>();
+            FoundIn<R5>();
+        }
+
+        public void FoundIn<R1, R2, R3, R4, R5, R6>()
+            where R1 : Room where R2 : Room where R3 : Room where R4 : Room where R5 : Room
+            where R6: Room
+        {
+            FoundIn<R1, R2, R3, R4, R5>();
+            FoundIn<R6>();
+        }
+
+        public void FoundIn<R1, R2, R3, R4, R5, R6, R7>()
+            where R1 : Room where R2 : Room where R3 : Room where R4 : Room where R5 : Room
+            where R6 : Room where R7 : Room
+        {
+            FoundIn<R1, R2, R3, R4, R5, R6>();
+            FoundIn<R7>();
         }
     }
 }

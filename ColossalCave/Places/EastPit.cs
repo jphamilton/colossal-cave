@@ -12,9 +12,6 @@ namespace ColossalCave.Places
             Description = "You are at the bottom of the eastern pit in the twopit room. There is a small pool of oil in one corner of the pit.";
             NoDwarf = true;
 
-            Has<HoleAbovePit>();
-            Has<PoolOfOil>();
-
             UpTo<EastEndOfTwoPitRoom>();
         }
     }

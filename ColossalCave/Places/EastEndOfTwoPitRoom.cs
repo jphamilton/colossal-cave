@@ -16,7 +16,6 @@ namespace ColossalCave.Places
                 "There are holes all over, " +
                 "but the only big one is on the wall directly over the west pit where you can't get to it.";
 
-            Has<ThinRockSlabs>();
             //Has<PlantStickingUp>(); // absent
 
             EastTo<SwissCheeseRoom>();

@@ -15,26 +15,25 @@ namespace ColossalCave.Things
 
             Before<Wave>(() =>
             {
-                var room = CurrentRoom.Location;
+               
                 var westSideOfFissure = Rooms.Get<WestSideOfFissure>();
                 var eastBankOfFissure = Rooms.Get<EastBankOfFissure>();
-                var crystalBridge = Rooms.Get<CrystalBridge>();
 
-                if (room == westSideOfFissure || room == eastBankOfFissure)
+                if (CurrentRoom.Is<WestSideOfFissure>() || CurrentRoom.Is<EastBankOfFissure>())
                 {
                     // TODO: caves closed
                     // if (caves_closed) "Peculiar. Nothing happens.";
 
-                    if (room.Contains(crystalBridge))
+                    if (CurrentRoom.Has<CrystalBridge>())
                     {
-                        westSideOfFissure.BridgeDisappears();
-                        eastBankOfFissure.BridgeDisappears();
+                        Room<WestSideOfFissure>().BridgeDisappears();
+                        Room<EastBankOfFissure>().BridgeDisappears();
                         Print("The crystal bridge has vanished!");
                     }
                     else
                     {
-                        westSideOfFissure.BridgeAppears();
-                        eastBankOfFissure.BridgeAppears();
+                        Room<WestSideOfFissure>().BridgeAppears();
+                        Room<EastBankOfFissure>().BridgeAppears();
                         Print("A crystal bridge now spans the fissure.");
                     }
 

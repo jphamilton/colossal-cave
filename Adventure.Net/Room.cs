@@ -6,15 +6,12 @@ namespace Adventure.Net
 {
     public abstract class Room : Item
     {
-        private List<Item> absent { get; } = new List<Item>();
-
         private readonly Dictionary<Type, Func<Direction, bool>> beforeMoveRoutines = new Dictionary<Type, Func<Direction, bool>>();
-        public List<Item> Contents { get; private set; }
+        //public List<Item> Contents { get; private set; }
 
         protected Room() 
         {
-            Contents = new List<Item>();
-            Contents = new List<Item>();
+            //Contents = new List<Item>();
             DarkToDark = () => Print("It's pitch black, and you can't see a thing.");
             CantGo = "You can't go that way.";
             Visited = false;
@@ -280,24 +277,26 @@ namespace Adventure.Net
             return room;
         }
 
-        public Item Has<T>() where T : Item
-        {
-            Item obj = Objects.Get<T>();
+        //public Item Has<T>() where T : Item
+        //{
+        //    Item obj = Objects.Get<T>();
             
-            if (obj == null)
-            {
-                obj = Rooms.Get(typeof(T));
-            }
+        //    if (obj == null)
+        //    {
+        //        obj = Rooms.Get(typeof(T));
+        //    }
 
-            Contents.Add(obj);
+        //    Contents.Add(obj);
             
-            return obj;
-        }
+        //    return obj;
+        //}
 
         
         public bool Contains<T>() where T : Item
         {
-            foreach(var obj in Contents)
+            var objects = ObjectMap.GetObjects(this);
+
+            foreach(var obj in objects)
             {
                 if (obj is T)
                     return true;
@@ -306,10 +305,7 @@ namespace Adventure.Net
             return false;
         }
 
-        public bool Contains(Item obj) 
-        {
-            return Contents.Contains(obj);
-        }
+
 
     }
 }

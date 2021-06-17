@@ -1,7 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
 using Adventure.Net.Utilities;
-using ColossalCave.Things;
 using ColossalCave.Actions;
 
 namespace ColossalCave.Places
@@ -16,7 +15,6 @@ namespace ColossalCave.Places
                 "a passage to the west, and a wall of broken rock to the east. " +
                 "There is a large ~Y2~ on a rock in the room's center.";
 
-            Has<Y2Rock>();
 
             SouthTo<LowNSPassage>();
             EastTo<JumbleOfRock>();

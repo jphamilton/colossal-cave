@@ -13,8 +13,6 @@ namespace ColossalCave.Places
                 "There is a big hole in the floor. " +
                 "There are cracks everywhere, and a passage leading east.";
 
-            Has<DustyRocks>();
-
             EastTo<DirtyPassage>();
 
             DownTo<ComplexJunction>();

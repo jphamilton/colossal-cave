@@ -1,6 +1,4 @@
-﻿using ColossalCave.Things;
-
-namespace ColossalCave.Places
+﻿namespace ColossalCave.Places
 {
     public class BirdChamber : BelowGround
     {
@@ -15,8 +13,6 @@ namespace ColossalCave.Places
                 "An awkward canyon and a good passage exit from east and west sides of the chamber.";
             
             NoDwarf = true;
-
-            Has<LittleBird>();
 
             EastTo<AwkwardSlopingEWCanyon>();
             

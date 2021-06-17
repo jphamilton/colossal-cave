@@ -1,4 +1,5 @@
 ﻿using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -10,6 +11,8 @@ namespace ColossalCave.Things
             Synonyms.Are("rocks", "boulders", "stones", "rock", "boulder", "stone", "dusty", "dirty");
             Description = "They're just rocks. (Dusty ones, that is.)";
             // has multitude
+
+            FoundIn<DustyRockRoom>();
 
             Before<Push>(Nope);
             Before<Pull>(Nope);

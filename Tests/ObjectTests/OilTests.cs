@@ -13,7 +13,7 @@ namespace Tests.ObjectTests
         {
             Context.Story.Location = Room<DebrisRoom>();
             oil = Objects.Get<Oil>();
-            CurrentRoom.Objects.Add(oil);
+            ObjectMap.Add(oil, Location);
         }
 
         [Fact]
@@ -21,7 +21,7 @@ namespace Tests.ObjectTests
         {
             Execute("drink oil");
             Assert.Contains("Absolutely not.", ConsoleOut);
-            Assert.True(CurrentRoom.Objects.Contains(oil));
+            Assert.True(CurrentRoom.Has<Oil>());
         }
 
         [Fact]

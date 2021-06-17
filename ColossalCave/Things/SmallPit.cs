@@ -1,4 +1,6 @@
-﻿namespace ColossalCave.Things
+﻿using ColossalCave.Places;
+
+namespace ColossalCave.Things
 {
     public class SmallPit : Scenic
     {
@@ -7,6 +9,8 @@
             Name = "small pit";
             Synonyms.Are("pit", "small");
             Description = "The pit is breathing traces of white mist.";
+
+            FoundIn<TopOfSmallPit>();
         }
     }
 

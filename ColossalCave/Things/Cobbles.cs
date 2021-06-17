@@ -11,6 +11,8 @@ namespace ColossalCave.Things
             Synonyms.Are("cobble", "cobbles", "cobblestones", "cobblestone", "stones", "stone");
             HasPluralName = true;
             Description = "They're just ordinary cobbles.";
+
+            FoundIn<CobbleCrawl, DebrisRoom, BelowTheGrate>();
         }
     }
 }

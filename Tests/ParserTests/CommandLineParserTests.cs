@@ -265,11 +265,8 @@ namespace Tests.ParserTests
             var black = new BlackHat();
             black.Initialize();
 
-            Objects.Add(red);
-            Objects.Add(black);
-
-            room.Contents.Add(red);
-            room.Contents.Add(black);
+            Objects.Add(red, room);
+            Objects.Add(black, room);
 
             CommandPrompt.FakeInput("red");
 
@@ -294,14 +291,10 @@ namespace Tests.ParserTests
             var white = new WhiteHat();
             white.Initialize();
 
-            Objects.Add(red);
-            Objects.Add(black);
-            Objects.Add(white);
-
-            room.Contents.Add(red);
-            room.Contents.Add(black);
-            room.Contents.Add(white);
-
+            Objects.Add(red, room);
+            Objects.Add(black, room);
+            Objects.Add(white, room);
+            
             CommandPrompt.FakeInput("white");
 
             Execute("take hat");
@@ -325,13 +318,9 @@ namespace Tests.ParserTests
             var white = new WhiteHat();
             white.Initialize();
 
-            Objects.Add(red);
-            Objects.Add(black);
-            Objects.Add(white);
-
-            room.Contents.Add(red);
-            room.Contents.Add(black);
-            room.Contents.Add(white);
+            Objects.Add(red, room);
+            Objects.Add(black, room);
+            Objects.Add(white, room);
 
             CommandPrompt.FakeInput("white");
 
@@ -360,13 +349,9 @@ namespace Tests.ParserTests
             var white = new WhiteHat();
             white.Initialize();
 
-            Objects.Add(red);
-            Objects.Add(black);
-            Objects.Add(white);
-
-            room.Contents.Add(red);
-            room.Contents.Add(black);
-            room.Contents.Add(white);
+            Objects.Add(red, room);
+            Objects.Add(black, room);
+            Objects.Add(white, room);
 
             // this should bail out of the except clause handler
             CommandPrompt.FakeInput("take white hat");
@@ -393,13 +378,9 @@ namespace Tests.ParserTests
             var white = new WhiteHat();
             white.Initialize();
 
-            Objects.Add(red);
-            Objects.Add(black);
-            Objects.Add(white);
-
-            room.Contents.Add(red);
-            room.Contents.Add(black);
-            room.Contents.Add(white);
+            Objects.Add(red, room);
+            Objects.Add(black, room);
+            Objects.Add(white, room);
 
             Execute("take white hat");
 
@@ -420,13 +401,9 @@ namespace Tests.ParserTests
             var white = new WhiteHat();
             white.Initialize();
 
-            Objects.Add(red);
-            Objects.Add(black);
-            Objects.Add(white);
-
-            room.Contents.Add(red);
-            room.Contents.Add(black);
-            room.Contents.Add(white);
+            Objects.Add(red, room);
+            Objects.Add(black, room);
+            Objects.Add(white, room);
 
             CommandPrompt.FakeInput("donkey");
 
@@ -449,13 +426,9 @@ namespace Tests.ParserTests
             var white = new WhiteHat();
             white.Initialize();
 
-            Objects.Add(red);
-            Objects.Add(black);
-            Objects.Add(white);
-
-            room.Contents.Add(red);
-            room.Contents.Add(black);
-            room.Contents.Add(white);
+            Objects.Add(red, room);
+            Objects.Add(black, room);
+            Objects.Add(white, room);
 
             CommandPrompt.FakeInput("hat");
 
@@ -482,8 +455,8 @@ namespace Tests.ParserTests
             var black = new BlackHat();
             black.Initialize();
 
-            Objects.Add(red);
-            Objects.Add(black);
+            //Objects.Add(red, room);
+            //Objects.Add(black, room);
 
             var result = Parse("take hat");
 
@@ -545,8 +518,8 @@ namespace Tests.ParserTests
             var bottle = Objects.Get<Bottle>();
             var keys = Objects.Get<SetOfKeys>();
 
-            CurrentRoom.Objects.Remove(bottle);
-            CurrentRoom.Objects.Remove(keys);
+            bottle.Remove();
+            keys.Remove();
 
             Inventory.Add(bottle);
             Inventory.Add(keys);
@@ -582,9 +555,10 @@ namespace Tests.ParserTests
         public void put_bottle_lantern()
         {
             var bottle = Objects.Get<Bottle>();
-            Location.Contents.Add(bottle);
+            Objects.Add(bottle, Location);
+
             var lantern = Objects.Get<BrassLantern>();
-            Location.Contents.Add(lantern);
+            Objects.Add(lantern, Location);
 
             var result = Execute("put bottle lantern");
             Assert.Equal("What do you want to put those things in?", Line(1));

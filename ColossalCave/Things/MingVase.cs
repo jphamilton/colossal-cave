@@ -45,9 +45,10 @@ namespace ColossalCave.Things
         private void RepaceVaseWithShards()
         {
             Remove();
-            var shards = Adventure.Net.Objects.Get<Shards>();
-            CurrentRoom.Objects.Add(shards);
-
+            
+            var shards = Objects.Get<Shards>();
+            
+            shards.MoveToLocation();
         }
     }
 }

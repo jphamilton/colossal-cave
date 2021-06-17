@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -10,6 +11,8 @@ namespace ColossalCave.Things
             Name = "pit";
             Synonyms.Are("pit", "thirty", "foot", "thirty-foot");
             Description = "You'll have to climb down to find out anything more...";
+
+            FoundIn<BrinkOfPit>();
 
             Before<Climb>(() =>
             {

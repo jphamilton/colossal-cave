@@ -1,4 +1,6 @@
-﻿namespace ColossalCave.Things
+﻿using ColossalCave.Places;
+
+namespace ColossalCave.Things
 {
     public class TreasureChest : Treasure
     {
@@ -9,6 +11,8 @@
             Description = "It's the pirate's treasure chest, filled with riches of all kinds!";
             InitialDescription = "The pirate's treasure chest is here!";
             DepositPoints = 12;
+
+            FoundIn<DeadEnd13>();
         }
     }
 }

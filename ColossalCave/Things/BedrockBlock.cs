@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -10,6 +11,8 @@ namespace ColossalCave.Things
             Name = "bedrock block";
             Synonyms.Are("block", "bedrock", "large");
             Description = "";
+
+            FoundIn<SwissCheeseRoom>();
 
             Before<LookUnder>(() => HaHa());
             Before<Push>(() => HaHa());

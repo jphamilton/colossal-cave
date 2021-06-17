@@ -15,6 +15,8 @@ namespace ColossalCave.Things
             InitialDescription = "A huge green fierce snake bars the way!";
             IsAnimate = true;
 
+            FoundIn<HallOfMtKing>();
+
             Before<Attack>(() =>
             {
                 Print("Attacking the snake both doesn't work and is very dangerous.");

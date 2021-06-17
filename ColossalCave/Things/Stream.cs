@@ -1,6 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Extensions;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -12,9 +13,8 @@ namespace ColossalCave.Things
             Synonyms.Are("stream", "water", "brook", "river", "lake", "small", "tumbling",
                          "splashing", "babbling", "rushing", "reservoir");
 
-            //TODO: FoundIn<InPit>();
-            //TODO: FoundIn<InCavernWithWaterfall>();
-            //TODO: FoundIn<AtReservoir>();
+            FoundIn<EndOfRoad, Valley, SlitInStreambed, InsideBuilding, Reservoir>();
+            // In_Pit, In_Cavern_With_Waterfall 
 
             Before<Drink>(() =>
                 {

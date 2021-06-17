@@ -1,7 +1,5 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
-using ColossalCave.Things;
-using System;
 
 namespace ColossalCave.Places
 {
@@ -9,8 +7,6 @@ namespace ColossalCave.Places
     {
         public override void Initialize()
         {
-            Has<Fissure>();
-
             Before<Jump>(() =>
             {
                 var room = CurrentRoom.Location;

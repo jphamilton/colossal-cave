@@ -1,4 +1,5 @@
 ﻿using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -9,6 +10,8 @@ namespace ColossalCave.Things
             Name = "stalactite";
             Synonyms.Are("stalactite", "stalagmite", "stalagtite", "large");
             Description = "You could probably climb down it, but you can forget coming back up.";
+
+            FoundIn<AtopStalactite>();
 
             Before<LookUnder>(() => GetAGrip());
             Before<Push>(() => GetAGrip());

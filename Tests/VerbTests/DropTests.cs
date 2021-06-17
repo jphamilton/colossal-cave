@@ -10,7 +10,7 @@ namespace Tests.VerbTests
         public void should_handle_drop()
         {
             var bottle = Objects.Get<Bottle>();
-            CurrentRoom.Objects.Remove(bottle);
+            bottle.Remove();
             Inventory.Add(bottle);
 
             // not holding bottle, but bottle is in the room

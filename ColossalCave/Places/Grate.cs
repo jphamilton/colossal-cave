@@ -13,6 +13,8 @@ namespace ColossalCave.Things
             Description = "It just looks like an ordinary grate mounted in concrete.";
             Article = "the";
 
+            FoundIn<BelowTheGrate, OutsideGrate>();
+
             LocksWithKey<SetOfKeys>(true);
 
             DoorDirection = () =>

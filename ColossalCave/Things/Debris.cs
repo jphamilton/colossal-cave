@@ -9,6 +9,8 @@ namespace ColossalCave.Things
             Name = "debris";
             Synonyms.Are("debris", "stuff", "mud");
             Description = "Yuck.";
+
+            FoundIn<DebrisRoom>();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -9,6 +10,8 @@ namespace ColossalCave.Things
             Name = "hill";
             Synonyms.Are("hill", "bump", "incline");
             Description = "It's just a typical hill.";
+
+            FoundIn<HillInRoad>();
         }
     }
 }

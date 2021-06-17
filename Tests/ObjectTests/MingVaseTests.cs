@@ -28,14 +28,15 @@ namespace Tests.ObjectTests
         {
             Execute("drop vase");
             Assert.False(Inventory.Contains(vase));
-            Assert.False(CurrentRoom.Objects.Contains(vase));
+            Assert.False(CurrentRoom.Has<MingVase>());
         }
 
         [Fact]
         public void should_not_break()
         {
             var pillow = Objects.Get<VelvetPillow>();
-            CurrentRoom.Objects.Add(pillow);
+            pillow.MoveToLocation();
+
             var result = Execute("drop vase");
             Assert.Contains("(coming to rest, delicately, on the velvet pillow)", ConsoleOut);
         }

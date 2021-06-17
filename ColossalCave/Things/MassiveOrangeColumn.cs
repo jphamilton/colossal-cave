@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -10,6 +11,8 @@ namespace ColossalCave.Things
             Name = "massive orange column";
             Synonyms.Are("column", "massive", "orange", "big", "huge");
             Description = "It looks like you could climb down it.";
+
+            FoundIn<BrinkOfPit>();
 
             Before<Climb>(() =>
             {

@@ -16,7 +16,7 @@
             {
                 // use Before/After routines on object to handle specific messages
                 Print($"You eat {obj}.");
-                CurrentRoom.Objects.Remove(obj);
+                obj.Remove();
                 Inventory.Remove(obj);
             }
             else

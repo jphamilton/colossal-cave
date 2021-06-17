@@ -1,4 +1,6 @@
-﻿namespace ColossalCave.Things
+﻿using ColossalCave.Places;
+
+namespace ColossalCave.Things
 {
     public class RareCoins : Treasure
     {
@@ -10,6 +12,8 @@
             Description = "They're a numismatist's dream!";
             InitialDescription = "There are many coins here!";
             // has multitude
+
+            FoundIn<WestSideChamber>();
         }
     }
 }

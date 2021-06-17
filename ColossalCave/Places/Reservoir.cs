@@ -1,6 +1,5 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
-using ColossalCave.Things;
 
 namespace ColossalCave.Places
 {
@@ -17,9 +16,8 @@ namespace ColossalCave.Places
                 "The only passage goes back toward the south. " +
                 "and splashes noisily into the water somewhere within the mist.";
 
-            Has<Stream>();
-
             SouthTo<MirrorCanyon>();
+            
             OutTo<MirrorCanyon>();
 
             Before<Swim>(() =>

@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -10,6 +11,8 @@ namespace ColossalCave.Things
             Name = "pool of oil";
             Synonyms.Are("pool", "oil", "small");
             Description = "It looks like ordinary oil.";
+
+            FoundIn<EastPit>();
 
             Before<Drink>(() =>
             {

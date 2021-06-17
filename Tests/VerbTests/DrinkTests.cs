@@ -22,7 +22,8 @@ namespace Advent.Tests.Verbs
         {
             Location = Rooms.Get<BelowTheGrate>();
 
-            Bottle bottle = Objects.Get<Bottle>() as Bottle;
+            Bottle bottle = Objects.Get<Bottle>();
+
             bottle.Add<WaterInTheBottle>();
 
             Inventory.Add(bottle);
