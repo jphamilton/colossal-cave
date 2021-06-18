@@ -170,7 +170,7 @@ namespace ColossalCave.Things
                 old.MoveToLocation();
 
                 PowerRemaining = 2500;
-                
+
                 Print("I'm taking the liberty of replacing the batteries.");
                 return true;
             }

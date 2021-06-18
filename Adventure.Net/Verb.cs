@@ -8,13 +8,13 @@ namespace Adventure.Net
     public abstract class Verb 
     {
         // ()
-        private Dictionary<string, MethodInfo> NoArgs = new Dictionary<string, MethodInfo>();
+        private readonly Dictionary<string, MethodInfo> NoArgs = new();
         // (obj)
-        private Dictionary<string, MethodInfo> OneArg = new Dictionary<string, MethodInfo>();
+        private readonly Dictionary<string, MethodInfo> OneArg = new();
         // (obj, prep)
-        private Dictionary<string, MethodInfo> TwoArgs = new Dictionary<string, MethodInfo>();
+        private readonly Dictionary<string, MethodInfo> TwoArgs = new();
         // (obj, prep, indirect)
-        private Dictionary<string, MethodInfo> ThreeArgs = new Dictionary<string, MethodInfo>();
+        private readonly Dictionary<string, MethodInfo> ThreeArgs = new();
 
         // temporary
         public List<Prep> AcceptedPrepositions { get; } = new List<Prep>();
@@ -199,7 +199,7 @@ namespace Adventure.Net
 
         public string Name { get; protected set; }
 
-        public Synonyms Synonyms = new Synonyms();
+        public Synonyms Synonyms = new();
 
         /// <summary>
         /// Summary accepts multiple items (objects in scope)
@@ -223,16 +223,16 @@ namespace Adventure.Net
 
         public static bool Redirect<T>(Item item, Func<T, bool> callback) where T : Verb
         {
-            return item.Redirect(item, callback);
+            return Item.Redirect(item, callback);
         }
 
         public static bool Redirect<T>(Func<T, bool> callback) where T : Verb
         {
             var room = CurrentRoom.Location;
-            return room.Redirect(room, callback);
+            return Item.Redirect(room, callback);
         }
 
-        protected void Print(string message, CommandState? state = null)
+        protected static void Print(string message, CommandState? state = null)
         {
             Context.Current.Print(message, state);
         }

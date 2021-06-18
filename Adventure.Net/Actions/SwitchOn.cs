@@ -21,7 +21,7 @@ namespace Adventure.Net.Actions
                 // this will ensure that all the before/after routines will be called for the object
                 return Redirect<SwitchOn>(held[0], v => v.Expects(held[0], new Preposition.On()));
             }
-            
+
             Print("What do you want to switch on?");
             return false;
         }

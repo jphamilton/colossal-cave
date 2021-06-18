@@ -28,7 +28,7 @@ namespace ColossalCave
 
                 if (Found == 0)
                 {
-                    score = score + 2;
+                    score += 2;
                 }
 
                 Found++;

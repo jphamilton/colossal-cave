@@ -53,12 +53,10 @@ namespace Adventure.Net
             {
                 if (obj.HasLight)
                     return true;
-                
-                var container = obj as Container;
-                
-                if (container == null || (!container.IsOpen && !container.IsTransparent))
+
+                if (obj is not Container container || (!container.IsOpen && !container.IsTransparent))
                     continue;
-                
+
                 foreach (var containedObj in container.Contents)
                 {
                     if (containedObj.HasLight)
@@ -118,8 +116,7 @@ namespace Adventure.Net
                 else if (i > 0)
                     group.Append(", ");
 
-                var container = obj as Container;
-                if (container != null)
+                if (obj is Container container)
                 {
                     if (container.Contents.Count > 0)
                     {
@@ -151,9 +148,7 @@ namespace Adventure.Net
 
             foreach (var obj in objects)
             {
-                var container = obj as Container;
-                
-                if (container != null)
+                if (obj is Container container)
                 {
                     contained.AddRange(container.Contents);
                 }
@@ -199,7 +194,9 @@ namespace Adventure.Net
 
         public static bool Has<T>() where T : Item
         {
-            return Location.Contains<T>();
+            var objects = ObjectMap.GetObjects(Location);
+
+            return objects.Any(obj => obj is T);
         }
     }
 }

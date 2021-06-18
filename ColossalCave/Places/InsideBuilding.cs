@@ -1,5 +1,7 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Actions;
 using ColossalCave.Actions;
+using ColossalCave.Things;
 
 namespace ColossalCave.Places
 {
@@ -14,16 +16,18 @@ namespace ColossalCave.Places
             WestTo<EndOfRoad>();
             OutTo<EndOfRoad>();
 
-            // TODO: Check "enter" - should output "the pipes are too small";
+            Before<Enter>(() =>
+            {
+                if (CurrentObject is Spring || CurrentObject is SewerPipes)
+                {
+                    Print("The stream flows out through a pair of 1 foot diameter sewer pipes. " +
+                       "It would be advisable to use the exit.");
+                    return true;
+                }
 
-            // TODO: Try to move this here
-            //before[;
-            //    Enter:
-            //        if (noun == Spring or SewerPipes)
-            //            "The stream flows out through a pair of 1 foot diameter sewer pipes.
-            //             It would be advisable to use the exit.";
+                return false;
+            });
 
-            
             InTo(() =>
             {
                 Print("The pipes are too small");
@@ -43,18 +47,42 @@ namespace ColossalCave.Places
             });
 
             Before<Xyzzy>(() =>
-                {
-                    var debrisRoom = Room<DebrisRoom>();
+            {
+                var debrisRoom = Room<DebrisRoom>();
                     
-                    if (debrisRoom.Visited)
-                    {
-                        MovePlayer.To<DebrisRoom>();
-                        return false;
-                    }
+                if (debrisRoom.Visited)
+                {
+                    MovePlayer.To<DebrisRoom>();
+                    return false;
+                }
 
-                    Print(Messages.DoNotUnderstand);
-                    return true;
-                });
+                Print(Messages.DoNotUnderstand);
+                return true;
+            });
+        }
+    }
+
+    public class Spring : Scenic
+    {
+        public override void Initialize()
+        {
+            Name = "spring";
+            Synonyms.Are("spring", "large");
+            Description = "The stream flows out through a pair of 1 foot diameter sewer pipes.";
+
+            FoundIn<InsideBuilding>();
+        }
+    }
+
+    public class SewerPipes : Scenic
+    {
+        public override void Initialize()
+        {
+            Name = "pair of 1 foot diameter sewer pipes";
+            Synonyms.Are("pipes", "pipe", "one", "foot", "diameter", "sewer", "sewer-pipes");
+            Description = "Too small. The only exit is to the west.";
+
+            FoundIn<InsideBuilding>();
         }
     }
 }

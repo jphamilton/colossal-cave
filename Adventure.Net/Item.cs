@@ -5,9 +5,11 @@ using System.Linq;
 
 namespace Adventure.Net
 {
+    // TODO: Need to implement "(the) {obj}" in output - Look at Article handling in inform and double check the Prints for Verbs there
+
     public class AfterRoutines
     {
-        private Dictionary<Type, Action> routines = new Dictionary<Type, Action>();
+        private readonly Dictionary<Type, Action> routines = new();
 
         public void Add(Type type, Action after)
         {
@@ -15,11 +17,11 @@ namespace Adventure.Net
             {
                 var routine = routines[type];
 
-                Action wrapper = () =>
+                void wrapper()
                 {
                     routine();
                     after();
-                };
+                }
 
                 routines.Remove(type);
 
@@ -45,10 +47,10 @@ namespace Adventure.Net
 
     public abstract class Item
     {
-        private readonly Dictionary<Type, Func<bool>> beforeRoutines = new Dictionary<Type, Func<bool>>();
-        private readonly AfterRoutines afterRoutines = new AfterRoutines();
+        private readonly Dictionary<Type, Func<bool>> beforeRoutines = new();
+        private readonly AfterRoutines afterRoutines = new();
 
-        private readonly Dictionary<Item, Func<Item, bool>> receiveRoutines = new Dictionary<Item, Func<Item, bool>>();
+        private readonly Dictionary<Item, Func<Item, bool>> receiveRoutines = new();
 
         public abstract void Initialize();
 
@@ -171,7 +173,7 @@ namespace Adventure.Net
             return null;
         }
 
-        public void Print(string message)
+        public static void Print(string message)
         {
             if (Context.Current != null)
             {
@@ -184,13 +186,13 @@ namespace Adventure.Net
         }
 
         // current object being handled by the command handler
-        public Item CurrentObject
+        public static Item CurrentObject
         {
             get { return Context.Current.CurrentObject; }
         }
 
         // indirect object of current running command
-        public Item IndirectObject
+        public static Item IndirectObject
         {
             get { return Context.Current.IndirectObject; }
         }
@@ -200,7 +202,7 @@ namespace Adventure.Net
             return Objects.Get<T>();
         }
 
-        public bool Redirect<T>(Item obj, Func<T, bool> callback) where T : Verb
+        public static bool Redirect<T>(Item obj, Func<T, bool> callback) where T : Verb
         {
             var command = Context.Current.PushState();
 
@@ -211,7 +213,7 @@ namespace Adventure.Net
             return handled;
         }
 
-        internal ExecuteResult Execute<T>(Item obj, Func<T, bool> callback) where T : Verb
+        internal static ExecuteResult Execute<T>(Item obj, Func<T, bool> callback) where T : Verb
         {
             var commandOutput = new CommandOutput();
             var command = Context.Current.PushState(commandOutput);
@@ -223,7 +225,7 @@ namespace Adventure.Net
             return new ExecuteResult(handled, commandOutput);
         }
 
-        private bool RunCommand<T>(ICommandState command, Item obj, Func<T, bool> callback) where T: Verb
+        private static bool RunCommand<T>(ICommandState command, Item obj, Func<T, bool> callback) where T: Verb
         {
             var handled = false;
             var success = false;
@@ -253,13 +255,13 @@ namespace Adventure.Net
             return success;
         }
 
-        protected bool In<T>() where T:Room
+        protected static bool In<T>() where T:Room
         {
             Item obj = Rooms.Get<T>();
             return (CurrentRoom.Location == obj);
         }
 
-        protected T Room<T>() where T : Room
+        protected static T Room<T>() where T : Room
         {
             return Rooms.Get(typeof(T)) as T;
         }
@@ -278,7 +280,12 @@ namespace Adventure.Net
             get { return Inventory.Contains(this); }    
         }
 
-        public void Remove<T>() where T : Item
+        public static bool IsCarrying<T>() where T : Item
+        {
+            return Inventory.Contains<T>();
+        }
+
+        public static void Remove<T>() where T : Item
         {
             var obj = Get<T>();
             obj.Remove();

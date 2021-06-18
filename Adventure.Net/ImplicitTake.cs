@@ -15,7 +15,7 @@ namespace Adventure.Net
         {
             if (!obj.InInventory)
             {
-                var result = obj.Execute<Take>(obj, v => v.Expects(obj));
+                var result = Item.Execute<Take>(obj, v => v.Expects(obj));
 
                 // only return result.Success
 

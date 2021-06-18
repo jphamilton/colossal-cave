@@ -9,8 +9,8 @@ namespace Adventure.Net
     {
         // CONTAINERS?????
 
-        private static IDictionary<Item, IList<Room>> ObjectToRooms = new Dictionary<Item, IList<Room>>();
-        private static IDictionary<Room, IList<Item>> RoomToObjects = new Dictionary<Room, IList<Item>>();
+        private static readonly IDictionary<Item, IList<Room>> ObjectToRooms = new Dictionary<Item, IList<Room>>();
+        private static readonly IDictionary<Room, IList<Item>> RoomToObjects = new Dictionary<Room, IList<Item>>();
 
         // get rid of Has<>
         // FoundIn<>
@@ -81,8 +81,7 @@ namespace Adventure.Net
 
     public class Objects
     {
-        private static IList<Item> items = new List<Item>();
-
+        private static readonly IList<Item> items = new List<Item>();
 
         public static void Load(IStory story)
         {
@@ -97,8 +96,7 @@ namespace Adventure.Net
                     !type.IsAbstract && 
                     !type.IsSubclassOf(typeof(Room)))
                 {
-                    var obj = Activator.CreateInstance(type) as Item;
-                    if (obj != null)
+                    if (Activator.CreateInstance(type) is Item obj)
                     {
                         items.Add(obj);
                     }

@@ -7,7 +7,7 @@ namespace Adventure.Net
 {
     public class Inventory 
     {
-        private static readonly List<Item> objects = new List<Item>();
+        private static readonly List<Item> objects = new();
 
         public static void Add(Item obj)
         {
@@ -25,8 +25,7 @@ namespace Adventure.Net
         {
             foreach(var o in objects)
             {
-                Container c = o as Container;
-                if (c != null)
+                if (o is Container c)
                 {
                     if (c.Contents.Contains(obj))
                         return true;
@@ -76,15 +75,14 @@ namespace Adventure.Net
             if (objects.Count == 0)
                 return "You are carrying nothing.";
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             sb.AppendLine("You are carrying:");
 
             var containers = new List<Item>();
 
             foreach(var obj in objects.OrderBy(x=>x.Description))
             {
-                var container = obj as Container;
-                if (container != null)
+                if (obj is Container container)
                 {
                     containers.Add(container);
                     sb.Append(DisplayContainer(container, 1));
@@ -101,7 +99,7 @@ namespace Adventure.Net
 
         private static string DisplayContainer(Container container, int level)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
 
             sb.Indent(level);
 
@@ -117,8 +115,7 @@ namespace Adventure.Net
             if (container.IsOpen || container.IsTransparent)
                 foreach(var child in container.Contents)
                 {
-                    Container c = child as Container;
-                    if (c != null)
+                    if (child is Container c)
                         sb.AppendFormat("{0}", DisplayContainer(c, level + 1));
                     else
                     {

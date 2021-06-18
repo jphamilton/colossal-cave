@@ -5,7 +5,7 @@ namespace Adventure.Net
 {
     public abstract class Container : Item
     {
-        protected List<Item> contents = new List<Item>();
+        protected List<Item> contents = new();
         
         protected Container()
         {

@@ -1,6 +1,7 @@
 ﻿using Adventure.Net;
 using ColossalCave.Things;
 using ColossalCave.Actions;
+using Adventure.Net.Actions;
 
 namespace ColossalCave.Places
 {
@@ -36,16 +37,7 @@ namespace ColossalCave.Places
 
             UpTo(() =>
             {
-                //Get<LargeGoldNugget>()
-
-                //IsCarrying<LargeGoldNugget>(() =>
-                //{
-                //    Output.Print("The dome is unclimbable.");
-                //    return this;
-                //});
-
-
-                if (Inventory.Contains<LargeGoldNugget>())
+                if (IsCarrying<LargeGoldNugget>())
                 {
                     Output.Print("The dome is unclimbable.");
                     return this;
@@ -58,5 +50,63 @@ namespace ColossalCave.Places
 
 
     }
+
+    #region Scenery
+
+    public class WideStoneStaircase : Scenic
+    {
+        public override void Initialize()
+        {
+            Name = "wide stone staircase";
+            Synonyms.Are("stair", "stairs", "staircase", "wide", "stone");
+            Description = "The staircase leads down.";
+            FoundIn<HallOfMists>();
+        }
+    }
+
+    public class RoughStoneSteps : Scenic
+    {
+        public override void Initialize()
+        {
+            Name = "rough stone steps";
+            Synonyms.Are("stair", "stairs", "staircase", "rough", "stone");
+            Description = "The rough stone steps lead up the dome.";
+            // has multitude
+
+            FoundIn<HallOfMists>();
+        }
+    }
+
+    public class Dome : Scenic
+    {
+        public override void Initialize()
+        {
+            Name = "dome";
+            Synonyms.Are("dome");
+
+            Before<Examine>(() =>
+            {
+                if (IsCarrying<LargeGoldNugget>())
+                {
+                    Print("I'm not sure you'll be able to get up it with what you're carrying.");
+                }
+                else
+                {
+                    Print("It looks like you might be able to climb up it.");
+                }
+
+                return true;
+            });
+
+            Before<Climb>(() =>
+            {
+                CurrentRoom.Location.DOWN();
+                return true;
+            });
+
+        }
+    }
+
+    #endregion
 }
 

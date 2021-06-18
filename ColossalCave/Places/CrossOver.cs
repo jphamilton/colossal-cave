@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using ColossalCave.Things;
 
 namespace ColossalCave.Places
 {
@@ -13,6 +14,18 @@ namespace ColossalCave.Places
             NorthTo<DeadEnd7>();
             EastTo<WestSideChamber>();
             SouthTo<WestEndOfLongHall>();
+        }
+    }
+
+    public class Crossover : Scenic
+    {
+        public override void Initialize()
+        {
+            Name = "crossover";
+            Synonyms.Are("crossover", "over", "cross");
+            Description = "You know as much as I do at this point.";
+
+            FoundIn<CrossOver>();
         }
     }
 }

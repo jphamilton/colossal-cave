@@ -28,7 +28,7 @@ namespace ColossalCave.Things
 
             Before<Drop>(() =>
             {
-                if (CurrentRoom.Location.Contains<VelvetPillow>())
+                if (CurrentRoom.Has<VelvetPillow>())
                 {
                     Print("(coming to rest, delicately, on the velvet pillow)");
                     return false;

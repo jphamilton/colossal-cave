@@ -25,7 +25,7 @@ namespace ColossalCave.Things
                     Print("(releasing the little bird)");
                     
                     var bird = Get<LittleBird>();
-                    
+
                     Redirect<Release>(bird, v => v.Expects(bird)); 
                 }
 

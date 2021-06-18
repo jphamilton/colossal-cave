@@ -2,6 +2,7 @@
 using Adventure.Net.Actions;
 using Adventure.Net.Utilities;
 using ColossalCave.Actions;
+using ColossalCave.Things;
 
 namespace ColossalCave.Places
 {
@@ -18,7 +19,7 @@ namespace ColossalCave.Places
 
             SouthTo<LowNSPassage>();
             EastTo<JumbleOfRock>();
-            //WestTo<WindowOnPit1>();
+            WestTo<WindowOnPit1>();
 
 
             After<Look>(() =>
@@ -37,12 +38,19 @@ namespace ColossalCave.Places
 
             Before<Plover>(() =>
             {
-            //if (In_Plover_Room hasnt visited) rfalse;
-            //if (egg_sized_emerald in player) {
-            //    move egg_sized_emerald to In_Plover_Room;
-            //    score = score - 5;
-            //}
-            //PlayerTo(In_Plover_Room);
+                if (!Room<PloverRoom>().Visited)
+                {
+                    return false;
+                }
+
+                if (IsCarrying<EggSizedEmerald>())
+                {
+                    Move<EggSizedEmerald>.To<PloverRoom>();
+                    Score.Add(-5);
+                }
+
+                MovePlayer.To<PloverRoom>();
+                
                 return true;
             });
 

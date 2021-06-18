@@ -99,12 +99,12 @@ namespace Tests.ParserTests
                 after = true;
             });
 
-            Assert.True(Location.Contains<BrassLantern>());
+            Assert.True(CurrentRoom.Has<BrassLantern>());
 
             Execute("take lamp");
 
             Assert.True(Inventory.Contains<BrassLantern>());
-            Assert.False(Location.Contains<BrassLantern>());
+            Assert.False(CurrentRoom.Has<BrassLantern>());
 
             Assert.True(before);
             Assert.True(after);
@@ -128,13 +128,13 @@ namespace Tests.ParserTests
                 after = true;
             });
 
-            Assert.True(Location.Contains<BrassLantern>());
+            Assert.True(CurrentRoom.Has<BrassLantern>());
 
             Execute("take lamp");
 
             Assert.False(after);
             Assert.False(Inventory.Contains<BrassLantern>());
-            Assert.True(Location.Contains<BrassLantern>());
+            Assert.True(CurrentRoom.Has<BrassLantern>());
 
             Assert.Contains(message, ConsoleOut);
         }

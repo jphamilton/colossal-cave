@@ -7,7 +7,7 @@ namespace Tests.ObjectTests
 {
     public class OilTests : BaseTestFixture
     {
-        private Oil oil;
+        private readonly Oil oil;
 
         public OilTests()
         {

@@ -29,13 +29,11 @@ namespace ColossalCave.Places
 
             DownTo(() =>
                 {
-                    if (Inventory.Contains<LargeGoldNugget>())
+                    if (IsCarrying<LargeGoldNugget>())
                     {
-                        //deadflag = 1;
                         Print("You are at the bottom of the pit with a broken neck.");
+                        AfterLife.Death();
                         return this;
-
-                        // TODO: death?
                     }
 
                     return Rooms.Get<HallOfMists>(); 
@@ -44,4 +42,38 @@ namespace ColossalCave.Places
             
         }
     }
+
+    #region Scenery
+
+    public class PitCrack : Scenic
+    {
+        public override void Initialize()
+        {
+            Name = "crack";
+            Synonyms.Are("crack", "small");
+            Description = "The crack is very small -- far too small for you to follow.";
+
+            FoundIn<TopOfSmallPit>();
+
+            Before<Enter>(() =>
+            {
+                Print("The crack is far too small for you to follow.");
+                return true;
+            });
+        }
+    }
+
+    public class SmallPit : Scenic
+    {
+        public override void Initialize()
+        {
+            Name = "small pit";
+            Synonyms.Are("pit", "small");
+            Description = "The pit is breathing traces of white mist.";
+
+            FoundIn<TopOfSmallPit>();
+        }
+    }
+
+    #endregion
 }

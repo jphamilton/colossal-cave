@@ -1,12 +1,15 @@
+using Adventure.Net;
 using Adventure.Net.Actions;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Adventure.Net
 {
     public abstract class Room : Item
     {
-        private readonly Dictionary<Type, Func<Direction, bool>> beforeMoveRoutines = new Dictionary<Type, Func<Direction, bool>>();
+        private readonly Dictionary<string, Func<Room>> roomMap = new();
+        private readonly Dictionary<Type, Func<Direction, bool>> beforeMoveRoutines = new();
         //public List<Item> Contents { get; private set; }
 
         protected Room() 
@@ -32,8 +35,6 @@ namespace Adventure.Net
         /// </summary>
         public bool Visited { get; set; }
         
-        private readonly Dictionary<string, Func<Room>> roomMap = new Dictionary<string, Func<Room>>();
-
         private void AddToRoomMap<T>(string direction) where T:Room
         {
             Room room = Rooms.Get<T>();
@@ -277,35 +278,7 @@ namespace Adventure.Net
             return room;
         }
 
-        //public Item Has<T>() where T : Item
-        //{
-        //    Item obj = Objects.Get<T>();
-            
-        //    if (obj == null)
-        //    {
-        //        obj = Rooms.Get(typeof(T));
-        //    }
-
-        //    Contents.Add(obj);
-            
-        //    return obj;
-        //}
-
         
-        public bool Contains<T>() where T : Item
-        {
-            var objects = ObjectMap.GetObjects(this);
-
-            foreach(var obj in objects)
-            {
-                if (obj is T)
-                    return true;
-            }
-
-            return false;
-        }
-
-
-
     }
+
 }

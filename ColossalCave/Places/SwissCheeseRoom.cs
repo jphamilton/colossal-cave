@@ -1,7 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
 using Adventure.Net.Utilities;
-using ColossalCave.Things;
 
 namespace ColossalCave.Places
 {
@@ -20,7 +19,7 @@ namespace ColossalCave.Places
             SouthTo<TallEWCanyon>();
             NorthEastTo<Bedquilt>();
             //NorthWestTo<OrientalRoom>();
-            //EastTo<SoftRoom>();
+            EastTo<SoftRoom>();
 
             Before<Go>((Direction direction) =>
             {

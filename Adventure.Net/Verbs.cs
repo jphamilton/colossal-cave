@@ -13,21 +13,21 @@ namespace Adventure.Net
         {
             verbs = new List<Verb>();
 
-            Action<IEnumerable<Type>> add = (list) =>
+            static void add(IEnumerable<Type> list)
             {
                 foreach (var type in list)
                 {
                     if (type.IsSubclassOf(typeof(Verb)) && !type.IsAbstract)
                     {
                         var instance = Activator.CreateInstance(type) as Verb;
-                        
+
                         instance.Initialize();
-                        
+
                         verbs.Add(instance);
                     }
                 }
-                
-            };
+
+            }
 
             Type[] types = Assembly.GetExecutingAssembly().GetTypes();
             add(types);

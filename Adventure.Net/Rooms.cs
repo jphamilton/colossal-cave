@@ -8,7 +8,7 @@ namespace Adventure.Net
 {
     public class Rooms
     {
-        private static List<Room> rooms = new List<Room>();
+        private static readonly List<Room> rooms = new();
 
         public static void Load(IStory story)
         {
