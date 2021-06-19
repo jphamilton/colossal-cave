@@ -32,15 +32,7 @@ namespace ColossalCave.Places
         }
     }
 
-    public abstract class PitScenic : Scenic
-    {
-        protected PitScenic()
-        {
-            FoundIn<WindowOnPit1, WindowOnPit2>();
-        }
-    }
-
-    public class Window : PitScenic
+    public class Window : Scenic
     {
         public override void Initialize()
         {
@@ -48,36 +40,44 @@ namespace ColossalCave.Places
             Synonyms.Are("window", "low");
             Description = "It looks like a regular window.";
             IsOpenable = true;
+
+            FoundIn<WindowOnPit1, WindowOnPit2>();
         }
     }
 
-    public class HugePit : PitScenic
+    public class HugePit : Scenic
     {
         public override void Initialize()
         {
             Name = "huge pit";
             Synonyms.Are("pit", "deep", "large");
             Description = "It's so deep you can barely make out the floor below, and the top isn't visible at all.";
+
+            FoundIn<WindowOnPit1, WindowOnPit2>();
         }
     }
 
-    public class MarksInTheDust : PitScenic
+    public class MarksInTheDust : Scenic
     {
         public override void Initialize()
         {
             Name = "marks in the dust";
             Description = "Evidently you're not alone here.";
             // has multitude
+
+            FoundIn<WindowOnPit1, WindowOnPit2>();
         }
     }
 
-    public class ShadowyFigure : PitScenic
+    public class ShadowyFigure : Scenic
     {
         public override void Initialize()
         {
             Name = "shadowy figure";
             Synonyms.Are("figure", "shadow", "person", "individual", "shadowy", "mysterious");
             Description = "The shadowy figure seems to be trying to attract your attention.";
+
+            FoundIn<WindowOnPit1, WindowOnPit2>();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -11,7 +12,8 @@ namespace ColossalCave.Things
             Synonyms.Are("plant", "beanstalk", "stalk", "bean", "giant", "tiny", "little", "murmuring", "twelve", "foot", "tall", "bellowing");
             IsStatic = true;
             IsAbsent = true;
-            // absent
+
+            FoundIn<WestEndOfTwoPitRoom, EastEndOfTwoPitRoom>();
 
             Describe = () =>
             {
@@ -34,6 +36,7 @@ namespace ColossalCave.Things
             Before<Climb>(() =>
             {
                 var plant = Get<Plant>();
+                
                 if (plant.Height == PlantSize.Huge)
                 {
                     return Redirect<Climb>(plant, v => v.Expects(plant));
@@ -44,6 +47,3 @@ namespace ColossalCave.Things
         }
     }
 }
-
-//        found_in At_West_End_Of_Twopit_Room At_East_End_Of_Twopit_Room,
-//  has   absent static;

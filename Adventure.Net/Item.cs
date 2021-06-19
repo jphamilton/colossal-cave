@@ -5,45 +5,6 @@ using System.Linq;
 
 namespace Adventure.Net
 {
-    // TODO: Need to implement "(the) {obj}" in output - Look at Article handling in inform and double check the Prints for Verbs there
-
-    public class AfterRoutines
-    {
-        private readonly Dictionary<Type, Action> routines = new();
-
-        public void Add(Type type, Action after)
-        {
-            if (routines.ContainsKey(type))
-            {
-                var routine = routines[type];
-
-                void wrapper()
-                {
-                    routine();
-                    after();
-                }
-
-                routines.Remove(type);
-
-                routines.Add(type, wrapper);
-            }
-            else
-            {
-                routines.Add(type, after);
-            }
-            
-        }
-
-        public Action Get(Type verbType)
-        {
-            if (routines.ContainsKey(verbType))
-            {
-                return routines[verbType];
-            }
-
-            return null;
-        }
-    }
 
     public abstract class Item
     {
@@ -51,6 +12,10 @@ namespace Adventure.Net
         private readonly AfterRoutines afterRoutines = new();
 
         private readonly Dictionary<Item, Func<Item, bool>> receiveRoutines = new();
+        
+        private bool isAbsent;
+        public delegate void AbsentToggedHandler(bool absent);
+        public event AbsentToggedHandler AbsentToggled;
 
         public abstract void Initialize();
 
@@ -84,7 +49,21 @@ namespace Adventure.Net
         // attributes
         public bool HasLight { get; set; }
         public bool HasPluralName { get; set; }
-        public bool IsAbsent { get; set; }
+
+        public bool IsAbsent
+        {
+            get
+            {
+                return isAbsent;
+            }
+
+            set
+            {
+                isAbsent = value;
+                AbsentToggled?.Invoke(isAbsent);
+            }
+        }
+
         public bool IsAnimate { get; set; }
         public bool IsEdible { get; set; }
         public bool IsLockable { get; private set; }
@@ -99,7 +78,7 @@ namespace Adventure.Net
         public bool IsTransparent { get; set; }
 
         // Locking/Unlocking
-        
+
         public void LocksWithKey<T>(bool isLocked) where T : Item
         {
             IsLockable = true;
@@ -108,7 +87,7 @@ namespace Adventure.Net
         }
 
         public Item Key { get; private set; }
-        
+
         //
 
         public Func<string> Describe { get; set; }
@@ -131,7 +110,7 @@ namespace Adventure.Net
 
         public Func<bool> Before<T>() where T : Verb
         {
-            var verbType = typeof (T);
+            var verbType = typeof(T);
             return Before(verbType);
         }
 
@@ -149,7 +128,7 @@ namespace Adventure.Net
 
         public Action After<T>() where T : Verb
         {
-            Type verbType = typeof (T);
+            Type verbType = typeof(T);
             return After(verbType);
         }
 
@@ -169,7 +148,7 @@ namespace Adventure.Net
             {
                 return result;
             }
-            
+
             return null;
         }
 
@@ -197,7 +176,7 @@ namespace Adventure.Net
             get { return Context.Current.IndirectObject; }
         }
 
-        public static T Get<T>() where T: Item
+        public static T Get<T>() where T : Item
         {
             return Objects.Get<T>();
         }
@@ -225,7 +204,7 @@ namespace Adventure.Net
             return new ExecuteResult(handled, commandOutput);
         }
 
-        private static bool RunCommand<T>(ICommandState command, Item obj, Func<T, bool> callback) where T: Verb
+        private static bool RunCommand<T>(ICommandState command, Item obj, Func<T, bool> callback) where T : Verb
         {
             var handled = false;
             var success = false;
@@ -255,7 +234,7 @@ namespace Adventure.Net
             return success;
         }
 
-        protected static bool In<T>() where T:Room
+        protected static bool In<T>() where T : Room
         {
             Item obj = Rooms.Get<T>();
             return (CurrentRoom.Location == obj);
@@ -277,7 +256,7 @@ namespace Adventure.Net
 
         public bool InInventory
         {
-            get { return Inventory.Contains(this); }    
+            get { return Inventory.Contains(this); }
         }
 
         public static bool IsCarrying<T>() where T : Item
@@ -300,7 +279,7 @@ namespace Adventure.Net
 
             var containers = Inventory.Items.Where(obj => obj is Container);
 
-            foreach(Container container in containers)
+            foreach (Container container in containers)
             {
                 if (container.Contents.Contains(this))
                 {
@@ -314,9 +293,9 @@ namespace Adventure.Net
 
         public bool InRoom
         {
-            get 
+            get
             {
-                
+
                 return ObjectMap.Contains(CurrentRoom.Location, this);
             }
         }
@@ -327,13 +306,13 @@ namespace Adventure.Net
             ObjectMap.MoveObject(this, CurrentRoom.Location);
         }
 
-        public void FoundIn<R>() where R: Room
+        public void FoundIn<R>() where R : Room
         {
             var room = Room<R>();
             ObjectMap.Add(this, room);
         }
 
-        public void FoundIn<R1, R2>() where R1 : Room where R2: Room
+        public void FoundIn<R1, R2>() where R1 : Room where R2 : Room
         {
             FoundIn<R1>();
             FoundIn<R2>();
@@ -347,11 +326,11 @@ namespace Adventure.Net
 
         public void FoundIn<R1, R2, R3, R4>() where R1 : Room where R2 : Room where R3 : Room where R4 : Room
         {
-            FoundIn<R1,R2,R3>();
+            FoundIn<R1, R2, R3>();
             FoundIn<R4>();
         }
 
-        public void FoundIn<R1, R2, R3, R4, R5>() 
+        public void FoundIn<R1, R2, R3, R4, R5>()
             where R1 : Room where R2 : Room where R3 : Room where R4 : Room where R5 : Room
         {
             FoundIn<R1, R2, R3, R4>();
@@ -360,7 +339,7 @@ namespace Adventure.Net
 
         public void FoundIn<R1, R2, R3, R4, R5, R6>()
             where R1 : Room where R2 : Room where R3 : Room where R4 : Room where R5 : Room
-            where R6: Room
+            where R6 : Room
         {
             FoundIn<R1, R2, R3, R4, R5>();
             FoundIn<R6>();

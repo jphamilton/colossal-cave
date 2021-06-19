@@ -11,12 +11,16 @@ namespace Adventure.Net
 
         private static readonly IDictionary<Item, IList<Room>> ObjectToRooms = new Dictionary<Item, IList<Room>>();
         private static readonly IDictionary<Room, IList<Item>> RoomToObjects = new Dictionary<Room, IList<Item>>();
+        private static readonly IDictionary<Item, IList<Room>> Absent = new Dictionary<Item, IList<Room>>();
 
-        // get rid of Has<>
-        // FoundIn<>
-        
         public static void Add(Item obj, Room room)
         {
+            if (obj.IsAbsent)
+            {
+                HandleAbsent(obj, room);
+                return;
+            }
+
             if (!ObjectToRooms.ContainsKey(obj))
             {
                 ObjectToRooms.Add(obj, new List<Room>());
@@ -30,6 +34,50 @@ namespace Adventure.Net
             }
 
             RoomToObjects[room].Add(obj);
+        }
+
+        private static void HandleAbsent(Item obj, Room room)
+        {
+            void addAbsent()
+            {
+                if (Absent.ContainsKey(obj))
+                {
+                    Absent[obj].Add(room);
+                }
+                else
+                {
+                    Absent.Add(obj, new List<Room> { room });
+
+                    obj.AbsentToggled += (absent) =>
+                    {
+                        if (absent)
+                        {
+                            Remove(obj);
+
+                            if (!Absent.ContainsKey(obj))
+                            {
+                                addAbsent();
+                            }
+                        }
+                        else
+                        {
+                            if (Absent.ContainsKey(obj))
+                            {
+                                var rooms = Absent[obj];
+
+                                foreach (var r in rooms)
+                                {
+                                    Add(obj, r);
+
+                                }
+                            }
+                        }
+                    };
+                }
+            }
+
+            addAbsent();
+
         }
 
         /// <summary>
@@ -61,7 +109,12 @@ namespace Adventure.Net
 
         public static bool Contains(Room room, Item obj)
         {
-            return RoomToObjects[room].Contains(obj);
+            if (RoomToObjects.ContainsKey(room))
+            {
+                return RoomToObjects[room].Contains(obj);
+            }
+
+            return false;
         }
 
 
