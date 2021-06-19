@@ -409,7 +409,7 @@ namespace Adventure.Net
                         if (verb.GetHandler(key) != null)
                         {
                             WhatDoYouWantToDo(prep);
-                            break;
+                            return;
                         }
                     }
 

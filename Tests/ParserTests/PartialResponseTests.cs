@@ -125,6 +125,8 @@ namespace Tests.ParserTests
 
             Execute("put batteries");
 
+            var x = ConsoleOut;
+
             Assert.Contains($"What do you want to put {fresh} in?", Line(1));
             Assert.Contains("I'm taking the liberty of replacing the batteries.", Line(2));
 

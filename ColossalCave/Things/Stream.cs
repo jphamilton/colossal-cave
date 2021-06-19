@@ -2,6 +2,7 @@
 using Adventure.Net.Extensions;
 using Adventure.Net.Actions;
 using ColossalCave.Places;
+using ColossalCave.Actions;
 
 namespace ColossalCave.Things
 {
@@ -13,8 +14,8 @@ namespace ColossalCave.Things
             Synonyms.Are("stream", "water", "brook", "river", "lake", "small", "tumbling",
                          "splashing", "babbling", "rushing", "reservoir");
 
-            FoundIn<EndOfRoad, Valley, SlitInStreambed, InsideBuilding, Reservoir>();
-            // In_Pit, In_Cavern_With_Waterfall 
+            FoundIn<EndOfRoad, Valley, SlitInStreambed, InsideBuilding, Reservoir, InPit>();
+            // In_Cavern_With_Waterfall 
 
             Before<Drink>(() =>
                 {
@@ -40,42 +41,49 @@ namespace ColossalCave.Things
                     return true;
                 });
 
+            Before<Insert>(() =>
+            {
+                if (IndirectObject is Bottle)
+                {
+                    ((Bottle)IndirectObject).Fill();
+                }
+                else
+                {
+                    Print("You have nothing in which to carry the water.");
+                }
+
+                return true;
+            });
 
             Receive((obj) =>
                 {
                     if (obj.Is<Bottle>())
                     {
-                        var bottle = Adventure.Net.Objects.Get<Bottle>();
+                        var bottle = Objects.Get<Bottle>();
                         bottle.Fill();
                         return true;
                     }
 
-                    return false;
+                    if (obj.Is<MingVase>())
+                    {
+                        obj.Remove();
+                        Objects.Get<Shards>().MoveToLocation();
+                        Score.Add(-5);
+                        Print("The sudden change in temperature has delicately shattered the vase.");
+                        return true;
+                    }
+
+                    obj.Remove();
+
+                    if (obj is Treasure)
+                    {
+                        Score.Add(-5);
+                        Print($"{obj.Article.TitleCase()} washes away with the stream."); // TODO: print_ret(The) noun, " washes away with the stream."
+                    }
+
+                    return true;
                 });
         }
     }
 }
-
-
-//TODO: Scenic  Stream "stream"
-//0117    with  name 'stream' 'water' 'brook' 'river' 'lake' 'small' 'tumbling'
-//0118               'splashing' 'babbling' 'rushing' 'reservoir',
-//0119          found_in At_End_Of_Road In_A_Valley At_Slit_In_Streambed In_Pit
-//0120                   In_Cavern_With_Waterfall At_Reservoir Inside_Building,
-//0121          before [;
-//0130            Insert:
-//0131              if (second == bottle) <<Fill bottle>>;
-//0132              "You have nothing in which to carry the water.";
-//0133            Receive:
-//0134              if (noun == ming_vase) {
-//0135                  remove ming_vase;
-//0136                  move shards to location;
-//0137                  score = score - 5;
-//0138                  "The sudden change in temperature has delicately shattered the vase.";
-//0139              }
-//0140              if (noun == bottle) <<Fill bottle>>;
-//0141              remove noun;
-//0142              if (noun ofclass Treasure) score = score - 5;
-//0143              print_ret (The) noun, " washes away with the stream.";
-//0144          ];
 

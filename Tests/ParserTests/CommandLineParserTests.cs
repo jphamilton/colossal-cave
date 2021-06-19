@@ -554,13 +554,7 @@ namespace Tests.ParserTests
         [Fact]
         public void put_bottle_lantern()
         {
-            var bottle = Objects.Get<Bottle>();
-            Objects.Add(bottle, Location);
-
-            var lantern = Objects.Get<BrassLantern>();
-            Objects.Add(lantern, Location);
-
-            var result = Execute("put bottle lantern");
+            Execute("put bottle lantern");
             Assert.Equal("What do you want to put those things in?", Line(1));
         }
 
