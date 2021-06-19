@@ -321,6 +321,7 @@ namespace Tests.ObjectTests
             ObjectMap.MoveObject(snake, CurrentRoom.Location);
 
             Execute("ask bird about snake");
+            var x = ConsoleOut;
 
             Assert.Equal("Cheep! Chirp!", Line(1));
         }

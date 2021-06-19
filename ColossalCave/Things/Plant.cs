@@ -54,7 +54,9 @@ namespace ColossalCave.Things
                 }
 
                 Print("You clamber up the plant and scurry through the hole at the top.\r\n");
-               // MovePlayer.To<NarrowCorridor>();
+                
+                MovePlayer.To<NarrowCorridor>();
+                
                 return true;
             });
 
@@ -64,58 +66,59 @@ namespace ColossalCave.Things
                 return true;
             });
 
-            Before<Water>(() =>
-            {
-                var bottle = Get<Bottle>();
-                
-                if (bottle.IsEmpty)
-                {
-                    Print("You have nothing to water the plant with.");
-                    return true;
-                }
+            Before<Water>(Water);
 
-                if (bottle.Contains<OilInTheBottle>())
-                {
-                    Remove<OilInTheBottle>();
-                    Print("The plant indignantly shakes the oil off its leaves and asks, \"Water?\"");
-                    return true;
-                }
+            Before<Actions.Oil>(Water);
 
-                Remove<WaterInTheBottle>();
-
-                var plantStickingUp = Get<PlantStickingUp>();
-
-                switch(Height++)
-                {
-                    case PlantSize.Tiny:
-                        Print("The plant spurts into furious growth for a few seconds.\r\n\r\n");
-                        plantStickingUp.IsAbsent = false;
-                        break;
-
-                    case PlantSize.Tall:
-                        Print("The plant grows explosively, almost filling the bottom of the pit.\r\n\r\n");
-                        break;
-
-                    case PlantSize.Huge:
-                        Print("You've over-watered the plant! It's shriveling up! It's, it's...\r\n\r\n");
-                        plantStickingUp.IsAbsent = true;
-                        //remove PlantStickingUp;
-                        Height = PlantSize.Tiny;
-                        break;
-                }
-
-                Describe();
-
-                return true;
-            });
-
-            // Oil plant = water this
-            //Before Oil:
-            //<< Water self >>;
 
             //Before Examine:
             //self.describe();
             //rtrue;
+        }
+
+        private bool Water()
+        {
+            var bottle = Get<Bottle>();
+
+            if (bottle.IsEmpty)
+            {
+                Print("You have nothing to water the plant with.");
+                return true;
+            }
+
+            if (bottle.Contains<OilInTheBottle>())
+            {
+                Remove<OilInTheBottle>();
+                Print("The plant indignantly shakes the oil off its leaves and asks, \"Water?\"");
+                return true;
+            }
+
+            Remove<WaterInTheBottle>();
+
+            var plantStickingUp = Get<PlantStickingUp>();
+
+            switch (Height++)
+            {
+                case PlantSize.Tiny:
+                    Print("The plant spurts into furious growth for a few seconds.\r\n\r\n");
+                    plantStickingUp.IsAbsent = false;
+                    break;
+
+                case PlantSize.Tall:
+                    Print("The plant grows explosively, almost filling the bottom of the pit.\r\n\r\n");
+                    break;
+
+                case PlantSize.Huge:
+                    Print("You've over-watered the plant! It's shriveling up! It's, it's...\r\n\r\n");
+                    plantStickingUp.IsAbsent = true;
+                    //remove PlantStickingUp;
+                    Height = PlantSize.Tiny;
+                    break;
+            }
+
+            Describe();
+
+            return true;
         }
     }
 }
