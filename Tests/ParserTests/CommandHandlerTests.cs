@@ -55,22 +55,22 @@ namespace Tests.ParserTests
         public void turn_to_switch_redirect()
         {
             var lamp = Objects.Get<BrassLantern>();
-            Assert.False(lamp.IsOn);
+            Assert.False(lamp.On);
 
             Execute("turn lamp on");
 
-            Assert.True(lamp.IsOn);
+            Assert.True(lamp.On);
         }
 
         [Fact]
         public void switch_to_switchon_lamp_redirect()
         {
             var lamp = Objects.Get<BrassLantern>();
-            Assert.False(lamp.IsOn);
+            Assert.False(lamp.On);
 
             Execute("switch lamp on");
 
-            Assert.True(lamp.IsOn);
+            Assert.True(lamp.On);
         }
 
         [Fact]

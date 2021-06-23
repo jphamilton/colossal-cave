@@ -30,7 +30,7 @@ namespace Tests.Verbs
         {
             Location = Room<OutsideGrate>();
             Door grate = Room<Grate>() as Door;
-            grate.IsOpen = true;
+            grate.Open = true;
             var result = Execute("close grate");
             Assert.Equal("You close the steel grate.", Line(1));
         }
@@ -42,7 +42,7 @@ namespace Tests.Verbs
             
             Door grate = Room<Grate>() as Door;
             
-            grate.IsOpen = true;
+            grate.Open = true;
             
             Execute("close up grate");
             
@@ -55,7 +55,7 @@ namespace Tests.Verbs
             Location = Room<InsideBuilding>();
 
             var lamp = Objects.Get<BrassLantern>();
-            lamp.IsOn = true;
+            lamp.On = true;
 
             Execute("close off lamp");
 

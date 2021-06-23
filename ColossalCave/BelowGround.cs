@@ -31,7 +31,7 @@ namespace ColossalCave
                         if (Random.Number(1, 4) == 1)
                         {
                             Print("You fell into a pit and broke every bone in your body!");
-                            AfterLife.GoTo();
+                            GameOver.GoTo();
                         }    
                     }
                     

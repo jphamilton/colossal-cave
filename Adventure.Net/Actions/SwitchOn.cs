@@ -14,7 +14,7 @@ namespace Adventure.Net.Actions
         // implicit on
         public bool Expects()
         {
-            var held = Inventory.Items.Where(o => o.IsSwitchable).ToList();
+            var held = Inventory.Items.Where(o => o.Switchable).ToList();
             
             if (held.Count == 1)
             {
@@ -33,11 +33,11 @@ namespace Adventure.Net.Actions
 
         private bool On(Item obj)
         {
-            if (obj.IsSwitchable)
+            if (obj.Switchable)
             {
-                if (!obj.IsOn)
+                if (!obj.On)
                 {
-                    obj.IsOn = true;
+                    obj.On = true;
                     Print($"You switch the {obj.Name} on.");
                     return true;
                 }

@@ -30,7 +30,7 @@ namespace ColossalCave.Places
 
             InTo(() =>
             {
-                Print("The pipes are too small");
+                Print("The pipes are too small.");
                 return this;
             });
 
@@ -48,16 +48,12 @@ namespace ColossalCave.Places
 
             Before<Xyzzy>(() =>
             {
-                var debrisRoom = Room<DebrisRoom>();
-                    
-                if (debrisRoom.Visited)
+                if (Room<DebrisRoom>().Visited)
                 {
-                    MovePlayer.To<DebrisRoom>();
-                    return false;
+                    return MovePlayer.To<DebrisRoom>();
                 }
 
-                Print(Messages.DoNotUnderstand);
-                return true;
+                return Print(Messages.DoNotUnderstand);
             });
         }
     }

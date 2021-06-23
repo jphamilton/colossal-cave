@@ -8,7 +8,7 @@ namespace ColossalCave
     public abstract class Treasure : Item
     {
         public int DepositPoints { get; protected set; }
-        public int Found { get; private set; }
+        public bool Found { get; private set; }
 
         protected Treasure()
         {
@@ -21,19 +21,19 @@ namespace ColossalCave
                 {
                     score -= DepositPoints;
                 }
-                else
-                {
-                    score += 5;
-                }
 
-                if (Found == 0)
+                score += 5;
+
+                if (!Found)
                 {
                     score += 2;
+                    Found = true;
+                    Global.TreasuresFound++;
                 }
 
-                Found++;
-
                 Score.Add(score, true);
+                
+                Print("Taken!");
 
             });
 

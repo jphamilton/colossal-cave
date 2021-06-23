@@ -45,7 +45,7 @@ namespace ColossalCave
         {
             if (Flags["dead"])
             {
-                AfterLife.Death();
+                GameOver.Dead();
                 return;
             }
 

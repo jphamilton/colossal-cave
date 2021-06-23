@@ -38,11 +38,11 @@ namespace Tests.Verbs
             Location = Room<OutsideGrate>();
             var grate = Rooms.Get<Grate>();
 
-            Assert.True(grate.IsLocked);
+            Assert.True(grate.Locked);
             var result = Execute("unlock grate");
             Assert.Contains("What do you want to unlock the steel grate with?", result.Output.Single());
 
-            Assert.True(grate.IsLocked);
+            Assert.True(grate.Locked);
         }
 
         [Fact]
@@ -53,12 +53,12 @@ namespace Tests.Verbs
 
             var grate = Rooms.Get<Grate>();
 
-            Assert.True(grate.IsLocked);
+            Assert.True(grate.Locked);
             var result = Execute("unlock grate");
             Assert.Equal("(with the set of keys)", Line(1));
             Assert.Equal("You unlock the steel grate.", Line(2));
 
-            Assert.False(grate.IsLocked);
+            Assert.False(grate.Locked);
         }
 
         [Fact]
@@ -69,12 +69,12 @@ namespace Tests.Verbs
             Inventory.Add(Objects.Get<SetOfKeys>());
 
             var grate = Rooms.Get<Grate>();
-            grate.IsLocked = false;
+            grate.Locked = false;
 
             var result = Execute("unlock grate with keys");
             Assert.Equal("That's unlocked at the moment.", Line(1));
 
-            Assert.False(grate.IsLocked);
+            Assert.False(grate.Locked);
         }
 
         [Fact]

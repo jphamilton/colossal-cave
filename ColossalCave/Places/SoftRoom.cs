@@ -79,7 +79,7 @@ namespace ColossalCave.Places
             Name = "moss";
             Synonyms.Are("moss", "typical", "everyday");
             Description = "It just looks like your typical, everyday moss.";
-            IsEdible = true;
+            Edible = true;
 
             FoundIn<SoftRoom>();
 

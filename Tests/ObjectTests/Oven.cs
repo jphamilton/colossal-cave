@@ -7,9 +7,9 @@ namespace Tests.ObjectTests
         public override void Initialize()
         {
             Name = "oven";
-            IsOpen = true;
-            IsOpenable = true;
-            IsTransparent = false;
+            Open = true;
+            Openable = true;
+            Transparent = false;
             Article = "the";
         }
     }

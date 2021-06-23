@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using ColossalCave.Actions;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things
@@ -16,10 +16,9 @@ namespace ColossalCave.Things
             FoundIn<InsideBuilding>();
 
             Before<Count>(() =>
-                {
-                    Print("A dozen or so keys.");
-                    return true;
-                });
+            {
+                return Print("A dozen or so keys.");
+            });
             
         }
     }

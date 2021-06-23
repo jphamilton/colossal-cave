@@ -32,7 +32,7 @@ namespace ColossalCave.Places
                     if (IsCarrying<LargeGoldNugget>())
                     {
                         Print("You are at the bottom of the pit with a broken neck.");
-                        AfterLife.Death();
+                        GameOver.Dead();
                         return this;
                     }
 

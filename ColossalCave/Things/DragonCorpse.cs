@@ -10,7 +10,7 @@ namespace ColossalCave.Things
             Name = "dragon's body";
             Synonyms.Are("dragon", "corpse", "dead", "dragon's", "body");
             InitialDescription = "The body of a huge green dead dragon is lying off to one side.";
-            IsStatic = true;
+            Static = true;
 
             Before<Attack>(() =>
             {

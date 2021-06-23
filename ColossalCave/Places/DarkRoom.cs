@@ -24,7 +24,7 @@ namespace ColossalCave.Places
             Description =
                 "A massive stone tablet imbedded in the wall reads:\r\n"+
                 "\"Congratulations on bringing light into the dark-room!\"";
-            IsStatic = true;
+            Static = true;
 
             FoundIn<DarkRoom>();
         }

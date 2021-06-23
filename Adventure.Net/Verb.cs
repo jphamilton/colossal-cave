@@ -232,9 +232,10 @@ namespace Adventure.Net
             return Item.Redirect(room, callback);
         }
 
-        protected static void Print(string message, CommandState? state = null)
+        protected static bool Print(string message, CommandState? state = null)
         {
             Context.Current.Print(message, state);
+            return true;
         }
     }
 }

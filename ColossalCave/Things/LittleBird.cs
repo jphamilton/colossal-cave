@@ -11,7 +11,7 @@ namespace ColossalCave.Things
         {
             Name = "little bird";
             Synonyms.Are("cheerful", "mournful", "little", "bird");
-            IsAnimate = true;
+            Animate = true;
 
             FoundIn<BirdChamber>();
 
@@ -125,7 +125,7 @@ namespace ColossalCave.Things
                 }
 
                 Print("You catch the bird in the wicker cage.");
-                cage.IsOpen = false;
+                cage.Open = false;
                 bird.Remove();
                 cage.Add(bird);
                 return true;
@@ -149,7 +149,7 @@ namespace ColossalCave.Things
 
             if (cage.InInventory)
             {
-                cage.IsOpen = true;
+                cage.Open = true;
                 cage.Remove(bird);
                 bird.MoveToLocation();
 

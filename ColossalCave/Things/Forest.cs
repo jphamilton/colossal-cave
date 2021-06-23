@@ -8,7 +8,7 @@ namespace ColossalCave.Things
         public override void Initialize()
         {
             Name = "forest";
-            IsScenery = true;
+            Scenery = true;
             Synonyms.Are("forest", "tree", "trees", "oak", "maple", "grove", "pine", "spruce", "birch", "ash",
                 "saplings", "bushes", "leaves", "berry", "berries", "hardwood");
             
@@ -18,6 +18,8 @@ namespace ColossalCave.Things
                           "largely birch and ash saplings plus nondescript bushes of various sorts. " +
                           "This time of year visibility is quite restricted by all the leaves, " +
                           "but travel is quite easy if you detour around the spruce and berry bushes.";
+
+            Attribute("multitude");
 
             FoundIn<EndOfRoad, HillInRoad, Valley, Forest1, Forest2>();
         }

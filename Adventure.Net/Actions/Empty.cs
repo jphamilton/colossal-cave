@@ -51,7 +51,7 @@ namespace Adventure.Net.Actions
             {
                 Print($"The {obj.Name} can't contain things.");
             }
-            else if (!container.IsOpen)
+            else if (!container.Open)
             {
                 Print($"The {container.Name} {container.IsOrAre} closed.");
             }

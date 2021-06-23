@@ -14,7 +14,7 @@ namespace ColossalCave.Things
                 "as you know, are extremely vain.";
             InitialDescription = "The mirror is obviously provided for the use of the dwarves who, " +
                 "as you know, are extremely vain.";
-            IsStatic = true;
+            Static = true;
 
             FoundIn<MirrorCanyon>();
 

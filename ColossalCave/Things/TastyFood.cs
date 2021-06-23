@@ -11,7 +11,7 @@ namespace ColossalCave.Things
             Name = "tasty food";
             Synonyms.Are("food", "ration", "rations", "tripe", "yummy", "tasty", "delicious", "scrumptious");
             Article = "some";
-            IsEdible = true;
+            Edible = true;
             Description = "Sure looks yummy!";
             InitialDescription = "There is tasty food here.";
 

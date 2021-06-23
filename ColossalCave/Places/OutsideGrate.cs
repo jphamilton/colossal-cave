@@ -21,11 +21,11 @@ namespace ColossalCave.Places
             {
                 Grate grate = Room<Grate>();
                 
-                if (!grate.IsLocked && !grate.IsOpen)
+                if (!grate.Locked && !grate.Open)
                 {
                     // TODO: this
                     Print("(first opening the grate)");
-                    grate.IsOpen = true;
+                    grate.Open = true;
                 }
 
                 return grate; 

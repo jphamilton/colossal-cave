@@ -58,10 +58,10 @@
 
             if (key != null && key.InInventory)
             {
-                if (obj.IsLocked)
+                if (obj.Locked)
                 {
                     Print($"You unlock the {obj.Name}.");
-                    obj.IsLocked = false;
+                    obj.Locked = false;
                 }
                 else
                 {

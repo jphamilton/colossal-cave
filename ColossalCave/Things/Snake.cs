@@ -13,7 +13,7 @@ namespace ColossalCave.Things
                 "venemous", "venomous", "large", "big", "killer" );
             Description = "I wouldn't mess with it if I were you.";
             InitialDescription = "A huge green fierce snake bars the way!";
-            IsAnimate = true;
+            Animate = true;
 
             FoundIn<HallOfMtKing>();
 
@@ -41,7 +41,7 @@ namespace ColossalCave.Things
             Before<Take>(() =>
             {
                 Print("It takes you instead. Glrp!");
-                AfterLife.GoTo();
+                GameOver.GoTo();
                 return true;
             });
         }

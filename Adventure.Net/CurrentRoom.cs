@@ -54,7 +54,7 @@ namespace Adventure.Net
                 if (obj.HasLight)
                     return true;
 
-                if (obj is not Container container || (!container.IsOpen && !container.IsTransparent))
+                if (obj is not Container container || (!container.Open && !container.Transparent))
                     continue;
 
                 foreach (var containedObj in container.Contents)
@@ -76,15 +76,15 @@ namespace Adventure.Net
 
             foreach (var obj in objects)
             {
-                if (obj.IsScenery && obj.Describe == null)
+                if (obj.Scenery && obj.Describe == null)
                     continue;
 
-                if (obj.IsStatic && (obj.Describe == null && obj.InitialDescription == null))
+                if (obj.Static && (obj.Describe == null && obj.InitialDescription == null))
                     continue;
 
                 total++;
 
-                if (!obj.IsTouched && !string.IsNullOrEmpty(obj.InitialDescription))
+                if (!obj.Touched && !string.IsNullOrEmpty(obj.InitialDescription))
                 {
                     Output.PrintLine();
                     Output.Print(obj.InitialDescription);
@@ -162,8 +162,8 @@ namespace Adventure.Net
             var result = new List<Item>();
             var objects = ObjectMap.GetObjects(Location);
 
-            result.AddRange(objects.Where(x => !x.IsScenery && !x.IsStatic));
-            result.AddRange(objects.Where(x => x.IsScenery || x.IsStatic));
+            result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
+            result.AddRange(objects.Where(x => x.Scenery || x.Static));
             AddContained(result);
             return result;
         }
@@ -174,8 +174,8 @@ namespace Adventure.Net
 
             var objects = ObjectMap.GetObjects(Location);
 
-            result.AddRange(objects.Where(x => !x.IsScenery && !x.IsStatic));
-            result.AddRange(objects.Where(x => x.IsScenery || x.IsStatic));
+            result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
+            result.AddRange(objects.Where(x => x.Scenery || x.Static));
            
             result.AddRange(Inventory.Items);
             

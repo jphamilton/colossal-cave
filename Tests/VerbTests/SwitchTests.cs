@@ -26,12 +26,12 @@ namespace Tests.VerbTests
             var lamp = Objects.Get<BrassLantern>();
             Inventory.Add(lamp);
 
-            Assert.False(lamp.IsOn);
+            Assert.False(lamp.On);
 
             Execute("on");
 
             Assert.Contains($"You switch {lamp.Article} {lamp} on.", ConsoleOut);
-            Assert.True(lamp.IsOn);
+            Assert.True(lamp.On);
         }
 
         [Fact]
@@ -40,12 +40,12 @@ namespace Tests.VerbTests
             var lamp = Objects.Get<BrassLantern>();
             Inventory.Add(lamp);
 
-            lamp.IsOn = true;
+            lamp.On = true;
 
             Execute("off");
 
             Assert.Contains($"You switch {lamp.Article} {lamp} off.", ConsoleOut);
-            Assert.False(lamp.IsOn);
+            Assert.False(lamp.On);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Adventure.Net
         public static void Add(Item obj)
         {
             objects.Add(obj);
-            obj.IsTouched = true;
+            obj.Touched = true;
         }
 
         public static bool Contains<T>() where T : Item
@@ -103,7 +103,7 @@ namespace Adventure.Net
 
             sb.Indent(level);
 
-            if (container.IsOpenable)
+            if (container.Openable)
             {
                 sb.AppendFormat("{0} {1} ({2})\n", container.Article, container.Name, container.State);
             }
@@ -112,7 +112,7 @@ namespace Adventure.Net
                 sb.AppendFormat("{0} {1}\n", container.Article, container.Name);
             }
 
-            if (container.IsOpen || container.IsTransparent)
+            if (container.Open || container.Transparent)
                 foreach(var child in container.Contents)
                 {
                     if (child is Container c)

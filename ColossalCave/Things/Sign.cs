@@ -10,7 +10,7 @@ namespace ColossalCave.Things
         {
             Name = "sign";
             Synonyms.Are("sign", "witt", "company", "construction");
-            IsStatic = true;
+            Static = true;
             InitialDescription = 
                 "A sign in midair here says \"Cave under construction beyond this point. " +
                 "Proceed at own risk. [Witt Construction Company]\"";

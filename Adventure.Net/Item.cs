@@ -10,12 +10,13 @@ namespace Adventure.Net
     {
         private readonly Dictionary<Type, Func<bool>> beforeRoutines = new();
         private readonly AfterRoutines afterRoutines = new();
-
         private readonly Dictionary<Item, Func<Item, bool>> receiveRoutines = new();
         
         private bool isAbsent;
         public delegate void AbsentToggedHandler(bool absent);
         public event AbsentToggedHandler AbsentToggled;
+
+        private Dictionary<string, bool> attributes { get; } = new();
 
         public abstract void Initialize();
 
@@ -64,25 +65,38 @@ namespace Adventure.Net
             }
         }
 
-        public bool IsAnimate { get; set; }
-        public bool IsEdible { get; set; }
-        public bool IsLockable { get; private set; }
-        public bool IsLocked { get; set; }
-        public bool IsOn { get; set; }    // on or off?
-        public bool IsOpen { get; set; }
-        public bool IsOpenable { get; set; }
-        public bool IsScenery { get; set; }
-        public bool IsStatic { get; set; }
-        public bool IsSwitchable { get; set; }
-        public bool IsTouched { get; set; }
-        public bool IsTransparent { get; set; }
+        public bool Animate { get; set; }
+        public bool Edible { get; set; }
+        public bool Lockable { get; private set; }
+        public bool Locked { get; set; }
+        public bool On { get; set; }    // on or off?
+        public bool Open { get; set; }
+        public bool Openable { get; set; }
+        public bool Scenery { get; set; }
+        public bool Static { get; set; }
+        public bool Switchable { get; set; }
+        public bool Touched { get; set; }
+        public bool Transparent { get; set; }
+
+        public void Attribute(string flag)
+        {
+            if (!attributes.ContainsKey(flag))
+            {
+                attributes[flag] = true;
+            }
+        }
+
+        public bool Has(string attribute)
+        {
+            return attributes.ContainsKey(attribute);
+        }
 
         // Locking/Unlocking
 
         public void LocksWithKey<T>(bool isLocked) where T : Item
         {
-            IsLockable = true;
-            IsLocked = isLocked;
+            Lockable = true;
+            Locked = isLocked;
             Key = Objects.Get<T>();
         }
 
@@ -91,6 +105,23 @@ namespace Adventure.Net
         //
 
         public Func<string> Describe { get; set; }
+
+        public void Before<T>(Func<string> before) where T: Verb
+        {
+            bool wrapper()
+            {
+                var message = before();
+
+                if (message != null)
+                {
+                    return Print(before());
+                }
+
+                return false;
+            }
+
+            Before<T>(wrapper);
+        }
 
         public void Before<T>(Func<bool> before) where T : Verb
         {
@@ -137,6 +168,23 @@ namespace Adventure.Net
             return afterRoutines.Get(verbType);
         }
 
+        public void Receive(Func<Item, string> beforeReceive)
+        {
+            bool wrapper(Item obj)
+            {
+                var message = beforeReceive(obj);
+                
+                if (message != null)
+                {
+                    return Print(message);
+                }
+
+                return false;
+            };
+
+            Receive(wrapper);
+        }
+
         public void Receive(Func<Item, bool> beforeReceive)
         {
             receiveRoutines.Add(this, beforeReceive);
@@ -152,7 +200,7 @@ namespace Adventure.Net
             return null;
         }
 
-        public static void Print(string message)
+        public static bool Print(string message)
         {
             if (Context.Current != null)
             {
@@ -162,6 +210,8 @@ namespace Adventure.Net
             {
                 Output.Print(message);
             }
+
+            return true;
         }
 
         // current object being handled by the command handler

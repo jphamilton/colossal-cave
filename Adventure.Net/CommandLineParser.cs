@@ -144,7 +144,7 @@ namespace Adventure.Net
                     {
                         var objectsInRoom =
                             from o in CurrentRoom.ObjectsInRoom()
-                            where !o.IsAnimate
+                            where !o.Animate
                             select o;
 
                         multi.AddRange(objectsInRoom);

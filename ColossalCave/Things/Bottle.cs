@@ -12,7 +12,7 @@ namespace ColossalCave.Things
             Name = "small bottle";
             Synonyms.Are("bottle", "jar", "flask");
             Article = "the";
-            IsOpen = true;
+            Open = true;
             InitialDescription = "There is an empty bottle here.";
 
             FoundIn<InsideBuilding>();
@@ -69,13 +69,13 @@ namespace ColossalCave.Things
 
                 if (stream.InScope || spring.InScope)
                 {
-                    IsTouched = true;
+                    Touched = true;
                     Add<WaterInTheBottle>();
                     Print("The bottle is now full of water.");
                 }
                 else if (oil.InScope)
                 {
-                    IsTouched = true;
+                    Touched = true;
                     Add<OilInTheBottle>();
                     Print("The bottle is now full of oil.");
                 }

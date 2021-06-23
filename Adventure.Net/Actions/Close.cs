@@ -34,17 +34,17 @@
 
         private bool CloseObject(Item obj)
         {
-            if (!obj.IsOpenable)
+            if (!obj.Openable)
             {
                 Print($"{obj.TheyreOrThats} not something you can close.");
             }
-            else if (!obj.IsOpen)
+            else if (!obj.Open)
             {
                 Print($"{obj.TheyreOrThats} already closed.");
             }
             else
             {
-                obj.IsOpen = false;
+                obj.Open = false;
                 Print($"You close the {obj.Name}.");
             }
 

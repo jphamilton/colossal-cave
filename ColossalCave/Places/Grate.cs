@@ -35,9 +35,9 @@ namespace ColossalCave.Things
 
             Describe = () =>
                 {
-                    if (IsOpen)
+                    if (Open)
                        return "\nThe grate stands open.";
-                    if (!IsLocked)
+                    if (!Locked)
                        return "\nThe grate is unlocked but shut.";
                     return null;
                 };

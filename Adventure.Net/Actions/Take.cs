@@ -24,11 +24,11 @@
         public bool Expects(Item obj)
         {
 
-            if (obj.IsScenery)
+            if (obj.Scenery)
             {
                 Print($"That's hardly portable.");
             }
-            else if (obj.IsStatic)
+            else if (obj.Static)
             {
                 Print($"That's fixed in place.");
             }

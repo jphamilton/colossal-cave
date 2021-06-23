@@ -1,8 +1,6 @@
-using Adventure.Net;
 using Adventure.Net.Actions;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 
 namespace Adventure.Net
 {
@@ -278,7 +276,14 @@ namespace Adventure.Net
             return room;
         }
 
+        public void Scenic(Action<Item> initialize)
+        {
+            var scenic = new Scenery();
+            initialize(scenic);
+            ObjectMap.Add(scenic, this);
+        }
         
     }
+
 
 }

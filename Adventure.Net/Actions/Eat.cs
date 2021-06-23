@@ -12,7 +12,7 @@
         public bool Expects([Held] Item obj)
         {
 
-            if (obj.IsEdible)
+            if (obj.Edible)
             {
                 // use Before/After routines on object to handle specific messages
                 Print($"You eat {obj}.");

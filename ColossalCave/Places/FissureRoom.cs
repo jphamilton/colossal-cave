@@ -18,7 +18,7 @@ namespace ColossalCave.Places
 
                 Print("You didn't make it.");
                 
-                AfterLife.GoTo();
+                GameOver.GoTo();
                 
                 return true;
             });

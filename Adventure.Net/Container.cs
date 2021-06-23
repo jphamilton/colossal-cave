@@ -31,7 +31,7 @@ namespace Adventure.Net
             {
                 string result;
                 
-                if (!IsOpen)
+                if (!Open)
                 {
                     result = "which is closed";
                 }

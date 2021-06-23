@@ -9,8 +9,7 @@
 
         public bool Expects(Item obj)
         {
-            Print("You find nothing of interest.");
-            return true;
+            return Print("You find nothing of interest.");
         }
     }
 }

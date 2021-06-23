@@ -21,7 +21,7 @@ namespace Adventure.Net.Actions
                 return true;
             }
 
-            if (obj.IsScenery && string.IsNullOrEmpty(obj.Description))
+            if (obj.Scenery && string.IsNullOrEmpty(obj.Description))
             {
                 Print($"You see nothing special about the {obj.Name}.");
             }

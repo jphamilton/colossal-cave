@@ -28,7 +28,7 @@ namespace Tests.Verbs
         {
             var cage = Objects.Get<WickerCage>() as Container;
             cage.Add<Bottle>();
-            cage.IsOpen = false;
+            cage.Open = false;
             Inventory.Add(cage);
 
             Execute("empty cage");

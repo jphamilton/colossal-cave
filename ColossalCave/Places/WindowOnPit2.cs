@@ -25,7 +25,7 @@ namespace ColossalCave.Places
             Before<Jump>(() =>
             {
                 Print("You jump and break your neck!");
-                AfterLife.GoTo();
+                GameOver.GoTo();
                 return true;
             });
 

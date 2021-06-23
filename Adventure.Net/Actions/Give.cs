@@ -24,7 +24,7 @@
 
         private bool GiveObject(Item obj, Item creature)
         {
-            if (creature.IsAnimate)
+            if (creature.Animate)
             {
                 Print($"The {creature} doesn't seem interested.");
             }

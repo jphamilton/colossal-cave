@@ -15,14 +15,14 @@ namespace Tests.ObjectTests
 
             bird.MoveToLocation();
 
-            cage.IsOpen = false;
+            cage.Open = false;
             Inventory.Add(cage);
 
             Execute("release bird");
             Assert.Equal("The bird is not caged now.", Line(1));
 
             Assert.False(cage.Contains<LittleBird>());
-            Assert.False(cage.IsOpen);
+            Assert.False(cage.Open);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace Tests.ObjectTests
             var cage = Objects.Get<WickerCage>();
 
             cage.Add(bird);
-            cage.IsOpen = false;
+            cage.Open = false;
             Inventory.Add(cage);
 
             Execute("open cage");
@@ -42,7 +42,7 @@ namespace Tests.ObjectTests
 
             Assert.DoesNotContain("You can't release that.", ConsoleOut);
             Assert.False(cage.Contains<LittleBird>());
-            Assert.True(cage.IsOpen);
+            Assert.True(cage.Open);
             Assert.True(bird.InRoom);
 
         }

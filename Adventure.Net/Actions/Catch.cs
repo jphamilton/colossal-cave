@@ -23,7 +23,7 @@
 
         private bool YouCantCatchThat(Item obj)
         {
-            if (!obj.IsAnimate)
+            if (!obj.Animate)
             {
                 Print("You can only do that to something animate.");
             }

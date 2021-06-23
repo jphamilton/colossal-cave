@@ -39,7 +39,7 @@ namespace ColossalCave.Places
             Name = "window";
             Synonyms.Are("window", "low");
             Description = "It looks like a regular window.";
-            IsOpenable = true;
+            Openable = true;
 
             FoundIn<WindowOnPit1, WindowOnPit2>();
         }

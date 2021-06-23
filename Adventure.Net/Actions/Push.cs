@@ -15,7 +15,7 @@
 
         public bool Expects(Item obj)
         {
-            if (obj.IsScenery || obj.IsStatic)
+            if (obj.Scenery || obj.Static)
             {
                 Print("That is fixed in place.");
             }

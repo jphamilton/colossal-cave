@@ -50,7 +50,7 @@ namespace Tests.VerbTests
         public override void Initialize()
         {
             Name = "shark";
-            IsAnimate = true;
+            Animate = true;
         }
     }
 
@@ -59,7 +59,7 @@ namespace Tests.VerbTests
         public override void Initialize()
         {
             Name = "octopus";
-            IsAnimate = true;
+            Animate = true;
 
             Before<Catch>(() =>
             {

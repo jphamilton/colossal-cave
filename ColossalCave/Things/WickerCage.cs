@@ -12,9 +12,9 @@ namespace ColossalCave.Things
             Synonyms.Are("cage", "small", "wicker");
             InitialDescription = "There is a small wicker cage discarded nearby.";
             Description = "It's a small wicker cage.";
-            IsOpen = true;
-            IsOpenable = true;
-            IsTransparent = true;
+            Open = true;
+            Openable = true;
+            Transparent = true;
 
             FoundIn<CobbleCrawl>();
 

@@ -6,7 +6,7 @@ namespace ColossalCave.Things
     {
         protected Scenic()
         {
-            IsScenery = true;
+            Scenery = true;
         }
     }
 }

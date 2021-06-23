@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using ColossalCave.Actions;
 
 namespace ColossalCave.Things
 {
@@ -12,11 +12,7 @@ namespace ColossalCave.Things
             Description = "They look like ordinary batteries.";
             InitialDescription = "Some worn-out batteries have been discarded nearby.";
             
-            Before<Count>(() =>
-                {
-                    Print("A pair.");
-                    return true;
-                });
+            Before<Count>(() => "A pair.");
         }
     }
 

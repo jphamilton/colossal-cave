@@ -11,8 +11,9 @@ namespace ColossalCave.Things
             Article = "some";
             Description = "They're a numismatist's dream!";
             InitialDescription = "There are many coins here!";
-            // has multitude
-
+            
+            Attribute("multitude");
+            
             FoundIn<WestSideChamber>();
         }
     }

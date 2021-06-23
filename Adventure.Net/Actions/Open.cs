@@ -13,22 +13,22 @@ namespace Adventure.Net.Actions
 
         public bool Expects(Item obj)
         {
-            if (!obj.IsOpenable)
+            if (!obj.Openable)
             {
                 Print($"{obj.TheyreOrThats} not something you can open.");
             }
-            else if (obj.IsLocked)
+            else if (obj.Locked)
             {
                 string seems = obj.HasPluralName ? "They seem" : "It seems";
                 Print($"{seems} to be locked.");
             }
-            else if (obj.IsOpen)
+            else if (obj.Open)
             {
                 Print($"{obj.TheyreOrThats} already open.");
             }
             else
             {
-                obj.IsOpen = true;
+                obj.Open = true;
                 Print($"You open the {obj.Name}.");
             }
 

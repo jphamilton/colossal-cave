@@ -59,11 +59,11 @@ namespace Tests.ObjectTests
         public void should_not_switch_on_if_batteries_are_dead()
         {
             lamp.PowerRemaining = 0;
-            lamp.IsOn = false;
+            lamp.On = false;
 
             Execute("turn on lamp");
 
-            Assert.False(lamp.IsOn);
+            Assert.False(lamp.On);
 
             Assert.Contains("Unfortunately, the batteries seem to be dead.", ConsoleOut);
         }
@@ -71,36 +71,36 @@ namespace Tests.ObjectTests
         [Fact]
         public void can_turn_on_lamp()
         {
-            lamp.IsOn = false;
+            lamp.On = false;
 
             Assert.False(lamp.HasLight);
 
             Execute("turn on lamp");
 
-            Assert.True(lamp.IsOn);
+            Assert.True(lamp.On);
             Assert.True(lamp.HasLight);
         }
 
         [Fact]
         public void can_turn_off_lamp()
         {
-            lamp.IsOn = true;
+            lamp.On = true;
 
             Execute("turn off lamp");
 
-            Assert.False(lamp.IsOn);
+            Assert.False(lamp.On);
             Assert.False(lamp.HasLight);
         }
 
         [Fact]
         public void should_not_turn_on_lamp_twice()
         {
-            lamp.IsOn = true;
+            lamp.On = true;
             lamp.HasLight = true;
 
             Execute("turn on lamp");
 
-            Assert.True(lamp.IsOn);
+            Assert.True(lamp.On);
             Assert.True(lamp.HasLight);
             Assert.Equal("That's already on.", Line(1));
         }
@@ -108,12 +108,12 @@ namespace Tests.ObjectTests
         [Fact]
         public void should_not_turn_off_lamp_twice()
         {
-            lamp.IsOn = false;
+            lamp.On = false;
             lamp.HasLight = false;
 
             Execute("turn off lamp");
 
-            Assert.False(lamp.IsOn);
+            Assert.False(lamp.On);
             Assert.False(lamp.HasLight);
             Assert.Equal("That's already off.", Line(1));
         }
@@ -121,7 +121,7 @@ namespace Tests.ObjectTests
         [Fact]
         public void should_turn_on_lamp_with_just_on()
         {
-            lamp.IsOn = false;
+            lamp.On = false;
             lamp.HasLight = false;
 
             Execute("on");
@@ -129,14 +129,14 @@ namespace Tests.ObjectTests
             // implicit switch
             Assert.Equal("You switch the brass lantern on.", Line(1));
 
-            Assert.True(lamp.IsOn);
+            Assert.True(lamp.On);
             Assert.True(lamp.HasLight);
         }
 
         [Fact]
         public void should_turn_on_lamp_with_just_off()
         {
-            lamp.IsOn = true;
+            lamp.On = true;
             lamp.HasLight = true;
 
             Execute("off");
@@ -144,7 +144,7 @@ namespace Tests.ObjectTests
             // implicit switch
             Assert.Equal("You switch the brass lantern off.", Line(1));
 
-            Assert.False(lamp.IsOn);
+            Assert.False(lamp.On);
             Assert.False(lamp.HasLight);
         }
     }

@@ -1,5 +1,5 @@
-﻿using Adventure.Net.Actions;
-using Adventure.Net;
+﻿using Adventure.Net;
+using ColossalCave.Actions;
 
 namespace ColossalCave.Things
 {
@@ -13,11 +13,8 @@ namespace ColossalCave.Things
             Synonyms.Are("batteries", "battery", "fresh");
             Description = "They look like ordinary batteries. (A sepulchral voice says, \"Still going!\")";
             InitialDescription = "There are fresh batteries here.";
-            Before<Count>(() =>
-                {
-                    Print("A pair.");
-                    return true;
-                });
+            
+            Before<Count>(() => "A pair.");
         }
     }
 

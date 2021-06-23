@@ -26,7 +26,7 @@ namespace Tests.ObjectTests
             var cage = Objects.Get<WickerCage>();
 
             cage.Add(bird);
-            cage.IsOpen = false;
+            cage.Open = false;
             Inventory.Add(cage);
 
             Execute("examine bird");
@@ -52,7 +52,7 @@ namespace Tests.ObjectTests
             var cage = Objects.Get<WickerCage>();
 
             cage.Add(bird);
-            cage.IsOpen = false;
+            cage.Open = false;
             Inventory.Add(cage);
 
             Assert.True(cage.Contains<LittleBird>());
@@ -74,7 +74,7 @@ namespace Tests.ObjectTests
             var cage = Objects.Get<WickerCage>();
 
             cage.Add(bird);
-            cage.IsOpen = false;
+            cage.Open = false;
             Inventory.Add(cage);
 
             Assert.True(cage.Contains<LittleBird>());
@@ -96,7 +96,7 @@ namespace Tests.ObjectTests
             var cage = Objects.Get<WickerCage>();
 
             cage.Add(bird);
-            cage.IsOpen = false;
+            cage.Open = false;
 
             Inventory.Add(cage);
 
@@ -117,7 +117,7 @@ namespace Tests.ObjectTests
             var cage = Objects.Get<WickerCage>();
 
             cage.Add(bird);
-            cage.IsOpen = false;
+            cage.Open = false;
             Inventory.Add(cage);
 
             Assert.True(cage.Contains<LittleBird>());

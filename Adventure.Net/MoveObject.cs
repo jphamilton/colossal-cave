@@ -11,5 +11,15 @@
 
             ObjectMap.Add(obj, room);
         }
+
+        public static void Here()
+        {
+            var obj = Objects.Get<O>();
+            obj.Remove();
+
+            var room = CurrentRoom.Location;
+
+            ObjectMap.Add(obj, room);
+        }
     }
 }

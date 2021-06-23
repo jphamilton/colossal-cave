@@ -7,8 +7,8 @@ namespace Adventure.Net
     {
         protected Door()
         {
-            IsStatic = true;
-            IsOpenable = true;
+            Static = true;
+            Openable = true;
         }
 
         public Func<Room> DoorTo { get; set; }
@@ -23,7 +23,7 @@ namespace Adventure.Net
 
         protected override Room HandleMove()
         {
-            if (!IsLocked && IsOpen)
+            if (!Locked && Open)
                 return DoorTo();
 
             if (DoorDirection() is Down)

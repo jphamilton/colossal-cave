@@ -5,14 +5,14 @@ using ColossalCave.Things;
 
 namespace ColossalCave.Places
 {
-    public static class AfterLife
+    public static class GameOver
     {
         public static void GoTo()
         {
             Context.Story.Flags["dead"] = true;
         }
 
-        public static void Death()
+        public static void Dead()
         {
             Global.Deaths++; // this is models after the inform source which is why it's not just a private variable here
             int score = -10;
@@ -72,7 +72,7 @@ namespace ColossalCave.Places
 
                 // lamp is moved to At End of Road
                 var lamp = ObjectMap.Remove<BrassLantern>();
-                lamp.IsOn = false;
+                lamp.On = false;
                 lamp.HasLight = false;
 
                 var endOfRoad = Rooms.Get<EndOfRoad>();

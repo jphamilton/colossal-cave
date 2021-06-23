@@ -2,10 +2,11 @@
 {
     public static class MovePlayer
     {
-        public static void To<T>() where T : Room
+        public static bool To<T>() where T : Room
         {
             var room = Rooms.Get<T>();
             To(room);
+            return true;
         }
 
         public static void To(Room room)

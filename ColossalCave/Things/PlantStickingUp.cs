@@ -10,7 +10,7 @@ namespace ColossalCave.Things
         {
             Name = "beanstalk";
             Synonyms.Are("plant", "beanstalk", "stalk", "bean", "giant", "tiny", "little", "murmuring", "twelve", "foot", "tall", "bellowing");
-            IsStatic = true;
+            Static = true;
             IsAbsent = true;
 
             FoundIn<WestEndOfTwoPitRoom, EastEndOfTwoPitRoom>();

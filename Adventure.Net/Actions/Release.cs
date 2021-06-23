@@ -15,7 +15,7 @@ namespace Adventure.Net.Actions
         public bool Expects(Item obj)
         {
             // whatever is being released must provide a Before<Release> routine
-            if (obj.IsAnimate)
+            if (obj.Animate)
             {
                 Print("You can't release that.");
             }

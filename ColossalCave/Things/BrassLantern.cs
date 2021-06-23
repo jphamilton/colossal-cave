@@ -16,8 +16,8 @@ namespace ColossalCave.Things
             Name = "brass lantern";
             Synonyms.Are("lamp", "headlamp", "headlight", "lantern", "light", "shiny", "brass");
             Article = "the";
-            IsOn = false;
-            IsSwitchable = true;
+            On = false;
+            Switchable = true;
             DaemonStarted = true;
             PowerRemaining = 330;
 
@@ -25,16 +25,17 @@ namespace ColossalCave.Things
 
             Describe = () =>
                 {
-                    if (IsOn)
+                    if (On)
                     {
                         return "Your lamp is here, gleaming brightly.";
                     }
+
                     return "There is a shiny brass lamp nearby.";
                 };
 
             Daemon = () =>
                 {
-                    if (!IsOn)
+                    if (!On)
                     {
                         DaemonStarted = false;
                         return;
@@ -45,7 +46,7 @@ namespace ColossalCave.Things
                     if (t == 0)
                     {
                         HasLight = false;
-                        IsOn = false;
+                        On = false;
                     }
 
                     if (InScope)
@@ -56,11 +57,12 @@ namespace ColossalCave.Things
                         {
                             result = "Your lamp has run out of power. ";
                             
-                            if (freshBatteries.InInventory && !CurrentRoom.Location.HasLight)
+                            if (!freshBatteries.InInventory && !CurrentRoom.Location.HasLight)
                             {
-                                // deadflag = 3;
+                                // TODO: deadflag = 3;
                                 result += "You can't explore the cave without a lamp. So let's call it a day.";
                                 Print(result);
+                                return;
                             }
                             else
                             {
@@ -69,29 +71,42 @@ namespace ColossalCave.Things
                             }
 
                             Print(result);
+                            return;
                         }
                         
                         if (t == 30) 
                         {
                             result = "Your lamp is getting dim.";
+                            
                             if (freshBatteries.HaveBeenUsed)
                             {
                                 result += " You're also out of spare batteries. You'd best start wrapping this up.";
                             }
+                            //else if (How to attach fresh batteries to vending machine?????)
+                            /*
+                             if (self in player || self in location) {
+                                if (t == 30) {
+                                    print "Your lamp is getting dim.";
+                                    
+                                    if (fresh_batteries.have_been_used)
+                                        " You're also out of spare batteries.
+                                         You'd best start wrapping this up.";
 
-                            //TODO: finish BrassLantern implementation
-//                    if (fresh_batteries in VendingMachine && Dead_End_14 has visited)
-//                        " You'd best start wrapping this up,
-//                         unless you can find some fresh batteries.
-//                         I seem to recall there's a vending machine in the maze.
-//                         Bring some coins with you.";
-//                    if (fresh_batteries notin VendingMachine or player or location)
-//                        " You'd best go back for those batteries.";
-//                    new_line;
-//                    rtrue;
-                        }         
+                                    if (fresh_batteries in VendingMachine && Dead_End_14 has visited)
+                                        " You'd best start wrapping this up,
+                                         unless you can find some fresh batteries.
+                                         I seem to recall there's a vending machine in the maze.
+                                         Bring some coins with you.";
+                                    if (fresh_batteries notin VendingMachine or player or location)
+                                        " You'd best go back for those batteries.";
+                                    new_line;
+                                    rtrue;
+                                }
+                            }
+                             */
+                        }
 
-                        
+
                     }
                 };
 
@@ -99,46 +114,44 @@ namespace ColossalCave.Things
                 {
                     
                     string result = "It is a shiny brass lamp";
-                    if (!IsOn)
+                    
+                    if (!On)
+                    {
                         result += ". It is not currently lit.";
+                    }
                     else if (PowerRemaining < 30)
+                    {
                         result += ", glowing dimly.";
+                    }
                     else
+                    {
                         result += ", glowing brightly.";
-                    Print(result);
-                    return true;
+                    }
+                    
+                    return Print(result);
                 });
 
-            Before<Rub>(() =>
-                {
-                    Print("Rubbing the electric lamp is not particularly rewarding. Anyway, nothing exciting happens.");
-                    return true;
-                });
+            Before<Rub>(() => "Rubbing the electric lamp is not particularly rewarding. Anyway, nothing exciting happens.");
 
             Receive((obj) =>
                 {
                     if (obj.Is<OldBatteries>())
                     {
-                        Print("Those batteries are dead; they won't do any good at all.");
+                        return "Those batteries are dead; they won't do any good at all.";
                     }
                     else if (obj.Is<FreshBatteries>())
                     {
                         return ReplaceBatteries();
                     }
-                    else
-                    {
-                        Print("The only thing you might successfully put in the lamp is a fresh pair of batteries.");
-                    }
-
-                    return true;
+                        
+                    return "The only thing you might successfully put in the lamp is a fresh pair of batteries.";
                 });
 
             Before<SwitchOn>(() =>
                 {
                     if (PowerRemaining <= 0)
                     {
-                        Print("Unfortunately, the batteries seem to be dead.");
-                        return true;
+                        return Print("Unfortunately, the batteries seem to be dead.");
                     }
 
                     return false;
@@ -156,7 +169,7 @@ namespace ColossalCave.Things
                 });
         }
 
-        private bool ReplaceBatteries()
+        private string ReplaceBatteries()
         {
             var fresh = Get<FreshBatteries>();
             
@@ -171,11 +184,10 @@ namespace ColossalCave.Things
 
                 PowerRemaining = 2500;
 
-                Print("I'm taking the liberty of replacing the batteries.");
-                return true;
+                return "I'm taking the liberty of replacing the batteries.";
             }
 
-            return false;
+            return "";
         }
 
     }
