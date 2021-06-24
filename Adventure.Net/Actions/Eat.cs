@@ -9,7 +9,7 @@
             Name = "eat";
         }
 
-        public bool Expects([Held] Item obj)
+        public bool Expects([Held] Object obj)
         {
 
             if (obj.Edible)

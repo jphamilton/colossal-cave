@@ -4,7 +4,7 @@ using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
-    public class BlackRod : Item
+    public class BlackRod : Object
     {
         public override void Initialize()
         {

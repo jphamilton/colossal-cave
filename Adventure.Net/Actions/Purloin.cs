@@ -17,7 +17,7 @@ namespace Adventure.Net.Actions
             InScopeOnly = false;
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             obj.Remove();
             Inventory.Add(obj);

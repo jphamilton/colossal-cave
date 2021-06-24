@@ -4,7 +4,7 @@ using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
-    public class TastyFood : Item
+    public class TastyFood : Object
     {
         public override void Initialize()
         {

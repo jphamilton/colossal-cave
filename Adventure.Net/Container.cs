@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Adventure.Net
 {
-    public abstract class Container : Item
+    public abstract class Container : Object
     {
-        protected List<Item> contents = new();
+        protected List<Object> contents = new();
         
         protected Container()
         {
@@ -16,7 +16,7 @@ namespace Adventure.Net
                    
                    if (contents.Count == 1)
                    {
-                       Item child = contents[0];
+                       Object child = contents[0];
                        return $"In the {Name} {IsOrAre} {child.Article} {child.Name}.";
                    }
                    
@@ -54,29 +54,29 @@ namespace Adventure.Net
             contents.Clear();
         }
 
-        public void Add<T>() where T:Item
+        public void Add<T>() where T:Object
         {
-            Item obj = Objects.Get<T>();
+            Object obj = Objects.Get<T>();
             contents.Add(obj);
         }
 
-        public void Add(Item obj) 
+        public void Add(Object obj) 
         {
             contents.Add(obj);
         }
 
-        public void Remove(Item obj) 
+        public void Remove(Object obj) 
         {
             contents.Remove(obj);
         }
 
-        public new void Remove<T>() where T : Item
+        public new void Remove<T>() where T : Object
         {
             var obj = Objects.Get<T>();
             contents.Remove(obj);
         }
 
-        public IList<Item> Contents
+        public IList<Object> Contents
         {
             get
             {
@@ -84,9 +84,9 @@ namespace Adventure.Net
             }
         }
 
-        public bool Contains<T>() where T:Item
+        public bool Contains<T>() where T:Object
         {
-            Item obj = Objects.Get<T>();
+            Object obj = Objects.Get<T>();
             return Contents.Contains(obj);
         }
           

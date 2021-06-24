@@ -5,7 +5,7 @@ using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
-    public class SpelunkerToday : Item
+    public class SpelunkerToday : Object
     {
         public override void Initialize()
         {

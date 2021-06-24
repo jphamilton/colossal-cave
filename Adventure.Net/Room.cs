@@ -4,15 +4,13 @@ using System.Collections.Generic;
 
 namespace Adventure.Net
 {
-    public abstract class Room : Item
+    public abstract class Room : Object
     {
         private readonly Dictionary<string, Func<Room>> roomMap = new();
         private readonly Dictionary<Type, Func<Direction, bool>> beforeMoveRoutines = new();
-        //public List<Item> Contents { get; private set; }
 
         protected Room() 
         {
-            //Contents = new List<Item>();
             DarkToDark = () => Print("It's pitch black, and you can't see a thing.");
             CantGo = "You can't go that way.";
             Visited = false;
@@ -259,6 +257,7 @@ namespace Adventure.Net
             }
 
             var getRoom = roomMap[dir];
+            
             var room = getRoom();
 
             if (room != null)
@@ -276,7 +275,7 @@ namespace Adventure.Net
             return room;
         }
 
-        public void Scenic(Action<Item> initialize)
+        public void Scenic(Action<Object> initialize)
         {
             var scenic = new Scenery();
             initialize(scenic);

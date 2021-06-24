@@ -20,30 +20,30 @@ namespace Adventure.Net.Actions
         }
 
         // insert
-        public bool Expects(Item obj, Preposition.In @in, Item indirect)
+        public bool Expects(Object obj, Preposition.In @in, Object indirect)
         {
             return Redirect<Insert>(obj, v => v.Expects(obj, @in, indirect));
         }
 
         // put something on top of something else
-        public bool Expects(Item obj, Preposition.On on, Item indirect)
+        public bool Expects(Object obj, Preposition.On on, Object indirect)
         {
             return PutOnTop(obj, indirect);
         }
 
         // put object down
-        public bool Expects(Item obj, Preposition.Down down)
+        public bool Expects(Object obj, Preposition.Down down)
         {
             return Redirect<Drop>(obj, v => v.Expects(obj));
         }
 
         // wear
-        public bool Expects(Item obj, Preposition.On on)
+        public bool Expects(Object obj, Preposition.On on)
         {
             return Redirect<Wear>(obj, v => v.Expects(obj));
         }
 
-        private bool PutOnTop(Item obj, Item indirect)
+        private bool PutOnTop(Object obj, Object indirect)
         {
             if (!obj.InInventory)
             {

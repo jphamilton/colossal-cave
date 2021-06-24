@@ -3,7 +3,7 @@ using ColossalCave.Actions;
 
 namespace ColossalCave.Things
 {
-    public class FreshBatteries : Item
+    public class FreshBatteries : Object
     {
         public bool HaveBeenUsed { get; set; }
 

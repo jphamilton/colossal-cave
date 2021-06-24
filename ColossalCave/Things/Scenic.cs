@@ -2,7 +2,7 @@
 
 namespace ColossalCave.Things
 {
-    public abstract class Scenic : Item
+    public abstract class Scenic : Object
     {
         protected Scenic()
         {

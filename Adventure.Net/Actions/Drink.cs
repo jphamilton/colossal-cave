@@ -10,7 +10,7 @@
             Synonyms.Are("sip", "swallow");
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             // implement specific behavior in Before/After routines
             Print("You can't drink that.");

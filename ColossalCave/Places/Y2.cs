@@ -26,7 +26,7 @@ namespace ColossalCave.Places
             {
                 if (Random.Number(1, 100) < 25)
                 {
-                    Print("\r\nA hollow voice says, \"Plugh.\"\r\n");
+                    Print("\r\nA hollow voice says, \"Plugh.\"\n");
                 }
             });
 

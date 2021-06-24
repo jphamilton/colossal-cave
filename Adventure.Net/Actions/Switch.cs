@@ -7,12 +7,12 @@
             Name = "switch";
         }
 
-        public bool Expects(Item obj, Preposition.On on)
+        public bool Expects(Object obj, Preposition.On on)
         {
             return Redirect<SwitchOn>(obj, v => v.Expects(obj, on));
         }
 
-        public bool Expects(Item obj, Preposition.Off off)
+        public bool Expects(Object obj, Preposition.Off off)
         {
             return Redirect<SwitchOff>(obj, v => v.Expects(obj, off));
         }

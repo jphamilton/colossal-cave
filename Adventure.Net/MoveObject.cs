@@ -1,6 +1,6 @@
 ﻿namespace Adventure.Net
 {
-    public static class Move<O> where O: Item
+    public static class Move<O> where O: Object
     {
         public static void To<R>() where R : Room
         {

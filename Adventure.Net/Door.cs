@@ -34,7 +34,7 @@ namespace Adventure.Net
                 Print("You can't go that way.");
             else
             {
-                string lead = HasPluralName ? "leads" : "lead";
+                string lead = PluralName ? "leads" : "lead";
                 Print($"You can't since the {Name} {lead} to nowhere.");
             }
 

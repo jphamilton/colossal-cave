@@ -27,7 +27,7 @@ namespace Adventure.Net
             return string.Format(PartialVerbOnly, verb.Name);
         }
 
-        public static string PartialUnderstanding(Verb verb, Item obj)
+        public static string PartialUnderstanding(Verb verb, Object obj)
         {
             return string.Format(PartialWithObject, verb.Name, obj.Name);
         }

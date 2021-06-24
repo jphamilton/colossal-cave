@@ -2,7 +2,7 @@
 
 namespace ColossalCave.Things
 {
-    public class VelvetPillow : Item
+    public class VelvetPillow : Object
     {
         public override void Initialize()
         {

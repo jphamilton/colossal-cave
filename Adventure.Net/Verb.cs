@@ -116,7 +116,7 @@ namespace Adventure.Net
 
                 void Add(Type t)
                 {
-                    if (t == typeof(Item))
+                    if (t == typeof(Object))
                     {
                         list.Add("obj");
                     }
@@ -152,7 +152,7 @@ namespace Adventure.Net
 
                     if (i == 2)
                     {
-                        if (parameters[2].ParameterType != typeof(Item))
+                        if (parameters[2].ParameterType != typeof(Object))
                         {
                             throw new Exception($"{Name}: Expects method requires Item as third parameter.");
                         }
@@ -221,15 +221,15 @@ namespace Adventure.Net
             return Verbs.List.Single(x => x.GetType() == type);
         }
 
-        public static bool Redirect<T>(Item item, Func<T, bool> callback) where T : Verb
+        public static bool Redirect<T>(Object item, Func<T, bool> callback) where T : Verb
         {
-            return Item.Redirect(item, callback);
+            return Object.Redirect(item, callback);
         }
 
         public static bool Redirect<T>(Func<T, bool> callback) where T : Verb
         {
             var room = CurrentRoom.Location;
-            return Item.Redirect(room, callback);
+            return Object.Redirect(room, callback);
         }
 
         protected static bool Print(string message, CommandState? state = null)

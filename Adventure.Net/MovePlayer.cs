@@ -13,7 +13,7 @@
         {
             Room nextRoom = room;
 
-            if (!CurrentRoom.IsLit() && !room.HasLight)
+            if (!CurrentRoom.IsLit() && !room.Light)
             {
                 room = Rooms.Get<Darkness>();
             }

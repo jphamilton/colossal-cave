@@ -2,7 +2,7 @@
 
 namespace ColossalCave.Things
 {
-    public class ColossalCaveObject : Item
+    public class ColossalCaveObject : Object
     {
         public ColossalCaveObject()
         {

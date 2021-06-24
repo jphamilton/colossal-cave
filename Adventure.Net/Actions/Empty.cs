@@ -14,36 +14,36 @@ namespace Adventure.Net.Actions
             Name = "empty";
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             return EmptyObject(obj);   
         }
 
-        public bool Expects(Item obj, Preposition.Out @out)
+        public bool Expects(Object obj, Preposition.Out @out)
         {
             return EmptyObject(obj);
         }
 
-        public bool Expects(Item obj, Preposition.To to, Item indirect)
+        public bool Expects(Object obj, Preposition.To to, Object indirect)
         {
             return Pour(obj, indirect);
         }
 
-        public bool Expects(Item obj, Preposition.Into into, Item indirect)
+        public bool Expects(Object obj, Preposition.Into into, Object indirect)
         {
             return Pour(obj, indirect);
         }
 
-        public bool Expects(Item obj, Preposition.On on, Item indirect)
+        public bool Expects(Object obj, Preposition.On on, Object indirect)
         {
             return Pour(obj, indirect);
         }
-        public bool Expects(Item obj, Preposition.Onto onto, Item indirect)
+        public bool Expects(Object obj, Preposition.Onto onto, Object indirect)
         {
             return Pour(obj, indirect);
         }
 
-        private bool EmptyObject(Item obj)
+        private bool EmptyObject(Object obj)
         {
             Container container = obj as Container;
 
@@ -67,7 +67,7 @@ namespace Adventure.Net.Actions
             return true;
         }
 
-        private bool Pour(Item obj, Item indirect)
+        private bool Pour(Object obj, Object indirect)
         {
             throw new NotImplementedException();
         }

@@ -8,7 +8,7 @@
             Synonyms.Are("rub", "clean", "dust", "polish", "scrub", "shine", "sweep", "wipe");
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             Print("You achieve nothing by this.");
             return true;

@@ -9,12 +9,12 @@ namespace Adventure.Net
         public Type[] Types { get; private set; }
         public object[] Args { get; private set; }
 
-        public DynamicCall(MethodInfo method, Item obj, Prep prep, Item indirect)
+        public DynamicCall(MethodInfo method, Object obj, Prep prep, Object indirect)
         {
             Initialize(method, obj, prep, indirect);
         }
                 
-        private void Initialize(MethodInfo method, Item obj, Prep prep, Item indirect)
+        private void Initialize(MethodInfo method, Object obj, Prep prep, Object indirect)
         {
             var parameters = method.GetParameters();
 
@@ -23,7 +23,7 @@ namespace Adventure.Net
 
             foreach(var parameter in parameters)
             {
-                if (parameter.ParameterType == typeof(Item))
+                if (parameter.ParameterType == typeof(Object))
                 {
                     if (args.Contains(obj))
                     {

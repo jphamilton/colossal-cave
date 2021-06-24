@@ -1,19 +1,16 @@
 ﻿using Adventure.Net.Extensions;
-using System;
 
 namespace Adventure.Net.Actions
 {
     public class Examine : Verb
     {
-        // TODO: implement
         public Examine()
         {
             Name = "examine";
             Synonyms.Are("examine", "x", "check", "describe", "watch");
         }
 
-        // TODO: move all of this to base class Before<Examine> routines
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             if (!CurrentRoom.IsLit())
             {

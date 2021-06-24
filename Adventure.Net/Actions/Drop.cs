@@ -9,7 +9,7 @@ namespace Adventure.Net.Actions
     //* multiexcept 'on'/'onto' noun              -> PutOn          all except keys on/onto table, keys on table
     //* held 'at'/'against'/'on'/'onto' noun      -> ThrowAt;
 
-    // TODO: implement Insert, PutOn, ThrowAt
+    
     public class Drop : Verb
     {
         public Drop()
@@ -40,7 +40,7 @@ namespace Adventure.Net.Actions
             return true;
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             if (obj.InInventory)
             {
@@ -49,7 +49,7 @@ namespace Adventure.Net.Actions
             }
             else if (obj.InRoom)
             {
-                string isAre = obj.HasPluralName ? "are" : "is";
+                string isAre = obj.PluralName ? "are" : "is";
                 Print($"The {obj.Name} {isAre} already here.");
             }
 
@@ -86,11 +86,4 @@ namespace Adventure.Net.Actions
     }
 }
 
-//Drop: switch (n) {
-//        1:  if (x1 has pluralname) print (The) x1, " are "; else print (The) x1, " is ";
-//            "already here.";
-//        2:  "You haven't got ", (thatorthose) x1, ".";
-// TODO:        3:  "(first taking ", (the) x1, " off)";
-//        4:  "Dropped.";
-//    }
 

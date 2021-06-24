@@ -9,7 +9,7 @@ namespace ColossalCave.Actions
             Name = "water";
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             return true;
         }

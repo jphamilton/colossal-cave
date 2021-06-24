@@ -4,7 +4,7 @@ using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
-    public class Dragon : Item
+    public class Dragon : Object
     {
         public bool IsBeingAttacked { get; set; }
 

@@ -8,7 +8,7 @@
             Synonyms.Are("drag");
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             if (obj.Scenery || obj.Static)
             {

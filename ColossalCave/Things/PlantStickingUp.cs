@@ -4,14 +4,14 @@ using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
-    public class PlantStickingUp : Item
+    public class PlantStickingUp : Object
     {
         public override void Initialize()
         {
             Name = "beanstalk";
             Synonyms.Are("plant", "beanstalk", "stalk", "bean", "giant", "tiny", "little", "murmuring", "twelve", "foot", "tall", "bellowing");
             Static = true;
-            IsAbsent = true;
+            Absent = true;
 
             FoundIn<WestEndOfTwoPitRoom, EastEndOfTwoPitRoom>();
 

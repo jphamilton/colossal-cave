@@ -9,8 +9,8 @@ namespace Adventure.Net
     {
         private readonly CommandLineParserResult parsed;
         private readonly CommandResult result;
-        private readonly List<Item> objects;
-        private readonly Item indirectObject;
+        private readonly List<Object> objects;
+        private readonly Object indirectObject;
         private readonly Verb verb;
         private readonly Type verbType;
         private readonly Prep preposition;
@@ -143,7 +143,7 @@ namespace Adventure.Net
             Print(error);
         }
 
-        private bool Expects(Verb verb, Item obj)
+        private bool Expects(Verb verb, Object obj)
         {
             var call = new DynamicCall(parsed.Expects, obj, preposition, indirectObject);
             var expects = new DynamicExpects(verb, parsed.Expects, call);

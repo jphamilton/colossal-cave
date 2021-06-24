@@ -1,6 +1,5 @@
 ﻿namespace Adventure.Net.Actions
 {
-    // TODO: implement
     public class Ask : Verb
     {
         public Ask()
@@ -12,7 +11,7 @@
 
         }
 
-        public bool Expects(Item obj, Preposition.About about, Item indirect)
+        public bool Expects(Object obj, Preposition.About about, Object indirect)
         {
             return true;
         }

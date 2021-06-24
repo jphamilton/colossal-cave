@@ -4,13 +4,13 @@ using Xunit;
 
 namespace Tests.Library
 {
-    public class ShoeHorn : Item
+    public class ShoeHorn : Object
     {
         public override void Initialize()
         {
             Name = "shoe horn";
             Description = "It is an ancient device that has seen much use.";
-            IsAbsent = true;
+            Absent = true;
 
             FoundIn<InsideBuilding, EndOfRoad>();
 
@@ -32,17 +32,17 @@ namespace Tests.Library
             Assert.False(ObjectMap.Contains(building, shoehorn));
             Assert.False(ObjectMap.Contains(road, shoehorn));
 
-            shoehorn.IsAbsent = false;
+            shoehorn.Absent = false;
 
             Assert.True(ObjectMap.Contains(building, shoehorn));
             Assert.True(ObjectMap.Contains(road, shoehorn));
 
-            shoehorn.IsAbsent = true;
+            shoehorn.Absent = true;
 
             Assert.False(ObjectMap.Contains(building, shoehorn));
             Assert.False(ObjectMap.Contains(road, shoehorn));
 
-            shoehorn.IsAbsent = false;
+            shoehorn.Absent = false;
 
             Assert.True(ObjectMap.Contains(building, shoehorn));
             Assert.True(ObjectMap.Contains(road, shoehorn));

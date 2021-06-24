@@ -15,18 +15,18 @@
             Synonyms.Are("turn", "rotate", "screw", "twist", "unscrew");
         }
 
-        public bool Expects(Item obj, Preposition.On on)
+        public bool Expects(Object obj, Preposition.On on)
         {
             return Redirect<Switch>(obj, v => v.Expects(obj, on));
         }
 
-        public bool Expects(Item obj, Preposition.Off off)
+        public bool Expects(Object obj, Preposition.Off off)
         {
             return Redirect<Switch>(obj, v => v.Expects(obj, off));
         }
 
         // turn dial, knob, etc.
-        public bool Expects(Item item)
+        public bool Expects(Object item)
         {
             // must implemented using Before/After
             Print("Nothing obvious happens.");

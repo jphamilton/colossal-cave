@@ -8,7 +8,7 @@
             return true;
         }
 
-        public bool Expects(Preposition.At at, Item obj)
+        public bool Expects(Preposition.At at, Object obj)
         {
             Print($"You wave at the {obj}, feeling foolish.");
             return true;

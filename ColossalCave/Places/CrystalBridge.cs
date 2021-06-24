@@ -12,7 +12,7 @@ namespace ColossalCave.Places
             Description = "It spans the fissure, thereby providing you a way across.";
             InitialDescription = "A crystal bridge now spans the fissure.";
             Open = true;
-            IsAbsent = true;
+            Absent = true;
 
             FoundIn<WestSideOfFissure, EastBankOfFissure>();
 

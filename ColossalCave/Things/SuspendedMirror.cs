@@ -4,7 +4,7 @@ using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
-    public class SuspendedMirror : Item
+    public class SuspendedMirror : Object
     {
         public override void Initialize()
         {

@@ -7,7 +7,7 @@
             Name = "search";
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             return Print("You find nothing of interest.");
         }

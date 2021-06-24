@@ -17,7 +17,7 @@ namespace ColossalCave.Places
             Global.Deaths++; // this is models after the inform source which is why it's not just a private variable here
             int score = -10;
 
-            Output.Print("\r\n\r\n");
+            Output.Print("\n\n");
 
             //TODO: implement caves_closed
             //if (caves_closed)
@@ -42,7 +42,7 @@ namespace ColossalCave.Places
 
             }
 
-            Output.Print("\r\n\r\n");
+            Output.Print("\n\n");
 
             var yes = YesOrNo.Ask();
 
@@ -55,13 +55,13 @@ namespace ColossalCave.Places
                     case 1:
                         Output.Print(
                             "All right. But don't blame me if something goes wr......" +
-                            "\r\n\r\n\r\n\r\n---POOF!!---" +
-                            "\r\n\r\nYou are engulfed in a cloud of orange smoke." +
-                            "Coughing and gasping, you emerge from the smoke and find that you're....\r\n");
+                            "\n\n\n\n---POOF!!---" +
+                            "\n\r\nYou are engulfed in a cloud of orange smoke." +
+                            "Coughing and gasping, you emerge from the smoke and find that you're....\n");
                         break;
                     case 2:
                         Output.Print("Okay, now where did I put my orange smoke?.... >POOF!<" +
-                        "\r\n\r\nEverything disappears in a dense cloud of orange smoke.\r\n");
+                        "\n\r\nEverything disappears in a dense cloud of orange smoke.\n");
                         break;
                     case 3:
                         Output.Print("Okay, if you're so smart, do it yourself! I'm leaving!");
@@ -73,7 +73,7 @@ namespace ColossalCave.Places
                 // lamp is moved to At End of Road
                 var lamp = ObjectMap.Remove<BrassLantern>();
                 lamp.On = false;
-                lamp.HasLight = false;
+                lamp.Light = false;
 
                 var endOfRoad = Rooms.Get<EndOfRoad>();
                 
@@ -128,9 +128,9 @@ namespace ColossalCave.Places
             var score = Context.Story.CurrentScore;
             var possible = Context.Story.PossibleScore;
 
-            Output.Print("\r\n\r\n");
+            Output.Print("\n\n");
             Output.Print("\t*** You have died ***");
-            Output.Print("\r\n\r\n");
+            Output.Print("\n\n");
             Output.Print($"In that game you scored {score} points out of a possible {possible}, earning you the rank of {Score.GetRank()}");
         }
     }

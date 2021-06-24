@@ -9,7 +9,7 @@ namespace Adventure.Net
 
     public partial class CommandLineParser
     {
-        private class Skip : Item
+        private class Skip : Object
         {
             public override void Initialize()
             {
@@ -138,7 +138,7 @@ namespace Adventure.Net
                         break;
                     }
 
-                    var multi = new List<Item>();
+                    var multi = new List<Object>();
 
                     if (verb.Multi)
                     {
@@ -207,7 +207,7 @@ namespace Adventure.Net
                 return null;
             }
 
-            var except = new List<Item>();
+            var except = new List<Object>();
 
             // process rest of the tokens as objects
             for (int i = index; i < tokens.Count; i++)
@@ -253,7 +253,7 @@ namespace Adventure.Net
             return null;
         }
 
-        private Item GetObject(CommandLineParserResult result, string token)
+        private Object GetObject(CommandLineParserResult result, string token)
         {
             //TODO: This is crazy train
             
@@ -302,7 +302,7 @@ namespace Adventure.Net
             {
                 var last = result.Ordered?.LastOrDefault();
 
-                if (last != null && last is Item obj)
+                if (last != null && last is Object obj)
                 {
                     if (!obj.Name.Contains(token) && !obj.Synonyms.Contains(token))
                     {

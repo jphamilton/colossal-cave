@@ -14,7 +14,7 @@
                 "The walls extend upward for well over 100 feet. " +
                 "Suspended from some unseen point far above you, " +
                 "an enormous two-sided mirror is hanging parallel to and midway between the canyon walls. " +
-                "\r\n\r\n" +
+                "\n\n" +
                 "A small window can be seen in either wall, some fifty feet up.";
 
             SouthTo<SecretNSCanyon0>();

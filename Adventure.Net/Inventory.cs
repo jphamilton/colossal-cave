@@ -7,21 +7,21 @@ namespace Adventure.Net
 {
     public class Inventory 
     {
-        private static readonly List<Item> objects = new();
+        private static readonly List<Object> objects = new();
 
-        public static void Add(Item obj)
+        public static void Add(Object obj)
         {
             objects.Add(obj);
             obj.Touched = true;
         }
 
-        public static bool Contains<T>() where T : Item
+        public static bool Contains<T>() where T : Object
         {
-            Item obj = Net.Objects.Get<T>();
+            Object obj = Net.Objects.Get<T>();
             return Contains(obj);
         }
 
-        public static bool Contains(Item obj)
+        public static bool Contains(Object obj)
         {
             foreach(var o in objects)
             {
@@ -46,12 +46,12 @@ namespace Adventure.Net
             return false;
         }
 
-        public static bool Contains(params Item[] args)
+        public static bool Contains(params Object[] args)
         {
             if (args.Length == 0)
                 return false;
 
-            foreach(Item obj in args)
+            foreach(Object obj in args)
             {
                 if (!objects.Contains(obj))
                     return false;
@@ -60,7 +60,7 @@ namespace Adventure.Net
             return true;
         }
 
-        public static void Remove(Item obj)
+        public static void Remove(Object obj)
         {
             objects.Remove(obj);
         }
@@ -78,7 +78,7 @@ namespace Adventure.Net
             StringBuilder sb = new();
             sb.AppendLine("You are carrying:");
 
-            var containers = new List<Item>();
+            var containers = new List<Object>();
 
             foreach(var obj in objects.OrderBy(x=>x.Description))
             {
@@ -91,7 +91,7 @@ namespace Adventure.Net
 
             foreach (var obj in objects.Where(x => !containers.Contains(x)).OrderBy(x => x.Description))
             {
-                sb.AppendFormat("\t{0} {1}\n", obj.Article, obj.Name);
+                sb.Append($"\t{obj.Article} {obj.Name}\n");
             }
 
             return sb.ToString();
@@ -105,29 +105,29 @@ namespace Adventure.Net
 
             if (container.Openable)
             {
-                sb.AppendFormat("{0} {1} ({2})\n", container.Article, container.Name, container.State);
+                sb.Append($"{container.Article} {container.Name} ({container.State})\n");
             }
             else
             {
-                sb.AppendFormat("{0} {1}\n", container.Article, container.Name);
+                sb.Append($"{container.Article} {container.Name}\n");
             }
 
             if (container.Open || container.Transparent)
                 foreach(var child in container.Contents)
                 {
                     if (child is Container c)
-                        sb.AppendFormat("{0}", DisplayContainer(c, level + 1));
+                        sb.Append($"{DisplayContainer(c, level + 1)}");
                     else
                     {
                         sb.Indent(level + 1);
-                        sb.AppendFormat("{0} {1}\n", child.Article, child.Name);
+                        sb.Append($"{child.Article} {child.Name}\n");
                     }
                 }
 
             return sb.ToString();
         }
 
-        public static List<Item> Items
+        public static List<Object> Items
         {
             get { return objects; }
         }

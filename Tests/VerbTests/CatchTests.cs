@@ -45,7 +45,7 @@ namespace Tests.VerbTests
 
     }
 
-    public class Shark : Item
+    public class Shark : Object
     {
         public override void Initialize()
         {
@@ -54,7 +54,7 @@ namespace Tests.VerbTests
         }
     }
 
-    public class Octopus : Item
+    public class Octopus : Object
     {
         public override void Initialize()
         {

@@ -5,7 +5,7 @@ using ColossalCave.Actions;
 
 namespace ColossalCave
 {
-    public abstract class Treasure : Item
+    public abstract class Treasure : Object
     {
         public int DepositPoints { get; protected set; }
         public bool Found { get; private set; }

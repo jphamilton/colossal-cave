@@ -11,7 +11,7 @@ namespace Adventure.Net.Actions
             Synonyms.Are("open, uncover, undo, unwrap");
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             if (!obj.Openable)
             {
@@ -19,7 +19,7 @@ namespace Adventure.Net.Actions
             }
             else if (obj.Locked)
             {
-                string seems = obj.HasPluralName ? "They seem" : "It seems";
+                string seems = obj.PluralName ? "They seem" : "It seems";
                 Print($"{seems} to be locked.");
             }
             else if (obj.Open)
@@ -35,7 +35,7 @@ namespace Adventure.Net.Actions
             return true;
         }
 
-        public bool Expects(Item obj, Preposition.With with, Item indirect)
+        public bool Expects(Object obj, Preposition.With with, Object indirect)
         {
             return Redirect<Unlock>(obj, v => v.Expects(obj, with, indirect));
         }

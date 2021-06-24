@@ -18,7 +18,7 @@ namespace ColossalCave.Places
                 "An extremely narrow tunnel exits to the west. " +
                 "A dark corridor leads northeast.";
             
-            HasLight = true;
+            Light = true;
 
             NorthEastTo<DarkRoom>();
 

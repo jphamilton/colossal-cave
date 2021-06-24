@@ -13,7 +13,7 @@
             Synonyms.Are("clear", "move", "press", "shift");
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             if (obj.Scenery || obj.Static)
             {

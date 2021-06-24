@@ -38,6 +38,7 @@ namespace ColossalCave.Places
             Name = "other side of hill";
             Synonyms.Are("side", "other", "of");
             Description = "Why not explore it yourself?";
+            Article = "the";
 
             FoundIn<HillInRoad>();
         }

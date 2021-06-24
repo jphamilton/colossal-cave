@@ -21,7 +21,7 @@
             Multi = true;
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
 
             if (obj.Scenery)

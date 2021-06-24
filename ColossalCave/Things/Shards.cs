@@ -2,7 +2,7 @@
 
 namespace ColossalCave.Things
 {
-    public class Shards : Item
+    public class Shards : Object
     {
         public override void Initialize()
         {

@@ -7,7 +7,7 @@
             // no name
         }
 
-        public bool Expects([Held]Item obj, Preposition.At at, Item indirect)
+        public bool Expects([Held]Object obj, Preposition.At at, Object indirect)
         {
             if (indirect.Animate)
             {

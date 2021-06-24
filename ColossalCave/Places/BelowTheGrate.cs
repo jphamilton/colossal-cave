@@ -12,7 +12,7 @@ namespace ColossalCave.Places
             
             Description = "You are in a small chamber beneath a 3x3 steel grate to the surface. " + 
                           "A low crawl over cobbles leads inward to the west.";
-            HasLight = true;
+            Light = true;
 
             WestTo<CobbleCrawl>();
 

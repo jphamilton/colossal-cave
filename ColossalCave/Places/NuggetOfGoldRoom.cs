@@ -7,7 +7,7 @@ namespace ColossalCave.Places
         public override void Initialize()
         {
             Name = "Low Room";
-            Description = "This is a low room with a crude note on the wall:\r\n\r\n\"You won't get it up the steps\".";
+            Description = "This is a low room with a crude note on the wall:\n\n\"You won't get it up the steps\".";
 
             NorthTo<HallOfMists>();
         }

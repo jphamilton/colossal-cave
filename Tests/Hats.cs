@@ -2,7 +2,7 @@
 
 namespace Tests
 {
-    public class RedHat : Item
+    public class RedHat : Object
     {
         public override void Initialize()
         {
@@ -12,7 +12,7 @@ namespace Tests
         }
     }
 
-    public class BlackHat : Item
+    public class BlackHat : Object
     {
         public override void Initialize()
         {
@@ -22,7 +22,7 @@ namespace Tests
         }
     }
 
-    public class WhiteHat : Item
+    public class WhiteHat : Object
     {
         public override void Initialize()
         {

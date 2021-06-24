@@ -1,6 +1,6 @@
 ﻿namespace Adventure.Net
 {
-    public class Scenery : Item
+    public class Scenery : Object
     {
         public override void Initialize()
         {

@@ -5,7 +5,6 @@
     //    * 'up' noun                                 -> Close
     //    * 'off' noun                                -> SwitchOff;
     //
-    // TODO: Implicit close? not sure when it happens
     public class Close : Verb
     {
         public Close()
@@ -17,22 +16,22 @@
             //Grammars.Add("off <noun>", SwitchOffObject);
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             return CloseObject(obj);
         }
 
-        public bool Expects(Item obj, Preposition.Off off)
+        public bool Expects(Object obj, Preposition.Off off)
         {
             return Redirect<SwitchOff>(obj, v => v.Expects(obj, off));
         }
 
-        public bool Expects(Item obj, Preposition.Up up)
+        public bool Expects(Object obj, Preposition.Up up)
         {
             return CloseObject(obj);
         }
 
-        private bool CloseObject(Item obj)
+        private bool CloseObject(Object obj)
         {
             if (!obj.Openable)
             {

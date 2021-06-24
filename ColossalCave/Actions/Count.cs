@@ -9,7 +9,7 @@ namespace ColossalCave.Actions
             Name = "count";
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             if (obj.Has("multitude"))
             {

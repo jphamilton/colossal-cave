@@ -5,7 +5,7 @@ using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
-    public class LittleBird : Item
+    public class LittleBird : Object
     {
         public override void Initialize()
         {

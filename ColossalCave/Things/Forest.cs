@@ -3,7 +3,7 @@ using Adventure.Net;
 
 namespace ColossalCave.Things
 {
-    public class Forest : Item
+    public class Forest : Object
     {
         public override void Initialize()
         {

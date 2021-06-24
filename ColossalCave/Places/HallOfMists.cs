@@ -18,7 +18,7 @@ namespace ColossalCave.Places
                 "The hall is filled with wisps of white mist swaying to and fro almost as if alive. " +
                 "A cold wind blows up the staircase. " +
                 "There is a passage at the top of a dome behind you. " +
-                "\r\n\r\n" +
+                "\n\n" +
                 "Rough stone steps lead up the dome.";
 
             Initial = () =>

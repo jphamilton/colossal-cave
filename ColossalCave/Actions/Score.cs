@@ -40,7 +40,7 @@ namespace ColossalCave.Actions
             if (display)
             {
                 var direction = Context.Story.CurrentScore > currentScore ? "up" : "down";
-                var output = $"\r\n[the score has just gone {direction} by {Math.Abs(value)} points.]\r\n";
+                var output = $"\n[the score has just gone {direction} by {Math.Abs(value)} points.]\n";
                 if (Context.Current != null)
                 {
                     Context.Current.Print(output);

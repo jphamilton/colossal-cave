@@ -5,7 +5,7 @@
         public override void Initialize()
         {
             Name = "Darkness";
-            HasLight = false;
+            Light = false;
             Description = "It's pitch black. You can't see a thing.";
         }
     }

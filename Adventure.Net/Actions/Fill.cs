@@ -13,12 +13,12 @@ namespace Adventure.Net.Actions
             Name = "fill";
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             throw new MissingMethodException($"{obj.Name} is missing Before<Fill> implementation");
         }
 
-        public bool Expects(Item obj, Preposition.From from, Item indirect)
+        public bool Expects(Object obj, Preposition.From from, Object indirect)
         {
             throw new MissingMethodException($"{indirect.Name} is missing Before<Fill> implementation");
         }

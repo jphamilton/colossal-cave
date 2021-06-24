@@ -12,7 +12,7 @@ namespace Adventure.Net.Actions
             Synonyms.Are("free");
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             // whatever is being released must provide a Before<Release> routine
             if (obj.Animate)

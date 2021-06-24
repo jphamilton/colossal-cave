@@ -73,12 +73,12 @@ namespace Tests.ObjectTests
         {
             lamp.On = false;
 
-            Assert.False(lamp.HasLight);
+            Assert.False(lamp.Light);
 
             Execute("turn on lamp");
 
             Assert.True(lamp.On);
-            Assert.True(lamp.HasLight);
+            Assert.True(lamp.Light);
         }
 
         [Fact]
@@ -89,19 +89,19 @@ namespace Tests.ObjectTests
             Execute("turn off lamp");
 
             Assert.False(lamp.On);
-            Assert.False(lamp.HasLight);
+            Assert.False(lamp.Light);
         }
 
         [Fact]
         public void should_not_turn_on_lamp_twice()
         {
             lamp.On = true;
-            lamp.HasLight = true;
+            lamp.Light = true;
 
             Execute("turn on lamp");
 
             Assert.True(lamp.On);
-            Assert.True(lamp.HasLight);
+            Assert.True(lamp.Light);
             Assert.Equal("That's already on.", Line(1));
         }
 
@@ -109,12 +109,12 @@ namespace Tests.ObjectTests
         public void should_not_turn_off_lamp_twice()
         {
             lamp.On = false;
-            lamp.HasLight = false;
+            lamp.Light = false;
 
             Execute("turn off lamp");
 
             Assert.False(lamp.On);
-            Assert.False(lamp.HasLight);
+            Assert.False(lamp.Light);
             Assert.Equal("That's already off.", Line(1));
         }
 
@@ -122,7 +122,7 @@ namespace Tests.ObjectTests
         public void should_turn_on_lamp_with_just_on()
         {
             lamp.On = false;
-            lamp.HasLight = false;
+            lamp.Light = false;
 
             Execute("on");
 
@@ -130,14 +130,14 @@ namespace Tests.ObjectTests
             Assert.Equal("You switch the brass lantern on.", Line(1));
 
             Assert.True(lamp.On);
-            Assert.True(lamp.HasLight);
+            Assert.True(lamp.Light);
         }
 
         [Fact]
         public void should_turn_on_lamp_with_just_off()
         {
             lamp.On = true;
-            lamp.HasLight = true;
+            lamp.Light = true;
 
             Execute("off");
 
@@ -145,7 +145,7 @@ namespace Tests.ObjectTests
             Assert.Equal("You switch the brass lantern off.", Line(1));
 
             Assert.False(lamp.On);
-            Assert.False(lamp.HasLight);
+            Assert.False(lamp.Light);
         }
     }
 }

@@ -80,10 +80,10 @@ namespace Adventure.Net
         public CommandLineParserResult Parsed { get; }
 
         // this changes as the command handler iterates the objects
-        public Item CurrentObject { get; set; }
+        public Object CurrentObject { get; set; }
 
         // this never changes.
-        public Item IndirectObject { get; }
+        public Object IndirectObject { get; }
 
        
         public ICommandState PushState(CommandOutput commandOutput = null)

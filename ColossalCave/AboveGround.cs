@@ -4,7 +4,7 @@
     {
         protected AboveGround() 
         {
-            HasLight = true;
+            Light = true;
             NoDwarf = true;
             Static = true;
         }

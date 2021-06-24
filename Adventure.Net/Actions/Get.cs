@@ -19,7 +19,7 @@
             //Grammars.Add("<multi>", TakeSingle);
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             return Redirect<Take>(obj, v => v.Expects(obj));
 

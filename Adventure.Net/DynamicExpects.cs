@@ -39,9 +39,9 @@ namespace Adventure.Net
                     {
                         var arg = call.Args[index];
 
-                        if (arg is Item)
+                        if (arg is Object)
                         {
-                            var implicitTake = new ImplicitTake((Item)arg);
+                            var implicitTake = new ImplicitTake((Object)arg);
                             invoker.Add(implicitTake);
                         }
                         else

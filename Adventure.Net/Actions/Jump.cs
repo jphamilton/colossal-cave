@@ -23,7 +23,7 @@
             return true;
         }
 
-        public bool Expects(Preposition.Over over, Item obj)
+        public bool Expects(Preposition.Over over, Object obj)
         {
             Print($"Jumping over {obj} would achieve nothing here.");
             return true;

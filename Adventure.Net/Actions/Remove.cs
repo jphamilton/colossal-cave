@@ -18,8 +18,7 @@ Verb 'remove'
            // Grammars.Add(K.MULTI_TOKEN, Take);
         }
 
-        // TODO: not handling multi
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             if (obj.InInventory)
             {
@@ -29,9 +28,8 @@ Verb 'remove'
             return Redirect<Take>(obj, v => v.Expects(obj));
         }
 
-        private bool Disrobe(Item obj)
+        private bool Disrobe(Object obj)
         {
-            // TODO: implement
             throw new NotImplementedException("remove <held> (disrobe)");
         }
     }

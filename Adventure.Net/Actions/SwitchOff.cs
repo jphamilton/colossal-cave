@@ -23,12 +23,12 @@ namespace Adventure.Net.Actions
             return false;
         }
 
-        public bool Expects(Item obj, Preposition.Off off)
+        public bool Expects(Object obj, Preposition.Off off)
         {
             return Off(obj);
         }
 
-        private bool Off(Item obj)
+        private bool Off(Object obj)
         {
             if (obj.Switchable)
             {

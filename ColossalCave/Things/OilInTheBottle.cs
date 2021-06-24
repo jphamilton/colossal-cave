@@ -2,7 +2,7 @@
 
 namespace ColossalCave.Things
 {
-    public class OilInTheBottle : Item
+    public class OilInTheBottle : Object
     {
         public override void Initialize()
         {

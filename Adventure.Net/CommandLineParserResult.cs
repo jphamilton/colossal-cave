@@ -5,11 +5,11 @@ namespace Adventure.Net
 {
     public class Parameters
     {
-        public List<Item> Objects { get; set; } = new List<Item>();
+        public List<Object> Objects { get; set; } = new List<Object>();
 
         public Prep Preposition { get; set; }
 
-        public Item IndirectObject { get; set; }
+        public Object IndirectObject { get; set; }
 
         public List<string> Key
         {

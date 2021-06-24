@@ -9,22 +9,22 @@
             Name = "throw";
         }
 
-        public bool Expects([Held]Item obj, Preposition.At at, Item indirect)
+        public bool Expects([Held]Object obj, Preposition.At at, Object indirect)
         {
             return Redirect<ThrowAt>(obj, v => v.Expects(obj, at, indirect));
         }
 
-        public bool Expects([Held] Item obj, Preposition.Against against, Item indirect)
+        public bool Expects([Held] Object obj, Preposition.Against against, Object indirect)
         {
             return Redirect<ThrowAt>(obj, v => v.Expects(obj, new Preposition.At(), indirect));
         }
 
-        public bool Expects([Held] Item obj, Preposition.On on, Item indirect)
+        public bool Expects([Held] Object obj, Preposition.On on, Object indirect)
         {
             return Redirect<ThrowAt>(obj, v => v.Expects(obj, new Preposition.At(), indirect));
         }
 
-        public bool Expects([Held] Item obj, Preposition.Onto onto, Item indirect)
+        public bool Expects([Held] Object obj, Preposition.Onto onto, Object indirect)
         {
             return Redirect<ThrowAt>(obj, v => v.Expects(obj, new Preposition.At(), indirect));
         }

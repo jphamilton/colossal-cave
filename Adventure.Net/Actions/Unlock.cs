@@ -1,6 +1,5 @@
 ﻿namespace Adventure.Net.Actions
 {
-    // TODO: implement
     public class Unlock : Verb
     {
         public Unlock()
@@ -11,7 +10,7 @@
        
         // implicit unlock
         // if the key is in inventory and is the only item, the
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             return UnlockObject(obj);
             //if (!obj.IsLockable)
@@ -27,12 +26,12 @@
 
         }
 
-        public bool Expects(Item obj, Preposition.With with, [Held]Item indirect)
+        public bool Expects(Object obj, Preposition.With with, [Held]Object indirect)
         {
             return UnlockObject(obj, indirect);
         }
 
-        private bool UnlockObject(Item obj, Item indirect = null)
+        private bool UnlockObject(Object obj, Object indirect = null)
         {
             var key = obj.Key;
 
@@ -74,35 +73,6 @@
             Print("You have nothing to unlock that with.");
             return true;
         }
-
-        // TODO:"What do you want to unlock the {0} with?"
-        //// this method basically shows a serious design flaw. because the parser does not
-        //// currently remember the last command
-        //private void ObjectNotSpecified()
-        //{
-        //    // do not use Print, go directly to output
-        //    Output.Print("What do you want to unlock the {0} with?", Item.Name);
-
-        //    string input = CommandPrompt.GetInput();
-        //    if (string.IsNullOrEmpty(input))
-        //    {
-        //        Print(Messages.DoNotUnderstand);
-        //        return;
-        //    }
-
-        //    var tokenizer = new InputTokenizer();
-        //    var tokens = tokenizer.Tokenize(input);
-
-        //    // player is answering the question (no verb specified) vs. re-typing
-        //    // a complete sentence
-        //    if (!tokens.StartsWithVerb())
-        //    {
-        //        // this is very simplistic right now
-        //        input = "unlock " + Item.Synonyms[0] + " with " + String.Join(" ", tokens.ToArray());
-        //    }
-
-        //    Context.Parser.Parse(input);
-
-        //}
+        
     }
 }

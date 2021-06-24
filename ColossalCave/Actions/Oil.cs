@@ -10,7 +10,7 @@ namespace ColossalCave.Actions
             Synonyms.Are("grease", "lubricate");
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             Print("Oil? What oil?");
             return true;

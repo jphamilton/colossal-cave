@@ -4,7 +4,7 @@ using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
-    public class Sign : Item
+    public class Sign : Object
     {
         public override void Initialize()
         {

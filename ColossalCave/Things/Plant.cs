@@ -12,7 +12,7 @@ namespace ColossalCave.Things
         Huge
     }
 
-    public class Plant : Item
+    public class Plant : Object
     {
         public PlantSize Height { get; set; }
 
@@ -48,12 +48,12 @@ namespace ColossalCave.Things
                 }
                 else if (Height == PlantSize.Tall)
                 {
-                    Print("You have climbed up the plant and out of the pit.\r\n");
+                    Print("You have climbed up the plant and out of the pit.\n");
                     MovePlayer.To<WestEndOfTwoPitRoom>();
                     return true;
                 }
 
-                Print("You clamber up the plant and scurry through the hole at the top.\r\n");
+                Print("You clamber up the plant and scurry through the hole at the top.\n");
                 
                 MovePlayer.To<NarrowCorridor>();
                 
@@ -100,17 +100,17 @@ namespace ColossalCave.Things
             switch (Height++)
             {
                 case PlantSize.Tiny:
-                    Print("The plant spurts into furious growth for a few seconds.\r\n\r\n");
-                    plantStickingUp.IsAbsent = false;
+                    Print("The plant spurts into furious growth for a few seconds.\n\n");
+                    plantStickingUp.Absent = false;
                     break;
 
                 case PlantSize.Tall:
-                    Print("The plant grows explosively, almost filling the bottom of the pit.\r\n\r\n");
+                    Print("The plant grows explosively, almost filling the bottom of the pit.\n\n");
                     break;
 
                 case PlantSize.Huge:
-                    Print("You've over-watered the plant! It's shriveling up! It's, it's...\r\n\r\n");
-                    plantStickingUp.IsAbsent = true;
+                    Print("You've over-watered the plant! It's shriveling up! It's, it's...\n\n");
+                    plantStickingUp.Absent = true;
                     //remove PlantStickingUp;
                     Height = PlantSize.Tiny;
                     break;

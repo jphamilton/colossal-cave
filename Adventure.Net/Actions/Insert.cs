@@ -16,17 +16,17 @@ namespace Adventure.Net.Actions
             //Grammars.Add("<multi> in <noun>", InsertObject);
         }
 
-        public bool Expects(Item obj, Preposition.In @in, Item indirect)
+        public bool Expects(Object obj, Preposition.In @in, Object indirect)
         {
             return Receive(obj, indirect);
         }
 
-        public bool Expects(Item obj, Preposition.Into into, Item indirect)
+        public bool Expects(Object obj, Preposition.Into into, Object indirect)
         {
             return Receive(obj, indirect);
         }
 
-        private bool Receive(Item obj, Item indirect)
+        private bool Receive(Object obj, Object indirect)
         {
             // receive
             var receive = indirect.Receive();

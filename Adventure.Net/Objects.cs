@@ -9,13 +9,13 @@ namespace Adventure.Net
     {
         // CONTAINERS?????
 
-        private static readonly IDictionary<Item, IList<Room>> ObjectToRooms = new Dictionary<Item, IList<Room>>();
-        private static readonly IDictionary<Room, IList<Item>> RoomToObjects = new Dictionary<Room, IList<Item>>();
-        private static readonly IDictionary<Item, IList<Room>> Absent = new Dictionary<Item, IList<Room>>();
+        private static readonly IDictionary<Object, IList<Room>> ObjectToRooms = new Dictionary<Object, IList<Room>>();
+        private static readonly IDictionary<Room, IList<Object>> RoomToObjects = new Dictionary<Room, IList<Object>>();
+        private static readonly IDictionary<Object, IList<Room>> Absent = new Dictionary<Object, IList<Room>>();
 
-        public static void Add(Item obj, Room room)
+        public static void Add(Object obj, Room room)
         {
-            if (obj.IsAbsent)
+            if (obj.Absent)
             {
                 HandleAbsent(obj, room);
                 return;
@@ -30,13 +30,13 @@ namespace Adventure.Net
 
             if (!RoomToObjects.ContainsKey(room))
             {
-                RoomToObjects.Add(room, new List<Item>());
+                RoomToObjects.Add(room, new List<Object>());
             }
 
             RoomToObjects[room].Add(obj);
         }
 
-        private static void HandleAbsent(Item obj, Room room)
+        private static void HandleAbsent(Object obj, Room room)
         {
             void addAbsent()
             {
@@ -84,7 +84,7 @@ namespace Adventure.Net
         /// remove item from object mapping
         /// </summary>
         /// <param name="obj"></param>
-        public static void Remove(Item obj)
+        public static void Remove(Object obj)
         {
             // item may not necessarily be anywhere 
             if (ObjectToRooms.TryGetValue(obj, out IList<Room> rooms))
@@ -98,7 +98,7 @@ namespace Adventure.Net
             }
         }
 
-        public static T Remove<T>() where T : Item
+        public static T Remove<T>() where T : Object
         {
             var obj = ObjectToRooms.Keys.SingleOrDefault(x => x.GetType() == typeof(T));
 
@@ -107,7 +107,7 @@ namespace Adventure.Net
             return (T)obj;
         }
 
-        public static bool Contains(Room room, Item obj)
+        public static bool Contains(Room room, Object obj)
         {
             if (RoomToObjects.ContainsKey(room))
             {
@@ -118,15 +118,15 @@ namespace Adventure.Net
         }
 
 
-        public static void MoveObject(Item obj, Room to)
+        public static void MoveObject(Object obj, Room to)
         {
             Remove(obj);
             Add(obj, to);
         }
 
-        public static IReadOnlyList<Item> GetObjects(Room room)
+        public static IReadOnlyList<Object> GetObjects(Room room)
         {
-            return (IReadOnlyList<Item>)RoomToObjects[room];
+            return (IReadOnlyList<Object>)RoomToObjects[room];
         }
 
             
@@ -134,7 +134,7 @@ namespace Adventure.Net
 
     public class Objects
     {
-        private static readonly IList<Item> items = new List<Item>();
+        private static readonly IList<Object> items = new List<Object>();
 
         public static void Load(IStory story)
         {
@@ -145,11 +145,11 @@ namespace Adventure.Net
 
             foreach (var type in types)
             {
-                if (type.IsSubclassOf(typeof(Item)) && 
+                if (type.IsSubclassOf(typeof(Object)) && 
                     !type.IsAbstract && 
                     !type.IsSubclassOf(typeof(Room)))
                 {
-                    if (Activator.CreateInstance(type) is Item obj)
+                    if (Activator.CreateInstance(type) is Object obj)
                     {
                         items.Add(obj);
                     }
@@ -158,27 +158,27 @@ namespace Adventure.Net
 
         }
 
-        internal static IList<Item> All
+        internal static IList<Object> All
         {
             get { return items; }
         }
 
-        public static Item GetByName(string name)
+        public static Object GetByName(string name)
         {
             return items.SingleOrDefault(x => x.Name == name || x.Synonyms.Contains(name));
         }
 
-        public static IList<Item> WithName(string name)
+        public static IList<Object> WithName(string name)
         {
             return items.Where(x => x.Name == name || x.Synonyms.Contains(name)).ToList();
         }
 
-        public static T Get<T>() where T:Item
+        public static T Get<T>() where T:Object
         {
             return Get(typeof (T)) as T;
         }
 
-        private static Item Get(Type objectType)
+        private static Object Get(Type objectType)
         {
             foreach (var obj in items)
             {
@@ -190,7 +190,7 @@ namespace Adventure.Net
             return null;
         }
 
-        public static IList<Item> WithRunningDaemons()
+        public static IList<Object> WithRunningDaemons()
         {
             return items.Where(x => x.Daemon != null && x.DaemonStarted == true).ToList();
         }
@@ -199,7 +199,7 @@ namespace Adventure.Net
         /// This should only be used for testing
         /// </summary>
         /// <param name="obj"></param>
-        public static void Add(Item obj, Room room = null)
+        public static void Add(Object obj, Room room = null)
         {
             items.Add(obj);
 

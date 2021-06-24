@@ -3,7 +3,7 @@ using Adventure.Net.Actions;
 
 namespace ColossalCave.Things
 {
-    public class DragonCorpse : Item
+    public class DragonCorpse : Object
     {
         public override void Initialize()
         {

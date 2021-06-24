@@ -15,14 +15,14 @@ namespace ColossalCave.Places
         }
     }
 
-    public class StoneTablet : Item
+    public class StoneTablet : Object
     {
         public override void Initialize()
         {
             Name = "stone tablet";
             Synonyms.Are("tablet", "massive", "stone");
             Description =
-                "A massive stone tablet imbedded in the wall reads:\r\n"+
+                "A massive stone tablet imbedded in the wall reads:\n"+
                 "\"Congratulations on bringing light into the dark-room!\"";
             Static = true;
 

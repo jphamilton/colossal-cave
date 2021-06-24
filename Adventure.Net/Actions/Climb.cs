@@ -8,22 +8,22 @@
             Synonyms.Are("scale");
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             return ClimbObj(obj);
         }
 
-        public bool Expects(Preposition.Up up, Item obj)
+        public bool Expects(Preposition.Up up, Object obj)
         {
             return ClimbObj(obj);
         }
 
-        public bool Expects(Preposition.Over over, Item obj)
+        public bool Expects(Preposition.Over over, Object obj)
         {
             return ClimbObj(obj);
         }
 
-        private bool ClimbObj(Item obj)
+        private bool ClimbObj(Object obj)
         {
             Print($"Climbing {obj.ThatOrThose} would achieve little.");
             return true;

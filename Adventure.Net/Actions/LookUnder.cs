@@ -2,7 +2,7 @@
 {
     public class LookUnder : Verb
     {
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             Print("You find nothing of interest.");
             return true;

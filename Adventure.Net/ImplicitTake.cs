@@ -4,9 +4,9 @@ namespace Adventure.Net
 {
     public class ImplicitTake : IInvoke
     {
-        private readonly Item obj;
+        private readonly Object obj;
 
-        public ImplicitTake(Item obj)
+        public ImplicitTake(Object obj)
         {
             this.obj = obj;
         }
@@ -15,7 +15,7 @@ namespace Adventure.Net
         {
             if (!obj.InInventory)
             {
-                var result = Item.Execute<Take>(obj, v => v.Expects(obj));
+                var result = Object.Execute<Take>(obj, v => v.Expects(obj));
 
                 // only return result.Success
 

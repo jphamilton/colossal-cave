@@ -12,17 +12,17 @@
             Synonyms.Are("feed", "offer", "pay");
         }
 
-        public bool Expects(Item creature, [Held]Item obj)
+        public bool Expects(Object creature, [Held]Object obj)
         {
             return GiveObject(obj, creature);
         }
 
-        public bool Expects([Held]Item obj, Preposition.To to, Item creature)
+        public bool Expects([Held]Object obj, Preposition.To to, Object creature)
         {
             return GiveObject(obj, creature);
         }
 
-        private bool GiveObject(Item obj, Item creature)
+        private bool GiveObject(Object obj, Object creature)
         {
             if (creature.Animate)
             {

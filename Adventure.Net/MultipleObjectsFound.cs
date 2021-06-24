@@ -6,11 +6,11 @@ namespace Adventure.Net
     public partial class CommandLineParser
     {
         // Which do you mean, the red hat, the black hat or the white hat?
-        private class MultipleObjectsFound : Item
+        private class MultipleObjectsFound : Object
         {
-            public IList<Item> Objects { get; }
+            public IList<Object> Objects { get; }
 
-            public MultipleObjectsFound(IList<Item> objects)
+            public MultipleObjectsFound(IList<Object> objects)
             {
                 Objects = objects;
             }

@@ -13,7 +13,7 @@ namespace Adventure.Net.Actions
             Synonyms.Are("don");
         }
 
-        public bool Expects([Held] Item obj)
+        public bool Expects([Held] Object obj)
         {
             throw new NotImplementedException("Wear not implemented");
         }

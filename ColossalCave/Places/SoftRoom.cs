@@ -19,7 +19,7 @@ namespace ColossalCave.Places
         }
     }
 
-    public class VelvetPillow : Item
+    public class VelvetPillow : Object
     {
         public override void Initialize()
         {

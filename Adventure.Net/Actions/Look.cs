@@ -1,6 +1,5 @@
 ﻿namespace Adventure.Net.Actions
 {
-    // TODO: test and implement
     public class Look : Verb
     {
         /*
@@ -25,17 +24,17 @@
             return true;
         }
 
-        public bool Expects(Preposition.Under under, Item obj)
+        public bool Expects(Preposition.Under under, Object obj)
         {
             return Redirect<LookUnder>(obj, v => v.Expects(obj));    
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             return Redirect<Examine>(obj, v => v.Expects(obj));
         }
 
-        public bool Expects(Item obj, Preposition.At at)
+        public bool Expects(Object obj, Preposition.At at)
         {
             return Redirect<Examine>(obj, v => v.Expects(obj));
         }

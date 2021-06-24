@@ -11,17 +11,17 @@
             Synonyms.Are("capture");
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             return YouCantCatchThat(obj);
         }
 
-        public bool Expects(Item obj, Preposition.With with, Item indirect)
+        public bool Expects(Object obj, Preposition.With with, Object indirect)
         {
             return YouCantCatchThat(obj);
         }
 
-        private bool YouCantCatchThat(Item obj)
+        private bool YouCantCatchThat(Object obj)
         {
             if (!obj.Animate)
             {

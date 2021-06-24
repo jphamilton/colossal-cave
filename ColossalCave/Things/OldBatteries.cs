@@ -3,7 +3,7 @@ using ColossalCave.Actions;
 
 namespace ColossalCave.Things
 {
-    public class OldBatteries : Item
+    public class OldBatteries : Object
     {
         public override void Initialize()
         {

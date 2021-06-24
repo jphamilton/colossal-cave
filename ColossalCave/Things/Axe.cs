@@ -3,7 +3,7 @@ using Adventure.Net.Actions;
 
 namespace ColossalCave.Things
 {
-    public class Axe : Item
+    public class Axe : Object
     {
         public bool IsNearBear { get; set; } = false;
 

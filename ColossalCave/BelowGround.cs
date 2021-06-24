@@ -17,7 +17,7 @@ namespace ColossalCave
             NoDwarf = false;
 
             // dark by default
-            HasLight = false;
+            Light = false;
 
             DarkToDark = () =>
                 {

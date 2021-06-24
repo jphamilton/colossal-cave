@@ -32,7 +32,7 @@
             return true;
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             return Redirect<Enter>(obj, v => v.Expects(obj));
         }

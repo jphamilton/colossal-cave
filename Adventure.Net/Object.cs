@@ -5,14 +5,23 @@ using System.Linq;
 
 namespace Adventure.Net
 {
-
-    public abstract class Item
+    public abstract class Object
     {
+        private readonly static List<char> vowels = new() { 'a', 'e', 'i', 'o', 'u' };
+        private static string Theyre = "they're";
+        private static string Thats = "that's";
+        private static string Those = "those";
+        private static string That = "that";
+        private static string Are = "are";
+        private static string Is = "is";
+
         private readonly Dictionary<Type, Func<bool>> beforeRoutines = new();
         private readonly AfterRoutines afterRoutines = new();
-        private readonly Dictionary<Item, Func<Item, bool>> receiveRoutines = new();
-        
+        private readonly Dictionary<Object, Func<Object, bool>> receiveRoutines = new();
+
         private bool isAbsent;
+        private string article = null;
+
         public delegate void AbsentToggedHandler(bool absent);
         public event AbsentToggedHandler AbsentToggled;
 
@@ -20,10 +29,9 @@ namespace Adventure.Net
 
         public abstract void Initialize();
 
-        protected Item()
+        protected Object()
         {
             Synonyms = new Synonyms();
-            Article = "a";
         }
 
         public override string ToString()
@@ -33,6 +41,7 @@ namespace Adventure.Net
         }
 
         public string Name { get; set; }
+
         public Synonyms Synonyms { get; set; }
 
 
@@ -41,17 +50,32 @@ namespace Adventure.Net
         public string Description { get; set; }
         public string InitialDescription { get; set; }
 
-        public string Article { get; set; }
-        public string TheyreOrThats => HasPluralName ? "They're" : "That's";
-        public string ThatOrThose => HasPluralName ? "Those" : "That";
-        public string IsOrAre => HasPluralName ? "are" : "is";
+        public string Article { 
+            get 
+            { 
+                if (article == null)
+                {
+                    if (!string.IsNullOrEmpty(Name))
+                    {
+                        var startsWithVowel = vowels.Contains(Name.ToLower().First());
+                        article = startsWithVowel && !PluralName ? "an" : "the";
+                    }
+                }
+
+                return article; 
+            } 
+            
+            set => article = value; 
+        }
+
+        public string TheyreOrThats => PluralName ? "They're" : "That's";
+        public string ThatOrThose => PluralName ? "Those" : "That";
+        public string IsOrAre => PluralName ? "are" : "is";
 
 
         // attributes
-        public bool HasLight { get; set; }
-        public bool HasPluralName { get; set; }
 
-        public bool IsAbsent
+        public bool Absent
         {
             get
             {
@@ -67,11 +91,14 @@ namespace Adventure.Net
 
         public bool Animate { get; set; }
         public bool Edible { get; set; }
+        public bool Light { get; set; }
+
         public bool Lockable { get; private set; }
         public bool Locked { get; set; }
-        public bool On { get; set; }    // on or off?
+        public bool On { get; set; }
         public bool Open { get; set; }
         public bool Openable { get; set; }
+        public bool PluralName { get; set; }
         public bool Scenery { get; set; }
         public bool Static { get; set; }
         public bool Switchable { get; set; }
@@ -93,20 +120,20 @@ namespace Adventure.Net
 
         // Locking/Unlocking
 
-        public void LocksWithKey<T>(bool isLocked) where T : Item
+        public void LocksWithKey<T>(bool isLocked) where T : Object
         {
             Lockable = true;
             Locked = isLocked;
             Key = Objects.Get<T>();
         }
 
-        public Item Key { get; private set; }
+        public Object Key { get; private set; }
 
         //
 
         public Func<string> Describe { get; set; }
 
-        public void Before<T>(Func<string> before) where T: Verb
+        public void Before<T>(Func<string> before) where T : Verb
         {
             bool wrapper()
             {
@@ -168,12 +195,12 @@ namespace Adventure.Net
             return afterRoutines.Get(verbType);
         }
 
-        public void Receive(Func<Item, string> beforeReceive)
+        public void Receive(Func<Object, string> beforeReceive)
         {
-            bool wrapper(Item obj)
+            bool wrapper(Object obj)
             {
                 var message = beforeReceive(obj);
-                
+
                 if (message != null)
                 {
                     return Print(message);
@@ -185,14 +212,14 @@ namespace Adventure.Net
             Receive(wrapper);
         }
 
-        public void Receive(Func<Item, bool> beforeReceive)
+        public void Receive(Func<Object, bool> beforeReceive)
         {
             receiveRoutines.Add(this, beforeReceive);
         }
 
-        public Func<Item, bool> Receive()
+        public Func<Object, bool> Receive()
         {
-            if (receiveRoutines.TryGetValue(this, out Func<Item, bool> result))
+            if (receiveRoutines.TryGetValue(this, out Func<Object, bool> result))
             {
                 return result;
             }
@@ -215,23 +242,23 @@ namespace Adventure.Net
         }
 
         // current object being handled by the command handler
-        public static Item CurrentObject
+        public static Object CurrentObject
         {
             get { return Context.Current.CurrentObject; }
         }
 
         // indirect object of current running command
-        public static Item IndirectObject
+        public static Object IndirectObject
         {
             get { return Context.Current.IndirectObject; }
         }
 
-        public static T Get<T>() where T : Item
+        public static T Get<T>() where T : Object
         {
             return Objects.Get<T>();
         }
 
-        public static bool Redirect<T>(Item obj, Func<T, bool> callback) where T : Verb
+        public static bool Redirect<T>(Object obj, Func<T, bool> callback) where T : Verb
         {
             var command = Context.Current.PushState();
 
@@ -242,7 +269,7 @@ namespace Adventure.Net
             return handled;
         }
 
-        internal static ExecuteResult Execute<T>(Item obj, Func<T, bool> callback) where T : Verb
+        internal static ExecuteResult Execute<T>(Object obj, Func<T, bool> callback) where T : Verb
         {
             var commandOutput = new CommandOutput();
             var command = Context.Current.PushState(commandOutput);
@@ -254,7 +281,7 @@ namespace Adventure.Net
             return new ExecuteResult(handled, commandOutput);
         }
 
-        private static bool RunCommand<T>(ICommandState command, Item obj, Func<T, bool> callback) where T : Verb
+        private static bool RunCommand<T>(ICommandState command, Object obj, Func<T, bool> callback) where T : Verb
         {
             var handled = false;
             var success = false;
@@ -286,7 +313,7 @@ namespace Adventure.Net
 
         protected static bool In<T>() where T : Room
         {
-            Item obj = Rooms.Get<T>();
+            Object obj = Rooms.Get<T>();
             return (CurrentRoom.Location == obj);
         }
 
@@ -309,12 +336,12 @@ namespace Adventure.Net
             get { return Inventory.Contains(this); }
         }
 
-        public static bool IsCarrying<T>() where T : Item
+        public static bool IsCarrying<T>() where T : Object
         {
             return Inventory.Contains<T>();
         }
 
-        public static void Remove<T>() where T : Item
+        public static void Remove<T>() where T : Object
         {
             var obj = Get<T>();
             obj.Remove();

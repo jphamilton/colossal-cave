@@ -5,7 +5,7 @@ using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
-    public class BrassLantern : Item
+    public class BrassLantern : Object
     {
         public int PowerRemaining { get; set; }
 
@@ -45,7 +45,7 @@ namespace ColossalCave.Things
                     
                     if (t == 0)
                     {
-                        HasLight = false;
+                        Light = false;
                         On = false;
                     }
 
@@ -57,7 +57,7 @@ namespace ColossalCave.Things
                         {
                             result = "Your lamp has run out of power. ";
                             
-                            if (!freshBatteries.InInventory && !CurrentRoom.Location.HasLight)
+                            if (!freshBatteries.InInventory && !CurrentRoom.Location.Light)
                             {
                                 // TODO: deadflag = 3;
                                 result += "You can't explore the cave without a lamp. So let's call it a day.";
@@ -159,13 +159,13 @@ namespace ColossalCave.Things
 
             After<SwitchOn>(() =>
                 {
-                    HasLight = true;
+                    Light = true;
                     DaemonStarted = true;
                 });
 
             After<SwitchOff>(() =>
                 {
-                    HasLight = false;
+                    Light = false;
                 });
         }
 

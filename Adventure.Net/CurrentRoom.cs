@@ -39,19 +39,19 @@ namespace Adventure.Net
 
         public static bool IsLit()
         {
-            if (Location.HasLight)
+            if (Location.Light)
                 return true;
 
             var objects = ObjectMap.GetObjects(Location);
 
-            if (objects.Any(obj => obj.HasLight))
+            if (objects.Any(obj => obj.Light))
             {
                 return true;
             }
 
             foreach (var obj in Inventory.Items)
             {
-                if (obj.HasLight)
+                if (obj.Light)
                     return true;
 
                 if (obj is not Container container || (!container.Open && !container.Transparent))
@@ -59,7 +59,7 @@ namespace Adventure.Net
 
                 foreach (var containedObj in container.Contents)
                 {
-                    if (containedObj.HasLight)
+                    if (containedObj.Light)
                         return true;
                 }
             }
@@ -69,7 +69,7 @@ namespace Adventure.Net
 
         private static void DisplayRoomObjects()
         {
-            var ordinary = new List<Item>();
+            var ordinary = new List<Object>();
             int total = 0;
 
             var objects = ObjectMap.GetObjects(Location);
@@ -109,7 +109,7 @@ namespace Adventure.Net
 
             for (int i = 0; i < ordinary.Count; i++)
             {
-                Item obj = ordinary[i];
+                Object obj = ordinary[i];
 
                 if (i == ordinary.Count - 1 && i > 0)
                     group.Append(" and ");
@@ -120,7 +120,7 @@ namespace Adventure.Net
                 {
                     if (container.Contents.Count > 0)
                     {
-                        Item child = container.Contents[0];
+                        Object child = container.Contents[0];
                         group.AppendFormat("{0} {1} (which contains {2} {3})", obj.Article, obj.Name, child.Article, child.Name);
                     }
                     else
@@ -142,9 +142,9 @@ namespace Adventure.Net
             }
         }
 
-        private static void AddContained(List<Item> objects)
+        private static void AddContained(List<Object> objects)
         {
-            var contained = new List<Item>();
+            var contained = new List<Object>();
 
             foreach (var obj in objects)
             {
@@ -157,9 +157,9 @@ namespace Adventure.Net
             objects.AddRange(contained);
         }
 
-        public static IList<Item> ObjectsInRoom()
+        public static IList<Object> ObjectsInRoom()
         {
-            var result = new List<Item>();
+            var result = new List<Object>();
             var objects = ObjectMap.GetObjects(Location);
 
             result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
@@ -168,9 +168,9 @@ namespace Adventure.Net
             return result;
         }
 
-        public static List<Item> ObjectsInScope()
+        public static List<Object> ObjectsInScope()
         {
-            var result = new List<Item>();
+            var result = new List<Object>();
 
             var objects = ObjectMap.GetObjects(Location);
 
@@ -192,7 +192,7 @@ namespace Adventure.Net
             return Location.GetType() == typeof(T);
         }
 
-        public static bool Has<T>() where T : Item
+        public static bool Has<T>() where T : Object
         {
             var objects = ObjectMap.GetObjects(Location);
 

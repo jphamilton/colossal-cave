@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Adventure.Net.Actions
+﻿namespace Adventure.Net.Actions
 {
 
     // TODO: implement
@@ -13,32 +11,48 @@ namespace Adventure.Net.Actions
            // Grammars.Add("<noun> with <held>", LockObject);
         }
 
-        //private bool LockObject()
-        //{
-        //    if (!Item.IsLockable)
-        //    {
-        //        Print("That doesn't seem to be something you can lock.");
-        //    }
-        //    else if (Item.IsLocked)
-        //    {
-        //        Print("It's locked at the moment.");
-        //    }
-        //    else if (Item is Door)
-        //    {
-        //        Door door = Item as Door;
-        //        if (!Inventory.Contains(door.Key))
-        //            Print("You have nothing to lock that with.");
-        //        else
-        //        {
-        //            if (IndirectItem == null && Inventory.Items.Count == 1)
-        //                Print(String.Format("(with the {0})\n", door.Key.Name));
-        //            Print(String.Format("You lock the {0}.", Item.Name));
-        //            Item.IsLocked = true;
-        //        }
-                
-        //    }
+        public bool Expects(Object obj)
+        {
+            return LockObject(obj, null);
+        }
 
-        //    return true;
-        //}
+        public bool Expects(Object obj, Preposition.With with, [Held]Object held)
+        {
+            return LockObject(obj, held);
+        }
+
+        private bool LockObject(Object obj, Object held)
+        {
+            if (!obj.Lockable)
+            {
+                Print("That doesn't seem to be something you can lock.");
+            }
+            else if (obj.Locked)
+            {
+                Print("It's locked at the moment.");
+            }
+            else if (obj is Door)
+            {
+                Door door = obj as Door;
+
+                if (!Inventory.Contains(door.Key))
+                {
+                    Print("You have nothing to lock that with.");
+                }
+                else
+                {
+                    if (held == null && Inventory.Items.Count == 1)
+                    {
+                        Print("(with the {door.Key.Name})\n");
+                    }
+
+                    Print($"You lock the {obj.Name}.");
+                    obj.Locked = true;
+                }
+
+            }
+
+            return true;
+        }
     }
 }

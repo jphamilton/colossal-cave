@@ -18,7 +18,7 @@ namespace ColossalCave.Places
 
             NorthTo(() =>
             {
-                Output.Print("You have crawled through a very low wide passage parallel to and north of the hall of mists.\r\n");
+                Output.Print("You have crawled through a very low wide passage parallel to and north of the hall of mists.\n");
                 return Rooms.Get<WestEndOfHallOfMists>();
             });
 
@@ -26,12 +26,12 @@ namespace ColossalCave.Places
 
         public void BridgeAppears()
         {
-            Get<CrystalBridge>().IsAbsent = false;
+            Get<CrystalBridge>().Absent = false;
             EastTo<CrystalBridge>();
         }
         public void BridgeDisappears()
         {
-            Get<CrystalBridge>().IsAbsent = true;
+            Get<CrystalBridge>().Absent = true;
             EastTo(CannotCross);
         }
 

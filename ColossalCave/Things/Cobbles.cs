@@ -9,7 +9,7 @@ namespace ColossalCave.Things
         {
             Name = "cobbles";
             Synonyms.Are("cobble", "cobbles", "cobblestones", "cobblestone", "stones", "stone");
-            HasPluralName = true;
+            PluralName = true;
             Description = "They're just ordinary cobbles.";
 
             FoundIn<CobbleCrawl, DebrisRoom, BelowTheGrate>();

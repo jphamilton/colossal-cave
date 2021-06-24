@@ -1,9 +1,5 @@
 ﻿namespace Adventure.Net.Actions
 {
-    // TODO: implement
-    //Verb 'enter' 'cross'
-    //    *                                           -> GoIn
-    //    * noun                                      -> Enter;
     public class Enter : Direction, IDirectionProxy
     {
         public Enter()
@@ -12,7 +8,7 @@
             SetDirection(room => room.IN(), "enter", "in");
         }
 
-        public bool Expects(Item obj)
+        public bool Expects(Object obj)
         {
             // Object must have Before<Enter> routine
             Print("That's not something you can enter.");
