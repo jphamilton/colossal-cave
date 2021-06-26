@@ -18,7 +18,10 @@ namespace ColossalCave.Things
             {
                 if (obj is RareCoins)
                 {
-                    Move<FreshBatteries>.Here();
+                    var freshBatteries = Get<FreshBatteries>();
+                    freshBatteries.MoveToLocation();
+                    freshBatteries.InVendingMachine = false;
+                    
                     obj.Remove();
 
                     return "Soon after you insert the coins in the coin slot, the vending machine makes a grinding sound, and a set of fresh batteries falls at your feet.";

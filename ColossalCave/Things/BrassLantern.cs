@@ -9,7 +9,6 @@ namespace ColossalCave.Things
     {
         public int PowerRemaining { get; set; }
 
-        private FreshBatteries freshBatteries = Objects.Get<FreshBatteries>();
 
         public override void Initialize()
         {
@@ -49,13 +48,15 @@ namespace ColossalCave.Things
                         On = false;
                     }
 
+                    var freshBatteries = Objects.Get<FreshBatteries>();
+
                     if (Inventory.Contains(this) || InScope)
                     {
                         string message = null;
 
                         if (t == 0)
                         {
-                            message = "Your lamp has run out of power.";
+                            message = "\nYour lamp has run out of power.";
                             
                             if (!freshBatteries.InInventory && !CurrentRoom.Location.Light)
                             {
@@ -75,32 +76,35 @@ namespace ColossalCave.Things
                             return;
                         }
 
-                        //                if (t == 30) {
-                        //                    print "Your lamp is getting dim.";
-                        //                    if (fresh_batteries.have_been_used)
-                        //                        " You're also out of spare batteries.
-                        //                         You'd best start wrapping this up.";
-
-                        //                    if (fresh_batteries in VendingMachine && Dead_End_14 has visited)
-                        //                        " You'd best start wrapping this up,
-                        //                         unless you can find some fresh batteries.
-                        //                         I seem to recall there's a vending machine in the maze.
-                        //                         Bring some coins with you.";
-                        //                    if (fresh_batteries notin VendingMachine or player or location)
-                        //                        " You'd best go back for those batteries.";
-                        //                    new_line;
-                        //                    rtrue;
-                        //                }
-
                         if (t == 30) 
                         {
-                            message = "Your lamp is getting dim.";
+                            message = "\nYour lamp is getting dim.";
                             
                             if (freshBatteries.HaveBeenUsed)
                             {
                                 message += " You're also out of spare batteries. You'd best start wrapping this up.";
+                                Print(message);
+                                return;
                             }
                             
+                            if (freshBatteries.InVendingMachine && Room<DeadEnd14>().Visited)
+                            {
+                                message += " You'd best start wrapping this up, " +
+                                    "unless you can find some fresh batteries. " +
+                                    "I seem to recall there's a vending machine in the maze. " +
+                                    "Bring some coins with you.";
+                                Print(message);
+                                return;
+                            }
+
+                            if (!freshBatteries.InVendingMachine && !freshBatteries.InScope)
+                            {
+                                message += " You'd best go back for those batteries.";
+                            }
+
+                            Print(message);
+                            Print("\n");
+                            return;
                         }
 
 
@@ -189,63 +193,3 @@ namespace ColossalCave.Things
 
     }
 }
-
-//TODO: Item  -> brass_lantern "brass lantern"
-//  with  name 'lamp' 'headlamp' 'headlight' 'lantern' 'light' 'shiny' 'brass',
-//        when_off "There is a shiny brass lamp nearby.",
-//        when_on "Your lamp is here, gleaming brightly.",
-//        daemon [ t;
-
-//            if (self in player || self in location) {
-//
-//                if (t == 30) {
-//                    print "Your lamp is getting dim.";
-//                    if (fresh_batteries.have_been_used)
-//                        " You're also out of spare batteries.
-//                         You'd best start wrapping this up.";
-//                    if (fresh_batteries in VendingMachine && Dead_End_14 has visited)
-//                        " You'd best start wrapping this up,
-//                         unless you can find some fresh batteries.
-//                         I seem to recall there's a vending machine in the maze.
-//                         Bring some coins with you.";
-//                    if (fresh_batteries notin VendingMachine or player or location)
-//                        " You'd best go back for those batteries.";
-//                    new_line;
-//                    rtrue;
-//                }
-//            }
-//        ],
-//        before [;
-//          Burn:
-//            <<SwitchOn self>>;
-//          SwitchOn:
-//            if (self.power_remaining <= 0)
-//                "Unfortunately, the batteries seem to be dead.";
-//          Receive:
-//            if (noun == old_batteries)
-//                "Those batteries are dead; they won't do any good at all.";
-//            if (noun == fresh_batteries) {
-//                self.replace_batteries();
-//                rtrue;
-//            }
-//            "The only thing you might successfully put in the lamp
-//             is a fresh pair of batteries.";
-//        ],
-//        after [;
-//          SwitchOn:
-//            give self light;
-//            StartDaemon(self);
-//          SwitchOff:
-//            give self ~light;
-//        ],
-//        replace_batteries [;
-//            if (fresh_batteries in player or location) {
-//                remove fresh_batteries;
-//                fresh_batteries.have_been_used = true;
-//                move old_batteries to location;
-//                self.power_remaining = 2500;
-//                "I'm taking the liberty of replacing the batteries.";
-//            }
-//        ],
-//        power_remaining 330,
-//  has   switchable;
