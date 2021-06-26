@@ -15,7 +15,7 @@ namespace ColossalCave.Places
                 "The mist rises up through a fissure in the ceiling. " +
                 "The path exits to the south and west.";
 
-            //SouthTo<OrientalRoom>();
+            SouthTo<OrientalRoom>();
 
             WestTo<Alcove>();
         }

@@ -43,12 +43,10 @@ namespace ColossalCave
             //lamp.Light = true;
             //Inventory.Add(lamp);
 
-            //var diamonds = Objects.Get<Diamonds>();
-            //Inventory.Add(diamonds);
 
-            //Location = Rooms.Get<SwSideOfChasm>();
+            //Location = Rooms.Get<OrientalRoom>();
 
-            Location = Rooms.Get<EndOfRoad>();
+            //Location = Rooms.Get<EndOfRoad>();
         }
 
         public override void AfterTurn()

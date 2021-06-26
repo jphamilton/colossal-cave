@@ -9,7 +9,7 @@
             Description = "You are in a large low room. Crawls lead north, se, and sw.";
 
             SouthWestTo<SlopingCorridor>();
-            //SouthEastTo<OrientalRoom>();
+            SouthEastTo<OrientalRoom>();
             NorthTo<DeadEndCrawl>();
         }
     }

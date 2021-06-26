@@ -158,6 +158,16 @@ namespace Adventure.Net
             Before<R>(before);
         }
 
+        public void Before<T,R,S>(Func<bool> before)
+            where T : Verb
+            where R : Verb
+            where S : Verb
+        {
+            Before<T>(before);
+            Before<R>(before);
+            Before<S>(before);
+        }
+
         public void Before<T>(Func<bool> before) where T : Verb
         {
             if (typeof(T) == typeof(Receive))

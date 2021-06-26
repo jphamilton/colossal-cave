@@ -41,7 +41,7 @@ namespace ColossalCave.Things
                         return;
                     }
 
-                    int t = PowerRemaining - 1;
+                    int t = --PowerRemaining;
                     
                     if (t == 0)
                     {
@@ -49,61 +49,58 @@ namespace ColossalCave.Things
                         On = false;
                     }
 
-                    if (InScope)
+                    if (Inventory.Contains(this) || InScope)
                     {
-                        string result = null;
+                        string message = null;
 
                         if (t == 0)
                         {
-                            result = "Your lamp has run out of power. ";
+                            message = "Your lamp has run out of power.";
                             
                             if (!freshBatteries.InInventory && !CurrentRoom.Location.Light)
                             {
                                 // TODO: deadflag = 3;
-                                result += "You can't explore the cave without a lamp. So let's call it a day.";
-                                Print(result);
+                                message += " You can't explore the cave without a lamp. So let's call it a day.";
+                                Print(message);
+                                GameOver.Dead();
                                 return;
                             }
                             else
                             {
-                                result += ReplaceBatteries();
-                                Print("\n");
+                                message += ReplaceBatteries();
+                                Print(message);
                             }
 
-                            Print(result);
+                            Print("\n");
                             return;
                         }
-                        
+
+                        //                if (t == 30) {
+                        //                    print "Your lamp is getting dim.";
+                        //                    if (fresh_batteries.have_been_used)
+                        //                        " You're also out of spare batteries.
+                        //                         You'd best start wrapping this up.";
+
+                        //                    if (fresh_batteries in VendingMachine && Dead_End_14 has visited)
+                        //                        " You'd best start wrapping this up,
+                        //                         unless you can find some fresh batteries.
+                        //                         I seem to recall there's a vending machine in the maze.
+                        //                         Bring some coins with you.";
+                        //                    if (fresh_batteries notin VendingMachine or player or location)
+                        //                        " You'd best go back for those batteries.";
+                        //                    new_line;
+                        //                    rtrue;
+                        //                }
+
                         if (t == 30) 
                         {
-                            result = "Your lamp is getting dim.";
+                            message = "Your lamp is getting dim.";
                             
                             if (freshBatteries.HaveBeenUsed)
                             {
-                                result += " You're also out of spare batteries. You'd best start wrapping this up.";
+                                message += " You're also out of spare batteries. You'd best start wrapping this up.";
                             }
-                            //else if (How to attach fresh batteries to vending machine?????)
-                            /*
-                             if (self in player || self in location) {
-                                if (t == 30) {
-                                    print "Your lamp is getting dim.";
-                                    
-                                    if (fresh_batteries.have_been_used)
-                                        " You're also out of spare batteries.
-                                         You'd best start wrapping this up.";
-
-                                    if (fresh_batteries in VendingMachine && Dead_End_14 has visited)
-                                        " You'd best start wrapping this up,
-                                         unless you can find some fresh batteries.
-                                         I seem to recall there's a vending machine in the maze.
-                                         Bring some coins with you.";
-                                    if (fresh_batteries notin VendingMachine or player or location)
-                                        " You'd best go back for those batteries.";
-                                    new_line;
-                                    rtrue;
-                                }
-                            }
-                             */
+                            
                         }
 
 
@@ -198,25 +195,9 @@ namespace ColossalCave.Things
 //        when_off "There is a shiny brass lamp nearby.",
 //        when_on "Your lamp is here, gleaming brightly.",
 //        daemon [ t;
-//            if (self hasnt on) {
-//                StopDaemon(self);
-//                rtrue;
-//            }
-//            t = --(self.power_remaining);
-//            if (t == 0) give self ~on ~light;
+
 //            if (self in player || self in location) {
-//                if (t == 0) {
-//                    print "Your lamp has run out of power.";
-//                    if (fresh_batteries notin player && location hasnt light) {
-//                        deadflag = 3;
-//                        " You can't explore the cave without a lamp.
-//                         So let's just call it a day.";
-//                    }
-//                    else
-//                        self.replace_batteries();
-//                    new_line;
-//                    rtrue;
-//                }
+//
 //                if (t == 30) {
 //                    print "Your lamp is getting dim.";
 //                    if (fresh_batteries.have_been_used)

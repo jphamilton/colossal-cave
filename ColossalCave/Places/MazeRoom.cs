@@ -101,6 +101,33 @@ namespace ColossalCave.Places
         }
     }
 
+    public class DeadEnd9 : DeadEnd
+    {
+        public override void Initialize()
+        {
+            WestTo<AlikeMaze11>();
+            OutTo<AlikeMaze11>();
+        }
+    }
+
+    public class DeadEnd10 : DeadEnd
+    {
+        public override void Initialize()
+        {
+            SouthTo<AlikeMaze3>();
+            OutTo<AlikeMaze3>();
+        }
+    }
+
+    public class DeadEnd11 : DeadEnd
+    {
+        public override void Initialize()
+        {
+            EastTo<AlikeMaze12>();
+            OutTo<AlikeMaze12>();
+        }
+    }
+
     public class DeadEnd12 : DeadEnd
     {
         public override void Initialize()
@@ -260,17 +287,40 @@ namespace ColossalCave.Places
 
     public class AlikeMaze11 : MazeRoom
     {
+        public override void Initialize()
+        {
+            base.Initialize();
 
+            NorthTo<AlikeMaze1>();
+            WestTo<AlikeMaze11>();
+            SouthTo<AlikeMaze11>();
+            EastTo<DeadEnd9>();
+            NorthEastTo<DeadEnd10>();
+        }
     }
 
     public class AlikeMaze12 : MazeRoom
     {
+        public override void Initialize()
+        {
+            base.Initialize();
 
+            SouthTo<BrinkOfPit>();
+            EastTo<AlikeMaze13>();
+            WestTo<DeadEnd11>();
+        }
     }
 
     public class AlikeMaze13 : MazeRoom
     {
+        public override void Initialize()
+        {
+            base.Initialize();
 
+            NorthTo<BrinkOfPit>();
+            WestTo<AlikeMaze12>();
+            NorthWestTo<DeadEnd13>();
+        }
     }
 
     public class AlikeMaze14 : MazeRoom

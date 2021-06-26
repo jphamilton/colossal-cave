@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Places;
 
 namespace ColossalCave.Things
 {
@@ -12,6 +13,8 @@ namespace ColossalCave.Things
             Description = "It's a delicate, precious, ming vase!";
             
             DepositPoints = 14;
+
+            FoundIn<OrientalRoom>();
 
             Before<Attack>(() =>
             {

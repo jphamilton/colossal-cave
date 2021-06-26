@@ -20,10 +20,8 @@ namespace ColossalCave.Places
             {
                 if (Noun is Spring || Noun is SewerPipes)
                 {
-                    Print("The stream flows out through a pair of 1 foot diameter sewer pipes. " +
-                       "It would be advisable to use the exit.");
-                    return true;
-                }
+                    return Print("The stream flows out through a pair of 1 foot diameter sewer pipes. It would be advisable to use the exit.");
+                 }
 
                 return false;
             });

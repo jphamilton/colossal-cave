@@ -18,7 +18,7 @@ namespace ColossalCave.Places
             WestTo<EastEndOfTwoPitRoom>();
             SouthTo<TallEWCanyon>();
             NorthEastTo<Bedquilt>();
-            //NorthWestTo<OrientalRoom>();
+            NorthWestTo<OrientalRoom>();
             EastTo<SoftRoom>();
 
             Before<Go>((Direction direction) =>

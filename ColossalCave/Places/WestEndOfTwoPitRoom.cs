@@ -14,8 +14,6 @@ namespace ColossalCave.Places
                 "You are at the west end of the twopit room. " +
                 "There is a large hole in the wall above the pit at this end of the room.";
 
-            // Has<PlantStickingUp>(); // absent at first
-
             EastTo<EastEndOfTwoPitRoom>();
             
             WestTo<SlabRoom>();
