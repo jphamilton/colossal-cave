@@ -45,7 +45,7 @@ namespace ColossalCave
 
             //Location = Rooms.Get<GiantRoom>();
 
-            //Location = Rooms.Get<EndOfRoad>();
+            Location = Rooms.Get<EndOfRoad>();
         }
 
         public override void AfterTurn()
