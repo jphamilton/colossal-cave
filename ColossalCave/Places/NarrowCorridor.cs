@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using ColossalCave.Actions;
 using ColossalCave.Things;
 
 namespace ColossalCave.Places
@@ -15,7 +16,7 @@ namespace ColossalCave.Places
                 "At the eastern end is a hole through which you can see a profusion of leaves.";
 
             DownTo<WestPit>();
-            //WestTo<GiantRoom>();
+            WestTo<GiantRoom>();
             EastTo<WestPit>();
 
             Before<Jump>(() =>
@@ -38,12 +39,11 @@ namespace ColossalCave.Places
 
             FoundIn<NarrowCorridor>();
 
-            /*
             Before<Count>(() => {
                 Print("69,105."); // Thanks again, Rene.
                 return true;
             });
-             */
+            
         }
     }
 }

@@ -275,11 +275,9 @@ namespace Adventure.Net
             return room;
         }
 
-        public void Scenic(Action<Object> initialize)
+        public bool Contains(Object obj)
         {
-            var scenic = new Scenery();
-            initialize(scenic);
-            ObjectMap.Add(scenic, this);
+            return ObjectMap.Contains(this, obj);
         }
         
     }

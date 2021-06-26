@@ -16,9 +16,7 @@ namespace ColossalCave.Places
                 "Passages exit to the south and west.";
 
             SouthTo<ImmenseNSPassage>();
-            //WestTo<SteepIncline>();
-
-           
+            WestTo<SteepIncline>();
         }
     }
 

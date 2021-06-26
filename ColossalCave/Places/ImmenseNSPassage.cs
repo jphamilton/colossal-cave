@@ -13,7 +13,7 @@ namespace ColossalCave.Places
             Synonyms.Are("immense", "n/s", "passage");
             Description = "You are at one end of an immense north/south passage.";
 
-            //SouthTo<GiantRoom>();
+            SouthTo<GiantRoom>();
 
             NorthTo(() =>
             {
