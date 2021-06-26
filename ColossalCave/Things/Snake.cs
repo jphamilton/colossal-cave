@@ -6,6 +6,9 @@ namespace ColossalCave.Things
 {
     public class Snake : Object
     {
+        private const string TooDangerous = "Attacking the snake both doesn't work and is very dangerous.";
+        private const string NothingToEat = "There's nothing here it wants to eat (except perhaps you).";
+
         public override void Initialize()
         {
             Name = "snake";
@@ -17,10 +20,18 @@ namespace ColossalCave.Things
 
             FoundIn<HallOfMtKing>();
 
-            Before<Attack>(() =>
+            Before<Attack>(() => TooDangerous);
+
+            Before<Order, Ask, Answer>(() => Print("Hiss!"));
+
+            Before<ThrowAt>(() =>
             {
-                Print("Attacking the snake both doesn't work and is very dangerous.");
-                return true;
+                if (Noun is Axe)
+                {
+                    return TooDangerous;
+                }
+
+                return NothingToEat;
             });
 
             Before<Give>(() =>
@@ -32,7 +43,7 @@ namespace ColossalCave.Things
                 }
                 else
                 {
-                    Print("There's nothing here it wants to eat (except perhaps you).");
+                    Print(NothingToEat);
                 }
 
                 return true;
@@ -47,30 +58,3 @@ namespace ColossalCave.Things
         }
     }
 }
-
-/*
- Object  -> Snake "snake"
-  with  name 'snake' 'cobra' 'asp' 'huge' 'fierce' 'green' 'ferocious'
-             'venemous' 'venomous' 'large' 'big' 'killer',
-        description "I wouldn't mess with it if I were you.",
-        initial "A huge green fierce snake bars the way!",
-        life [;
-          Order, Ask, Answer:
-            "Hiss!";
-          ThrowAt:
-            if (noun == axe) <<Attack self>>;
-            <<Give noun self>>;
-          Give:
-            if (noun == little_bird) {
-                remove little_bird;
-                "The snake has now devoured your bird.";
-            }
-            "There's nothing here it wants to eat (except perhaps you).";
-          Attack:
-            "Attacking the snake both doesn't work and is very dangerous.";
-          Take:
-            deadflag = 1;
-            "It takes you instead. Glrp!";
-        ],
-  has   animate;
- */

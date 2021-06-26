@@ -12,7 +12,7 @@ namespace ColossalCave.Places
             NoDwarf = true;
 
             WestTo<NeSideOfChasm>();
-            //EastTo<ForkInPath>();
+            EastTo<ForkInPath>();
         }
     }
 }
