@@ -11,6 +11,21 @@
 
         public static void To(Room room)
         {
+            if (Context.Current != null)
+            {
+                Context.Current.Move =() =>
+                {
+                    return Move(room);
+                };
+            }
+            else
+            {
+                Context.Story.Location = Move(room);
+            }
+        }
+
+        private static Room Move(Room room)
+        {
             Room nextRoom = room;
 
             if (!CurrentRoom.IsLit() && !room.Light)
@@ -39,7 +54,7 @@
 
             room.Visited = true;
 
-            Context.Story.Location = nextRoom;
+            return nextRoom;
         }
     }
 }

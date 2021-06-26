@@ -12,11 +12,6 @@ namespace Adventure.Net
             get { return Context.Story.Location; }
         }
 
-        //public static IList<Item> Objects
-        //{
-        //    get { return Location.Contents; }
-        //}
-
         public static void Look(bool showFull)
         {
             // look is special in that it uses extra formatting like bold,

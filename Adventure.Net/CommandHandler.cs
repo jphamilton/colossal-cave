@@ -61,6 +61,11 @@ namespace Adventure.Net
 
             Print(context.Output);
 
+            if (Context.Current.Move != null)
+            {
+                Context.Story.Location = Context.Current.Move();
+            }
+
             Context.Current = null;
 
             return result;
@@ -194,6 +199,39 @@ namespace Adventure.Net
                 Output.Print(messages);
                 result.Output.AddRange(messages);
             }
+        }
+
+        private void Move(Room room)
+        {
+            Room nextRoom = room;
+
+            if (!CurrentRoom.IsLit() && !room.Light)
+            {
+                room = Rooms.Get<Darkness>();
+            }
+
+            Context.Story.Location = room;
+
+            if (!room.Visited)
+            {
+                CurrentRoom.Look(true);
+
+                room.Initial?.Invoke();
+            }
+            else
+            {
+                if (!CurrentRoom.IsLit() && room.Visited)
+                {
+                    nextRoom.DarkToDark();
+                }
+
+                CurrentRoom.Look(false);
+            }
+
+
+            room.Visited = true;
+
+            Context.Story.Location = nextRoom;
         }
     }
 }

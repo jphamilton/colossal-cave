@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Adventure.Net
@@ -58,6 +59,8 @@ namespace Adventure.Net
         }
 
         public bool IsMulti { get; }
+
+        public Func<Room> Move { get; set; }
 
         public IList<string> Output
         {
