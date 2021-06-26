@@ -43,9 +43,9 @@ namespace ColossalCave.Things
 
             Before<Insert>(() =>
             {
-                if (IndirectObject is Bottle)
+                if (Second is Bottle)
                 {
-                    ((Bottle)IndirectObject).Fill();
+                    ((Bottle)Second).Fill();
                 }
                 else
                 {

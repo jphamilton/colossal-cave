@@ -9,11 +9,6 @@
             * multiinside 'from'/'off' noun             -> Remove
             * 'inventory'                               -> Inv;    // TODO: not implemented
         */
-
-        /*
-         multi = means it handles an object list, all and except syntax
-         held = must be in inventory
-         */
         public Take()
         {
             Name = "take";

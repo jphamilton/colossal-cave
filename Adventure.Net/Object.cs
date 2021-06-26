@@ -68,9 +68,11 @@ namespace Adventure.Net
             set => article = value; 
         }
 
-        public string TheyreOrThats => PluralName ? "They're" : "That's";
-        public string ThatOrThose => PluralName ? "Those" : "That";
-        public string IsOrAre => PluralName ? "are" : "is";
+        public Func<string> Describe { get; set; }
+
+        public string TheyreOrThats => PluralName ? Theyre: Thats;
+        public string ThatOrThose => PluralName ? Those : That;
+        public string IsOrAre => PluralName ? Are : Is;
 
 
         // attributes
@@ -129,9 +131,7 @@ namespace Adventure.Net
 
         public Object Key { get; private set; }
 
-        //
-
-        public Func<string> Describe { get; set; }
+        
 
         public void Before<T>(Func<string> before) where T : Verb
         {
@@ -141,7 +141,7 @@ namespace Adventure.Net
 
                 if (message != null)
                 {
-                    return Print(before());
+                    return Print(message);
                 }
 
                 return false;
@@ -177,6 +177,21 @@ namespace Adventure.Net
             if (beforeRoutines.ContainsKey(verbType))
                 return beforeRoutines[verbType];
             return null;
+        }
+
+        public void After<T>(Func<string> after) where T : Verb
+        {
+            void wrapper()
+            {
+                var message = after();
+
+                if (message != null)
+                {
+                    Print(message);
+                }
+            }
+
+            After<T>(wrapper);
         }
 
         public void After<T>(Action after) where T : Verb
@@ -242,15 +257,15 @@ namespace Adventure.Net
         }
 
         // current object being handled by the command handler
-        public static Object CurrentObject
+        public static Object Noun
         {
-            get { return Context.Current.CurrentObject; }
+            get { return Context.Current.Noun; }
         }
 
         // indirect object of current running command
-        public static Object IndirectObject
+        public static Object Second
         {
-            get { return Context.Current.IndirectObject; }
+            get { return Context.Current.Second; }
         }
 
         public static T Get<T>() where T : Object

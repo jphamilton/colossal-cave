@@ -33,9 +33,9 @@ namespace ColossalCave.Things
 
             Before<ThrowAt>(() =>
             {
-                if (CurrentObject is Axe)
+                if (Noun is Axe)
                 {
-                    CurrentObject.MoveToLocation();
+                    Noun.MoveToLocation();
                     Print("The axe bounces harmlessly off the dragon's thick scales.");
                 }
                 else

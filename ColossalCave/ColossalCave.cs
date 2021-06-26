@@ -38,7 +38,19 @@ namespace ColossalCave
 
             Output.PrintLine();
 
-            Location = Rooms.Get<EndOfRoad>();
+            var lamp = Objects.Get<BrassLantern>();
+            lamp.On = true;
+            lamp.Light = true;
+            Inventory.Add(lamp);
+
+            var bottle = Objects.Get<Bottle>();
+            var oil = Object.Get<OilInTheBottle>();
+            bottle.Add(oil);
+            Inventory.Add(bottle);
+
+            Location = Rooms.Get<ImmenseNSPassage>();
+
+            //Location = Rooms.Get<EndOfRoad>();
         }
 
         public override void AfterTurn()

@@ -25,9 +25,9 @@ namespace ColossalCave.Things
 
             Before<Give>(() =>
             {
-                if (CurrentObject is LittleBird)
+                if (Noun is LittleBird)
                 {
-                    CurrentObject.Remove();
+                    Noun.Remove();
                     Print("The snake has now devoured your bird.");
                 }
                 else

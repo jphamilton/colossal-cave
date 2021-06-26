@@ -89,6 +89,10 @@ namespace Adventure.Net
             Object obj = Objects.Get<T>();
             return Contents.Contains(obj);
         }
-          
+
+        public bool Contains(Object obj)
+        {
+            return Contents.Contains(obj);
+        }
     }
 }

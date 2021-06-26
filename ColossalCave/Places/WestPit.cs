@@ -20,7 +20,7 @@ namespace ColossalCave.Places
 
             Before<Climb>(() =>
             {
-                if (CurrentObject is Plant)
+                if (Noun is Plant)
                 {
                     return false;
                 }

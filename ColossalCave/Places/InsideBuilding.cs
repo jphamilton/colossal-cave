@@ -18,7 +18,7 @@ namespace ColossalCave.Places
 
             Before<Enter>(() =>
             {
-                if (CurrentObject is Spring || CurrentObject is SewerPipes)
+                if (Noun is Spring || Noun is SewerPipes)
                 {
                     Print("The stream flows out through a pair of 1 foot diameter sewer pipes. " +
                        "It would be advisable to use the exit.");

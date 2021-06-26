@@ -40,7 +40,7 @@ namespace ColossalCave.Things
             Before<Insert>(() =>
             {
                 var bottle = Bottle;
-                if (IndirectObject is Bottle)
+                if (Second is Bottle)
                 {
                     Bottle.Fill();
                 }

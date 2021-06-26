@@ -55,9 +55,9 @@ namespace ColossalCave.Things
 
             Before<Insert>(() =>
                 {
-                    if (IndirectObject.Is<Container>() && IndirectObject.IsNot<WickerCage>())
+                    if (Second.Is<Container>() && Second.IsNot<WickerCage>())
                     {
-                        Print($"Don't put the poor bird in {IndirectObject.Article} {IndirectObject.Name}!");
+                        Print($"Don't put the poor bird in {Second.Article} {Second.Name}!");
                         return true;
                     }
 

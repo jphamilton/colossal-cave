@@ -42,7 +42,7 @@ namespace ColossalCave.Things
 
             Receive((obj) =>
                 {
-                    if (obj.Is<Stream>() || obj.Is<Oil>())
+                    if (obj.Is<Stream>() || obj.Is<OilInTheBottle>())
                     {
                         Fill();
                     }
@@ -65,7 +65,7 @@ namespace ColossalCave.Things
             {
                 var stream = Get<Stream>();
                 var spring = Get<Spring>();
-                var oil = Get<Oil>();
+                var oil = Get<OilInTheBottle>();
 
                 if (stream.InScope || spring.InScope)
                 {

@@ -15,6 +15,7 @@ namespace ColossalCave.Things
             Before<Drink>(() =>
                 {
                     var bottle = Get<Bottle>();
+                    
                     if (bottle.Contents.Contains(this))
                     {
                         bottle.Remove<WaterInTheBottle>();

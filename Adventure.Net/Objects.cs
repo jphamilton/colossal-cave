@@ -126,7 +126,12 @@ namespace Adventure.Net
 
         public static IReadOnlyList<Object> GetObjects(Room room)
         {
-            return (IReadOnlyList<Object>)RoomToObjects[room];
+            if (RoomToObjects.ContainsKey(room))
+            {
+                return (IReadOnlyList<Object>)RoomToObjects[room];
+            }
+
+            return new List<Object>();
         }
 
             

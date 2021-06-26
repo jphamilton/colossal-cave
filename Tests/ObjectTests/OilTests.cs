@@ -7,12 +7,12 @@ namespace Tests.ObjectTests
 {
     public class OilTests : BaseTestFixture
     {
-        private readonly Oil oil;
+        private readonly PoolOfOil oil;
 
         public OilTests()
         {
             Context.Story.Location = Room<DebrisRoom>();
-            oil = Objects.Get<Oil>();
+            oil = Objects.Get<PoolOfOil>();
             ObjectMap.Add(oil, Location);
         }
 
@@ -21,7 +21,7 @@ namespace Tests.ObjectTests
         {
             Execute("drink oil");
             Assert.Contains("Absolutely not.", ConsoleOut);
-            Assert.True(CurrentRoom.Has<Oil>());
+            Assert.True(CurrentRoom.Has<PoolOfOil>());
         }
 
         [Fact]

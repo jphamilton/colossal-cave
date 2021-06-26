@@ -79,8 +79,25 @@ namespace Adventure.Net
                 if (obj.Scenery && obj.Describe == null)
                     continue;
 
-                if (obj.Static && (obj.Describe == null && obj.InitialDescription == null))
-                    continue;
+                if (obj.Static)
+                {
+                    if (obj is Door door)
+                    {
+                        if (door.WhenOpen != null && door.Open)
+                        {
+                            Output.Print($"\n{door.WhenOpen}");
+                            continue;
+                        }
+                        else if (door.WhenClosed != null && !door.Open)
+                        {
+                            Output.Print($"\n{door.WhenClosed}");
+                            continue;
+                        }
+                    }
+
+                    if (obj.Describe == null && obj.InitialDescription == null)
+                        continue;
+                }
 
                 total++;
 

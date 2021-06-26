@@ -6,25 +6,13 @@
         {
             Name = "unlock";
         }
-
        
         // implicit unlock
         // if the key is in inventory and is the only item, the
-        public bool Expects(Object obj)
-        {
-            return UnlockObject(obj);
-            //if (!obj.IsLockable)
-            //{
-            //    Print("That doesn't seem to be something you can unlock.");
-            //}
-            //else if (!obj.IsLocked)
-            //{
-            //    Print("It's unlocked at the moment.");
-            //}
-
-
-
-        }
+        //public bool Expects(Object obj)
+        //{
+        //    return UnlockObject(obj);
+        //}
 
         public bool Expects(Object obj, Preposition.With with, [Held]Object indirect)
         {

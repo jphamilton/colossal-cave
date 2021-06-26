@@ -51,7 +51,7 @@ namespace Adventure.Net
         {
             Parsed = parsed;
             IsMulti = parsed.Objects.Count > 1 && (parsed.Verb.Multi || parsed.Verb.MultiHeld);
-            IndirectObject = parsed.IndirectObject;
+            Second = parsed.IndirectObject;
 
             OrderedOutput = new List<IList<string>>();
             OutputStack = new Stack<CommandOutput>();
@@ -80,10 +80,10 @@ namespace Adventure.Net
         public CommandLineParserResult Parsed { get; }
 
         // this changes as the command handler iterates the objects
-        public Object CurrentObject { get; set; }
+        public Object Noun { get; set; }
 
         // this never changes.
-        public Object IndirectObject { get; }
+        public Object Second { get; }
 
        
         public ICommandState PushState(CommandOutput commandOutput = null)
@@ -127,11 +127,11 @@ namespace Adventure.Net
             switch (process)
             {
                 case CommandState.Before:
-                    messages.BeforeOutput.Add(IsMulti ? $"{CurrentObject.Name}: {message}" : message);
+                    messages.BeforeOutput.Add(IsMulti ? $"{Noun.Name}: {message}" : message);
                     break;
 
                 case CommandState.During:
-                    messages.DuringOutput.Add(IsMulti ? $"{CurrentObject.Name}: {message}" : message);
+                    messages.DuringOutput.Add(IsMulti ? $"{Noun.Name}: {message}" : message);
                     break;
 
                 case CommandState.After:

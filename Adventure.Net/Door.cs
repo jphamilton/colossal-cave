@@ -11,6 +11,9 @@ namespace Adventure.Net
             Openable = true;
         }
 
+        public string WhenOpen { get; set; }
+        public string WhenClosed { get; set; }
+
         public Func<Room> DoorTo { get; set; }
 
         public Func<Direction> DoorDirection { get; set; } 

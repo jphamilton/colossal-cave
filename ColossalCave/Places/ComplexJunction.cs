@@ -14,7 +14,7 @@
 
             UpTo<DustyRockRoom>();
             WestTo<Bedquilt>();
-            //NorthTo<ShellRoom>();
+            NorthTo<ShellRoom>();
             EastTo<Anteroom>();
         }
     }

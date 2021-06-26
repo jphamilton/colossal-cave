@@ -52,7 +52,7 @@ namespace Adventure.Net
             else
             {
                 // one word command (e.g. look, i, south)
-                Expects(verb, null);
+                Expects(verb, null, commandState);
             }
 
             context.PopState();
@@ -72,7 +72,7 @@ namespace Adventure.Net
 
             foreach (var obj in objects)
             {
-                context.CurrentObject = obj;
+                context.Noun = obj;
 
                 bool handled = false;
 
@@ -98,7 +98,7 @@ namespace Adventure.Net
                 if (!handled)
                 {
                     commandState.State = CommandState.During;
-                    bool success = Expects(verb, obj);
+                    bool success = Expects(verb, obj, commandState);
 
                     if (success)
                     {
@@ -143,7 +143,7 @@ namespace Adventure.Net
             Print(error);
         }
 
-        private bool Expects(Verb verb, Object obj)
+        private bool Expects(Verb verb, Object obj, ICommandState commandState)
         {
             var call = new DynamicCall(parsed.Expects, obj, preposition, indirectObject);
             var expects = new DynamicExpects(verb, parsed.Expects, call);
@@ -155,11 +155,13 @@ namespace Adventure.Net
 
             if (before != null)
             {
+                commandState.State = CommandState.Before;
                 handled = before();
             }
 
             if (!handled)
             {
+                commandState.State = CommandState.During;
                 success = expects.Invoke();
 
                 if (success)
@@ -168,6 +170,7 @@ namespace Adventure.Net
 
                     if (after != null)
                     {
+                        commandState.State = CommandState.After;
                         after();
                     }
                 }

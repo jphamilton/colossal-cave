@@ -30,7 +30,7 @@ namespace ColossalCave.Places
 
             Before<Enter>(() =>
             {
-                if (CurrentObject is HoleAbovePit)
+                if (Noun is HoleAbovePit)
                 {
                     Print("It is too far up for you to reach.");
                 }
