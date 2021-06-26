@@ -52,8 +52,9 @@ namespace ColossalCave.Places
             WhenOpen = "The way north leads through a massive, rusty, iron door.";
             WhenClosed = "The way north is barred by a massive, rusty, iron door.";
 
-            DoorTo = () => Room<CavernWithWaterfall>();
-            DoorDirection = () => Direction<North>();
+            DoorTo(() => Room<CavernWithWaterfall>());
+
+            DoorDirection(Direction<North>);
 
             Before<Open>(() =>
             {

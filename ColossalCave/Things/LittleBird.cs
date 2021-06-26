@@ -110,8 +110,7 @@ namespace ColossalCave.Things
 
             if (blackRod.InInventory)
             {
-                Print("The bird was unafraid when you entered,");
-                Print("but as you approach it becomes disturbed and you cannot catch it.");
+                Print("The bird was unafraid when you entered, but as you approach it becomes disturbed and you cannot catch it.");
                 return true;
             }
 
@@ -125,6 +124,7 @@ namespace ColossalCave.Things
                 }
 
                 Print("You catch the bird in the wicker cage.");
+
                 cage.Open = false;
                 bird.Remove();
                 cage.Add(bird);
@@ -157,8 +157,7 @@ namespace ColossalCave.Things
 
                 if (snake.InRoom)
                 {
-                    Print("The little bird attacks the green snake,");
-                    Print("and in an astounding flurry drives the snake away.");
+                    Print("The little bird attacks the green snake, and in an astounding flurry drives the snake away.");
                     snake.Remove();
                     return true;
                 }
@@ -167,8 +166,7 @@ namespace ColossalCave.Things
 
                 if (dragon.InRoom)
                 {
-                    Print("The little bird attacks the green dragon,");
-                    Print("and in an astounding flurry gets burnt to a cinder.");
+                    Print("The little bird attacks the green dragon, and in an astounding flurry gets burnt to a cinder.");
                     Print("The ashes blow away.");
                     bird.Remove();
                     return true;

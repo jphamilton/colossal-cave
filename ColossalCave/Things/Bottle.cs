@@ -65,7 +65,7 @@ namespace ColossalCave.Things
             {
                 var stream = Get<Stream>();
                 var spring = Get<Spring>();
-                var oil = Get<OilInTheBottle>();
+                var oil = Get<PoolOfOil>();
 
                 if (stream.InScope || spring.InScope)
                 {

@@ -72,11 +72,12 @@ namespace Tests.ObjectTests
         public void can_turn_on_lamp()
         {
             lamp.On = false;
+            lamp.Light = false;
 
             Assert.False(lamp.Light);
 
             Execute("turn on lamp");
-
+            
             Assert.True(lamp.On);
             Assert.True(lamp.Light);
         }
@@ -102,7 +103,7 @@ namespace Tests.ObjectTests
 
             Assert.True(lamp.On);
             Assert.True(lamp.Light);
-            Assert.Equal("That's already on.", Line(1));
+            Assert.Equal("That's already on.", Line1);
         }
 
         [Fact]
@@ -115,7 +116,7 @@ namespace Tests.ObjectTests
 
             Assert.False(lamp.On);
             Assert.False(lamp.Light);
-            Assert.Equal("That's already off.", Line(1));
+            Assert.Equal("That's already off.", Line1);
         }
 
         [Fact]
@@ -127,7 +128,7 @@ namespace Tests.ObjectTests
             Execute("on");
 
             // implicit switch
-            Assert.Equal("You switch the brass lantern on.", Line(1));
+            Assert.Equal("You switch the brass lantern on.", Line1);
 
             Assert.True(lamp.On);
             Assert.True(lamp.Light);
@@ -142,7 +143,7 @@ namespace Tests.ObjectTests
             Execute("off");
 
             // implicit switch
-            Assert.Equal("You switch the brass lantern off.", Line(1));
+            Assert.Equal("You switch the brass lantern off.", Line1);
 
             Assert.False(lamp.On);
             Assert.False(lamp.Light);

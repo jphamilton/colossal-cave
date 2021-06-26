@@ -34,8 +34,8 @@ namespace Tests.ParserTests
 
             var result = Execute("take");
 
-            Assert.Equal("What do you want to take?", Line(1));
-            Assert.Equal("What do you want to take?", Line(2));
+            Assert.Equal("What do you want to take?", Line1);
+            Assert.Equal("What do you want to take?", Line2);
         }
 
         [Fact]
@@ -93,8 +93,8 @@ namespace Tests.ParserTests
 
             var x = ConsoleOut;
 
-            Assert.Contains($"What do you want to put {fresh} in?", Line(1));
-            Assert.Contains("I'm taking the liberty of replacing the batteries.", Line(2));
+            Assert.Contains($"What do you want to put {fresh} in?", Line1);
+            Assert.Contains("I'm taking the liberty of replacing the batteries.", Line2);
 
             Assert.Equal(2500, lamp.PowerRemaining);
 
@@ -109,7 +109,7 @@ namespace Tests.ParserTests
         public void put_all_in()
         {
             Execute("put all in");
-            Assert.Contains($"What do you want to put those things in?", Line(1));
+            Assert.Contains($"What do you want to put those things in?", Line1);
         }
 
         [Fact]
@@ -127,8 +127,8 @@ namespace Tests.ParserTests
 
             var x = ConsoleOut;
 
-            Assert.Contains($"What do you want to put {fresh} in?", Line(1));
-            Assert.Contains("I'm taking the liberty of replacing the batteries.", Line(2));
+            Assert.Contains($"What do you want to put {fresh} in?", Line1);
+            Assert.Contains("I'm taking the liberty of replacing the batteries.", Line2);
 
             Assert.Equal(2500, lamp.PowerRemaining);
 

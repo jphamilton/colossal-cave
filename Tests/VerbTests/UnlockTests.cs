@@ -15,8 +15,8 @@ namespace Tests.Verbs
             Location = Rooms.Get<OutsideGrate>();
             Inventory.Add(Objects.Get<SetOfKeys>());
             Execute("unlock grate");
-            Assert.Equal("(with the set of keys)", Line(1));
-            Assert.Equal("You unlock the steel grate.", Line(2));
+            Assert.Equal("(with the set of keys)", Line1);
+            Assert.Equal("You unlock the steel grate.", Line2);
         }
 
         [Fact]
@@ -55,8 +55,8 @@ namespace Tests.Verbs
 
             Assert.True(grate.Locked);
             var result = Execute("unlock grate");
-            Assert.Equal("(with the set of keys)", Line(1));
-            Assert.Equal("You unlock the steel grate.", Line(2));
+            Assert.Equal("(with the set of keys)", Line1);
+            Assert.Equal("You unlock the steel grate.", Line2);
 
             Assert.False(grate.Locked);
         }
@@ -72,7 +72,7 @@ namespace Tests.Verbs
             grate.Locked = false;
 
             var result = Execute("unlock grate with keys");
-            Assert.Equal("That's unlocked at the moment.", Line(1));
+            Assert.Equal("That's unlocked at the moment.", Line1);
 
             Assert.False(grate.Locked);
         }
@@ -85,15 +85,15 @@ namespace Tests.Verbs
 
             var result = Execute("unlock bottle");
             
-            Assert.NotEqual("(with the small bottle)", Line(1));
-            Assert.Equal("What do you want to unlock the small bottle with?", Line(1));
+            Assert.NotEqual("(with the small bottle)", Line1);
+            Assert.Equal("What do you want to unlock the small bottle with?", Line1);
         }
 
         [Fact]
         public void should_not_mimic_inform6_when_attempting_unlock_non_lockable()
         {
             Execute("unlock bottle");
-            Assert.Equal("What do you want to unlock the small bottle with?", Line(1));
+            Assert.Equal("What do you want to unlock the small bottle with?", Line1);
         }
 
     }

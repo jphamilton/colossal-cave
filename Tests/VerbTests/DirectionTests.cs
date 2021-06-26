@@ -42,14 +42,14 @@ namespace Tests.Verbs
         {
             Location = Room<EndOfRoad>();
             var result = Execute("sw");
-            Assert.Equal("You can't go that way.", Line(1));
+            Assert.Equal("You can't go that way.", Line1);
         }
 
         [Fact]
         public void custom_cant_go_that_way()
         {
             Execute("nw");
-            Assert.Equal("The stream flows out through a pair of 1 foot diameter sewer pipes. The only exit is to the west.", Line(1));
+            Assert.Equal("The stream flows out through a pair of 1 foot diameter sewer pipes. The only exit is to the west.", Line1);
         }
 
         [Fact]
@@ -57,6 +57,7 @@ namespace Tests.Verbs
         {
             Location = Room<OutsideGrate>();
             Execute("d");
+            var x = ConsoleOut;
             Assert.Equal(Room<OutsideGrate>(), Location);
 
             Location = Room<BelowTheGrate>();

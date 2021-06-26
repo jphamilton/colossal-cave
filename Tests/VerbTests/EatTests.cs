@@ -11,7 +11,7 @@ namespace Tests.VerbTests
         {
             Inventory.Add(Objects.Get<Bottle>());
             Execute("eat bottle");
-            Assert.Equal("That's plainly inedible.", Line(1));
+            Assert.Equal("That's plainly inedible.", Line1);
         }
 
         [Fact]
@@ -21,7 +21,7 @@ namespace Tests.VerbTests
 
             Inventory.Add(tastyFood);
             Execute("eat food");
-            Assert.Equal("Delicious!", Line(1));
+            Assert.Equal("Delicious!", Line1);
         }
 
     }

@@ -15,7 +15,7 @@ namespace Tests.VerbTests
 
             Execute("take bottle");
 
-            Assert.Equal("Taken.", Line(1));
+            Assert.Equal("Taken.", Line1);
 
             Assert.True(Inventory.Contains(bottle));
 
@@ -29,7 +29,7 @@ namespace Tests.VerbTests
             
             Execute("take cage");
 
-            Assert.Equal("You can't see any such thing.", Line(1));
+            Assert.Equal("You can't see any such thing.", Line1);
 
             Assert.False(Inventory.Contains(cage));
         }
@@ -39,7 +39,7 @@ namespace Tests.VerbTests
         {
             Execute("take building");
             
-            Assert.Equal("That's hardly portable.", Line(1));
+            Assert.Equal("That's hardly portable.", Line1);
         }
 
         [Fact]
@@ -47,7 +47,7 @@ namespace Tests.VerbTests
         {
             Location = Room<OutsideGrate>();
             var result = Execute("take grate");
-            Assert.Equal("That's fixed in place.", Line(1));
+            Assert.Equal("That's fixed in place.", Line1);
         }
 
         [Fact]
@@ -58,8 +58,8 @@ namespace Tests.VerbTests
 
             Execute("take bottle and keys");
 
-            Assert.Equal("small bottle: Taken.", Line(1));
-            Assert.Equal("set of keys: Taken.", Line(2));
+            Assert.Equal("small bottle: Taken.", Line1);
+            Assert.Equal("set of keys: Taken.", Line2);
 
             Assert.True(Inventory.Contains(bottle));
             Assert.True(Inventory.Contains(keys));
@@ -73,8 +73,8 @@ namespace Tests.VerbTests
 
             Execute("take bottle,keys");
 
-            Assert.Equal("small bottle: Taken.", Line(1));
-            Assert.Equal("set of keys: Taken.", Line(2));
+            Assert.Equal("small bottle: Taken.", Line1);
+            Assert.Equal("set of keys: Taken.", Line2);
 
             Assert.True(Inventory.Contains(bottle));
             Assert.True(Inventory.Contains(keys));
@@ -89,9 +89,9 @@ namespace Tests.VerbTests
 
             Execute("take bottle and keys and lantern");
 
-            Assert.Equal("small bottle: Taken.", Line(1));
-            Assert.Equal("set of keys: Taken.", Line(2));
-            Assert.Equal("brass lantern: Taken.", Line(3));
+            Assert.Equal("small bottle: Taken.", Line1);
+            Assert.Equal("set of keys: Taken.", Line2);
+            Assert.Equal("brass lantern: Taken.", Line3);
 
             Assert.True(Inventory.Contains(bottle));
             Assert.True(Inventory.Contains(keys));
@@ -107,9 +107,9 @@ namespace Tests.VerbTests
 
             Execute("take bottle, keys and lantern");
 
-            Assert.Equal("small bottle: Taken.", Line(1));
-            Assert.Equal("set of keys: Taken.", Line(2));
-            Assert.Equal("brass lantern: Taken.", Line(3));
+            Assert.Equal("small bottle: Taken.", Line1);
+            Assert.Equal("set of keys: Taken.", Line2);
+            Assert.Equal("brass lantern: Taken.", Line3);
 
             Assert.True(Inventory.Contains(bottle));
             Assert.True(Inventory.Contains(keys));
@@ -174,7 +174,7 @@ namespace Tests.VerbTests
 
             Execute("take bottle");
 
-            Assert.Equal("You already have that.", Line(1));
+            Assert.Equal("You already have that.", Line1);
 
         }
 
@@ -182,7 +182,7 @@ namespace Tests.VerbTests
         public void take_except()
         {
             Execute("take except");
-            Assert.Equal(Messages.CantSeeObject, Line(1));
+            Assert.Equal(Messages.CantSeeObject, Line1);
 
         }
 
@@ -205,8 +205,8 @@ namespace Tests.VerbTests
             
             Execute("eat food");
 
-            Assert.Equal("(first taking the tasty food)", Line(1));
-            Assert.Equal("Delicious!", Line(2));
+            Assert.Equal("(first taking the tasty food)", Line1);
+            Assert.Equal("Delicious!", Line2);
 
             Assert.False(CurrentRoom.Has<TastyFood>());
             Assert.False(Inventory.Contains(tastyFood));
@@ -233,8 +233,8 @@ namespace Tests.VerbTests
 
             var result = Execute("eat food");
 
-            // Assert.Equal("(first taking the tasty food)", Line(1));
-            Assert.Equal(blocked, Line(1));
+            // Assert.Equal("(first taking the tasty food)", Line1);
+            Assert.Equal(blocked, Line1);
 
             Assert.True(CurrentRoom.Has<TastyFood>());
             Assert.False(Inventory.Contains(tastyFood));
@@ -250,7 +250,7 @@ namespace Tests.VerbTests
 
             Execute("eat food");
 
-            Assert.Equal("Delicious!", Line(1));
+            Assert.Equal("Delicious!", Line1);
 
             Assert.False(CurrentRoom.Has<TastyFood>());
             Assert.False(Inventory.Contains(tastyFood));

@@ -16,7 +16,7 @@ namespace Tests.ObjectTests
 
             Execute("release bird");
 
-            Assert.Equal("The bird is not caged now.", Line(1));
+            Assert.Equal("The bird is not caged now.", Line1);
         }
 
         [Fact]
@@ -31,7 +31,7 @@ namespace Tests.ObjectTests
 
             Execute("examine bird");
 
-            Assert.Equal("The little bird looks unhappy in the cage.", Line(1));
+            Assert.Equal("The little bird looks unhappy in the cage.", Line1);
         }
 
         [Fact]
@@ -42,7 +42,7 @@ namespace Tests.ObjectTests
 
             Execute("examine bird");
 
-            Assert.Equal("The cheerful little bird is sitting here singing.", Line(1));
+            Assert.Equal("The cheerful little bird is sitting here singing.", Line1);
         }
 
         [Fact]
@@ -59,8 +59,8 @@ namespace Tests.ObjectTests
 
             var result = Execute("drop bird");
 
-            Assert.Equal("(The bird is released from the cage.)", Line(1));
-            Assert.Equal("The little bird flies free.", Line(2));
+            Assert.Equal("(The bird is released from the cage.)", Line1);
+            Assert.Equal("The little bird flies free.", Line2);
 
             Assert.True(CurrentRoom.Has<LittleBird>());
             Assert.False(cage.Contains<LittleBird>());
@@ -81,8 +81,8 @@ namespace Tests.ObjectTests
 
             Execute("remove bird");
             
-            Assert.Equal("(The bird is released from the cage.)", Line(1));
-            Assert.Equal("The little bird flies free.", Line(2));
+            Assert.Equal("(The bird is released from the cage.)", Line1);
+            Assert.Equal("The little bird flies free.", Line2);
             
             Assert.True(CurrentRoom.Has<LittleBird>());
             Assert.False(cage.Contains<LittleBird>());
@@ -104,8 +104,8 @@ namespace Tests.ObjectTests
 
             Execute("take bird");
 
-            Assert.Equal("You already have the little bird.", Line(1));
-            Assert.Equal("If you take it out of the cage it will likely fly away from you.", Line(2));
+            Assert.Equal("You already have the little bird.", Line1);
+            Assert.Equal("If you take it out of the cage it will likely fly away from you.", Line2);
 
             Assert.True(cage.Contains<LittleBird>());
         }
@@ -124,8 +124,8 @@ namespace Tests.ObjectTests
 
             var result = Execute("catch bird");
 
-            Assert.Equal("You already have the little bird.", Line(1));
-            Assert.Equal("If you take it out of the cage it will likely fly away from you.", Line(2));
+            Assert.Equal("You already have the little bird.", Line1);
+            Assert.Equal("If you take it out of the cage it will likely fly away from you.", Line2);
             Assert.True(cage.Contains<LittleBird>());
         }
 
@@ -137,7 +137,7 @@ namespace Tests.ObjectTests
 
             Execute("catch bird");
             
-            Assert.Equal("You can catch the bird, but you cannot carry it.", Line(1));
+            Assert.Equal("You can catch the bird, but you cannot carry it.", Line1);
             Assert.False(Inventory.Contains<LittleBird>());
         }
 
@@ -155,8 +155,7 @@ namespace Tests.ObjectTests
 
             Execute("catch bird");
 
-            Assert.Equal("The bird was unafraid when you entered,", Line(1));
-            Assert.Equal("but as you approach it becomes disturbed and you cannot catch it.", Line(2));
+            Assert.Equal("The bird was unafraid when you entered, but as you approach it becomes disturbed and you cannot catch it.", Line1);
 
         }
 
@@ -171,7 +170,7 @@ namespace Tests.ObjectTests
 
             Execute("take bird");
             
-            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
+            Assert.Equal("You catch the bird in the wicker cage.", Line1);
             Assert.False(CurrentRoom.Has<LittleBird>());
             Assert.True(cage.Contains<LittleBird>());
             Assert.True(bird.InInventory);
@@ -188,7 +187,7 @@ namespace Tests.ObjectTests
 
             Execute("release bird");
 
-            Assert.Equal("The bird is not caged now.", Line(1));
+            Assert.Equal("The bird is not caged now.", Line1);
 
         }
 
@@ -206,8 +205,7 @@ namespace Tests.ObjectTests
 
             Execute("release bird");
 
-            Assert.Equal("The little bird attacks the green snake,", Line(1));
-            Assert.Equal("and in an astounding flurry drives the snake away.", Line(2));
+            Assert.Equal("The little bird attacks the green snake, and in an astounding flurry drives the snake away.", Line1);
             Assert.False(CurrentRoom.Has<Snake>());
             Assert.False(cage.Contains<LittleBird>());
             Assert.True(CurrentRoom.Has<LittleBird>());
@@ -251,7 +249,7 @@ namespace Tests.ObjectTests
 
             Execute("put bird into oven");
 
-            Assert.Equal("Don't put the poor bird in the oven!", Line(1));
+            Assert.Equal("Don't put the poor bird in the oven!", Line1);
 
         }
 
@@ -266,7 +264,7 @@ namespace Tests.ObjectTests
 
             Execute("put bird into cage");
 
-            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
+            Assert.Equal("You catch the bird in the wicker cage.", Line1);
         }
 
         [Fact]
@@ -281,7 +279,7 @@ namespace Tests.ObjectTests
 
             Execute("catch bird");
 
-            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
+            Assert.Equal("You catch the bird in the wicker cage.", Line1);
         }
 
         [Fact]
@@ -295,7 +293,7 @@ namespace Tests.ObjectTests
 
             Execute("attack bird");
 
-            Assert.Equal("Oh, leave the poor unhappy bird alone.", Line(1));
+            Assert.Equal("Oh, leave the poor unhappy bird alone.", Line1);
         }
 
         [Fact]
@@ -307,7 +305,7 @@ namespace Tests.ObjectTests
 
             Execute("attack bird");
 
-            Assert.Equal("The little bird is now dead. Its body disappears.", Line(1));
+            Assert.Equal("The little bird is now dead. Its body disappears.", Line1);
         }
 
         [Fact]
@@ -323,7 +321,7 @@ namespace Tests.ObjectTests
             Execute("ask bird about snake");
             var x = ConsoleOut;
 
-            Assert.Equal("Cheep! Chirp!", Line(1));
+            Assert.Equal("Cheep! Chirp!", Line1);
         }
 
         

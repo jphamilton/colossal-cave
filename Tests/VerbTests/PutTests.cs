@@ -20,7 +20,7 @@
 //            CommandPrompt.FakeInput("cage");
 
 //            Execute("put bird");
-//            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
+//            Assert.Equal("You catch the bird in the wicker cage.", Line1);
 //        }
 
 //        [Fact]
@@ -35,7 +35,7 @@
 //            Inventory.Add(cage);
 
 //            Execute("put bird");
-//            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
+//            Assert.Equal("You catch the bird in the wicker cage.", Line1);
 //        }
 
 //        [Fact]
@@ -50,7 +50,7 @@
 //            Location.Objects.Add(keys);
 
 //            Execute("put bottle on");
-//            Assert.Equal("You need to be holding the small bottle before you can put it on top of something else.", Line(1));
+//            Assert.Equal("You need to be holding the small bottle before you can put it on top of something else.", Line1);
 //        }
 
 //        [Fact]
@@ -59,7 +59,7 @@
 //            CommandPrompt.FakeInput("bird in cage");
 
 //            Execute("put");
-//            Assert.Equal("You can't see any such thing.", Line(1));
+//            Assert.Equal("You can't see any such thing.", Line1);
 //        }
 
 //        [Fact]
@@ -74,7 +74,7 @@
 //            Location.Objects.Add(bird);
 
 //            Execute("put");
-//            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
+//            Assert.Equal("You catch the bird in the wicker cage.", Line1);
 //        }
 
 //        [Fact]
@@ -89,7 +89,7 @@
 //            Location.Objects.Add(bird);
 
 //            Execute("put");
-//            Assert.Equal("You catch the bird in the wicker cage.", Line(1));
+//            Assert.Equal("You catch the bird in the wicker cage.", Line1);
 //        }
 
 //        [Fact]
@@ -116,8 +116,8 @@
 
 //            Execute("put");
 //            var x = ConsoleOut;
-//            Assert.Equal("(in the little bird)", Line(1));
-//            Assert.Equal("Don't put the poor bird in the little bird!", Line(2));
+//            Assert.Equal("(in the little bird)", Line1);
+//            Assert.Equal("Don't put the poor bird in the little bird!", Line2);
 //        }
 
 //        [Fact]
@@ -140,8 +140,8 @@
 //            cage.Add(bird);
 
 //            Execute("put");
-//            Assert.Equal("You already have the little bird.", Line(1));
-//            Assert.Equal("If you take it out of the cage it will likely fly away from you.", Line(2));
+//            Assert.Equal("You already have the little bird.", Line1);
+//            Assert.Equal("If you take it out of the cage it will likely fly away from you.", Line2);
 //        }
 
 
@@ -152,8 +152,8 @@
 
 //            Execute("put all except");
 
-//            Assert.Equal("What do you want to put?", Line(1)); 
-//            Assert.Equal(Messages.CantSeeObject, Line(2));
+//            Assert.Equal("What do you want to put?", Line1); 
+//            Assert.Equal(Messages.CantSeeObject, Line2);
 //        }
 
         

@@ -37,7 +37,22 @@ namespace Adventure.Net.Extensions
             return Verbs.Get(input);
         }
 
-        
+        public static string Capitalize(this string input)
+        {
+            if (!string.IsNullOrEmpty(input))
+            {
+                if (input.Length == 1)
+                {
+                    input = input.ToUpper();
+                }
+                else
+                {
+                    input = char.ToUpper(input[0]) + input.Substring(1);
+                }
+            }
+
+            return input;
+        }
 
     }
 }

@@ -6,13 +6,13 @@
         {
             Name = "unlock";
         }
-       
+
         // implicit unlock
         // if the key is in inventory and is the only item, the
-        //public bool Expects(Object obj)
-        //{
-        //    return UnlockObject(obj);
-        //}
+        public bool Expects(Object obj)
+        {
+            return UnlockObject(obj);
+        }
 
         public bool Expects(Object obj, Preposition.With with, [Held]Object indirect)
         {

@@ -41,8 +41,9 @@ namespace ColossalCave.Places
             FoundIn<SwEnd>();
 
             //with_key nothing
-            DoorDirection = () => Direction<Down>();
-            DoorTo = () => Room<OutsideGrate>();
+            DoorDirection(Direction<Down>);
+
+            DoorTo(() => Room<OutsideGrate>());
         }
     }
 

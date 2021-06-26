@@ -262,11 +262,21 @@ namespace Adventure.Net
 
             if (room != null)
             {
-                var beforeEnter = room.Before<Enter>();
-
-                if (beforeEnter != null && beforeEnter())
+                if (room is Door door)
                 {
-                    return CurrentRoom.Location;
+                    if (door.Open)
+                    {
+                        room = door.DoorTo();
+                    }
+                }
+                else
+                {
+                    var beforeEnter = room.Before<Enter>();
+
+                    if (beforeEnter != null && beforeEnter())
+                    {
+                        return CurrentRoom.Location;
+                    }
                 }
 
                 room = room.HandleMove() ?? this;

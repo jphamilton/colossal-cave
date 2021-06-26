@@ -119,5 +119,10 @@ namespace Tests
             return null;
         }
 
+        protected string Line1 => Line(1);
+        protected string Line2 => Line(2);
+        protected string Line3 => Line(3);
+        protected string Line4 => Line(4);
+        protected string Line5 => Line(5);
     }
 }

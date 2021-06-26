@@ -14,8 +14,8 @@ namespace ColossalCave.Places
 
             NoDwarf = true;
 
-            //UpTo<DifferentMaze2>();
-            //OutTo<DifferentMaze2>();
+            UpTo<DifferentMaze2>();
+            OutTo<DifferentMaze2>();
 
         }
 

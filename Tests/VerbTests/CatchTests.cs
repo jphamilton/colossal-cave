@@ -12,7 +12,7 @@ namespace Tests.VerbTests
         {
             Location = Room<InsideBuilding>();
             Execute("catch bottle");
-            Assert.Equal("You can only do that to something animate.", Line(1));
+            Assert.Equal("You can only do that to something animate.", Line1);
         }
 
         [Fact]
@@ -26,7 +26,7 @@ namespace Tests.VerbTests
             Objects.Add(shark, Location);
 
             Execute("catch shark");
-            Assert.Equal("You can't catch that.", Line(1));
+            Assert.Equal("You can't catch that.", Line1);
         }
 
         [Fact]
@@ -40,7 +40,7 @@ namespace Tests.VerbTests
             Objects.Add(octopus, Location);
 
             Execute("catch octopus");
-            Assert.Equal("Yeah right!", Line(1));
+            Assert.Equal("Yeah right!", Line1);
         }
 
     }

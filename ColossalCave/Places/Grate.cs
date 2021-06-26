@@ -17,30 +17,32 @@ namespace ColossalCave.Things
 
             LocksWithKey<SetOfKeys>(true);
 
-            DoorDirection = () =>
-                {
-                    if (In<BelowTheGrate>())
-                        return Direction<Up>();
-                    return Direction<Down>();
-                };
-
-            DoorTo = () =>
-                {
-                    if (In<BelowTheGrate>())
-                    {
-                        return Room<OutsideGrate>();
-                    }
-                    return Room<BelowTheGrate>();
-                };
-
             Describe = () =>
+            {
+                if (Open)
+                    return "\nThe grate stands open.";
+                if (!Locked)
+                    return "\nThe grate is unlocked but shut.";
+                return null;
+            };
+
+            DoorDirection(() =>
+            {
+                if (In<BelowTheGrate>())
+                    return Direction<Up>();
+                return Direction<Down>();
+            });
+
+            DoorTo(() =>
+            {
+                if (In<BelowTheGrate>())
                 {
-                    if (Open)
-                       return "\nThe grate stands open.";
-                    if (!Locked)
-                       return "\nThe grate is unlocked but shut.";
-                    return null;
-                };
+                    return Room<OutsideGrate>();
+                }
+                return Room<BelowTheGrate>();
+            });
+
+            
         }
     }
 }

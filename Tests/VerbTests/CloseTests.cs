@@ -14,7 +14,7 @@ namespace Tests.Verbs
         {
             Location = Room<InsideBuilding>();
             var result = Execute("close bottle");
-            Assert.Equal("That's not something you can close.", Line(1));
+            Assert.Equal("That's not something you can close.", Line1);
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace Tests.Verbs
         {
             Location = Room<OutsideGrate>();
             var result = Execute("close grate");
-            Assert.Equal("That's already closed.", Line(1));
+            Assert.Equal("That's already closed.", Line1);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace Tests.Verbs
             Door grate = Room<Grate>() as Door;
             grate.Open = true;
             var result = Execute("close grate");
-            Assert.Equal("You close the steel grate.", Line(1));
+            Assert.Equal("You close the steel grate.", Line1);
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace Tests.Verbs
             
             Execute("close up grate");
             
-            Assert.Equal("You close the steel grate.", Line(1));
+            Assert.Equal("You close the steel grate.", Line1);
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace Tests.Verbs
 
             Execute("close off lamp");
 
-            Assert.Equal("You switch the brass lantern off.", Line(1));
+            Assert.Equal("You switch the brass lantern off.", Line1);
         }
 
         [Fact]

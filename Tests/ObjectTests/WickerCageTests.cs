@@ -19,7 +19,7 @@ namespace Tests.ObjectTests
             Inventory.Add(cage);
 
             Execute("release bird");
-            Assert.Equal("The bird is not caged now.", Line(1));
+            Assert.Equal("The bird is not caged now.", Line1);
 
             Assert.False(cage.Contains<LittleBird>());
             Assert.False(cage.Open);
@@ -37,8 +37,8 @@ namespace Tests.ObjectTests
 
             Execute("open cage");
 
-            Assert.Equal("(releasing the little bird)", Line(1));
-            Assert.Equal("The little bird flies free.", Line(2));
+            Assert.Equal("(releasing the little bird)", Line1);
+            Assert.Equal("The little bird flies free.", Line2);
 
             Assert.DoesNotContain("You can't release that.", ConsoleOut);
             Assert.False(cage.Contains<LittleBird>());

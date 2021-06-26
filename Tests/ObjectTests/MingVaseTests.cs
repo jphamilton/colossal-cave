@@ -20,7 +20,7 @@ namespace Tests.ObjectTests
         public void should_break()
         {
             Execute("drop vase");
-            Assert.Contains("The ming vase drops with a delicate crash.", Line(1));
+            Assert.Contains("The ming vase drops with a delicate crash.", Line1);
         }
 
         [Fact]
@@ -45,7 +45,7 @@ namespace Tests.ObjectTests
         public void can_attack_the_vase()
         {
             Execute("hit vase");
-            Assert.Contains("You have taken the vase and hurled it delicately to the ground.", Line(1));
+            Assert.Contains("You have taken the vase and hurled it delicately to the ground.", Line1);
         }
 
         [Fact]
@@ -54,7 +54,7 @@ namespace Tests.ObjectTests
             var bottle = Objects.Get<Bottle>();
             Inventory.Add(bottle);
             Execute("put bottle in vase");
-            Assert.Contains("The vase is too fragile to use as a container.", Line(1));
+            Assert.Contains("The vase is too fragile to use as a container.", Line1);
         }
     }
 }

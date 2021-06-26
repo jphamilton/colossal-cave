@@ -27,6 +27,10 @@
             {
                 Print($"That's fixed in place.");
             }
+            else if (obj.Animate)
+            {
+                Print($"I don't suppose the {obj.Name} would care for that.");
+            }
             else if (Inventory.Contains(obj))
             {
                 Print($"You already have that.");

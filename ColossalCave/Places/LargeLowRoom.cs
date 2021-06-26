@@ -8,9 +8,9 @@
             Synonyms.Are("large", "low", "room");
             Description = "You are in a large low room. Crawls lead north, se, and sw.";
 
-            //SouthWestTo<SlopingCorridor>();
+            SouthWestTo<SlopingCorridor>();
             //SouthEastTo<OrientalRoom>();
-            //NorthTo<DeadEndCrawl>();
+            NorthTo<DeadEndCrawl>();
         }
     }
 }

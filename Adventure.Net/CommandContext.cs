@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adventure.Net.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -126,6 +127,8 @@ namespace Adventure.Net
         {
             var messages = OutputStack.Peek();
             var process = state ?? State;
+
+            message = message.Capitalize();
 
             switch (process)
             {

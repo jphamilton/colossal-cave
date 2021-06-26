@@ -22,7 +22,7 @@ namespace Tests.ParserTests
         {
             Execute("snark");
             // will be one or the depending if this was a partial command response or not
-            Assert.Contains(Line(1), new List<string> { Messages.VerbNotRecognized, Messages.CantSeeObject });
+            Assert.Contains(Line1, new List<string> { Messages.VerbNotRecognized, Messages.CantSeeObject });
         }
 
         [Fact]
@@ -69,6 +69,8 @@ namespace Tests.ParserTests
             Assert.False(lamp.On);
 
             Execute("switch lamp on");
+
+            var x = ConsoleOut;
 
             Assert.True(lamp.On);
         }

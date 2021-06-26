@@ -14,7 +14,7 @@ namespace Advent.Tests.Verbs
         {
             Location = Rooms.Get<BelowTheGrate>();
             Execute("drink water");
-            Assert.Equal(Messages.CantSeeObject, Line(1));
+            Assert.Equal(Messages.CantSeeObject, Line1);
         }
 
         [Fact]
@@ -29,7 +29,7 @@ namespace Advent.Tests.Verbs
             Inventory.Add(bottle);
 
             Execute("drink h2o");
-            Assert.Equal("You drink the cool, refreshing water, draining the bottle in the process.", Line(1));
+            Assert.Equal("You drink the cool, refreshing water, draining the bottle in the process.", Line1);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace Advent.Tests.Verbs
 
             Execute("drink water");
 
-            Assert.Equal("You drink the cool, refreshing water, draining the bottle in the process.", Line(1));
+            Assert.Equal("You drink the cool, refreshing water, draining the bottle in the process.", Line1);
             Assert.Equal(0, bottle.Contents.Count);
         }
 
@@ -77,7 +77,7 @@ namespace Advent.Tests.Verbs
 
             Assert.Equal("You have taken a drink from the stream. " +
                             "The water tastes strongly of minerals, but is not unpleasant. " +
-                            "It is extremely cold.", Line(1));
+                            "It is extremely cold.", Line1);
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace Advent.Tests.Verbs
         {
             Location = Rooms.Get<InsideBuilding>();
             Execute("drink food");
-            Assert.Equal("You can't drink that.", Line(1));
+            Assert.Equal("You can't drink that.", Line1);
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace Advent.Tests.Verbs
         {
             Location = Rooms.Get<InsideBuilding>();
             Execute("drink cola");
-            Assert.Equal(Messages.CantSeeObject, Line(1));
+            Assert.Equal(Messages.CantSeeObject, Line1);
         }
     }
 }

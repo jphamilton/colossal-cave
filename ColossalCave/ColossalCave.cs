@@ -43,7 +43,10 @@ namespace ColossalCave
             //lamp.Light = true;
             //Inventory.Add(lamp);
 
-            //Location = Rooms.Get<GiantRoom>();
+            //var diamonds = Objects.Get<Diamonds>();
+            //Inventory.Add(diamonds);
+
+            //Location = Rooms.Get<SwSideOfChasm>();
 
             Location = Rooms.Get<EndOfRoad>();
         }

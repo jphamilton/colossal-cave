@@ -21,14 +21,14 @@ namespace ColossalCave.Places
                 return "A crystal bridge now spans the fissure.";
             };
 
-            DoorDirection = () =>
+            DoorDirection(() =>
             {
                 if (In<WestSideOfFissure>())
                     return Direction<East>();
                 return Direction<West>();
-            };
+            });
 
-            DoorTo = () =>
+            DoorTo(() =>
             {
                 if (In<WestSideOfFissure>())
                 {
@@ -36,7 +36,7 @@ namespace ColossalCave.Places
                 }
 
                 return Room<WestSideOfFissure>();
-            };
+            });
         }
     }
 }

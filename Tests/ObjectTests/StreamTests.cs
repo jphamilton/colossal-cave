@@ -21,7 +21,7 @@ namespace Tests.ObjectTests
             Inventory.Add(bottle);
 
             Execute("take stream");
-            Assert.Equal("The bottle is now full of water.", Line(1));
+            Assert.Equal("The bottle is now full of water.", Line1);
 
             Assert.True(Inventory.Contains(bottle));
             Assert.True(bottle.Contents.Contains(water));

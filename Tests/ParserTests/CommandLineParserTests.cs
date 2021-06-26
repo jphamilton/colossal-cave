@@ -369,14 +369,14 @@ namespace Tests.ParserTests
         public void put_bottle_lantern()
         {
             Execute("put bottle lantern");
-            Assert.Equal("What do you want to put those things in?", Line(1));
+            Assert.Equal("What do you want to put those things in?", Line1);
         }
 
         [Fact]
         public void put_all()
         {
             var result = Execute("put all");
-            Assert.Equal("What do you want to put those things in?", Line(1));
+            Assert.Equal("What do you want to put those things in?", Line1);
         }
 
         

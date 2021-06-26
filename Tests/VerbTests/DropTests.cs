@@ -35,7 +35,7 @@ namespace Tests.VerbTests
         {
             Assert.False(Inventory.Contains("cage"));
             Execute("drop cage");
-            Assert.Equal(Messages.CantSeeObject, Line(1));
+            Assert.Equal(Messages.CantSeeObject, Line1);
         }
 
         [Fact]
@@ -65,21 +65,21 @@ namespace Tests.VerbTests
         public void drop_all_except_object_not_specified()
         {
             var result = Execute("drop all except");
-            Assert.Equal("What do you want to drop those things in?", Line(1));
+            Assert.Equal("What do you want to drop those things in?", Line1);
         }
 
         [Fact]
         public void drop_all_when_inventory_is_empty()
         {
             Execute("drop all");
-            Assert.Equal("What do you want to drop those things in?", Line(1));
+            Assert.Equal("What do you want to drop those things in?", Line1);
         }
 
         [Fact]
         public void drop_except_all_is_invalid_order()
         {
             var result = Execute("drop except all");
-            Assert.Equal(Messages.CantSeeObject, Line(1));
+            Assert.Equal(Messages.CantSeeObject, Line1);
         }
 
         [Fact]
@@ -87,8 +87,8 @@ namespace Tests.VerbTests
         {
             Inventory.Add(Objects.Get<Bottle>());
             var result = Execute("drop");
-            Assert.Equal("(the small bottle)", Line(1));
-            Assert.Equal("Dropped.", Line(2));
+            Assert.Equal("(the small bottle)", Line1);
+            Assert.Equal("Dropped.", Line2);
         }
 
         [Fact]
@@ -96,8 +96,8 @@ namespace Tests.VerbTests
         {
             Inventory.Add(Objects.Get<Bottle>());
             var result = Execute("drop all");
-            Assert.Equal("(the small bottle)", Line(1));
-            Assert.Equal("Dropped.", Line(2));
+            Assert.Equal("(the small bottle)", Line1);
+            Assert.Equal("Dropped.", Line2);
         }
     }
 }

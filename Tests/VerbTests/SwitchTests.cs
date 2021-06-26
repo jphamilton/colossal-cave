@@ -10,14 +10,14 @@ namespace Tests.VerbTests
         public void should_not_switch_on_things_without_switches()
         {
             Execute("switch on keys");
-            Assert.Equal("That's not something you can switch.", Line(1));
+            Assert.Equal("That's not something you can switch.", Line1);
         }
 
         [Fact]
         public void should_not_switch_off_things_without_switches()
         {
             Execute("switch off keys");
-            Assert.Equal("That's not something you can switch.", Line(1));
+            Assert.Equal("That's not something you can switch.", Line1);
         }
 
         [Fact]

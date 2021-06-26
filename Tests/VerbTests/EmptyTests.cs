@@ -12,7 +12,7 @@ namespace Tests.Verbs
         {
             Location = Rooms.Get<InsideBuilding>();
             Execute("empty food");
-            Assert.Equal("The tasty food can't contain things.", Line(1));
+            Assert.Equal("The tasty food can't contain things.", Line1);
         }
 
         [Fact]
@@ -20,7 +20,7 @@ namespace Tests.Verbs
         {
             Location = Rooms.Get<InsideBuilding>();
             Execute("empty bottle");
-            Assert.Equal("The bottle is already empty!", Line(1));
+            Assert.Equal("The bottle is already empty!", Line1);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace Tests.Verbs
             Inventory.Add(cage);
 
             Execute("empty cage");
-            Assert.Equal("The wicker cage is closed.", Line(1));
+            Assert.Equal("The wicker cage is closed.", Line1);
         }
     }
 }

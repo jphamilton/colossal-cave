@@ -160,7 +160,7 @@ namespace Tests.ParserTests
 
             Execute("take all except hat");
 
-            Assert.Equal(Messages.CantSeeObject, Line(1));
+            Assert.Equal(Messages.CantSeeObject, Line1);
         }
 
         [Fact]
@@ -185,8 +185,8 @@ namespace Tests.ParserTests
 
             Execute("take hat");
 
-            Assert.Contains("Which do you mean, the red hat, the black hat or the white hat?", Line(1));
-            Assert.Contains("Which do you mean, the red hat, the black hat or the white hat?", Line(2));
+            Assert.Contains("Which do you mean, the red hat, the black hat or the white hat?", Line1);
+            Assert.Contains("Which do you mean, the red hat, the black hat or the white hat?", Line2);
         }
     }
 }

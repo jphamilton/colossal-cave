@@ -150,6 +150,14 @@ namespace Adventure.Net
             Before<T>(wrapper);
         }
 
+        public void Before<T,R>(Func<bool> before) 
+            where T : Verb 
+            where R : Verb
+        {
+            Before<T>(before);
+            Before<R>(before);
+        }
+
         public void Before<T>(Func<bool> before) where T : Verb
         {
             if (typeof(T) == typeof(Receive))
@@ -396,6 +404,11 @@ namespace Adventure.Net
         {
             Inventory.Remove(this);
             ObjectMap.MoveObject(this, CurrentRoom.Location);
+        }
+
+        public void MoveTo<T>() where T : Room
+        {
+           ObjectMap.MoveObject(this, Room<T>());
         }
 
         public void FoundIn<R>() where R : Room

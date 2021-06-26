@@ -24,7 +24,7 @@ namespace ColossalCave.Things
             {
                 var bottle = Bottle;
 
-                if (!bottle.InInventory)
+                if (bottle.InInventory)
                 {
                     bottle.Fill();
                 }
