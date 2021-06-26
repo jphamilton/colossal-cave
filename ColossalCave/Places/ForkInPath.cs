@@ -18,8 +18,8 @@ namespace ColossalCave.Places
 
             WestTo<Corridor>();
             NorthEastTo<JunctionWithWarmWalls>();
-            //SouthEastTo<LimestonePassage>();
-            //DownTo<LimestonePassage>();
+            SouthEastTo<LimestonePassage>();
+            DownTo<LimestonePassage>();
 
         }
     }
