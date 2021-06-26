@@ -38,19 +38,19 @@ namespace ColossalCave
 
             Output.PrintLine();
 
-            var lamp = Objects.Get<BrassLantern>();
-            lamp.On = true;
-            lamp.Light = true;
-            Inventory.Add(lamp);
+            //var lamp = Objects.Get<BrassLantern>();
+            //lamp.On = true;
+            //lamp.Light = true;
+            //Inventory.Add(lamp);
 
-            var bottle = Objects.Get<Bottle>();
-            var oil = Object.Get<OilInTheBottle>();
-            bottle.Add(oil);
-            Inventory.Add(bottle);
+            //var bottle = Objects.Get<Bottle>();
+            //var oil = Object.Get<OilInTheBottle>();
+            //bottle.Add(oil);
+            //Inventory.Add(bottle);
 
-            Location = Rooms.Get<ImmenseNSPassage>();
+            //Location = Rooms.Get<ImmenseNSPassage>();
 
-            //Location = Rooms.Get<EndOfRoad>();
+            Location = Rooms.Get<EndOfRoad>();
         }
 
         public override void AfterTurn()
