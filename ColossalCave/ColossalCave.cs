@@ -43,13 +43,12 @@ namespace ColossalCave
             //var lamp = Objects.Get<BrassLantern>();
             //lamp.On = true;
             //lamp.Light = true;
-            //lamp.PowerRemaining = 32;
             //Inventory.Add(lamp);
 
             //var coins = Objects.Get<RareCoins>();
             //Inventory.Add(coins);
 
-            //Location = Rooms.Get<DeadEnd14>();
+            //Location = Rooms.Get<ShellRoom>();
 
             Location = Rooms.Get<EndOfRoad>();
         }

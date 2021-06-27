@@ -252,7 +252,7 @@ namespace Adventure.Net
 
                 if (before != null && before(direction))
                 {
-                    return null;
+                    return this;
                 }
             }
 

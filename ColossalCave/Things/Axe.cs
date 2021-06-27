@@ -27,7 +27,7 @@ namespace ColossalCave.Things
 
             Before<Take>(() =>
             {
-                if (IsNearBear)
+                if (!IsNearBear)
                 {
                     return false;
                 }

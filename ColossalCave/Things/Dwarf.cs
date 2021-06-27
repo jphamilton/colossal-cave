@@ -130,6 +130,7 @@ namespace ColossalCave.Things
                     {
                         var axe = Get<Axe>();
                         hasThrownAxe = true;
+                        axe.MoveToLocation();
                         Remove();
                         Print("The dwarf throws a nasty little axe at you, misses, curses, and runs away.");
                         return;
