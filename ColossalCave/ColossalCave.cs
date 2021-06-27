@@ -30,8 +30,10 @@ namespace ColossalCave
             // just for showing up!
             Score.Add(36);
 
+            var dwarf = Objects.Get<Dwarf>();
+            dwarf.DaemonStarted = true;
+
             /*
-               StartDaemon(dwarf);
                StartDaemon(pirate);
                StartDaemon(cave_closer);
              */
