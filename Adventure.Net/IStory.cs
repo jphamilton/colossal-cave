@@ -10,7 +10,6 @@ namespace Adventure.Net
         int Moves { get; set; }
         int CurrentScore { get; set; }
         int PossibleScore { get; set; }
-        Dictionary<string, bool> Flags { get; }
 
         void Initialize();
 

@@ -52,7 +52,7 @@ namespace ColossalCave.Things
             Before<Take>(() =>
             {
                 Print("It takes you instead. Glrp!");
-                GameOver.GoTo();
+                GameOver.Dead();
                 return true;
             });
         }

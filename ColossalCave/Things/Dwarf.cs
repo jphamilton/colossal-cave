@@ -60,7 +60,7 @@ namespace ColossalCave.Things
                     return;
                 }
 
-                var location = Location.FirstOrDefault();
+                var location = Location;
 
                 if (location == null)
                 {

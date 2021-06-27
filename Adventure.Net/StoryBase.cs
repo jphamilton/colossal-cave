@@ -12,8 +12,6 @@ namespace Adventure.Net
         public int CurrentScore { get; set; } = 0;
         public int PossibleScore { get; set; } = 0;
 
-        public Dictionary<string, bool> Flags { get; } = new Dictionary<string, bool>();
-
         protected abstract void Start();
         
         public virtual void AfterTurn()

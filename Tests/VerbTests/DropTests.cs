@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using ColossalCave.Places;
 using ColossalCave.Things;
 using Xunit;
 
@@ -98,6 +99,21 @@ namespace Tests.VerbTests
             var result = Execute("drop all");
             Assert.Equal("(the small bottle)", Line1);
             Assert.Equal("Dropped.", Line2);
+        }
+
+        [Fact]
+        public void favor_held_object_on_name_conflict()
+        {
+            var mark = Objects.Get<BlackMarkRod>();
+            mark.MoveToLocation();
+
+            var rod = Objects.Get<BlackRod>();
+            Inventory.Add(rod);
+
+            var result = Execute("drop rod");
+
+            var x = ConsoleOut;
+
         }
     }
 }

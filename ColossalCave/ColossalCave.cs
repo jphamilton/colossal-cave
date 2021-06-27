@@ -12,7 +12,6 @@ namespace ColossalCave
             Story = "ADVENTURE";
             CurrentScore = 0;
             PossibleScore = 350;
-            Flags.Add("dead", false);
         }
 
         protected override void Start()
@@ -36,35 +35,29 @@ namespace ColossalCave
             var pirate = Objects.Get<Pirate>();
             pirate.DaemonStarted = true;
 
-            /*
-               StartDaemon(cave_closer);
-             */
+            var closer = Objects.Get<CaveCloser>();
+            closer.DaemonStarted = true;
 
             Output.PrintLine();
+
+            // --- Testing
+            //var timer = Objects.Get<EndgameTimer>();
+            //timer.TimeLeft = 2;
 
             //var lamp = Objects.Get<BrassLantern>();
             //lamp.On = true;
             //lamp.Light = true;
             //Inventory.Add(lamp);
 
-            //var coins = Objects.Get<RareCoins>();
-            //Inventory.Add(coins);
-
+            //Global.TreasuresFound = Global.MaxTreasures;
             //Location = Rooms.Get<ShellRoom>();
+            // ---
+
 
             Location = Rooms.Get<EndOfRoad>();
         }
 
-        public override void AfterTurn()
-        {
-            if (Flags["dead"])
-            {
-                GameOver.Dead();
-                return;
-            }
-
-
-        }
+        
     }
 }
 

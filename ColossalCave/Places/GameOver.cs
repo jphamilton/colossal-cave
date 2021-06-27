@@ -7,13 +7,16 @@ namespace ColossalCave.Places
 {
     public static class GameOver
     {
-        public static void GoTo()
+        public static void Finished()
         {
-            Context.Story.Flags["dead"] = true;
+            Context.Story.IsDone = true;
+            Display("*** Congratulations! ***");
         }
 
         public static void Dead()
         {
+            const string youDied = "*** You have died ***";
+
             Global.Deaths++; // this is models after the inform source which is why it's not just a private variable here
             int score = -10;
 
@@ -48,8 +51,6 @@ namespace ColossalCave.Places
 
             if (yes)
             {
-                Context.Story.Flags["dead"] = false;
-
                 switch (Global.Deaths)
                 {
                     case 1:
@@ -65,7 +66,7 @@ namespace ColossalCave.Places
                         break;
                     case 3:
                         Output.Print("Okay, if you're so smart, do it yourself! I'm leaving!");
-                        DisplayDeath();
+                        Display(youDied);
                         Context.Story.IsDone = true;
                         return;
                 }
@@ -117,19 +118,19 @@ namespace ColossalCave.Places
                         break;
                 }
 
-                DisplayDeath();
+                Display(youDied);
 
                 Context.Story.IsDone = true;
             }
         }
 
-        private static void DisplayDeath()
+        private static void Display(string message)
         {
             var score = Context.Story.CurrentScore;
             var possible = Context.Story.PossibleScore;
 
             Output.Print("\n\n");
-            Output.Print("\t*** You have died ***");
+            Output.Print($"\t{message}");
             Output.Print("\n\n");
             Output.Print($"In that game you scored {score} points out of a possible {possible}, earning you the rank of {Score.GetRank()}");
         }

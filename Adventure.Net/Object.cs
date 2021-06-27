@@ -468,11 +468,13 @@ namespace Adventure.Net
             FoundIn<R7>();
         }
 
-        public IList<Room> Location
+        public Room Location
         {
             get
             {
-                return ObjectMap.Location(this);
+                // obviously will not work well for scenery and
+                // anything else that can be in multiple locations
+                return ObjectMap.Location(this).FirstOrDefault();
             }
         }
 

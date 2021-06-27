@@ -22,9 +22,11 @@ namespace ColossalCave.Things
 
                 Score.Add(25, true);
 
-                Get<CrystalBridge>().Remove();
+                Rooms.Get<CrystalBridge>().Remove();
+
+                //Get<CrystalBridge>().Remove();
                 
-                var grate = Get<Grate>();
+                var grate = Rooms.Get<Grate>();
                 grate.Locked = true;
                 grate.Open = false;
 
@@ -48,7 +50,7 @@ namespace ColossalCave.Things
 
     public class EndgameTimer : Object
     {
-        private int timeLeft = 25;
+        public int TimeLeft = 25;
 
         public override void Initialize()
         {
@@ -57,9 +59,9 @@ namespace ColossalCave.Things
 
             Daemon = () =>
             {
-                timeLeft--;
+                TimeLeft--;
 
-                if (timeLeft > 0)
+                if (TimeLeft > 0)
                 {
                     return;
                 }
