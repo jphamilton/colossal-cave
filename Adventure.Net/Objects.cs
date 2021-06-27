@@ -32,7 +32,7 @@ namespace Adventure.Net
 
         }
 
-        internal static IList<Object> All
+        public static IList<Object> All
         {
             get { return items; }
         }

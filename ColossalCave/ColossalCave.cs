@@ -33,8 +33,10 @@ namespace ColossalCave
             var dwarf = Objects.Get<Dwarf>();
             dwarf.DaemonStarted = true;
 
+            var pirate = Objects.Get<Pirate>();
+            pirate.DaemonStarted = true;
+
             /*
-               StartDaemon(pirate);
                StartDaemon(cave_closer);
              */
 
