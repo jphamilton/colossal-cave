@@ -1,20 +1,17 @@
-using System.Collections.Generic;
+namespace Adventure.Net;
 
-namespace Adventure.Net
+public interface IStory
 {
-    public interface IStory
-    {
-        bool IsDone { get; set; }
-        Room Location { get; set; }
-        string Story { get; set; }
-        int Moves { get; set; }
-        int CurrentScore { get; set; }
-        int PossibleScore { get; set; }
+    bool IsDone { get; set; }
+    Room Location { get; set; }
+    string Story { get; set; }
+    int Moves { get; set; }
+    int CurrentScore { get; set; }
+    int PossibleScore { get; set; }
 
-        void Initialize();
+    void Initialize();
 
-        void Quit();
+    void Quit();
 
-        void AfterTurn();
-    }
+    void AfterTurn();
 }

@@ -1,42 +1,25 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class CrystalBridge : Door
 {
-    public class CrystalBridge : Door
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "crystal bridge";
-            Synonyms.Are("crystal", "bridge");
-            Description = "It spans the fissure, thereby providing you a way across.";
-            InitialDescription = "A crystal bridge now spans the fissure.";
-            Open = true;
-            Absent = true;
+        Name = "crystal bridge";
+        Synonyms.Are("crystal", "bridge");
+        Description = "It spans the fissure, thereby providing you a way across.";
+        InitialDescription = "A crystal bridge now spans the fissure.";
+        Open = true;
+        Absent = true;
 
-            FoundIn<WestSideOfFissure, EastBankOfFissure>();
+        FoundIn<WestSideOfFissure, EastBankOfFissure>();
 
-            Describe = () =>
-            {
-                return "A crystal bridge now spans the fissure.";
-            };
+        Describe = () => "A crystal bridge now spans the fissure.";
 
-            DoorDirection(() =>
-            {
-                if (In<WestSideOfFissure>())
-                    return Direction<East>();
-                return Direction<West>();
-            });
+        DoorDirection(() => In<WestSideOfFissure>() ? Direction<East>() : Direction<West>());
 
-            DoorTo(() =>
-            {
-                if (In<WestSideOfFissure>())
-                {
-                    return Room<EastBankOfFissure>();
-                }
-
-                return Room<WestSideOfFissure>();
-            });
-        }
+        DoorTo(() => In<WestSideOfFissure>() ? Room<EastBankOfFissure>() : Room<WestSideOfFissure>());
     }
 }

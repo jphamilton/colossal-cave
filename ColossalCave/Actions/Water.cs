@@ -1,41 +1,40 @@
 ﻿using Adventure.Net;
 
-namespace ColossalCave.Actions
-{
-    public class Water : Verb
-    {
-        public Water()
-        {
-            Name = "water";
-        }
+namespace ColossalCave.Actions;
 
-        public bool Expects(Object obj)
-        {
-            return true;
-        }
+public class Water : Verb
+{
+    public Water()
+    {
+        Name = "water";
+    }
+
+    public bool Expects(Object obj)
+    {
+        return true;
     }
 }
 
 /*
- [ WaterSub;
-    if (bottle in player) <<Empty bottle>>;
-    "Water? What water?";
+[ WaterSub;
+if (bottle in player) <<Empty bottle>>;
+"Water? What water?";
 ];
 
 [ OilSub;
-    if (bottle in player) <<Empty bottle>>;
-    "Oil? What oil?";
+if (bottle in player) <<Empty bottle>>;
+"Oil? What oil?";
 ];
 
 Verb 'water'
-    * noun                  -> Water;
+* noun                  -> Water;
 
 Verb 'oil' 'grease' 'lubricate'
-    * noun                  -> Oil;
+* noun                  -> Oil;
 
 Verb 'pour' 'douse'
-    * 'water' 'on' noun     -> Water
-    * 'oil' 'on' noun       -> Oil
-    * noun                  -> Empty;
+* 'water' 'on' noun     -> Water
+* 'oil' 'on' noun       -> Oil
+* noun                  -> Empty;
 
- */
+*/

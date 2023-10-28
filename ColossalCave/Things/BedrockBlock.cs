@@ -2,29 +2,28 @@
 using Adventure.Net.Actions;
 using ColossalCave.Places;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class BedrockBlock : Scenic
 {
-    public class BedrockBlock : Scenic
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "bedrock block";
-            Synonyms.Are("block", "bedrock", "large");
-            Description = "";
+        Name = "bedrock block";
+        Synonyms.Are("block", "bedrock", "large");
+        Description = "";
 
-            FoundIn<SwissCheeseRoom>();
+        FoundIn<SwissCheeseRoom>();
 
-            Before<LookUnder>(() => HaHa());
-            Before<Push>(() => HaHa());
-            Before<Pull>(() => HaHa());
-            Before<Take>(() => HaHa());
+        Before<LookUnder>(() => HaHa());
+        Before<Push>(() => HaHa());
+        Before<Pull>(() => HaHa());
+        Before<Take>(() => HaHa());
 
-        }
+    }
 
-        private bool HaHa()
-        {
-            Print("Surely you're joking.");
-            return true;
-        }
+    private bool HaHa()
+    {
+        Print("Surely you're joking.");
+        return true;
     }
 }

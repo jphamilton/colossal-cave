@@ -1,89 +1,88 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Extensions;
 using Adventure.Net.Actions;
-using ColossalCave.Places;
+using Adventure.Net.Extensions;
 using ColossalCave.Actions;
+using ColossalCave.Places;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class Stream : Scenic
 {
-    public class Stream : Scenic
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "stream";
-            Synonyms.Are("stream", "water", "brook", "river", "lake", "small", "tumbling",
-                         "splashing", "babbling", "rushing", "reservoir");
+        Name = "stream";
+        Synonyms.Are("stream", "water", "brook", "river", "lake", "small", "tumbling",
+                     "splashing", "babbling", "rushing", "reservoir");
 
-            FoundIn<EndOfRoad, Valley, SlitInStreambed, InsideBuilding, Reservoir, InPit>();
-            // In_Cavern_With_Waterfall 
+        FoundIn<EndOfRoad, Valley, SlitInStreambed, InsideBuilding, Reservoir, InPit>();
+        // In_Cavern_With_Waterfall 
 
-            Before<Drink>(() =>
-                {
-                    Print("You have taken a drink from the stream. " +
-                          "The water tastes strongly of minerals, but is not unpleasant. " +
-                          "It is extremely cold.");
-                    return true;
-                });
-
-            Before<Take>(() =>
-                {
-                    var bottle = Get<Bottle>();
-                    
-                    if (!bottle.InInventory)
-                    {
-                        Print("You have nothing in which to carry the water.");
-                    }
-                    else
-                    {
-                        bottle.Fill();
-                    }
-
-                    return true;
-                });
-
-            Before<Insert>(() =>
+        Before<Drink>(() =>
             {
-                if (Second is Bottle)
+                Print("You have taken a drink from the stream. " +
+                      "The water tastes strongly of minerals, but is not unpleasant. " +
+                      "It is extremely cold.");
+                return true;
+            });
+
+        Before<Take>(() =>
+            {
+                var bottle = Get<Bottle>();
+
+                if (!bottle.InInventory)
                 {
-                    ((Bottle)Second).Fill();
+                    Print("You have nothing in which to carry the water.");
                 }
                 else
                 {
-                    Print("You have nothing in which to carry the water.");
+                    bottle.Fill();
                 }
 
                 return true;
             });
 
-            Receive((obj) =>
+        Before<Insert>(() =>
+        {
+            if (Second is Bottle)
+            {
+                ((Bottle)Second).Fill();
+            }
+            else
+            {
+                Print("You have nothing in which to carry the water.");
+            }
+
+            return true;
+        });
+
+        Receive((obj) =>
+            {
+                if (obj.Is<Bottle>())
                 {
-                    if (obj.Is<Bottle>())
-                    {
-                        var bottle = Objects.Get<Bottle>();
-                        bottle.Fill();
-                        return true;
-                    }
-
-                    if (obj.Is<MingVase>())
-                    {
-                        obj.Remove();
-                        Objects.Get<Shards>().MoveToLocation();
-                        Score.Add(-5);
-                        Print("The sudden change in temperature has delicately shattered the vase.");
-                        return true;
-                    }
-
-                    obj.Remove();
-
-                    if (obj is Treasure)
-                    {
-                        Score.Add(-5);
-                        Print($"{obj.Article.TitleCase()} washes away with the stream."); // TODO: print_ret(The) noun, " washes away with the stream."
-                    }
-
+                    var bottle = Objects.Get<Bottle>();
+                    bottle.Fill();
                     return true;
-                });
-        }
+                }
+
+                if (obj.Is<MingVase>())
+                {
+                    obj.Remove();
+                    Objects.Get<Shards>().MoveToLocation();
+                    Score.Add(-5);
+                    Print("The sudden change in temperature has delicately shattered the vase.");
+                    return true;
+                }
+
+                obj.Remove();
+
+                if (obj is Treasure)
+                {
+                    Score.Add(-5);
+                    Print($"{obj.DefiniteArticle.TitleCase()} washes away with the stream."); // TODO: print_ret(The) noun, " washes away with the stream."
+                }
+
+                return true;
+            });
     }
 }
 

@@ -1,10 +1,9 @@
-﻿namespace Adventure.Net.Actions
+﻿namespace Adventure.Net.Actions;
+
+public class WakeOther : Verb
 {
-    public class WakeOther : Verb
+    public bool Expects(Object creature)
     {
-        public bool Expects(Object creature)
-        {
-            return Print("That seems unnecessary.");
-        }
+        return Print("That seems unnecessary.");
     }
 }

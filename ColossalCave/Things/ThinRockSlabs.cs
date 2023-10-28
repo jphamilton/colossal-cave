@@ -2,30 +2,29 @@
 using Adventure.Net.Actions;
 using ColossalCave.Places;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class ThinRockSlabs : Scenic
 {
-    public class ThinRockSlabs : Scenic
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "thin rock slabs";
-            Synonyms.Are("slabs", "slab", "rocks", "stairs", "thin", "rock");
-            Description = "They almost form natural stairs down into the pit.";
-            // has multitude
+        Name = "thin rock slabs";
+        Synonyms.Are("slabs", "slab", "rocks", "stairs", "thin", "rock");
+        Description = "They almost form natural stairs down into the pit.";
+        // has multitude
 
-            FoundIn<EastEndOfTwoPitRoom>();
+        FoundIn<EastEndOfTwoPitRoom>();
 
-            Before<LookUnder>(DontCallMeShirley);
-            Before<Push>(DontCallMeShirley);
-            Before<Pull>(DontCallMeShirley);
-            Before<Take>(DontCallMeShirley);
-        }
+        Before<LookUnder>(DontCallMeShirley);
+        Before<Push>(DontCallMeShirley);
+        Before<Pull>(DontCallMeShirley);
+        Before<Take>(DontCallMeShirley);
+    }
 
-        public bool DontCallMeShirley()
-        {
-            Print("Surely you're joking. You'd have to blast them aside.");
-            return true;
-        }
+    public bool DontCallMeShirley()
+    {
+        Print("Surely you're joking. You'd have to blast them aside.");
+        return true;
     }
 }
 

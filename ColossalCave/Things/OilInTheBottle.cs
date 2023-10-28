@@ -1,22 +1,21 @@
 ﻿using Adventure.Net;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class OilInTheBottle : Object
 {
-    public class OilInTheBottle : Object
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "bottled oil";
-            Synonyms.Are("oil", "bottled", "lubricant", "grease");
-            Article = "some";
-            Description = "It looks like ordinary oil to me";
+        Name = "bottled oil";
+        Synonyms.Are("oil", "bottled", "lubricant", "grease");
+        IndefiniteArticle = "some";
+        Description = "It looks like ordinary oil to me";
 
-            //        before [;
-            //          Drink:
-            //            <<Drink Oil>>;
-            //        ];
+        //        before [;
+        //          Drink:
+        //            <<Drink Oil>>;
+        //        ];
 
-        }
     }
 }
 

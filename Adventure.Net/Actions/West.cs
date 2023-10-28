@@ -1,11 +1,10 @@
-﻿namespace Adventure.Net.Actions
+﻿namespace Adventure.Net.Actions;
+
+public class West : Direction
 {
-    public class West : Direction
+    public West()
     {
-        public West()
-        {
-            SetDirection(room => room.W(), "west", "w");
-        }
-        
+        SetDirection(room => room.W(), "west", "w");
     }
+
 }

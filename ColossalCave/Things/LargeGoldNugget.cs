@@ -1,18 +1,16 @@
 ﻿using ColossalCave.Places;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class LargeGoldNugget : Treasure
 {
-    public class LargeGoldNugget : Treasure
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "large gold nugget";
-            Synonyms.Are("gold", "nugget", "large", "heavy");
-            Description = "It's a large sparkling nugget of gold!";
-            InitialDescription = "There is a large sparkling nugget of gold here!";
+        Name = "large gold nugget";
+        Synonyms.Are("gold", "nugget", "large", "heavy");
+        Description = "It's a large sparkling nugget of gold!";
+        InitialDescription = "There is a large sparkling nugget of gold here!";
 
-            FoundIn<NuggetOfGoldRoom>();
-        }
+        FoundIn<NuggetOfGoldRoom>();
     }
-
 }

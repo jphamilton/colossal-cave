@@ -2,75 +2,84 @@
 using Adventure.Net.Actions;
 using ColossalCave.Places;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class GiantClam : Object
 {
-    public class GiantClam : Object
+    public bool HasBeenOpened { get; set; }
+
+    public override void Initialize()
     {
-        public bool HasBeenOpened { get; set; }
+        Name = "giant clam";
+        Synonyms.Are("giant", "clam", "oyster", "bivalve");
 
-        public override void Initialize()
+        Describe = () =>
         {
-            Name = "giant clam";
-            Synonyms.Are("giant", "clam", "oyster", "bivalve");
-            
-            Describe = () =>
+            if (HasBeenOpened)
             {
-                if (HasBeenOpened)
-                {
-                    return "There is an enormous oyster here with its shell tightly closed.";
-                }
+                return "There is an enormous oyster here with its shell tightly closed.";
+            }
 
-                return "There is an enormous clam here with its shell tightly closed.";
-            };
+            return "There is an enormous clam here with its shell tightly closed.";
+        };
 
-            FoundIn<ShellRoom>();
+        FoundIn<ShellRoom>();
 
-            Before<Attack>(() => "The shell is very strong and is impervious to attack.");
+        Before<Attack>(() => "The shell is very strong and is impervious to attack.");
 
-            Before<Open>(() => "You aren't strong enough to open the clam with your bare hands.");
-
-            Before<Examine>(() =>
+        Before<Open>(() =>
+        {
+            //"You aren't strong enough to open the clam with your bare hands."
+            var trident = Get<JeweledTrident>();
+            if (!Inventory.Contains(trident))
             {
-                if (CurrentRoom.Is<NeEnd>() || CurrentRoom.Is<SwEnd>())
-                {
-                    return
-                        "Interesting. " +
-                        "There seems to be something written on the underside of the oyster: " +
-                        "\n\n " +
-                        "\"There is something strange about this place, " +
-                        "such that one of the curses I've always known now has a new effect.\"";
-                }
+                return Print("You aren't strong enough to open the clam with your bare hands.");
+            }
 
-                return "A giant bivalve of some kind.";
-            });
+            return false;
+        });
 
-            Before<Unlock>(() =>
+        Before<Examine>(() =>
+        {
+            if (CurrentRoom.Is<NeEnd>() || CurrentRoom.Is<SwEnd>())
             {
-                if (!(Second is JeweledTrident))
-                {
-                    return Print($"The {Second.Name} isn't strong enough to open the clam.");
-                }
+                return
+                    "Interesting. " +
+                    "There seems to be something written on the underside of the oyster: " +
+                    "\n\n " +
+                    "\"There is something strange about this place, " +
+                    "such that one of the curses I've always known now has a new effect.\"";
+            }
 
-                if (!HasBeenOpened)
-                {
-                    Print("The oyster creaks open, revealing nothing but oyster inside. It promptly snaps shut again.");
-                    
-                    HasBeenOpened = true;
-                    
-                    Move<GlisteningPearl>.To<CulDeSac>();
+            return "A giant bivalve of some kind.";
+        });
 
-                    Print(
-                        "A glistening pearl falls out of the clam and rolls away. " +
-                        "Goodness, this must really be an oyster. " +
-                        "(I never was very good at identifying bivalves.) " +
-                        "Whatever it is, it has now snapped shut again."
-                    );
+        Before<Unlock>(() =>
+        {
+            if (!(Second is JeweledTrident))
+            {
+                return Print($"The {Second.Name} isn't strong enough to open the clam.");
+            }
 
-                    return true;
-                }
+            if (!HasBeenOpened)
+            {
+                Print("The oyster creaks open, revealing nothing but oyster inside. It promptly snaps shut again.");
 
-                return false;
-            });
-        }
+                HasBeenOpened = true;
+
+                Move<GlisteningPearl>.To<CulDeSac>();
+
+                Print(
+                    "A glistening pearl falls out of the clam and rolls away. " +
+                    "Goodness, this must really be an oyster. " +
+                    "(I never was very good at identifying bivalves.) " +
+                    "Whatever it is, it has now snapped shut again."
+                );
+
+                return true;
+            }
+
+            return false;
+        });
     }
 }

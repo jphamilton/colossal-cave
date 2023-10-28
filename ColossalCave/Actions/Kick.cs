@@ -1,17 +1,16 @@
 ﻿using Adventure.Net;
 
-namespace ColossalCave.Actions
-{
-    public class Kick : Verb
-    {
-        public Kick()
-        {
-            Name = "kick";
-        }
+namespace ColossalCave.Actions;
 
-        public bool Expects(Object obj)
-        {
-            return Print("Violence isn't the answer to this one.");
-        }
+public class Kick : Verb
+{
+    public Kick()
+    {
+        Name = "kick";
+    }
+
+    public bool Expects(Object obj)
+    {
+        return Print("Violence isn't the answer to this one.");
     }
 }

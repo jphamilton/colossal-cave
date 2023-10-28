@@ -1,27 +1,26 @@
 ﻿using Adventure.Net.Actions;
 using ColossalCave.Places;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class Stalactite : Scenic
 {
-    public class Stalactite : Scenic
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "stalactite";
-            Synonyms.Are("stalactite", "stalagmite", "stalagtite", "large");
-            Description = "You could probably climb down it, but you can forget coming back up.";
+        Name = "stalactite";
+        Synonyms.Are("stalactite", "stalagmite", "stalagtite", "large");
+        Description = "You could probably climb down it, but you can forget coming back up.";
 
-            FoundIn<AtopStalactite>();
+        FoundIn<AtopStalactite>();
 
-            Before<LookUnder>(() => GetAGrip());
-            Before<Push>(() => GetAGrip());
-            Before<Take>(() => GetAGrip());
-        }
+        Before<LookUnder>(() => GetAGrip());
+        Before<Push>(() => GetAGrip());
+        Before<Take>(() => GetAGrip());
+    }
 
-        private bool GetAGrip()
-        {
-            Print("Do get a grip on yourself.");
-            return true;
-        }
+    private bool GetAGrip()
+    {
+        Print("Do get a grip on yourself.");
+        return true;
     }
 }

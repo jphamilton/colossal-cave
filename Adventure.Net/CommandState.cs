@@ -1,9 +1,8 @@
-﻿namespace Adventure.Net
+﻿namespace Adventure.Net;
+
+public enum CommandState
 {
-    public enum CommandState
-    {
-        Before,
-        During,
-        After
-    }
+    Before,
+    During,
+    After
 }

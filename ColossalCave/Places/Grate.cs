@@ -2,48 +2,27 @@ using Adventure.Net;
 using Adventure.Net.Actions;
 using ColossalCave.Places;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class Grate : Door
 {
-    public class Grate : Door
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "steel grate";
-            Synonyms.Are("grate", "lock", "gate", "grille", "metal", "string", "steel", "grating");
-            Description = "It just looks like an ordinary grate mounted in concrete.";
-            Article = "the";
+        Name = "steel grate";
+        Synonyms.Are("grate", "lock", "gate", "grille", "metal", "string", "steel", "grating");
+        Description = "It just looks like an ordinary grate mounted in concrete.";
 
-            FoundIn<BelowTheGrate, OutsideGrate>();
+        FoundIn<BelowTheGrate, OutsideGrate>();
 
-            LocksWithKey<SetOfKeys>(true);
+        LocksWithKey<SetOfKeys>(true);
 
-            Describe = () =>
-            {
-                if (Open)
-                    return "\nThe grate stands open.";
-                if (!Locked)
-                    return "\nThe grate is unlocked but shut.";
-                return null;
-            };
+        Describe = () => Open ? "\nThe grate stands open." : !Locked ? "\nThe grate is unlocked but shut." : null;
 
-            DoorDirection(() =>
-            {
-                if (In<BelowTheGrate>())
-                    return Direction<Up>();
-                return Direction<Down>();
-            });
+        DoorDirection(() => In<BelowTheGrate>() ? Direction<Up>() : Direction<Down>());
 
-            DoorTo(() =>
-            {
-                if (In<BelowTheGrate>())
-                {
-                    return Room<OutsideGrate>();
-                }
-                return Room<BelowTheGrate>();
-            });
+        DoorTo(() => In<BelowTheGrate>() ? Room<OutsideGrate>() : Room<BelowTheGrate>());
 
-            
-        }
+
     }
 }
 

@@ -1,6 +1,5 @@
-﻿namespace Adventure.Net.Actions
+﻿namespace Adventure.Net.Actions;
+
+public class NullVerb : Verb
 {
-    public class NullVerb : Verb
-    {
-    }
 }

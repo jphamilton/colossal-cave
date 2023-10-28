@@ -2,26 +2,25 @@
 using Adventure.Net.Actions;
 using ColossalCave.Places;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class Sign : Object
 {
-    public class Sign : Object
+    public override void Initialize()
     {
-        public override void Initialize()
+        Name = "sign";
+        Synonyms.Are("sign", "witt", "company", "construction");
+        Static = true;
+        InitialDescription =
+            "A sign in midair here says \"Cave under construction beyond this point. " +
+            "Proceed at own risk. [Witt Construction Company]\"";
+
+        FoundIn<Anteroom>();
+
+        Before<Take>(() =>
         {
-            Name = "sign";
-            Synonyms.Are("sign", "witt", "company", "construction");
-            Static = true;
-            InitialDescription = 
-                "A sign in midair here says \"Cave under construction beyond this point. " +
-                "Proceed at own risk. [Witt Construction Company]\"";
-
-            FoundIn<Anteroom>();
-
-            Before<Take>(() =>
-            {
-                Print("It's hanging way above your head.");
-                return true;
-            });
-        }
+            Print("It's hanging way above your head.");
+            return true;
+        });
     }
 }

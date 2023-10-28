@@ -1,7 +1,6 @@
-﻿namespace Adventure.Net
+﻿namespace Adventure.Net;
+
+public interface IOutputFormatter
 {
-    public interface IOutputFormatter
-    {
-        string Format(string text);
-    }
+    string Format(string text);
 }

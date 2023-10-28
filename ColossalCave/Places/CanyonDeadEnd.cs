@@ -1,14 +1,13 @@
-﻿namespace ColossalCave.Places
+﻿namespace ColossalCave.Places;
+
+public class CanyonDeadEnd : BelowGround
 {
-    public class CanyonDeadEnd : BelowGround
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "Canyon Dead End";
-            Description = "The canyon here becomes too tight to go further south.";
+        Name = "Canyon Dead End";
+        Description = "The canyon here becomes too tight to go further south.";
 
-            NorthTo<NSCanyon>();
+        NorthTo<NSCanyon>();
 
-        }
     }
 }

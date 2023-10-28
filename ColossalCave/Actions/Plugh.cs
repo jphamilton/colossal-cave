@@ -1,18 +1,17 @@
 ﻿using Adventure.Net;
 
-namespace ColossalCave.Actions
-{
-    public class Plugh : Verb
-    {
-        public Plugh()
-        {
-            Name = "plugh";
-        }
+namespace ColossalCave.Actions;
 
-        public bool Expects()
-        {
-            Print("Nothing happens.");
-            return true;
-        }
+public class Plugh : Verb
+{
+    public Plugh()
+    {
+        Name = "plugh";
+    }
+
+    public bool Expects()
+    {
+        Print("Nothing happens.");
+        return true;
     }
 }

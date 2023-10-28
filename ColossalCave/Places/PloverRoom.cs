@@ -3,62 +3,61 @@ using Adventure.Net.Actions;
 using ColossalCave.Actions;
 using ColossalCave.Things;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class PloverRoom : BelowGround
 {
-    public class PloverRoom : BelowGround
+    public override void Initialize()
     {
-        public override void Initialize()
+        Name = "Plover Room";
+
+        Synonyms.Are("plover", "room");
+
+        Description =
+            "You're in a small chamber lit by an eerie green light. " +
+            "An extremely narrow tunnel exits to the west. " +
+            "A dark corridor leads northeast.";
+
+        Light = true;
+
+        NorthEastTo<DarkRoom>();
+
+        WestTo(() =>
         {
-            Name = "Plover Room";
-           
-            Synonyms.Are("plover", "room");
-            
-            Description =
-                "You're in a small chamber lit by an eerie green light. " +
-                "An extremely narrow tunnel exits to the west. " +
-                "A dark corridor leads northeast.";
-            
-            Light = true;
+            var carrying = Inventory.Items.Count;
 
-            NorthEastTo<DarkRoom>();
-
-            WestTo(() =>
+            if (carrying == 0 || carrying == 1 && IsCarrying<EggSizedEmerald>())
             {
-                var carrying = Inventory.Items.Count;
-                
-                if (carrying == 0 || carrying == 1 && IsCarrying<EggSizedEmerald>())
-                {
-                    return Room<Alcove>();
-                }
+                return Room<Alcove>();
+            }
 
-                Print("Something you're carrying won't fit through the tunnel with you. You'd best take inventory and drop something.");
-                
-                return this;
-            });
+            Print("Something you're carrying won't fit through the tunnel with you. You'd best take inventory and drop something.");
 
-            Before<Plover>(() =>
+            return this;
+        });
+
+        Before<Plover>(() =>
+        {
+            if (IsCarrying<EggSizedEmerald>())
             {
-                if (IsCarrying<EggSizedEmerald>())
-                {
-                    Move<EggSizedEmerald>.To<PloverRoom>();
-                    Score.Add(-5, true);
-                }
+                Move<EggSizedEmerald>.To<PloverRoom>();
+                Score.Add(-5, true);
+            }
 
-                MovePlayer.To<Y2>();
-                
+            MovePlayer.To<Y2>();
+
+            return true;
+        });
+
+        Before<Go>((Direction direction) =>
+        {
+            if (direction is Out)
+            {
+                MovePlayer.To(W());
                 return true;
-            });
+            }
 
-            Before<Go>((Direction direction) =>
-            {
-                if (direction is Out)
-                {
-                    MovePlayer.To(W());
-                    return true;
-                }
-
-                return false;
-            });
-        }
+            return false;
+        });
     }
 }

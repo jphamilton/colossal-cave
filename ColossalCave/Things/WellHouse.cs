@@ -1,35 +1,34 @@
-﻿using ColossalCave.Places;
+﻿using Adventure.Net;
 using Adventure.Net.Actions;
-using Adventure.Net;
+using ColossalCave.Places;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class WellHouse : Scenic
 {
-    public class WellHouse : Scenic
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "well house";
-            Synonyms.Are("well", "house", "brick", "building", "small", "wellhouse");
-            Description = "It's a small brick building. It seems to be a well house.";
+        Name = "well house";
+        Synonyms.Are("well", "house", "brick", "building", "small", "wellhouse");
+        Description = "It's a small brick building. It seems to be a well house.";
 
-            FoundIn<EndOfRoad, HillInRoad, InsideBuilding>();
+        FoundIn<EndOfRoad, HillInRoad, InsideBuilding>();
 
-            Before<Enter>(() =>
+        Before<Enter>(() =>
+            {
+                var insideBuilding = Room<InsideBuilding>();
+
+                if (In<HillInRoad>() && !insideBuilding.Visited)
                 {
-                    var insideBuilding = Room<InsideBuilding>();
-                    
-                    if (In<HillInRoad>() && !insideBuilding.Visited)
-                    {
-                        Print("It's too far away.");
-                        return true;
-                    }
-                    
-                    MovePlayer.To<InsideBuilding>();
-                    return false;
+                    Print("It's too far away.");
+                    return true;
                 }
-            );
 
-        }
-       
+                MovePlayer.To<InsideBuilding>();
+                return true;
+            }
+        );
+
     }
+
 }

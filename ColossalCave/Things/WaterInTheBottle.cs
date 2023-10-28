@@ -1,33 +1,32 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class WaterInTheBottle : Object
 {
-    public class WaterInTheBottle : Object
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "bottled water"; 
-            Synonyms.Are("bottled", "water", "h2o");
-            Article = "some";
-            Description = "It looks like ordinary water to me.";
+        Name = "bottled water";
+        Synonyms.Are("bottled", "water", "h2o");
+        IndefiniteArticle = "some";
+        Description = "It looks like ordinary water to me.";
 
-            Before<Drink>(() =>
+        Before<Drink>(() =>
+            {
+                var bottle = Get<Bottle>();
+
+                if (bottle.Contents.Contains(this))
                 {
-                    var bottle = Get<Bottle>();
-                    
-                    if (bottle.Contents.Contains(this))
-                    {
-                        bottle.Remove<WaterInTheBottle>();
-                        Print("You drink the cool, refreshing water, draining the bottle in the process.");
-                    }
-                    else
-                    {
-                        Print("Refreshing!");
-                    }
+                    bottle.Remove<WaterInTheBottle>();
+                    Print("You drink the cool, refreshing water, draining the bottle in the process.");
+                }
+                else
+                {
+                    Print("Refreshing!");
+                }
 
-                    return true;
-                });
-        }
+                return true;
+            });
     }
 }

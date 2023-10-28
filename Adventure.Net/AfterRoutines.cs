@@ -1,45 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+public class AfterRoutines
 {
-    // TODO: Need to implement "(the) {obj}" in output - Look at Article handling in inform and double check the Prints for Verbs there
+    private readonly Dictionary<Type, Action> routines = new();
 
-    public class AfterRoutines
+    public void Add(Type type, Action after)
     {
-        private readonly Dictionary<Type, Action> routines = new();
-
-        public void Add(Type type, Action after)
+        if (routines.ContainsKey(type))
         {
-            if (routines.ContainsKey(type))
+            var routine = routines[type];
+
+            void wrapper()
             {
-                var routine = routines[type];
-
-                void wrapper()
-                {
-                    routine();
-                    after();
-                }
-
-                routines.Remove(type);
-
-                routines.Add(type, wrapper);
+                routine();
+                after();
             }
-            else
-            {
-                routines.Add(type, after);
-            }
-            
+
+            routines.Remove(type);
+
+            routines.Add(type, wrapper);
+        }
+        else
+        {
+            routines.Add(type, after);
         }
 
-        public Action Get(Type verbType)
-        {
-            if (routines.ContainsKey(verbType))
-            {
-                return routines[verbType];
-            }
+    }
 
-            return null;
+    public Action Get(Type verbType)
+    {
+        if (routines.ContainsKey(verbType))
+        {
+            return routines[verbType];
         }
+
+        return null;
     }
 }

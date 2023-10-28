@@ -1,16 +1,14 @@
 ﻿using Adventure.Net;
 
-namespace Tests.ObjectTests
+namespace Tests.ObjectTests;
+
+public class Oven : Container
 {
-    public class Oven : Container
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "oven";
-            Open = true;
-            Openable = true;
-            Transparent = false;
-            Article = "the";
-        }
+        Name = "oven";
+        Open = true;
+        Openable = true;
+        Transparent = false;
     }
 }

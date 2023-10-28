@@ -1,38 +1,36 @@
-﻿using Adventure.Net.Actions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Adventure.Net.Extensions
+namespace Adventure.Net.Extensions;
+
+public static class ListStringExtensions
 {
-    public static class ListStringExtensions
+    public static void Remove(this IList<string> input, IEnumerable<string> remove)
     {
-        public static void Remove(this IList<string> input, IEnumerable<string> remove)
+        foreach (var item in remove)
         {
-            foreach (var item in remove)
-            {
-                input.Remove(item);
-            }
+            input.Remove(item);
+        }
+    }
+
+    public static bool IsEmpty(this IList<string> input)
+    {
+        foreach (string item in input)
+        {
+            if (!String.IsNullOrEmpty(item))
+                return false;
         }
 
-        public static bool IsEmpty(this IList<string> input)
-        {
-            foreach (string item in input)
-            {
-                if (!String.IsNullOrEmpty(item))
-                    return false;
-            }
+        return true;
+    }
 
-            return true;
-        }
+    public static bool StartsWithVerb(this IList<string> words)
+    {
+        bool result = false;
 
-        public static bool StartsWithVerb(this IList<string> words)
-        {
-            bool result = false;
+        if (words.Count > 0)
+            result = (Verbs.Get(words[0]) != null);
 
-            if (words.Count > 0)
-                result = (Verbs.Get(words[0]) != null);
-
-            return result;
-        }
+        return result;
     }
 }

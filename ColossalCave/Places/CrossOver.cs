@@ -1,32 +1,31 @@
 ﻿using Adventure.Net;
 using ColossalCave.Things;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class CrossOver : BelowGround
 {
-    public class CrossOver : BelowGround
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "N/S and E/W Crossover";
-            Synonyms.Are("n/s", "and", "e/w", "crossover");
+        Name = "N/S and E/W Crossover";
+        Synonyms.Are("n/s", "and", "e/w", "crossover");
 
-            WestTo<EastEndOfLongHall>();
-            NorthTo<DeadEnd7>();
-            EastTo<WestSideChamber>();
-            SouthTo<WestEndOfLongHall>();
-        }
+        WestTo<EastEndOfLongHall>();
+        NorthTo<DeadEnd7>();
+        EastTo<WestSideChamber>();
+        SouthTo<WestEndOfLongHall>();
     }
+}
 
-    public class Crossover : Scenic
+public class Crossover : Scenic
+{
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "crossover";
-            Synonyms.Are("crossover", "over", "cross");
-            Description = "You know as much as I do at this point.";
+        Name = "crossover";
+        Synonyms.Are("crossover", "over", "cross");
+        Description = "You know as much as I do at this point.";
 
-            FoundIn<CrossOver>();
-        }
+        FoundIn<CrossOver>();
     }
 }
 

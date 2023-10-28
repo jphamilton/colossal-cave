@@ -1,98 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+public abstract class Container : Object
 {
-    public abstract class Container : Object
+    protected List<Object> contents = new();
+
+    protected Container()
     {
-        protected List<Object> contents = new();
-        
-        protected Container()
-        {
-            Describe = () =>
+        Describe = () =>
+           {
+               if (IsEmpty)
+                   return $"The {Name} is empty.";
+
+               if (contents.Count == 1)
                {
-                   if (IsEmpty)
-                       return $"The {Name} is empty.";
-                   
-                   if (contents.Count == 1)
-                   {
-                       Object child = contents[0];
-                       return $"In the {Name} {IsOrAre} {child.Article} {child.Name}.";
-                   }
-                   
-                   throw new Exception("Don't know how to deal with containers with more than one thing.");
+                   Object child = contents[0];
+                   return $"In the {Name} {IsOrAre} {child.DefiniteArticle} {child.Name}.";
+               }
 
-               };
-        }
+               throw new Exception("Don't know how to deal with containers with more than one thing.");
 
-        public string State
+           };
+    }
+
+    public string State
+    {
+        get
         {
-            get
+            string result;
+
+            if (!Open)
             {
-                string result;
-                
-                if (!Open)
-                {
-                    result = "which is closed";
-                }
-                else
-                {
-                    result = Contents.Count > 0 ? "which is open" : "which is open but empty";
-                }
-
-                return result;
+                result = "which is closed";
             }
-        }
-
-        public bool IsEmpty
-        {
-            get { return contents.Count == 0; }
-        }
-
-        public void Empty()
-        {
-            contents.Clear();
-        }
-
-        public void Add<T>() where T:Object
-        {
-            Object obj = Objects.Get<T>();
-            contents.Add(obj);
-        }
-
-        public void Add(Object obj) 
-        {
-            contents.Add(obj);
-        }
-
-        public void Remove(Object obj) 
-        {
-            contents.Remove(obj);
-        }
-
-        public new void Remove<T>() where T : Object
-        {
-            var obj = Objects.Get<T>();
-            contents.Remove(obj);
-        }
-
-        public IList<Object> Contents
-        {
-            get
+            else
             {
-                return contents;
+                result = Contents.Count > 0 ? "which is open" : "which is open but empty";
             }
-        }
 
-        public bool Contains<T>() where T:Object
-        {
-            Object obj = Objects.Get<T>();
-            return Contents.Contains(obj);
+            return result;
         }
+    }
 
-        public bool Contains(Object obj)
+    public bool IsEmpty
+    {
+        get { return contents.Count == 0; }
+    }
+
+    public void Empty()
+    {
+        contents.Clear();
+    }
+
+    public void Add<T>() where T : Object
+    {
+        Object obj = Objects.Get<T>();
+        contents.Add(obj);
+    }
+
+    public void Add(Object obj)
+    {
+        contents.Add(obj);
+    }
+
+    public void Remove(Object obj)
+    {
+        contents.Remove(obj);
+    }
+
+    public new void Remove<T>() where T : Object
+    {
+        var obj = Objects.Get<T>();
+        contents.Remove(obj);
+    }
+
+    public IList<Object> Contents
+    {
+        get
         {
-            return Contents.Contains(obj);
+            return contents;
         }
+    }
+
+    public bool Contains<T>() where T : Object
+    {
+        Object obj = Objects.Get<T>();
+        return Contents.Contains(obj);
+    }
+
+    public bool Contains(Object obj)
+    {
+        return Contents.Contains(obj);
     }
 }

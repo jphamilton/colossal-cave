@@ -1,36 +1,35 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+public partial class Parser
 {
-    public partial class CommandLineParser
+    // Which do you mean, the red hat, the black hat or the white hat?
+    private class MultipleObjectsFound : Object
     {
-        // Which do you mean, the red hat, the black hat or the white hat?
-        private class MultipleObjectsFound : Object
+        public IList<Object> Objects { get; }
+
+        public MultipleObjectsFound(IList<Object> objects)
         {
-            public IList<Object> Objects { get; }
+            Objects = objects;
+        }
 
-            public MultipleObjectsFound(IList<Object> objects)
+        public override void Initialize()
+        {
+            // no op
+        }
+
+        public string List()
+        {
+            var x = Objects.Select(x => $"{x.DefiniteArticle} {x.Name}").ToList();
+
+            if (x.Count < 3)
             {
-                Objects = objects;
+                return string.Join(" or ", x);
             }
 
-            public override void Initialize()
-            {
-                // no op
-            }
-
-            public string List()
-            {
-                var x = Objects.Select(x => $"{x.Article} {x.Name}").ToList();
-
-                if (x.Count < 3)
-                {
-                    return string.Join(" or ", x);
-                }
-
-                return string.Join(", ", x.GetRange(0, x.Count - 1)) + $" or {x.Last()}";
-            }
+            return string.Join(", ", x.GetRange(0, x.Count - 1)) + $" or {x.Last()}";
         }
     }
 }

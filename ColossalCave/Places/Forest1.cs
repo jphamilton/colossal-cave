@@ -1,38 +1,37 @@
-﻿using System;
-using Adventure.Net;
+﻿using Adventure.Net;
 using Adventure.Net.Actions;
-using ColossalCave.Things;
+using System;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class Forest1 : AboveGround
 {
-    public class Forest1 : AboveGround
+    public override void Initialize()
     {
-        public override void Initialize()
+        Name = "In Forest";
+        Synonyms.Are("forest");
+        Description = "You are in open forest, with a deep valley to one side.";
+
+        EastTo<Valley>();
+        DownTo<Valley>();
+        NorthTo<Forest1>();
+        WestTo<Forest1>();
+        SouthTo<Forest1>();
+
+        Before<Enter>(() =>
         {
-            Name = "In Forest";
-            Synonyms.Are("forest");
-            Description = "You are in open forest, with a deep valley to one side.";
 
-            EastTo<Valley>();
-            DownTo<Valley>();
-            NorthTo<Forest1>();
-            WestTo<Forest1>();
-            SouthTo<Forest1>();
+            var rnd = new Random(DateTime.Now.Second);
 
-            Before<Enter>(() => {
+            if (rnd.Next(1, 2) == 1)
+            {
+                MovePlayer.To(Room<Forest2>());
+                return true;
+            }
 
-                var rnd = new Random(DateTime.Now.Second);
-                
-                if (rnd.Next(1, 2) == 1)
-                {
-                    MovePlayer.To(Room<Forest2>());
-                    return true;
-                }
+            return false;
+        });
 
-                return false;
-            });
-
-        }
     }
 }
 

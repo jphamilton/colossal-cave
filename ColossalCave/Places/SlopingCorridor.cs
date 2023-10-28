@@ -1,20 +1,19 @@
 ﻿using Adventure.Net;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class SlopingCorridor : BelowGround
 {
-    public class SlopingCorridor : BelowGround
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "Sloping Corridor";
-            Synonyms.Are("sloping", "corridor");
-            Description = "You are in a long winding corridor sloping out of sight in both directions.";
+        Name = "Sloping Corridor";
+        Synonyms.Are("sloping", "corridor");
+        Description = "You are in a long winding corridor sloping out of sight in both directions.";
 
-            CantGo = "The corridor slopes steeply up and down.";
+        CantGo = "The corridor slopes steeply up and down.";
 
-            DownTo<LargeLowRoom>();
-            UpTo<SwSideOfChasm>();
+        DownTo<LargeLowRoom>();
+        UpTo<SwSideOfChasm>();
 
-        }
     }
 }

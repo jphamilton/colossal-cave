@@ -1,40 +1,39 @@
 ﻿using Adventure.Net.Actions;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+public class ImplicitTake : IInvoke
 {
-    public class ImplicitTake : IInvoke
+    private readonly Object obj;
+
+    public ImplicitTake(Object obj)
     {
-        private readonly Object obj;
+        this.obj = obj;
+    }
 
-        public ImplicitTake(Object obj)
+    public bool Invoke()
+    {
+        if (!obj.InInventory)
         {
-            this.obj = obj;
-        }
+            var result = Object.Execute<Take>(obj, v => v.Expects(obj));
 
-        public bool Invoke()
-        {
-            if (!obj.InInventory)
+            // only return result.Success
+
+            if (result.Success)
             {
-                var result = Object.Execute<Take>(obj, v => v.Expects(obj));
-
-                // only return result.Success
-
-                if (result.Success)
-                {
-                    Context.Current.Print($"(first taking the {obj.Name})", CommandState.After);
-                }
-
-                // need to print messages regardless of success/fail
-                foreach (var message in result.CommandOutput.Output)
-                {
-                    Context.Current.Print(message);
-                }
-
-                return result.Success;
+                Context.Current.Print($"(first taking the {obj.Name})", CommandState.After);
             }
 
-            // pass thru - keep on processing
-            return true;
+            // need to print messages regardless of success/fail
+            foreach (var message in result.CommandOutput.Messages)
+            {
+                Context.Current.Print(message);
+            }
+
+            return result.Success;
         }
+
+        // pass thru - keep on processing
+        return true;
     }
 }

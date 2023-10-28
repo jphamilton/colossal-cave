@@ -3,52 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+public static class Verbs
 {
-    public static class Verbs 
+    private static List<Verb> verbs;
+
+    public static void Load()
     {
-        private static List<Verb> verbs;
+        verbs = new List<Verb>();
 
-        public static void Load()
+        static void add(IEnumerable<Type> list)
         {
-            verbs = new List<Verb>();
-
-            static void add(IEnumerable<Type> list)
+            foreach (var type in list)
             {
-                foreach (var type in list)
+                if (type.IsSubclassOf(typeof(Verb)) && !type.IsAbstract)
                 {
-                    if (type.IsSubclassOf(typeof(Verb)) && !type.IsAbstract)
-                    {
-                        var instance = Activator.CreateInstance(type) as Verb;
+                    var instance = Activator.CreateInstance(type) as Verb;
 
-                        instance.Initialize();
+                    instance.Initialize();
 
-                        verbs.Add(instance);
-                    }
+                    verbs.Add(instance);
                 }
-
             }
 
-            Type[] types = Assembly.GetExecutingAssembly().GetTypes();
-            add(types);
-
-            var storyType = Context.Story.GetType();
-            types = Assembly.GetAssembly(storyType).GetTypes();
-            add(types);
-            
         }
 
-        public static IList<Verb> List
-        {
-            get { return verbs; }
-        }
+        Type[] types = Assembly.GetExecutingAssembly().GetTypes();
+        add(types);
 
-        public static Verb Get(string name)
-        {
-            return List.Where(x => x.Name == name || x.Synonyms.Contains(name)).FirstOrDefault();
-        }
-
-        
+        var storyType = Context.Story.GetType();
+        types = Assembly.GetAssembly(storyType).GetTypes();
+        add(types);
 
     }
+
+    public static IList<Verb> List
+    {
+        get { return verbs; }
+    }
+
+    public static Verb Get(string name)
+    {
+        return List.Where(x => x.Name == name || x.Synonyms.Contains(name)).FirstOrDefault();
+    }
+
+
+
 }

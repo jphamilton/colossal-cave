@@ -2,51 +2,50 @@
 using Adventure.Net.Actions;
 using ColossalCave.Things;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public abstract class FissureRoom : BelowGround
 {
-    public abstract class FissureRoom : BelowGround
+    public override void Initialize()
     {
-        public override void Initialize()
+        Before<Jump>(() =>
         {
-            Before<Jump>(() =>
+            if (CurrentRoom.Has<CrystalBridge>())
             {
-                if (CurrentRoom.Has<CrystalBridge>())
-                {
-                    Print("I respectfully suggest you go across the bridge instead of jumping.");
-                    return true;
-                }
-
-                Print("You didn't make it.");
-                
-                GameOver.Dead();
-                
+                Print("I respectfully suggest you go across the bridge instead of jumping.");
                 return true;
-            });
+            }
 
-            DownTo(() =>
-            {
-                Output.Print("The fissure is too terrifying!");
-                return this;
-            });
-        }
+            Print("You didn't make it.");
 
-        protected Room CannotCross()
+            GameOver.Dead();
+
+            return true;
+        });
+
+        DownTo(() =>
         {
-            Output.Print("The fissure is too wide.");
+            Output.Print("The fissure is too terrifying!");
             return this;
-        }
+        });
     }
 
-    public class Fissure : Scenic
+    protected Room CannotCross()
     {
-        public override void Initialize()
-        {
-            Name = "fissure";
-            Synonyms.Are("wide", "fissure");
-            Description = "The fissure looks far too wide to jump.";
+        Output.Print("The fissure is too wide.");
+        return this;
+    }
+}
 
-            FoundIn<WestSideOfFissure, EastBankOfFissure>();
-        }
+public class Fissure : Scenic
+{
+    public override void Initialize()
+    {
+        Name = "fissure";
+        Synonyms.Are("wide", "fissure");
+        Description = "The fissure looks far too wide to jump.";
+
+        FoundIn<WestSideOfFissure, EastBankOfFissure>();
     }
 }
 

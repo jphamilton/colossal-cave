@@ -4,56 +4,55 @@ using Adventure.Net.Utilities;
 using ColossalCave.Actions;
 using ColossalCave.Things;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class Y2 : BelowGround
 {
-    public class Y2 : BelowGround
+    public override void Initialize()
     {
-        public override void Initialize()
+        Name = "y2";
+        Description =
+            "You are in a large room, with a passage to the south, " +
+            "a passage to the west, and a wall of broken rock to the east. " +
+            "There is a large ~Y2~ on a rock in the room's center.";
+
+
+        SouthTo<LowNSPassage>();
+        EastTo<JumbleOfRock>();
+        WestTo<WindowOnPit1>();
+
+
+        After<Look>(() =>
         {
-            Name = "y2";
-            Description = 
-                "You are in a large room, with a passage to the south, " +
-                "a passage to the west, and a wall of broken rock to the east. " +
-                "There is a large ~Y2~ on a rock in the room's center.";
-
-
-            SouthTo<LowNSPassage>();
-            EastTo<JumbleOfRock>();
-            WestTo<WindowOnPit1>();
-
-
-            After<Look>(() =>
+            if (Random.Number(1, 100) < 25)
             {
-                if (Random.Number(1, 100) < 25)
-                {
-                    Print("\r\nA hollow voice says, \"Plugh.\"\n");
-                }
-            });
+                Print("\r\nA hollow voice says, \"Plugh.\"\n");
+            }
+        });
 
-            Before<Plugh>(() =>
+        Before<Plugh>(() =>
+        {
+            MovePlayer.To<InsideBuilding>();
+            return true;
+        });
+
+        Before<Plover>(() =>
+        {
+            if (!Room<PloverRoom>().Visited)
             {
-                MovePlayer.To<InsideBuilding>();
-                return true;
-            });
+                return false;
+            }
 
-            Before<Plover>(() =>
+            if (IsCarrying<EggSizedEmerald>())
             {
-                if (!Room<PloverRoom>().Visited)
-                {
-                    return false;
-                }
+                Move<EggSizedEmerald>.To<PloverRoom>();
+                Score.Add(-5);
+            }
 
-                if (IsCarrying<EggSizedEmerald>())
-                {
-                    Move<EggSizedEmerald>.To<PloverRoom>();
-                    Score.Add(-5);
-                }
+            MovePlayer.To<PloverRoom>();
 
-                MovePlayer.To<PloverRoom>();
-                
-                return true;
-            });
+            return true;
+        });
 
-        }
     }
 }

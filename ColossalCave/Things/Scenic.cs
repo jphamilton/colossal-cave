@@ -1,12 +1,11 @@
 ﻿using Adventure.Net;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public abstract class Scenic : Object
 {
-    public abstract class Scenic : Object
+    protected Scenic()
     {
-        protected Scenic()
-        {
-            Scenery = true;
-        }
+        Scenery = true;
     }
 }

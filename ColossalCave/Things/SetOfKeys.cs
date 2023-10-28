@@ -2,25 +2,24 @@
 using ColossalCave.Actions;
 using ColossalCave.Places;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class SetOfKeys : Object
 {
-    public class SetOfKeys : Object
+    public override void Initialize()
     {
-        public override void Initialize()
+        Name = "set of keys";
+        Synonyms.Are("keys", "key", "keyring", "set", "of", "bunch");
+        Description = "It's just a normal-looking set of keys.";
+        InitialDescription = "There are some keys on the ground here.";
+
+        FoundIn<InsideBuilding>();
+
+        Before<Count>(() =>
         {
-            Name = "set of keys";
-            Synonyms.Are("keys", "key", "keyring", "set", "of", "bunch");
-            Description = "It's just a normal-looking set of keys.";
-            InitialDescription = "There are some keys on the ground here.";
+            return Print("A dozen or so keys.");
+        });
 
-            FoundIn<InsideBuilding>();
-
-            Before<Count>(() =>
-            {
-                return Print("A dozen or so keys.");
-            });
-            
-        }
     }
 }
 

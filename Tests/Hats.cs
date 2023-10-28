@@ -1,35 +1,30 @@
 ﻿using Adventure.Net;
 
-namespace Tests
+namespace Tests;
+
+public class RedHat : Object
 {
-    public class RedHat : Object
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "red hat";
-            Synonyms.Are("red", "hat");
-            Article = "the";
-        }
+        Name = "red hat";
+        Synonyms.Are("red", "hat");
     }
+}
 
-    public class BlackHat : Object
+public class BlackHat : Object
+{
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "black hat";
-            Synonyms.Are("black", "hat");
-            Article = "the";
-        }
+        Name = "black hat";
+        Synonyms.Are("black", "hat");
     }
+}
 
-    public class WhiteHat : Object
+public class WhiteHat : Object
+{
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "white hat";
-            Synonyms.Are("white", "hat");
-            Article = "the";
-        }
+        Name = "white hat";
+        Synonyms.Are("white", "hat");
     }
-
 }

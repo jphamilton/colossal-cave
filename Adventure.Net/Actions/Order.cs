@@ -1,20 +1,19 @@
-﻿namespace Adventure.Net.Actions
+﻿namespace Adventure.Net.Actions;
+
+public class Order : Verb
 {
-    public class Order : Verb
+    public Order()
     {
-        public Order()
+        Name = "order";
+    }
+
+    public bool Expects(Object obj)
+    {
+        if (obj.Animate)
         {
-            Name = "order";
+            return Print($"{obj.DefiniteArticle} {obj.Name} has better things to do.");
         }
 
-        public bool Expects(Object obj)
-        {
-            if (obj.Animate)
-            {
-                return Print($"{obj.Article} {obj.Name} has better things to do.");
-            }
-
-            return Print(Messages.VerbNotRecognized);
-        }
+        return Print(Messages.VerbNotRecognized);
     }
 }

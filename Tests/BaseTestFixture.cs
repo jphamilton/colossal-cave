@@ -8,121 +8,120 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace Tests
+namespace Tests;
+
+public class TestFormatter : IOutputFormatter
 {
-    public class TestFormatter : IOutputFormatter
+    public string Format(string text)
     {
-        public string Format(string text)
+        return text;
+    }
+}
+
+[Collection("Sequential")]
+public abstract class BaseTestFixture : IDisposable
+{
+    private StringBuilder fakeConsole;
+    private string output;
+    private List<string> list;
+
+    public BaseTestFixture()
+    {
+        fakeConsole = new StringBuilder();
+        Context.Story = new ColossalCaveStory();
+        Output.Initialize(new StringWriter(fakeConsole), new TestFormatter());
+        CommandPrompt.Initialize(new StringWriter(), new StringReader(""));
+        Context.Story.Initialize();
+        Context.Story.Location = Room<InsideBuilding>();
+        Inventory.Clear();
+        fakeConsole.Clear(); ;
+    }
+
+    public void Dispose()
+    {
+        list = null;
+        Context.Current = null;
+        fakeConsole.Clear();
+        output = null;
+        Inventory.Clear();
+    }
+
+    protected void ClearOutput()
+    {
+        output = null;
+        fakeConsole.Clear();
+    }
+
+    protected Room Room<T>() where T : Room
+    {
+        return Rooms.Get<T>();
+    }
+
+    protected Room Location
+    {
+        get
         {
-            return text;
+            return Context.Story.Location;
+        }
+        set
+        {
+            Context.Story.Location = value;
         }
     }
 
-    [Collection("Sequential")]
-    public abstract class BaseTestFixture : IDisposable
+    public string ConsoleOut
     {
-        private StringBuilder fakeConsole;
-        private string output;
-        private List<string> list;
-
-        public BaseTestFixture()
+        get
         {
-            fakeConsole = new StringBuilder();
-            Context.Story = new ColossalCaveStory();
-            Output.Initialize(new StringWriter(fakeConsole), new TestFormatter());
-            CommandPrompt.Initialize(new StringWriter(), new StringReader(""));
-            Context.Story.Initialize();
-            Context.Story.Location = Room<InsideBuilding>();
-            Inventory.Clear();
-            fakeConsole.Clear(); ;
-        }
-
-        public void Dispose()
-        {
-            list = null;
-            Context.Current = null;
-            fakeConsole.Clear();
-            output = null;
-            Inventory.Clear();
-        }
-
-        protected void ClearOutput()
-        {
-            output = null;
-            fakeConsole.Clear();
-        }
-
-        protected Room Room<T>() where T : Room
-        {
-            return Rooms.Get<T>();
-        }
-
-        protected Room Location
-        {
-            get
+            if (!string.IsNullOrEmpty(output))
             {
-                return Context.Story.Location;
-            }
-            set
-            {
-                Context.Story.Location = value;
-            }
-        }
-
-        public string ConsoleOut
-        {
-            get
-            {
-                if (!string.IsNullOrEmpty(output))
-                {
-                    return output;
-                }
-
-                output = fakeConsole.ToString();
-
                 return output;
             }
+
+            output = fakeConsole.ToString();
+
+            return output;
         }
-
-        protected void Print(string message)
-        {
-            Context.Current.Print(message);
-        }
-
-        protected CommandLineParserResult Parse(string input)
-        {
-            var parser = new CommandLineParser();
-            return parser.Parse(input);
-        }
-
-        protected CommandResult Execute(string input)
-        {
-            var result = Parse(input);
-
-            var command = result.CommandHandler();
-            
-            return command.Run();
-        }
-
-        protected string Line(int number)
-        {
-            if (list == null)
-            {
-                list = ConsoleOut.Split(Environment.NewLine).ToList();
-            }
-
-            if (list.Count > number)
-            {
-                return list[number - 1];
-            }
-
-            return null;
-        }
-
-        protected string Line1 => Line(1);
-        protected string Line2 => Line(2);
-        protected string Line3 => Line(3);
-        protected string Line4 => Line(4);
-        protected string Line5 => Line(5);
     }
+
+    protected void Print(string message)
+    {
+        Context.Current.Print(message);
+    }
+
+    protected ParserResult Parse(string input)
+    {
+        var parser = new Parser();
+        return parser.Parse(input);
+    }
+
+    protected CommandResult Execute(string input)
+    {
+        var result = Parse(input);
+
+        var command = result.CommandHandler();
+
+        return command.Run();
+    }
+
+    protected string Line(int number)
+    {
+        if (list == null)
+        {
+            list = ConsoleOut.Split(Environment.NewLine).ToList();
+        }
+
+        if (list.Count > number)
+        {
+            return list[number - 1];
+        }
+
+        return null;
+    }
+
+    protected string Line1 => Line(1);
+    protected string Line2 => Line(2);
+    protected string Line3 => Line(3);
+    protected string Line4 => Line(4);
+    protected string Line5 => Line(5);
 }

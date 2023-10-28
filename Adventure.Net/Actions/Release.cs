@@ -1,30 +1,27 @@
-﻿using System;
+﻿namespace Adventure.Net.Actions;
 
-namespace Adventure.Net.Actions
+//Verb 'release' 'free'
+//    * creature              -> Release;
+public class Release : Verb
 {
-    //Verb 'release' 'free'
-    //    * creature              -> Release;
-    public class Release : Verb
+    public Release()
     {
-        public Release()
+        Name = "release";
+        Synonyms.Are("free");
+    }
+
+    public bool Expects(Object obj)
+    {
+        // whatever is being released must provide a Before<Release> routine
+        if (obj.Animate)
         {
-            Name = "release";
-            Synonyms.Are("free");
+            Print("You can't release that.");
+        }
+        else
+        {
+            Print("You can only do that to something animate");
         }
 
-        public bool Expects(Object obj)
-        {
-            // whatever is being released must provide a Before<Release> routine
-            if (obj.Animate)
-            {
-                Print("You can't release that.");
-            }
-            else
-            {
-                Print("You can only do that to something animate");
-            }
-
-            return true;
-        }
+        return true;
     }
 }

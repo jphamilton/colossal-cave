@@ -1,15 +1,14 @@
-﻿namespace Adventure.Net.Actions
-{
-    public class Search : Verb
-    {
-        public Search()
-        {
-            Name = "search";
-        }
+﻿namespace Adventure.Net.Actions;
 
-        public bool Expects(Object obj)
-        {
-            return Print("You find nothing of interest.");
-        }
+public class Search : Verb
+{
+    public Search()
+    {
+        Name = "search";
+    }
+
+    public bool Expects(Object obj)
+    {
+        return Print("You find nothing of interest.");
     }
 }

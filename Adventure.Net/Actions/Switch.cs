@@ -1,20 +1,19 @@
-﻿namespace Adventure.Net.Actions
+﻿namespace Adventure.Net.Actions;
+
+public class Switch : Verb
 {
-    public class Switch : Verb
+    public Switch()
     {
-        public Switch()
-        {
-            Name = "switch";
-        }
+        Name = "switch";
+    }
 
-        public bool Expects(Object obj, Preposition.On on)
-        {
-            return Redirect<SwitchOn>(obj, v => v.Expects(obj, on));
-        }
+    public bool Expects(Object obj, Preposition.On on)
+    {
+        return Redirect<SwitchOn>(obj, v => v.Expects(obj, on));
+    }
 
-        public bool Expects(Object obj, Preposition.Off off)
-        {
-            return Redirect<SwitchOff>(obj, v => v.Expects(obj, off));
-        }
+    public bool Expects(Object obj, Preposition.Off off)
+    {
+        return Redirect<SwitchOff>(obj, v => v.Expects(obj, off));
     }
 }

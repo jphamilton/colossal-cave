@@ -1,12 +1,11 @@
 ﻿using System.Text;
 
-namespace Adventure.Net.Extensions
+namespace Adventure.Net.Extensions;
+
+public static class StringBuilderExtensions
 {
-    public static class StringBuilderExtensions
+    public static void Indent(this StringBuilder input, int level)
     {
-        public static void Indent(this StringBuilder input, int level)
-        {
-            input.Append(new string('\t', level));
-        }
+        input.Append(new string('\t', level));
     }
 }

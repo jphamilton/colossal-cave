@@ -1,21 +1,20 @@
-﻿namespace Adventure.Net.Actions
+﻿namespace Adventure.Net.Actions;
+
+//Verb 'pick'
+//    * 'up' multi                                -> Take
+//    * multi 'up'                                -> Take;
+public class Pick : Verb
 {
-    //Verb 'pick'
-    //    * 'up' multi                                -> Take
-    //    * multi 'up'                                -> Take;
-    public class Pick : Verb
+    public Pick()
     {
-        public Pick()
-        {
-            Name = "pick up";
-            Synonyms.Are("pick");
-            Multi = true;
-        }
-
-        public bool Expects(Object obj, Preposition.Up up)
-        {
-            return Redirect<Take>(obj, v => v.Expects(obj));
-        }
-
+        Name = "pick up";
+        Synonyms.Are("pick");
+        Multi = true;
     }
+
+    public bool Expects(Object obj, Preposition.Up up)
+    {
+        return Redirect<Take>(obj, v => v.Expects(obj));
+    }
+
 }

@@ -1,214 +1,239 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+public static class CurrentRoom
 {
-    public static class CurrentRoom
+    public static Room Location
     {
-        public static Room Location
+        get { return Context.Story.Location; }
+    }
+
+    public static void Look(bool showFull)
+    {
+        // look is special in that it uses extra formatting like bold,
+        // so this is sent directly to the console
+
+        Output.PrintLine();
+
+        Room room = IsLit() ? Location : Rooms.Get<Darkness>();
+
+        Output.Bold(room.Name);
+
+        if (showFull || !Location.Visited)
         {
-            get { return Context.Story.Location; }
+            Output.Print(room.Description);
         }
 
-        public static void Look(bool showFull)
+        DisplayRoomObjects();
+
+    }
+
+    public static bool IsLit()
+    {
+        if (Location.Light)
         {
-            // look is special in that it uses extra formatting like bold,
-            // so this is sent directly to the console
-
-            Output.PrintLine();
-
-            Room room = IsLit() ? Location : Rooms.Get<Darkness>();
-
-            Output.Bold(room.Name);
-
-            if (showFull || !Location.Visited)
-            {
-                Output.Print(room.Description);
-            }
-
-            DisplayRoomObjects();
-
+            return true;
         }
 
-        public static bool IsLit()
+        var objects = ObjectMap.GetObjects(Location);
+
+        if (objects.Any(obj => obj.Light))
         {
-            if (Location.Light)
-                return true;
+            return true;
+        }
 
-            var objects = ObjectMap.GetObjects(Location);
-
-            if (objects.Any(obj => obj.Light))
+        foreach (var obj in Inventory.Items)
+        {
+            if (obj.Light)
             {
                 return true;
             }
 
-            foreach (var obj in Inventory.Items)
+            if (obj is not Container container || (!container.Open && !container.Transparent))
             {
-                if (obj.Light)
+                continue;
+            }
+
+            foreach (var containedObj in container.Contents)
+            {
+                if (containedObj.Light)
+                {
                     return true;
-
-                if (obj is not Container container || (!container.Open && !container.Transparent))
-                    continue;
-
-                foreach (var containedObj in container.Contents)
-                {
-                    if (containedObj.Light)
-                        return true;
                 }
             }
-
-            return false;
         }
 
-        private static void DisplayRoomObjects()
+        return false;
+    }
+
+    private static void DisplayRoomObjects()
+    {
+        if (!IsLit())
         {
-            var ordinary = new List<Object>();
-            int total = 0;
+            return;
+        }
 
-            var objects = ObjectMap.GetObjects(Location);
+        var ordinary = new List<Object>();
+        int total = 0;
 
-            foreach (var obj in objects)
+        var objects = ObjectMap.GetObjects(Location);
+
+        foreach (var obj in objects)
+        {
+            if (obj.Scenery && obj.Describe == null)
             {
-                if (obj.Scenery && obj.Describe == null)
-                    continue;
+                continue;
+            }
 
-                if (obj.Static)
+            if (obj.Static)
+            {
+                if (obj is Door door)
                 {
-                    if (obj is Door door)
+                    if (door.WhenOpen != null && door.Open)
                     {
-                        if (door.WhenOpen != null && door.Open)
-                        {
-                            Output.Print($"\n{door.WhenOpen}");
-                            continue;
-                        }
-                        else if (door.WhenClosed != null && !door.Open)
-                        {
-                            Output.Print($"\n{door.WhenClosed}");
-                            continue;
-                        }
-                    }
-
-                    if (obj.Describe == null && obj.InitialDescription == null)
+                        Output.Print($"\n{door.WhenOpen}");
                         continue;
-                }
-
-                total++;
-
-                if (!obj.Touched && !string.IsNullOrEmpty(obj.InitialDescription))
-                {
-                    Output.PrintLine();
-                    Output.Print(obj.InitialDescription);
-                }
-                else if (obj.Describe != null && (obj as Container) == null)
-                {
-                    Output.PrintLine();
-                    Output.Print(obj.Describe());
-                }
-                else
-                {
-                    ordinary.Add(obj);
-                }
-            }
-
-            var group = new StringBuilder();
-
-            if (total > ordinary.Count)
-                group.Append("You can also see ");
-            else
-                group.Append("You can see ");
-
-            for (int i = 0; i < ordinary.Count; i++)
-            {
-                Object obj = ordinary[i];
-
-                if (i == ordinary.Count - 1 && i > 0)
-                    group.Append(" and ");
-                else if (i > 0)
-                    group.Append(", ");
-
-                if (obj is Container container)
-                {
-                    if (container.Contents.Count > 0)
-                    {
-                        Object child = container.Contents[0];
-                        group.AppendFormat("{0} {1} (which contains {2} {3})", obj.Article, obj.Name, child.Article, child.Name);
                     }
-                    else
-                        group.AppendFormat("{0} {1} (which is empty)", obj.Article, obj.Name);
-                }
-                else
-                {
-                    group.AppendFormat("{0} {1}", obj.Article, obj.Name);
+                    else if (door.WhenClosed != null && !door.Open)
+                    {
+                        Output.Print($"\n{door.WhenClosed}");
+                        continue;
+                    }
                 }
 
+                if (obj.Describe == null && obj.InitialDescription == null)
+                {
+                    continue;
+                }
             }
 
-            group.Append(" here.");
+            total++;
 
-            if (ordinary.Count > 0)
+            if (!obj.Touched && !string.IsNullOrEmpty(obj.InitialDescription))
             {
                 Output.PrintLine();
-                Output.Print(group.ToString());
+                Output.Print(obj.InitialDescription);
+            }
+            else if (obj.Describe != null && obj is not Container)
+            {
+                Output.PrintLine();
+                Output.Print(obj.Describe());
+            }
+            else
+            {
+                ordinary.Add(obj);
             }
         }
 
-        private static void AddContained(List<Object> objects)
-        {
-            var contained = new List<Object>();
+        var group = new StringBuilder();
 
-            foreach (var obj in objects)
+        if (total > ordinary.Count)
+        {
+            group.Append("You can also see ");
+        }
+        else
+        {
+            group.Append("You can see ");
+        }
+
+        for (int i = 0; i < ordinary.Count; i++)
+        {
+            Object obj = ordinary[i];
+
+            if (i == ordinary.Count - 1 && i > 0)
             {
-                if (obj is Container container)
+                group.Append(" and ");
+            }
+            else if (i > 0)
+            {
+                group.Append(", ");
+            }
+
+            if (obj is Container container)
+            {
+                if (container.Contents.Count > 0)
                 {
-                    contained.AddRange(container.Contents);
+                    Object child = container.Contents[0];
+                    group.AppendFormat("{0} {1} (which contains {2} {3})", obj.IndefiniteArticle, obj.Name, child.IndefiniteArticle, child.Name);
+                }
+                else
+                {
+                    group.AppendFormat("{0} {1} (which is empty)", obj.IndefiniteArticle, obj.Name);
                 }
             }
+            else
+            {
+                group.AppendFormat("{0} {1}", obj.IndefiniteArticle, obj.Name);
+            }
 
-            objects.AddRange(contained);
         }
 
-        public static IList<Object> ObjectsInRoom()
+        group.Append(" here.");
+
+        if (ordinary.Count > 0)
         {
-            var result = new List<Object>();
-            var objects = ObjectMap.GetObjects(Location);
-
-            result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
-            result.AddRange(objects.Where(x => x.Scenery || x.Static));
-            AddContained(result);
-            return result;
+            Output.PrintLine();
+            Output.Print(group.ToString());
         }
+    }
 
-        public static List<Object> ObjectsInScope()
+    private static void AddContained(List<Object> objects)
+    {
+        var contained = new List<Object>();
+
+        foreach (var obj in objects)
         {
-            var result = new List<Object>();
-
-            var objects = ObjectMap.GetObjects(Location);
-
-            result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
-            result.AddRange(objects.Where(x => x.Scenery || x.Static));
-           
-            result.AddRange(Inventory.Items);
-            
-            // note: location is added to scope to support things like Door
-            result.Add(Location);
-
-            AddContained(result);
-
-            return result;
+            if (obj is Container container)
+            {
+                contained.AddRange(container.Contents);
+            }
         }
 
-        public static bool Is<T>() where T : Room
-        {
-            return Location.GetType() == typeof(T);
-        }
+        objects.AddRange(contained);
+    }
 
-        public static bool Has<T>() where T : Object
-        {
-            var objects = ObjectMap.GetObjects(Location);
+    public static IList<Object> ObjectsInRoom()
+    {
+        var result = new List<Object>();
+        var objects = ObjectMap.GetObjects(Location);
 
-            return objects.Any(obj => obj is T);
-        }
+        result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
+        result.AddRange(objects.Where(x => x.Scenery || x.Static));
+        AddContained(result);
+        return result;
+    }
+
+    public static List<Object> ObjectsInScope()
+    {
+        var result = new List<Object>();
+
+        var objects = ObjectMap.GetObjects(Location);
+
+        result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
+        result.AddRange(objects.Where(x => x.Scenery || x.Static));
+
+        result.AddRange(Inventory.Items);
+
+        // note: location is added to scope to support things like Door
+        result.Add(Location);
+
+        AddContained(result);
+
+        return result;
+    }
+
+    public static bool Is<T>() where T : Room
+    {
+        return Location.GetType() == typeof(T);
+    }
+
+    public static bool Has<T>() where T : Object
+    {
+        var objects = ObjectMap.GetObjects(Location);
+
+        return objects.Any(obj => obj is T);
     }
 }

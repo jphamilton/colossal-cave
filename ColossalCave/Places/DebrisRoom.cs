@@ -1,61 +1,59 @@
 ﻿using Adventure.Net;
-using ColossalCave.Things;
 using ColossalCave.Actions;
+using ColossalCave.Things;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class DebrisRoom : BelowGround
 {
-    public class DebrisRoom : BelowGround
+    public override void Initialize()
     {
-        public override void Initialize()
+        Name = "In Debris Room";
+        Synonyms.Are("debris", "room");
+        Description =
+            "You are in a debris room filled with stuff washed in from the surface. " +
+            "A low wide passage with cobbles becomes plugged with mud and debris here, " +
+            "but an awkward canyon leads upward and west.\n\n" +
+            "A note on the wall says, \"Magic word XYZZY.\"";
+
+        NoDwarf = true;
+
+        EastTo<CobbleCrawl>();
+
+        UpTo<AwkwardSlopingEWCanyon>();
+
+        WestTo<AwkwardSlopingEWCanyon>();
+
+        Before<Xyzzy>(() =>
         {
-            Name = "In Debris Room";
-            Synonyms.Are("debris", "room");
-            Description =
-                "You are in a debris room filled with stuff washed in from the surface. " +
-                "A low wide passage with cobbles becomes plugged with mud and debris here, " +
-                "but an awkward canyon leads upward and west.\n\n" +
-                "A note on the wall says, \"Magic word XYZZY.\"";
+            MovePlayer.To<InsideBuilding>();
+            return true;
+        });
 
-            NoDwarf = true;
-
-            EastTo<CobbleCrawl>();
-            
-            UpTo<AwkwardSlopingEWCanyon>();
-            
-            WestTo<AwkwardSlopingEWCanyon>();
-
-            Before<Xyzzy>(() =>
-            {
-                MovePlayer.To<InsideBuilding>();
-                return true;
-            });
-
-        }
     }
+}
 
-    public class Debris : Scenic
+public class Debris : Scenic
+{
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "debris";
-            Synonyms.Are("debris", "stuff", "mud");
-            Description = "Yuck.";
+        Name = "debris";
+        Synonyms.Are("debris", "stuff", "mud");
+        Description = "Yuck.";
 
-            FoundIn<DebrisRoom>();
-        }
+        FoundIn<DebrisRoom>();
     }
+}
 
-    public class Note : Scenic
+public class Note : Scenic
+{
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "note";
-            Description = "The note says \"Magic word XYZZY\"";
+        Name = "note";
+        Description = "The note says \"Magic word XYZZY\"";
 
-            FoundIn<DebrisRoom>();
-        }
+        FoundIn<DebrisRoom>();
     }
-
 }
 
 

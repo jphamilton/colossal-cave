@@ -1,24 +1,23 @@
 ﻿using ColossalCave.Things;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class BelowTheGrate : BelowGround
 {
-    public class BelowTheGrate : BelowGround
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "Below the Grate";
-            
-            Synonyms.Are("below", "grate");
-            
-            Description = "You are in a small chamber beneath a 3x3 steel grate to the surface. " + 
-                          "A low crawl over cobbles leads inward to the west.";
-            Light = true;
+        Name = "Below the Grate";
 
-            WestTo<CobbleCrawl>();
+        Synonyms.Are("below", "grate");
 
-            UpTo<Grate>();
-            
-        }
+        Description = "You are in a small chamber beneath a 3x3 steel grate to the surface. " +
+                      "A low crawl over cobbles leads inward to the west.";
+        Light = true;
+
+        WestTo<CobbleCrawl>();
+
+        UpTo<Grate>();
+
     }
 }
 

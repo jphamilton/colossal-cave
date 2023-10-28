@@ -1,9 +1,8 @@
-﻿namespace Adventure.Net
+﻿namespace Adventure.Net;
+
+/// <summary>
+/// Objects can be place on top of objects that implement
+/// </summary>
+public interface ISupporter
 {
-    /// <summary>
-    /// Objects can be place on top of objects that implement
-    /// </summary>
-    public interface ISupporter
-    {
-    }
 }

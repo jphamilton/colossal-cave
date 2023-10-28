@@ -1,32 +1,31 @@
 ﻿using Adventure.Net;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class EastBankOfFissure : FissureRoom
 {
-    public class EastBankOfFissure : FissureRoom
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            base.Initialize();
+        base.Initialize();
 
-            Name = "On East Bank of Fissure";
-            Synonyms.Are("east", "e", "bank", "side", "of", "fissure");
-            Description = "You are on the east bank of a fissure slicing clear across the hall. The mist is quite thick here, and the fissure is too wide to jump.";
+        Name = "On East Bank of Fissure";
+        Synonyms.Are("east", "e", "bank", "side", "of", "fissure");
+        Description = "You are on the east bank of a fissure slicing clear across the hall. The mist is quite thick here, and the fissure is too wide to jump.";
 
-            EastTo<HallOfMists>();
+        EastTo<HallOfMists>();
 
-            WestTo(CannotCross);
-        }
+        WestTo(CannotCross);
+    }
 
-        public void BridgeAppears()
-        {
-            Get<CrystalBridge>().Absent = false;
-            WestTo<CrystalBridge>();
-        }
+    public void BridgeAppears()
+    {
+        Get<CrystalBridge>().Absent = false;
+        WestTo<CrystalBridge>();
+    }
 
-        public void BridgeDisappears()
-        {
-            Get<CrystalBridge>().Absent = true; ;
-            WestTo(CannotCross);
-        }
+    public void BridgeDisappears()
+    {
+        Get<CrystalBridge>().Absent = true; ;
+        WestTo(CannotCross);
     }
 }

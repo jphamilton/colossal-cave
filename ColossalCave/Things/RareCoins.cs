@@ -1,20 +1,19 @@
 ﻿using ColossalCave.Places;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class RareCoins : Treasure
 {
-    public class RareCoins : Treasure
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "rare coins";
-            Synonyms.Are("coins", "rare");
-            Article = "some";
-            Description = "They're a numismatist's dream!";
-            InitialDescription = "There are many coins here!";
-            
-            Attribute("multitude");
-            
-            FoundIn<WestSideChamber>();
-        }
+        Name = "rare coins";
+        Synonyms.Are("coins", "rare");
+        IndefiniteArticle = "some";
+        Description = "They're a numismatist's dream!";
+        InitialDescription = "There are many coins here!";
+
+        Attribute("multitude");
+
+        FoundIn<WestSideChamber>();
     }
 }

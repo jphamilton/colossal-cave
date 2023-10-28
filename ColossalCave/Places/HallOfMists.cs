@@ -1,112 +1,111 @@
 ﻿using Adventure.Net;
-using ColossalCave.Things;
-using ColossalCave.Actions;
 using Adventure.Net.Actions;
+using ColossalCave.Actions;
+using ColossalCave.Things;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class HallOfMists : BelowGround
 {
-    public class HallOfMists : BelowGround
+    public override void Initialize()
     {
-        public override void Initialize()
+        Name = "In Hall of Mists";
+        Synonyms.Are("hall", "of", "mists");
+        Description =
+            "You are at one end of a vast hall stretching forward out of sight to the west. " +
+            "There are openings to either side. " +
+            "Nearby, a wide stone staircase leads downward. " +
+            "The hall is filled with wisps of white mist swaying to and fro almost as if alive. " +
+            "A cold wind blows up the staircase. " +
+            "There is a passage at the top of a dome behind you. " +
+            "\n\n" +
+            "Rough stone steps lead up the dome.";
+
+        Initial = () =>
         {
-            Name = "In Hall of Mists";
-            Synonyms.Are("hall", "of", "mists");
-            Description =
-                "You are at one end of a vast hall stretching forward out of sight to the west. " +
-                "There are openings to either side. " +
-                "Nearby, a wide stone staircase leads downward. " +
-                "The hall is filled with wisps of white mist swaying to and fro almost as if alive. " +
-                "A cold wind blows up the staircase. " +
-                "There is a passage at the top of a dome behind you. " +
-                "\n\n" +
-                "Rough stone steps lead up the dome.";
-
-            Initial = () =>
+            if (!Visited)
             {
-                if (!Visited)
-                {
-                    Score.Add(25, true);
-                }
-            };
+                Score.Add(25, true);
+            }
+        };
 
-            SouthTo<NuggetOfGoldRoom>();
+        SouthTo<NuggetOfGoldRoom>();
 
-            WestTo<EastBankOfFissure>();
+        WestTo<EastBankOfFissure>();
 
-            DownTo<HallOfMtKing>();
+        DownTo<HallOfMtKing>();
 
-            UpTo(() =>
+        UpTo(() =>
+        {
+            if (IsCarrying<LargeGoldNugget>())
             {
-                if (IsCarrying<LargeGoldNugget>())
-                {
-                    Output.Print("The dome is unclimbable.");
-                    return this;
-                }
+                Output.Print("The dome is unclimbable.");
+                return this;
+            }
 
-                return Rooms.Get<TopOfSmallPit>();
-            });
-
-        }
-
+            return Rooms.Get<TopOfSmallPit>();
+        });
 
     }
 
-    #region Scenery
 
-    public class WideStoneStaircase : Scenic
-    {
-        public override void Initialize()
-        {
-            Name = "wide stone staircase";
-            Synonyms.Are("stair", "stairs", "staircase", "wide", "stone");
-            Description = "The staircase leads down.";
-            FoundIn<HallOfMists>();
-        }
-    }
-
-    public class RoughStoneSteps : Scenic
-    {
-        public override void Initialize()
-        {
-            Name = "rough stone steps";
-            Synonyms.Are("stair", "stairs", "staircase", "rough", "stone");
-            Description = "The rough stone steps lead up the dome.";
-            // has multitude
-
-            FoundIn<HallOfMists>();
-        }
-    }
-
-    public class Dome : Scenic
-    {
-        public override void Initialize()
-        {
-            Name = "dome";
-            Synonyms.Are("dome");
-
-            Before<Examine>(() =>
-            {
-                if (IsCarrying<LargeGoldNugget>())
-                {
-                    Print("I'm not sure you'll be able to get up it with what you're carrying.");
-                }
-                else
-                {
-                    Print("It looks like you might be able to climb up it.");
-                }
-
-                return true;
-            });
-
-            Before<Climb>(() =>
-            {
-                CurrentRoom.Location.DOWN();
-                return true;
-            });
-
-        }
-    }
-
-    #endregion
 }
+
+#region Scenery
+
+public class WideStoneStaircase : Scenic
+{
+    public override void Initialize()
+    {
+        Name = "wide stone staircase";
+        Synonyms.Are("stair", "stairs", "staircase", "wide", "stone");
+        Description = "The staircase leads down.";
+        FoundIn<HallOfMists>();
+    }
+}
+
+public class RoughStoneSteps : Scenic
+{
+    public override void Initialize()
+    {
+        Name = "rough stone steps";
+        Synonyms.Are("stair", "stairs", "staircase", "rough", "stone");
+        Description = "The rough stone steps lead up the dome.";
+        // has multitude
+
+        FoundIn<HallOfMists>();
+    }
+}
+
+public class Dome : Scenic
+{
+    public override void Initialize()
+    {
+        Name = "dome";
+        Synonyms.Are("dome");
+
+        Before<Examine>(() =>
+        {
+            if (IsCarrying<LargeGoldNugget>())
+            {
+                Print("I'm not sure you'll be able to get up it with what you're carrying.");
+            }
+            else
+            {
+                Print("It looks like you might be able to climb up it.");
+            }
+
+            return true;
+        });
+
+        Before<Climb>(() =>
+        {
+            CurrentRoom.Location.DOWN();
+            return true;
+        });
+
+    }
+}
+
+#endregion
 

@@ -1,16 +1,17 @@
-﻿using ColossalCave.Places;
+﻿using Adventure.Net;
+using ColossalCave.Places;
 using Xunit;
 
-namespace Tests.VerbTests
+namespace Tests.VerbTests;
+
+public class JumpTests : BaseTestFixture
 {
-    public class JumpTests : BaseTestFixture
+    [Fact]
+    public void before_jump_handled()
     {
-        [Fact]
-        public void before_jump_handled()
-        {
-            Location = Room<EastBankOfFissure>();
-            Execute("jump");
-            Assert.Contains("You didn't make it.", ConsoleOut);
-        }
+        Location = Room<EastBankOfFissure>();
+        CommandPrompt.FakeInput("n");
+        Execute("jump");
+        Assert.Contains("You didn't make it.", ConsoleOut);
     }
 }

@@ -1,75 +1,74 @@
 ﻿using Adventure.Net;
-using ColossalCave.Things;
 using ColossalCave.Places;
+using ColossalCave.Things;
 using System.Linq;
 using Xunit;
 
-namespace Tests.Verbs
+namespace Tests.Verbs;
+
+
+public class CloseTests : BaseTestFixture
 {
-
-    public class CloseTests : BaseTestFixture
+    [Fact]
+    public void cannot_close_things_that_are_not_meant_to_be_closed()
     {
-        [Fact]
-        public void cannot_close_things_that_are_not_meant_to_be_closed()
-        {
-            Location = Room<InsideBuilding>();
-            var result = Execute("close bottle");
-            Assert.Equal("That's not something you can close.", Line1);
-        }
+        Location = Room<InsideBuilding>();
+        var result = Execute("close bottle");
+        Assert.Equal("That's not something you can close.", Line1);
+    }
 
-        [Fact]
-        public void cannot_close_things_that_are_already_closed()
-        {
-            Location = Room<OutsideGrate>();
-            var result = Execute("close grate");
-            Assert.Equal("That's already closed.", Line1);
-        }
+    [Fact]
+    public void cannot_close_things_that_are_already_closed()
+    {
+        Location = Room<OutsideGrate>();
+        var result = Execute("close grate");
+        Assert.Equal("That's already closed.", Line1);
+    }
 
-        [Fact]
-        public void can_close()
-        {
-            Location = Room<OutsideGrate>();
-            Door grate = Room<Grate>() as Door;
-            grate.Open = true;
-            var result = Execute("close grate");
-            Assert.Equal("You close the steel grate.", Line1);
-        }
+    [Fact]
+    public void can_close()
+    {
+        Location = Room<OutsideGrate>();
+        Door grate = Room<Grate>() as Door;
+        grate.Open = true;
+        var result = Execute("close grate");
+        Assert.Equal("You close the steel grate.", Line1);
+    }
 
-        [Fact]
-        public void can_close_up()
-        {
-            Location = Room<OutsideGrate>();
-            
-            Door grate = Room<Grate>() as Door;
-            
-            grate.Open = true;
-            
-            Execute("close up grate");
-            
-            Assert.Equal("You close the steel grate.", Line1);
-        }
+    [Fact]
+    public void can_close_up()
+    {
+        Location = Room<OutsideGrate>();
 
-        [Fact]
-        public void can_close_off_lamp()
-        {
-            Location = Room<InsideBuilding>();
+        Door grate = Room<Grate>() as Door;
 
-            var lamp = Objects.Get<BrassLantern>();
-            lamp.On = true;
+        grate.Open = true;
 
-            Execute("close off lamp");
+        Execute("close up grate");
 
-            Assert.Equal("You switch the brass lantern off.", Line1);
-        }
+        Assert.Equal("You close the steel grate.", Line1);
+    }
 
-        [Fact]
-        public void close_with_invalid_preposition()
-        {
-            Location = Room<InsideBuilding>();
+    [Fact]
+    public void can_close_off_lamp()
+    {
+        Location = Room<InsideBuilding>();
 
-            var result = Parse("close on lamp");
+        var lamp = Objects.Get<BrassLantern>();
+        lamp.On = true;
 
-            Assert.Contains(Messages.PartialUnderstanding(result.Verb, result.Objects.First()), result.Error);
-        }
+        Execute("close off lamp");
+
+        Assert.Equal("You switch the brass lantern off.", Line1);
+    }
+
+    [Fact]
+    public void close_with_invalid_preposition()
+    {
+        Location = Room<InsideBuilding>();
+
+        var result = Parse("close on lamp");
+
+        Assert.Contains(Messages.PartialUnderstanding(result.Verb, result.Objects.First()), result.Error);
     }
 }

@@ -1,20 +1,9 @@
-﻿using System;
+﻿namespace Adventure.Net.Utilities;
 
-namespace Adventure.Net.Utilities
+public static class Random
 {
-    public static class Random
+    public static int Number(int min, int max)
     {
-        private static System.Random random;
-
-        static Random()
-        {
-            random = new System.Random(Guid.NewGuid().GetHashCode());
-        }
-            
-        public static int Number(int min, int max)
-        {
-            return random.Next(min, max);
-        }
-
+        return System.Random.Shared.Next(min, max);
     }
 }

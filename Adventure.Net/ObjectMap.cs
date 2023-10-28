@@ -1,145 +1,149 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+public static class ObjectMap
 {
-    public static class ObjectMap
+    // why is this random comment here???
+    // CONTAINERS?????
+
+    private static readonly IDictionary<Object, IList<Room>> ObjectToRooms = new Dictionary<Object, IList<Room>>();
+    private static readonly IDictionary<Room, IList<Object>> RoomToObjects = new Dictionary<Room, IList<Object>>();
+    private static readonly IDictionary<Object, IList<Room>> Absent = new Dictionary<Object, IList<Room>>();
+
+    public static void Add(Object obj, Room room)
     {
-        // CONTAINERS?????
-
-        private static readonly IDictionary<Object, IList<Room>> ObjectToRooms = new Dictionary<Object, IList<Room>>();
-        private static readonly IDictionary<Room, IList<Object>> RoomToObjects = new Dictionary<Room, IList<Object>>();
-        private static readonly IDictionary<Object, IList<Room>> Absent = new Dictionary<Object, IList<Room>>();
-
-        public static void Add(Object obj, Room room)
+        if (obj.Absent)
         {
-            if (obj.Absent)
-            {
-                HandleAbsent(obj, room);
-                return;
-            }
+            HandleAbsent(obj, room);
+            return;
+        }
 
-            if (!ObjectToRooms.ContainsKey(obj))
-            {
-                ObjectToRooms.Add(obj, new List<Room>());
-            }
+        if (!ObjectToRooms.ContainsKey(obj))
+        {
+            ObjectToRooms.Add(obj, new List<Room>());
+        }
 
+        if (!ObjectToRooms[obj].Contains(room))
+        {
             ObjectToRooms[obj].Add(room);
+        }
 
-            if (!RoomToObjects.ContainsKey(room))
-            {
-                RoomToObjects.Add(room, new List<Object>());
-            }
+        if (!RoomToObjects.ContainsKey(room))
+        {
+            RoomToObjects.Add(room, new List<Object>());
+        }
 
+        if (!RoomToObjects[room].Contains(obj))
+        {
             RoomToObjects[room].Add(obj);
         }
+    }
 
-        private static void HandleAbsent(Object obj, Room room)
+    private static void HandleAbsent(Object obj, Room room)
+    {
+        void addAbsent()
         {
-            void addAbsent()
+            if (Absent.ContainsKey(obj))
             {
-                if (Absent.ContainsKey(obj))
-                {
-                    Absent[obj].Add(room);
-                }
-                else
-                {
-                    Absent.Add(obj, new List<Room> { room });
+                Absent[obj].Add(room);
+            }
+            else
+            {
+                Absent.Add(obj, new List<Room> { room });
 
-                    obj.AbsentToggled += (absent) =>
+                obj.AbsentToggled = (absent) =>
+                {
+                    if (absent)
                     {
-                        if (absent)
-                        {
-                            Remove(obj);
+                        Remove(obj);
 
-                            if (!Absent.ContainsKey(obj))
+                        if (!Absent.ContainsKey(obj))
+                        {
+                            addAbsent();
+                        }
+                    }
+                    else
+                    {
+                        if (Absent.ContainsKey(obj))
+                        {
+                            var rooms = Absent[obj];
+
+                            foreach (var r in rooms)
                             {
-                                addAbsent();
+                                Add(obj, r);
                             }
                         }
-                        else
-                        {
-                            if (Absent.ContainsKey(obj))
-                            {
-                                var rooms = Absent[obj];
-
-                                foreach (var r in rooms)
-                                {
-                                    Add(obj, r);
-
-                                }
-                            }
-                        }
-                    };
-                }
+                    }
+                };
             }
-
-            addAbsent();
-
         }
 
-        /// <summary>
-        /// remove item from object mapping
-        /// </summary>
-        /// <param name="obj"></param>
-        public static void Remove(Object obj)
+        addAbsent();
+
+    }
+
+    public static void Remove(Object obj)
+    {
+        // item may not necessarily be anywhere 
+        if (ObjectToRooms.TryGetValue(obj, out IList<Room> rooms))
         {
-            // item may not necessarily be anywhere 
-            if (ObjectToRooms.TryGetValue(obj, out IList<Room> rooms))
+            foreach (var room in rooms)
             {
-                foreach (var room in rooms)
-                {
-                    RoomToObjects[room].Remove(obj);
-                }
-
-                ObjectToRooms.Remove(obj);
-            }
-        }
-
-        public static T Remove<T>() where T : Object
-        {
-            var obj = ObjectToRooms.Keys.SingleOrDefault(x => x.GetType() == typeof(T));
-
-            Remove(obj);
-
-            return (T)obj;
-        }
-
-        public static bool Contains(Room room, Object obj)
-        {
-            if (RoomToObjects.ContainsKey(room))
-            {
-                return RoomToObjects[room].Contains(obj);
+                RoomToObjects[room].Remove(obj);
             }
 
-            return false;
+            ObjectToRooms.Remove(obj);
         }
 
-
-        public static void MoveObject(Object obj, Room to)
+        if (obj != null)
         {
-            Remove(obj);
-            Add(obj, to);
+            Inventory.Remove(obj);
         }
+    }
 
-        public static IReadOnlyList<Object> GetObjects(Room room)
+    public static T Remove<T>() where T : Object
+    {
+        var obj = Objects.Get<T>();
+        Remove(obj);
+        return obj;
+    }
+
+    public static bool Contains(Room room, Object obj)
+    {
+        if (RoomToObjects.ContainsKey(room))
         {
-            if (RoomToObjects.ContainsKey(room))
-            {
-                return (IReadOnlyList<Object>)RoomToObjects[room];
-            }
-
-            return new List<Object>();
+            return RoomToObjects[room].Contains(obj);
         }
 
-        public static IList<Room> Location(Object obj)
+        return false;
+    }
+
+
+    public static void MoveObject(Object obj, Room to)
+    {
+        Remove(obj);
+        Add(obj, to);
+    }
+
+    public static IReadOnlyList<Object> GetObjects(Room room)
+    {
+        if (RoomToObjects.ContainsKey(room))
         {
-            if (ObjectToRooms.ContainsKey(obj))
-            {
-                return ObjectToRooms[obj];
-            }
-
-            return new List<Room>();
+            return (IReadOnlyList<Object>)RoomToObjects[room];
         }
+
+        return new List<Object>();
+    }
+
+    public static IList<Room> Location(Object obj)
+    {
+        if (ObjectToRooms.ContainsKey(obj))
+        {
+            return ObjectToRooms[obj];
+        }
+
+        return new List<Room>();
     }
 }

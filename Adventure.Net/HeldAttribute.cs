@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+[AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
+public class HeldAttribute : Attribute
 {
-    [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
-    public class HeldAttribute : Attribute
-    {
-    }
 }

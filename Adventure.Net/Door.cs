@@ -1,72 +1,71 @@
-﻿using System;
-using Adventure.Net.Actions;
+﻿using Adventure.Net.Actions;
+using System;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+public abstract class Door : Room
 {
-    public abstract class Door : Room 
+    private Func<Room> doorTo;
+    private Func<Direction> doorDirection;
+
+    protected Door()
     {
-        private Func<Room> doorTo;
-        private Func<Direction> doorDirection;
+        Static = true;
+        Openable = true;
 
-        protected Door()
+        Before<Enter>(() =>
         {
-            Static = true;
-            Openable = true;
+            var dir = doorDirection();
+            return dir.Expects();
+        });
+    }
 
-            Before<Enter>(() =>
-            {
-                var dir = doorDirection();
-                return dir.Expects();
-            });
-        }
+    public string WhenOpen { get; set; }
 
-        public string WhenOpen { get; set; }
-        
-        public string WhenClosed { get; set; }
+    public string WhenClosed { get; set; }
 
 
-        public void DoorTo(Func<Room> action)
-        {
-            doorTo = action;
-        }
+    public void DoorTo(Func<Room> action)
+    {
+        doorTo = action;
+    }
 
-        public Room DoorTo()
-        {
+    public Room DoorTo()
+    {
+        return doorTo();
+    }
+
+    public void DoorDirection(Func<Direction> action)
+    {
+        doorDirection = action;
+    }
+
+    protected T Direction<T>() where T : Direction
+    {
+        Type t = typeof(T);
+        return Activator.CreateInstance(t) as T;
+    }
+
+
+    protected override Room HandleMove()
+    {
+        if (!Locked && Open)
             return doorTo();
-        }
 
-        public void DoorDirection(Func<Direction> action)
+        if (doorDirection() is Down)
+            Print($"You are unable to descend by the {Name}.");
+        else if (doorDirection() is Up)
+            Print($"You are unable to ascend by the {Name}");
+        else if (doorDirection() != null)
+            Print("You can't go that way.");
+        else
         {
-            doorDirection = action;
+            string lead = PluralName ? "leads" : "lead";
+            Print($"You can't since the {Name} {lead} to nowhere.");
         }
 
-        protected T Direction<T>() where T:Direction
-        {
-            Type t = typeof (T);
-            return Activator.CreateInstance(t) as T;
-        }
+        return null;
 
-        
-        protected override Room HandleMove()
-        {
-            if (!Locked && Open)
-                return doorTo();
-
-            if (doorDirection() is Down)
-                Print($"You are unable to descend by the {Name}.");
-            else if (doorDirection() is Up)
-                Print($"You are unable to ascend by the {Name}");
-            else if (doorDirection() != null)
-                Print("You can't go that way.");
-            else
-            {
-                string lead = PluralName ? "leads" : "lead";
-                Print($"You can't since the {Name} {lead} to nowhere.");
-            }
-
-            return null;
-
-        }
     }
 }
 

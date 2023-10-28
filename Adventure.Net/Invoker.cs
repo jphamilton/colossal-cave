@@ -1,35 +1,34 @@
 ﻿using System.Collections.Generic;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+internal class Invoker : IInvoke
 {
-    internal class Invoker : IInvoke
+    private List<IInvoke> routines;
+
+    public Invoker()
     {
-        private List<IInvoke> routines;
+        routines = new List<IInvoke>();
+    }
 
-        public Invoker()
+    public void Add(IInvoke routine)
+    {
+        routines.Add(routine);
+    }
+
+    public bool Invoke()
+    {
+        bool success = true;
+
+        foreach (var routine in routines)
         {
-            routines = new List<IInvoke>();
-        }
-
-        public void Add(IInvoke routine)
-        {
-            routines.Add(routine);
-        }
-
-        public bool Invoke()
-        {
-            bool success = true;
-
-            foreach(var routine in routines)
+            if (!routine.Invoke())
             {
-                if (!routine.Invoke())
-                {
-                    success = false;
-                    break;
-                }
+                success = false;
+                break;
             }
-
-            return success;
         }
+
+        return success;
     }
 }

@@ -1,13 +1,12 @@
 using Adventure.Net;
 
-namespace ColossalCave
+namespace ColossalCave;
+
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            StoryController controller = new StoryController(new ColossalCaveStory());
-            controller.Run();
-        }
+        StoryController controller = new StoryController(new ColossalCaveStory());
+        controller.Run();
     }
 }

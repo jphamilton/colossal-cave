@@ -1,25 +1,24 @@
 using System.Collections.Generic;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+public class Synonyms : List<string>
 {
-    public class Synonyms : List<string>
+    public void Are(params string[] values)
     {
-        public void Are(params string[] values)
+        foreach (string value in values)
         {
-            foreach (string value in values)
-            {
-                Add(value);
-            }
+            Add(value);
         }
+    }
 
-        public void Are(string commaSeparatedList)
+    public void Are(string commaSeparatedList)
+    {
+        string[] values = commaSeparatedList.Split(',');
+
+        foreach (string value in values)
         {
-            string[] values = commaSeparatedList.Split(',');
-
-            foreach (string value in values)
-            {
-                Add(value.Trim());
-            }
+            Add(value.Trim());
         }
     }
 }

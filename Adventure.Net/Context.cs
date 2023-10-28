@@ -1,9 +1,8 @@
-﻿namespace Adventure.Net
-{
-    public static class Context
-    {
-        public static IStory Story { get; set; }
+﻿namespace Adventure.Net;
 
-        public static CommandContext Current { get; set; }
-    }
+public static class Context
+{
+    public static IStory Story { get; set; }
+
+    public static CommandContext Current { get; set; }
 }

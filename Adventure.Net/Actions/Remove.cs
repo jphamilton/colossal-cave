@@ -1,37 +1,34 @@
 ﻿using System;
 
-namespace Adventure.Net.Actions
-{
+namespace Adventure.Net.Actions;
+
 /*
 Verb 'remove'
-    * held                                      -> Disrobe
-    * multi                                     -> Take
-    * multiinside 'from' noun                   -> Remove;
+* held                                      -> Disrobe
+* multi                                     -> Take
+* multiinside 'from' noun                   -> Remove;
 */
 
-    public class Remove : Verb
+public class Remove : Verb
+{
+    public Remove()
     {
-        public Remove()
+        Name = "remove";
+    }
+
+    public bool Expects(Object obj)
+    {
+        if (obj.InInventory)
         {
-            Name = "remove";
-            //Grammars.Add(K.HELD_TOKEN, Disrobe);
-           // Grammars.Add(K.MULTI_TOKEN, Take);
+            return Disrobe(obj);
         }
 
-        public bool Expects(Object obj)
-        {
-            if (obj.InInventory)
-            {
-                return Disrobe(obj);
-            }
+        return Redirect<Take>(obj, v => v.Expects(obj));
+    }
 
-            return Redirect<Take>(obj, v => v.Expects(obj));
-        }
-
-        private bool Disrobe(Object obj)
-        {
-            throw new NotImplementedException("remove <held> (disrobe)");
-        }
+    private bool Disrobe(Object obj)
+    {
+        throw new NotImplementedException("remove <held> (disrobe)");
     }
 }
 

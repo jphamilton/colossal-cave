@@ -1,12 +1,11 @@
-﻿namespace Adventure.Net
-{
-    public class Scenery : Object
-    {
-        public override void Initialize()
-        {
-            
-        }
+﻿namespace Adventure.Net;
 
-        
+public class Scenery : Object
+{
+    public override void Initialize()
+    {
+
     }
+
+
 }

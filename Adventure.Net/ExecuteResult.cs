@@ -1,14 +1,13 @@
-﻿namespace Adventure.Net
-{
-    internal class ExecuteResult
-    {
-        public ExecuteResult(bool success, CommandOutput commandOutput)
-        {
-            Success = success;
-            CommandOutput = commandOutput;
-        }
+﻿namespace Adventure.Net;
 
-        public bool Success { get; }
-        public CommandOutput CommandOutput { get; }
+internal class ExecuteResult
+{
+    public ExecuteResult(bool success, CommandOutput commandOutput)
+    {
+        Success = success;
+        CommandOutput = commandOutput;
     }
+
+    public bool Success { get; }
+    public CommandOutput CommandOutput { get; }
 }

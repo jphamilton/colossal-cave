@@ -1,17 +1,15 @@
 ﻿using Adventure.Net;
-using ColossalCave.Things;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class ColossalCaveRoom : BelowGround
 {
-    public class ColossalCaveRoom : BelowGround
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "";
-            Synonyms.Are("");
-            Description = "";
+        Name = "";
+        Synonyms.Are("");
+        Description = "";
 
 
-        }
     }
 }

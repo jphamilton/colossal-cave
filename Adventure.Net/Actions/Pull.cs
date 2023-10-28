@@ -1,25 +1,24 @@
-﻿namespace Adventure.Net.Actions
+﻿namespace Adventure.Net.Actions;
+
+public class Pull : Verb
 {
-    public class Pull : Verb
+    public Pull()
     {
-        public Pull()
+        Name = "pull";
+        Synonyms.Are("drag");
+    }
+
+    public bool Expects(Object obj)
+    {
+        if (obj.Scenery || obj.Static)
         {
-            Name = "pull";
-            Synonyms.Are("drag");
+            Print("That is fixed in place.");
+        }
+        else
+        {
+            Print("Nothing obvious happens.");
         }
 
-        public bool Expects(Object obj)
-        {
-            if (obj.Scenery || obj.Static)
-            {
-                Print("That is fixed in place.");
-            }
-            else
-            {
-                Print("Nothing obvious happens.");
-            }
-
-            return true;
-        }
+        return true;
     }
 }

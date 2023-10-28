@@ -1,31 +1,28 @@
-﻿using ColossalCave.Things;
+﻿namespace ColossalCave.Places;
 
-namespace ColossalCave.Places
+public class DeadEnd13 : DeadEnd
 {
-    public class DeadEnd13 : DeadEnd
+    public override void Initialize()
     {
-        public override void Initialize()
+        base.Initialize();
+
+        NoDwarf = true;
+
+        Description = "This is the pirate's dead end.";
+
+        SouthEastTo<AlikeMaze13>();
+
+        OutTo<AlikeMaze13>();
+
+        Initial = () =>
         {
-            base.Initialize();
-            
-            NoDwarf = true;
+            // TODO: Pirate shit
+            //StopDaemon(Pirate);
 
-            Description = "This is the pirate's dead end.";
-
-            SouthEastTo<AlikeMaze13>();
-            
-            OutTo<AlikeMaze13>();
-
-            Initial = () =>
-            {
-                // TODO: Pirate shit
-                //StopDaemon(Pirate);
-
-                //if (treasure_chest in self && treasure_chest hasnt moved)
-                //                "You've found the pirate's treasure chest!";
-                //        ],
-            };
-        }
+            //if (treasure_chest in self && treasure_chest hasnt moved)
+            //                "You've found the pirate's treasure chest!";
+            //        ],
+        };
     }
 }
 

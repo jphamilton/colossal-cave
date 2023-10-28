@@ -1,42 +1,40 @@
 ﻿using System.Collections.Generic;
 
-namespace Adventure.Net
+namespace Adventure.Net;
+
+public class TokenizedInput : List<string>
 {
-    public class TokenizedInput : List<string>
-    {
 
-    }
+}
 
-    public class InputTokenizer
+public class InputTokenizer
+{
+    public TokenizedInput Tokenize(string input)
     {
-        public TokenizedInput Tokenize(string input)
+        var result = new TokenizedInput();
+
+        if (input != null)
         {
-            var result = new TokenizedInput();
+            var tokens = input.ToLower().Replace(',', ' ').Split(' ');
 
-            if (input != null)
+            foreach (string token in tokens)
             {
-                input = input.ToLower();
-                input = input.Replace(',', ' ');
-
-                var tokens = input.Split(' ');
-
-                foreach (string token in tokens)
+                if (IgnoredWords.Contains(token))
                 {
-                    if (IgnoredWords.Contains(token))
-                        continue;
+                    continue;
+                }
 
-                    if (ReplacedWords.Contains(token))
-                    {
-                        result.Add(ReplacedWords.ReplacementFor(token));
-                    }
-                    else
-                    {
-                        result.Add(token);
-                    }
-                }    
+                if (ReplacedWords.Contains(token))
+                {
+                    result.Add(ReplacedWords.ReplacementFor(token));
+                }
+                else
+                {
+                    result.Add(token);
+                }
             }
-           
-            return result;
         }
+
+        return result;
     }
 }

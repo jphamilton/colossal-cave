@@ -1,22 +1,20 @@
 ﻿using Adventure.Net;
 using ColossalCave.Actions;
 
-namespace ColossalCave.Things
+namespace ColossalCave.Things;
+
+public class FreshBatteries : Object
 {
-    public class FreshBatteries : Object
+    public bool HaveBeenUsed { get; set; }
+    public bool InVendingMachine { get; set; } = true;
+
+    public override void Initialize()
     {
-        public bool HaveBeenUsed { get; set; }
-        public bool InVendingMachine { get; set; } = true;
+        Name = "fresh batteries";
+        Synonyms.Are("batteries", "battery", "fresh");
+        Description = "They look like ordinary batteries. (A sepulchral voice says, \"Still going!\")";
+        InitialDescription = "There are fresh batteries here.";
 
-        public override void Initialize()
-        {
-            Name = "fresh batteries";
-            Synonyms.Are("batteries", "battery", "fresh");
-            Description = "They look like ordinary batteries. (A sepulchral voice says, \"Still going!\")";
-            InitialDescription = "There are fresh batteries here.";
-            
-            Before<Count>(() => "A pair.");
-        }
+        Before<Count>(() => "A pair.");
     }
-
 }

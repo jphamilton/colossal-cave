@@ -3,47 +3,47 @@ using Adventure.Net.Actions;
 using ColossalCave.Actions;
 using ColossalCave.Things;
 
-namespace ColossalCave.Places
+namespace ColossalCave.Places;
+
+public class NarrowCorridor : BelowGround
 {
-    public class NarrowCorridor : BelowGround
+    public override void Initialize()
     {
-        public override void Initialize()
+        Name = "In Narrow Corridor";
+        Synonyms.Are("narrow", "corridor");
+        Description =
+            "You are in a long, narrow corridor stretching out of sight to the west. " +
+            "At the eastern end is a hole through which you can see a profusion of leaves.";
+
+        DownTo<WestPit>();
+        WestTo<GiantRoom>();
+        EastTo<WestPit>();
+
+        Before<Jump>(() =>
         {
-            Name = "In Narrow Corridor";
-            Synonyms.Are("narrow", "corridor");
-            Description = 
-                "You are in a long, narrow corridor stretching out of sight to the west." +
-                "At the eastern end is a hole through which you can see a profusion of leaves.";
-
-            DownTo<WestPit>();
-            WestTo<GiantRoom>();
-            EastTo<WestPit>();
-
-            Before<Jump>(() =>
-            {
-                Print("You fall and break your neck!");
-                GameOver.Dead();
-                return true;
-            });
-        }
+            Print("You fall and break your neck!");
+            GameOver.Dead();
+            return true;
+        });
     }
+}
 
-    public class Leaves : Scenic
+public class Leaves : Scenic
+{
+    public override void Initialize()
     {
-        public override void Initialize()
+        Name = "leaves";
+        Synonyms.Are("leaf", "leaves", "plant", "tree", "stalk", "beanstalk", "profusion");
+        Description = "The leaves appear to be attached to the beanstalk you climbed to get here.";
+        IndefiniteArticle = "some";
+
+        FoundIn<NarrowCorridor>();
+
+        Before<Count>(() =>
         {
-            Name = "leaves";
-            Synonyms.Are("leaf", "leaves", "plant", "tree", "stalk", "beanstalk", "profusion");
-            Description = "The leaves appear to be attached to the beanstalk you climbed to get here.";
-            Article = "some";
+            Print("69,105."); // Thanks again, Rene.
+            return true;
+        });
 
-            FoundIn<NarrowCorridor>();
-
-            Before<Count>(() => {
-                Print("69,105."); // Thanks again, Rene.
-                return true;
-            });
-            
-        }
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace Adventure.Net
+﻿namespace Adventure.Net;
+
+public interface IInvoke
 {
-    public interface IInvoke
-    {
-        bool Invoke();
-    }
+    bool Invoke();
 }
