@@ -14,8 +14,6 @@ public class Rooms
     {
         rooms.Clear();
 
-        //throw new Exception("Need to add non-abstract rooms only!");
-        // Object map adding crystal bridge twice!
         static void Add(Assembly a)
         {
             var r = a.GetTypes().Where(x => x.IsSubclassOf(typeof(Room)) && !x.IsAbstract).Select(x => (Room)Activator.CreateInstance(x)).ToList();
@@ -24,12 +22,6 @@ public class Rooms
 
         Add(story.GetType().Assembly);
         Add(Assembly.GetExecutingAssembly());
-
-        //Assembly ax = story.GetType().Assembly;
-        //rooms.AddRange(ax.SubclassOf<Room>());
-
-        //ax = Assembly.GetExecutingAssembly();
-        //rooms.AddRange(ax.SubclassOf<Room>());
     }
 
     public static IList<Room> All

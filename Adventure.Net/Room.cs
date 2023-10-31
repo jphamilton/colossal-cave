@@ -27,7 +27,7 @@ public abstract class Room : Object
     public Action Initial { get; set; }
 
     /// <summary>
-    /// Visited
+    /// Room has been visited
     /// </summary>
     public bool Visited { get; set; }
 
@@ -241,7 +241,9 @@ public abstract class Room : Object
     protected virtual Room TryMove(string dir)
     {
         if (!roomMap.ContainsKey(dir))
+        {
             return null;
+        }
 
         var direction = (Direction)Verbs.Get(dir);
         var goType = typeof(Go);
@@ -283,11 +285,6 @@ public abstract class Room : Object
         }
 
         return room;
-    }
-
-    public bool Contains(Object obj)
-    {
-        return ObjectMap.Contains(this, obj);
     }
 
 }

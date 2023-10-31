@@ -329,10 +329,10 @@ public abstract class Object
         return success;
     }
 
-    protected static bool In<T>() where T : Room
+    public static bool In<T>() where T : Room
     {
-        Object obj = Rooms.Get<T>();
-        return (CurrentRoom.Location == obj);
+        Object room = Rooms.Get<T>();
+        return (CurrentRoom.Location == room);
     }
 
     protected static T Room<T>() where T : Room

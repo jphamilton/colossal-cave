@@ -24,7 +24,7 @@ public abstract class FeeFieFoeFoo : Verb
             var giantRoom = Rooms.Get<GiantRoom>();
             var eggs = Objects.Get<GoldenEggs>();
 
-            if (giantRoom.Contains(eggs))
+            if (eggs.Location == giantRoom)
             {
                 return Print("Nothing happens.");
             }
@@ -43,7 +43,7 @@ public abstract class FeeFieFoeFoo : Verb
                 Score.Add(-5);
             }
 
-            if (insideBuilding.Contains(eggs))
+            if (eggs.Location == insideBuilding)
             {
                 Score.Add(-eggs.DepositPoints);
             }
