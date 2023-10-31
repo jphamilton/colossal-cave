@@ -214,6 +214,24 @@ public class TakeTests : BaseTestFixture
     }
 
     [Fact]
+    public void implicit_take_2()
+    {
+        Execute("take all except lamp");
+        var lamp = Objects.Get<BrassLantern>();
+
+        Assert.False(Inventory.Contains(lamp));
+
+        ClearOutput();
+
+        Execute("take");
+
+        Assert.Equal("(the brass lantern)", Line1);
+        Assert.Equal("Taken.", Line2);
+
+        Assert.True(Inventory.Contains(lamp));
+    }
+
+    [Fact]
     public void implicit_take_is_blocked_by_before()
     {
         var blocked = "The food disappears before you can take it.";

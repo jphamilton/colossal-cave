@@ -1,4 +1,6 @@
-﻿namespace Adventure.Net.Actions;
+﻿using System.Linq;
+
+namespace Adventure.Net.Actions;
 
 public class Take : Verb
 {
@@ -14,6 +16,24 @@ public class Take : Verb
         Name = "take";
         Synonyms.Are("take", "carry", "hold");
         Multi = true;
+    }
+
+    public bool Expects()
+    {
+        var objects =
+            (from o in CurrentRoom.ObjectsInRoom()
+            where !o.Static && !o.Scenery
+            select o).ToList();
+
+        if (objects.Count == 1)
+        {
+            // implicit take
+            var obj = objects.Single();
+            Print($"({obj.DefiniteArticle} {obj.Name})");
+            return Expects(obj);
+        }
+
+        return Print("What do you want to take?");
     }
 
     public bool Expects(Object obj)
