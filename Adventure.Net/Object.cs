@@ -84,23 +84,8 @@ public abstract class Object
     public string ThatOrThose => PluralName ? Those : That;
     public string IsOrAre => PluralName ? Are : Is;
 
-
     // attributes
-
-    public bool Absent
-    {
-        get
-        {
-            return isAbsent;
-        }
-
-        set
-        {
-            isAbsent = value;
-            AbsentToggled?.Invoke(isAbsent);
-        }
-    }
-
+    public bool Absent { get; set; }
     public bool Animate { get; set; }
     public bool Edible { get; set; }
     public bool Light { get; set; }

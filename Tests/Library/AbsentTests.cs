@@ -1,50 +1,30 @@
 ﻿using Adventure.Net;
 using ColossalCave.Places;
+using ColossalCave.Things;
 using Xunit;
 
 namespace Tests.Library;
 
-public class ShoeHorn : Object
-{
-    public override void Initialize()
-    {
-        Name = "shoe horn";
-        Description = "It is an ancient device that has seen much use.";
-        Absent = true;
-
-        FoundIn<InsideBuilding, EndOfRoad>();
-
-    }
-
-}
-
 public class AbsentTests : BaseTestFixture
 {
     [Fact]
-    public void can_toggle_isAbsent()
+    public void can_toggle_absent()
     {
-        var building = Room<InsideBuilding>();
-        var road = Room<EndOfRoad>();
+        Location = Room<InsideBuilding>();
+        var lamp = Objects.Get<BrassLantern>();
 
-        var shoehorn = new ShoeHorn();
-        shoehorn.Initialize();
+        lamp.Absent = true;
 
-        Assert.False(ObjectMap.Contains(building, shoehorn));
-        Assert.False(ObjectMap.Contains(road, shoehorn));
+        Execute("take all");
 
-        shoehorn.Absent = false;
+        Assert.False(Inventory.Contains(lamp));
 
-        Assert.True(ObjectMap.Contains(building, shoehorn));
-        Assert.True(ObjectMap.Contains(road, shoehorn));
+        var x = Inventory.Items;
 
-        shoehorn.Absent = true;
+        lamp.Absent = false;
 
-        Assert.False(ObjectMap.Contains(building, shoehorn));
-        Assert.False(ObjectMap.Contains(road, shoehorn));
+        Execute("take all");
 
-        shoehorn.Absent = false;
-
-        Assert.True(ObjectMap.Contains(building, shoehorn));
-        Assert.True(ObjectMap.Contains(road, shoehorn));
+        Assert.True(Inventory.Contains(lamp));
     }
 }

@@ -10,16 +10,9 @@ public static class ObjectMap
 
     private static readonly IDictionary<Object, IList<Room>> ObjectToRooms = new Dictionary<Object, IList<Room>>();
     private static readonly IDictionary<Room, IList<Object>> RoomToObjects = new Dictionary<Room, IList<Object>>();
-    private static readonly IDictionary<Object, IList<Room>> Absent = new Dictionary<Object, IList<Room>>();
 
     public static void Add(Object obj, Room room)
     {
-        if (obj.Absent)
-        {
-            HandleAbsent(obj, room);
-            return;
-        }
-
         if (!ObjectToRooms.ContainsKey(obj))
         {
             ObjectToRooms.Add(obj, new List<Room>());
@@ -39,49 +32,6 @@ public static class ObjectMap
         {
             RoomToObjects[room].Add(obj);
         }
-    }
-
-    private static void HandleAbsent(Object obj, Room room)
-    {
-        void addAbsent()
-        {
-            if (Absent.ContainsKey(obj))
-            {
-                Absent[obj].Add(room);
-            }
-            else
-            {
-                Absent.Add(obj, new List<Room> { room });
-
-                obj.AbsentToggled = (absent) =>
-                {
-                    if (absent)
-                    {
-                        Remove(obj);
-
-                        if (!Absent.ContainsKey(obj))
-                        {
-                            addAbsent();
-                        }
-                    }
-                    else
-                    {
-                        if (Absent.ContainsKey(obj))
-                        {
-                            var rooms = Absent[obj];
-
-                            foreach (var r in rooms)
-                            {
-                                Add(obj, r);
-                            }
-                        }
-                    }
-                };
-            }
-        }
-
-        addAbsent();
-
     }
 
     public static void Remove(Object obj)
@@ -112,12 +62,8 @@ public static class ObjectMap
 
     public static bool Contains(Room room, Object obj)
     {
-        if (RoomToObjects.ContainsKey(room))
-        {
-            return RoomToObjects[room].Contains(obj);
-        }
-
-        return false;
+        var objects = GetObjects(room);
+        return objects.Contains(obj);
     }
 
 
@@ -131,7 +77,7 @@ public static class ObjectMap
     {
         if (RoomToObjects.ContainsKey(room))
         {
-            return (IReadOnlyList<Object>)RoomToObjects[room];
+            return RoomToObjects[room].Where(x => !x.Absent).ToList();
         }
 
         return new List<Object>();

@@ -72,7 +72,6 @@ public partial class Parser
             Tokens = tokens
         };
 
-
         var lastToken = "";
 
         foreach (string token in tokens)
@@ -152,10 +151,11 @@ public partial class Parser
                 }
 
                 var multi = new List<Object>();
+                IEnumerable<Object> objectsInRoom = null;
 
                 if (verb.Multi)
                 {
-                    var objectsInRoom =
+                    objectsInRoom =
                         from o in CurrentRoom.ObjectsInRoom()
                         where !o.Animate && !o.Static && !o.Scenery
                         select o;
@@ -169,8 +169,8 @@ public partial class Parser
                 }
 
                 // if object count is only 1, we don't add it so it can be handled in the verb using implict
-                // messages e.g. (the small bottle)
-                if (multi.Count > 1)
+                // messages e.g. (the small bottle) - unless there is only 1 object in the room
+                if (multi.Count > 1 || objectsInRoom?.Count() == 1)
                 {
                     result.Objects.AddRange(multi);
                 }
@@ -271,7 +271,7 @@ public partial class Parser
         // objects may have the same synonyms, so multiple items could be returned here
         var objects = (
             from o in Objects.WithName(token)
-            where result.Verb.InScopeOnly ? o.InScope : true
+            where !o.Absent && result.Verb.InScopeOnly ? o.InScope : true
             select o
         ).ToList();
 
