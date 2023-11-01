@@ -1,5 +1,4 @@
-﻿using Adventure.Net.Actions;
-using Adventure.Net.Extensions;
+﻿using Adventure.Net.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -154,7 +153,23 @@ public static class Inventory
 
     public static int Count
     {
-        get { return Inv.Children.Count; }
+        get
+        {
+            return GetCount(Inv.Children);//Inv.Children.Count; 
+        }
     }
 
+    private static int GetCount(IList<Object> objects)
+    {
+        var count = 0;
+
+        // This includes contained items in count. Inform 6 doesn't seem to do this,
+        // so the wicker cage in Colossal Cave can be used as a bag of holding.
+        foreach(var obj in objects)
+        {
+            count += GetCount(obj.Children) + 1;
+        }
+
+        return count;
+    }
 }

@@ -1,5 +1,4 @@
 ﻿using Adventure.Net.Extensions;
-using System;
 
 namespace Adventure.Net;
 
@@ -55,6 +54,7 @@ public abstract class Container : Object
 
     public void Add(Object obj)
     {
+        obj.Remove();
         obj.Parent = this;
         Children.Add(obj);
     }

@@ -38,14 +38,13 @@ public class Take : Verb
 
     public bool Expects(Object obj)
     {
-
         if (obj.Scenery)
         {
-            Print($"That's hardly portable.");
+            Print("That's hardly portable.");
         }
         else if (obj.Static)
         {
-            Print($"That's fixed in place.");
+            Print("That's fixed in place.");
         }
         else if (obj.Animate)
         {
@@ -53,13 +52,18 @@ public class Take : Verb
         }
         else if (Inventory.Contains(obj))
         {
-            Print($"You already have that.");
+            Print("You already have that.");
         }
         else
         {
-            obj.Remove();
+            if (Inventory.Count >= 7) // No way to change Inventory rules
+            {
+                Print("You're carrying too many things already.");
+                return false;
+            }
+
             Inventory.Add(obj);
-            Print($"Taken.");
+            Print("Taken.");
         }
 
         return true;

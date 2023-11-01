@@ -49,9 +49,7 @@ public partial class Parser
     private TokenizedInput SanitizeInput(string input)
     {
         var tokenizer = new InputTokenizer();
-        var tokens = tokenizer.Tokenize(input);
-
-        return tokens;
+        return tokenizer.Tokenize(input);
     }
 
     private ParserResult Parse(Verb verb, string verbToken, TokenizedInput tokens)
@@ -101,9 +99,9 @@ public partial class Parser
                         }
                     }
                 }
-                else if (obj is MultipleObjectsFound)
+                else if (obj is MultipleObjectsFound found)
                 {
-                    return ResolveMultipleObjects(verb, (MultipleObjectsFound)obj);
+                    return ResolveMultipleObjects(verb, found);
                 }
                 else
                 {
@@ -163,7 +161,7 @@ public partial class Parser
 
                 // if object count is only 1, we don't add it so it can be handled in the verb using implict
                 // messages e.g. (the small bottle) - unless there is only 1 object in the room
-                if (multi.Count > 1 || objectsInRoom?.Count() == 1)
+                if (multi.Count > 1 || objectsInRoom?.Count == 1)
                 {
                     result.Objects.AddRange(multi);
                 }
@@ -259,7 +257,7 @@ public partial class Parser
         return null;
     }
 
-    private Object GetObject(ParserResult result, string token)
+    private static Object GetObject(ParserResult result, string token)
     {
         // objects may have the same synonyms, so multiple items could be returned here
         var objects = (
@@ -288,7 +286,7 @@ public partial class Parser
 
         if (objects.Count == 1)
         {
-            var obj = objects.First();
+            var obj = objects[0];
 
             if (obj.InScope || !result.Verb.InScopeOnly)
             {
@@ -405,7 +403,7 @@ public partial class Parser
         {
             var message = result.Objects.Count > 1 ?
                 $"What do you want to {verb.Name} those things {prep}?" :
-                $"What do you want to {verb.Name} the {result.Objects.First()} {prep}?";
+                $"What do you want to {verb.Name} the {result.Objects[0]} {prep}?";
 
             Output.Print(message);
 
@@ -470,18 +468,16 @@ public partial class Parser
                 }
                 else
                 {
-                    result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects.First());
+                    result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects[0]);
                 }
 
             }
             else if (parameters.Key.Count == 3)
             {
                 // possible partial command entry
-                var key = $"obj";
-
-                if (verb.GetHandler(key) != null)
+                if (verb.GetHandler("obj") != null)
                 {
-                    result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects.First());
+                    result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects[0]);
                 }
             }
             else if (result.Preposition != null)

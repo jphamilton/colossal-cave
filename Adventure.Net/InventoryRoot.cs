@@ -3,4 +3,9 @@
 public class InventoryRoot : Object
 {
     public override void Initialize() { }
+
+    public InventoryRoot()
+    {
+        
+    }
 }

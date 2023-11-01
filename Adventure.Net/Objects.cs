@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adventure.Net.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -15,17 +16,24 @@ public static class Objects
     {
         objects.Clear();
 
-        Assembly ax = story.GetType().Assembly;
-        
-        foreach (var type in ax.GetTypes())
+        void Add(IList<Type> types)
         {
-            if (type.IsSubclassOf(typeof(Object)) && !type.IsAbstract && Activator.CreateInstance(type) is Object obj)
+            foreach (var type in types)
             {
-                objects.Add(obj);
+                if (Activator.CreateInstance(type) is Object obj)
+                {
+                    objects.Add(obj);
+                }
             }
         }
 
-        objects.Add(new InventoryRoot());
+        Assembly ax = typeof(Objects).Assembly;
+        
+        Add(ax.GetObjectTypes());
+            
+        ax = story.GetType().Assembly;
+
+        Add(ax.GetObjectTypes());
     }
 
     public static IList<Object> All => objects;

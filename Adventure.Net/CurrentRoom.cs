@@ -166,7 +166,7 @@ public static class CurrentRoom
             }
             else
             {
-                group.Append($"{obj.IndefiniteArticle} {obj.Name} (which is empty)");
+                group.Append($"{obj.IndefiniteArticle} {obj.Name}");
             }
 
         }
