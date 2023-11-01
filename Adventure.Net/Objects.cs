@@ -8,43 +8,41 @@ namespace Adventure.Net;
 
 public class Objects
 {
-    private static readonly IList<Object> items = new List<Object>();
+    // all game objects
+    private static readonly IList<Object> objects = new List<Object>();
+
+    public Object Parent { get; set; }
+    public IList<Object> Children { get; set; } = new List<Object>();
 
     public static void Load(IStory story)
     {
-        items.Clear();
+        objects.Clear();
 
         Assembly ax = story.GetType().Assembly;
-        Type[] types = ax.GetTypes();
-
-        foreach (var type in types)
+        
+        foreach (var type in ax.GetTypes())
         {
-            if (type.IsSubclassOf(typeof(Object)) &&
-                !type.IsAbstract &&
-                !type.IsSubclassOf(typeof(Room)))
+            if (type.IsSubclassOf(typeof(Object)) && !type.IsAbstract)
             {
                 if (Activator.CreateInstance(type) is Object obj)
                 {
-                    items.Add(obj);
+                    objects.Add(obj);
                 }
             }
         }
 
     }
 
-    public static IList<Object> All
-    {
-        get { return items; }
-    }
+    public static IList<Object> All => objects;
 
     public static Object GetByName(string name)
     {
-        return items.SingleOrDefault(x => x.Name == name || x.Synonyms.Contains(name));
+        return objects.SingleOrDefault(x => x.Name == name || x.Synonyms.Contains(name));
     }
 
     public static IList<Object> WithName(string name)
     {
-        return items.Where(x => x.Name == name || x.Synonyms.Contains(name)).ToList();
+        return objects.Where(x => x.Name == name || x.Synonyms.Contains(name)).ToList();
     }
 
     public static T Get<T>() where T : Object
@@ -54,11 +52,13 @@ public class Objects
 
     private static Object Get(Type objectType)
     {
-        foreach (var obj in items)
+        foreach (var obj in objects)
         {
             Type objType = obj.GetType();
             if (objType == objectType)
+            {
                 return obj;
+            }
         }
 
         return null;
@@ -66,7 +66,7 @@ public class Objects
 
     public static IList<Object> WithRunningDaemons()
     {
-        return items.Where(x => x.Daemon != null && x.DaemonStarted == true).ToList();
+        return objects.Where(x => x.Daemon != null && x.DaemonStarted == true).ToList();
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public class Objects
     /// <param name="obj"></param>
     public static void Add(Object obj, Room room = null)
     {
-        items.Add(obj);
+        objects.Add(obj);
 
         if (room != null)
         {

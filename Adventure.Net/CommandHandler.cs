@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Adventure.Net;
 
-public partial class CommandHandler
+public class CommandHandler
 {
     private readonly ParserResult parsed;
     private readonly CommandResult result;
@@ -189,7 +189,6 @@ public partial class CommandHandler
     {
         Output.Print(message);
         result.Output.Add(message);
-
     }
 
     private void Print(IEnumerable<string> messages)
@@ -200,37 +199,5 @@ public partial class CommandHandler
             result.Output.AddRange(messages);
         }
     }
-
-    private void Move(Room room)
-    {
-        Room nextRoom = room;
-
-        if (!CurrentRoom.IsLit() && !room.Light)
-        {
-            room = Rooms.Get<Darkness>();
-        }
-
-        Context.Story.Location = room;
-
-        if (!room.Visited)
-        {
-            CurrentRoom.Look(true);
-
-            room.Initial?.Invoke();
-        }
-        else
-        {
-            if (!CurrentRoom.IsLit() && room.Visited)
-            {
-                nextRoom.DarkToDark();
-            }
-
-            CurrentRoom.Look(false);
-        }
-
-
-        room.Visited = true;
-
-        Context.Story.Location = nextRoom;
-    }
+    
 }

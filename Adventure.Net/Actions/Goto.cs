@@ -15,13 +15,11 @@ public class Goto : Verb
 
         var x = CommandPrompt.GetInput();
 
-        var room = (from r in Rooms.All
-                    where r.GetType().Name.Contains(x)
-                    select r).FirstOrDefault();
+        var room = Objects.All.Where(r => r is Room && r.GetType().Name.Contains(x)).FirstOrDefault();
 
         if (room != null)
         {
-            MovePlayer.To(room);
+            MovePlayer.To((Room)room);
         }
 
         return true;

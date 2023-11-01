@@ -293,15 +293,6 @@ public partial class Parser
             
         }
 
-        // special case: token refers to a Door which is handled as a Room
-        var doors = (
-            from r in Rooms.WithName(token)
-            where r.InScope && r is Door
-            select r
-        ).ToList();
-
-        objects.AddRange(doors);
-
         if (objects.Count == 1)
         {
             var obj = objects.First();
@@ -345,6 +336,29 @@ public partial class Parser
         // one-word command or partial command
         var verbType = verb.GetType();
         var expects = verbType.GetMethod("Expects", Array.Empty<Type>());
+
+        if (expects != null)
+        {
+            // are implicit conditions satisfied?
+            if (verb.Multi)
+            {
+                var objects = (
+                    from o in CurrentRoom.ObjectsInRoom()
+                    where !o.Absent && !o.Static && !o.Scenery
+                    select o
+                ).ToList();
+
+                if (objects.Count != 1)
+                {
+                    expects = null;
+                }
+            }
+            else if (verb.MultiHeld && Inventory.Count != 1)
+            {
+                expects = null;
+            }
+        }
+        
 
         if (expects == null)
         {

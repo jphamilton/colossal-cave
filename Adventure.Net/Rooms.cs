@@ -8,45 +8,46 @@ namespace Adventure.Net;
 
 public class Rooms
 {
-    private static readonly List<Room> rooms = new();
+    //private static readonly List<Room> rooms = new();
 
-    public static void Load(IStory story)
-    {
-        rooms.Clear();
+    //public static void Load(IStory story)
+    //{
+    //    rooms.Clear();
 
-        static void Add(Assembly a)
-        {
-            var r = a.GetTypes().Where(x => x.IsSubclassOf(typeof(Room)) && !x.IsAbstract).Select(x => (Room)Activator.CreateInstance(x)).ToList();
-            rooms.AddRange(r);
-        }
+    //    static void Add(Assembly a)
+    //    {
+    //        var r = a.GetTypes().Where(x => x.IsSubclassOf(typeof(Room)) && !x.IsAbstract).Select(x => (Room)Activator.CreateInstance(x)).ToList();
+    //        rooms.AddRange(r);
+    //    }
 
-        Add(story.GetType().Assembly);
-        Add(Assembly.GetExecutingAssembly());
-    }
+    //    Add(story.GetType().Assembly);
+    //    Add(Assembly.GetExecutingAssembly());
+    //}
 
-    public static IList<Room> All
-    {
-        get { return rooms; }
-    }
+    //public static IList<Room> All
+    //{
+    //    get { return rooms; }
+    //}
 
     public static Object Get(Type type)
     {
-        return rooms.Where(x => x.GetType() == type).FirstOrDefault();
+        return Objects.All.FirstOrDefault(x => x.GetType() == type);
     }
 
-    public static T Get<T>() where T : Object
+    public static T Get<T>() where T : Room
     {
-        return (T)Get(typeof(T));
+        return Objects.Get<T>();
     }
 
-    public static Room GetByName(string name)
-    {
-        return rooms.Where(x => x.Name == name || x.Synonyms.Contains(name)).FirstOrDefault();
-    }
+    //public static Room GetByName(string name)
+    //{
+    //    return rooms.Where(x => x.Name == name || x.Synonyms.Contains(name)).FirstOrDefault();
+    //}
 
     public static IList<Room> WithName(string name)
     {
-        return rooms.Where(x => x.Name == name || x.Synonyms.Contains(name)).ToList();
+        var rooms = Objects.All.Where(x => x is Room);
+        return rooms.Where(x => x.Name == name || x.Synonyms.Contains(name)).Cast<Room>().ToList();
     }
 
 

@@ -273,7 +273,7 @@ public abstract class Object
 
     public static T Get<T>() where T : Object
     {
-        return Objects.Get<T>() ?? Rooms.Get<T>();
+        return Objects.Get<T>();
     }
 
     public static bool Redirect<T>(Object obj, Func<T, bool> callback) where T : Verb
@@ -337,7 +337,7 @@ public abstract class Object
 
     protected static T Room<T>() where T : Room
     {
-        return Rooms.Get(typeof(T)) as T;
+        return Rooms.Get<T>();
     }
 
     public bool InScope

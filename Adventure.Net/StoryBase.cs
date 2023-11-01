@@ -1,4 +1,5 @@
 ﻿using Adventure.Net.Utilities;
+using System.Linq;
 
 namespace Adventure.Net;
 
@@ -26,15 +27,18 @@ public abstract class StoryBase : IStory
     public void Initialize()
     {
         Objects.Load(this);
-        Rooms.Load(this);
         Verbs.Load();
 
-        foreach (var obj in Rooms.All)
+        var rooms = Objects.All.Where(x => x is Room);
+        
+        foreach (var obj in rooms)
         {
             obj.Initialize();
         }
 
-        foreach (var obj in Objects.All)
+        var objects = Objects.All.Where(x => x is not Room);
+        
+        foreach (var obj in objects)
         {
             obj.Initialize();
         }
