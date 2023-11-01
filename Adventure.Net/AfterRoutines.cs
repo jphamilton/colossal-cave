@@ -32,11 +32,6 @@ public class AfterRoutines
 
     public Action Get(Type verbType)
     {
-        if (routines.ContainsKey(verbType))
-        {
-            return routines[verbType];
-        }
-
-        return null;
+        return routines.ContainsKey(verbType) ? routines[verbType] : null;
     }
 }

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Adventure.Net.Extensions;
+using System;
 
 namespace Adventure.Net;
 
@@ -14,14 +14,7 @@ public abstract class Container : Object
                    return $"The {Name} is empty.";
                }
 
-               if (Children.Count == 1)
-               {
-                   Object child = Children[0];
-                   return $"In the {Name} {IsOrAre} {child.DefiniteArticle} {child.Name}.";
-               }
-
-               throw new Exception("Don't know how to deal with containers with more than one thing.");
-
+               return $"In the {Name} {IsOrAre} {Children.DisplayList(definiteArticle: false)}";
            };
     }
 
@@ -75,14 +68,6 @@ public abstract class Container : Object
         var obj = Objects.Get<T>();
         Children.Remove(obj);
     }
-
-    //public IList<Object> Contents
-    //{
-    //    get
-    //    {
-    //        return Children;
-    //    }
-    //}
 
     public bool Contains<T>() where T : Object
     {

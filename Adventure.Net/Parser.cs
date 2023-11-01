@@ -2,7 +2,6 @@
 using Adventure.Net.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Adventure.Net;
@@ -10,15 +9,6 @@ namespace Adventure.Net;
 
 public partial class Parser
 {
-    private class Skip : Object
-    {
-        public override void Initialize()
-        {
-            // no op
-        }
-    }
-
-
     public ParserResult Parse(string input)
     {
         var tokens = SanitizeInput(input);
@@ -324,7 +314,7 @@ public partial class Parser
 
     private ParserResult ResolveMultipleObjects(Verb verb, MultipleObjectsFound multiple)
     {
-        Output.Print($"Which do you mean, {multiple.List()}?");
+        Output.Print($"Which do you mean, {multiple.Objects.DisplayList(definiteArticle: true, "or")}?");
         return GetInput(verb);
     }
 

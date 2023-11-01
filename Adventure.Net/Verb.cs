@@ -188,12 +188,11 @@ public abstract class Verb
     {
         var verbType = GetType();
 
-        var methods = (
+        return (
             from m in verbType.GetMethods()
             where m.Name == "Expects"
             select m
         ).ToList();
-        return methods;
     }
 
 

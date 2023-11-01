@@ -47,7 +47,7 @@ public static class StringExtensions
             }
             else
             {
-                input = char.ToUpper(input[0]) + input.Substring(1);
+                input = char.ToUpper(input[0]) + input[1..];
             }
         }
 

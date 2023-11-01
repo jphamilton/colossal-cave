@@ -53,11 +53,17 @@ public abstract class Door : Room
             return doorTo();
 
         if (doorDirection() is Down)
+        {
             Print($"You are unable to descend by the {Name}.");
+        }
         else if (doorDirection() is Up)
+        {
             Print($"You are unable to ascend by the {Name}");
+        }
         else if (doorDirection() != null)
+        {
             Print("You can't go that way.");
+        }
         else
         {
             string lead = PluralName ? "leads" : "lead";

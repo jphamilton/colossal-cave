@@ -11,7 +11,6 @@ public class Insert : Verb
     {
         Name = "insert";
         Multi = true;
-        //Grammars.Add("<multi> in <noun>", InsertObject);
     }
 
     public bool Expects(Object obj, Preposition.In @in, Object indirect)
@@ -32,6 +31,13 @@ public class Insert : Verb
         if (receive != null)
         {
             return receive(obj);
+        }
+
+        if (indirect is Container container)
+        {
+            obj.Remove();
+            container.Add(obj);
+            return Print($"You put {obj.IndefiniteArticle} {obj.Name} into the {container.Name}.");
         }
 
         // TODO: this isn't quite right. It could be a container without a Receive

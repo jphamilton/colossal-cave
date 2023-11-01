@@ -19,17 +19,5 @@ public partial class Parser
         {
             // no op
         }
-
-        public string List()
-        {
-            var x = Objects.Select(x => $"{x.DefiniteArticle} {x.Name}").ToList();
-
-            if (x.Count < 3)
-            {
-                return string.Join(" or ", x);
-            }
-
-            return string.Join(", ", x.GetRange(0, x.Count - 1)) + $" or {x.Last()}";
-        }
     }
 }

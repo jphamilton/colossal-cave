@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Adventure.Net.Extensions;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -156,17 +157,16 @@ public static class CurrentRoom
             {
                 if (container.Children.Count > 0)
                 {
-                    Object child = container.Children[0];
-                    group.AppendFormat("{0} {1} (which contains {2} {3})", obj.IndefiniteArticle, obj.Name, child.IndefiniteArticle, child.Name);
+                    group.Append($"{obj.IndefiniteArticle} {obj.Name} (which contains {container.Children.DisplayList(definiteArticle: false)})");
                 }
                 else
                 {
-                    group.AppendFormat("{0} {1} (which is empty)", obj.IndefiniteArticle, obj.Name);
+                    group.Append($"{obj.IndefiniteArticle} {obj.Name} (which is empty)");
                 }
             }
             else
             {
-                group.AppendFormat("{0} {1}", obj.IndefiniteArticle, obj.Name);
+                group.Append($"{obj.IndefiniteArticle} {obj.Name} (which is empty)");
             }
 
         }
