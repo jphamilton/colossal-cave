@@ -73,8 +73,7 @@ public class SleepingDwarves : Scenic
         Description = "I wouldn't bother the dwarves if I were you.";
         IndefiniteArticle = "hundreds of angry";
         Animate = true;
-
-        Attribute("multitude");
+        Multitude = true;
 
         FoundIn<NeEnd>();
 

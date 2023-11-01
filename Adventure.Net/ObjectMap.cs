@@ -5,9 +5,6 @@ namespace Adventure.Net;
 
 public static class ObjectMap
 {
-    // why is this random comment here???
-    // CONTAINERS?????
-
     private static readonly IDictionary<Object, IList<Room>> ObjectToRooms = new Dictionary<Object, IList<Room>>();
     private static readonly IDictionary<Room, IList<Object>> RoomToObjects = new Dictionary<Room, IList<Object>>();
 

@@ -27,7 +27,7 @@ public class Boulders : Scenic
         Name = "boulders";
         Synonyms.Are("boulder", "boulders", "rocks", "stones");
         Description = "They're just ordinary boulders. They're warm.";
-        Attribute("multitude");
+        Multitude = true;
 
         FoundIn<ChamberOfBoulders>();
 
@@ -44,7 +44,7 @@ public class RareSpices : Treasure
         Synonyms.Are("spices", "spice", "rare", "exotic");
         IndefiniteArticle = "a selection of";
         DepositPoints = 14;
-        Attribute("multitude");
+        Multitude = true;
 
         FoundIn<ChamberOfBoulders>();
 

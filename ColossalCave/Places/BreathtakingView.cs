@@ -71,7 +71,7 @@ public class SparksOfAsh : Scenic
         Name = "sparks of ash";
         Synonyms.Are("spark", "sparks", "ash", "air", "flickering");
         Description = "The sparks too far away for you to get a good look at them.";
-        Attribute("multitude");
+        Multitude = true;
 
         FoundIn<BreathtakingView>();
     }

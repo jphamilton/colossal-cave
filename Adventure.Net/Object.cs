@@ -8,26 +8,24 @@ namespace Adventure.Net;
 public abstract class Object
 {
     private readonly static List<char> vowels = new() { 'a', 'e', 'i', 'o', 'u' };
-    private static string Theyre = "they're";
-    private static string Thats = "that's";
-    private static string Those = "those";
-    private static string That = "that";
-    private static string Are = "are";
-    private static string Is = "is";
+    private const string Theyre = "they're";
+    private const string Thats = "that's";
+    private const string Those = "those";
+    private const string That = "that";
+    private const string Are = "are";
+    private const string Is = "is";
 
     private readonly Dictionary<Type, Func<bool>> beforeRoutines = new();
     private readonly AfterRoutines afterRoutines = new();
     private readonly Dictionary<Object, Func<Object, bool>> receiveRoutines = new();
 
-    private bool isAbsent;
     private string definiteArticle;
     private string indefiniteArticle;
 
-    public Action<bool> AbsentToggled { get; set; }
-
-    private Dictionary<string, bool> attributes { get; } = new();
-
     public abstract void Initialize();
+
+    public Object Parent { get; set; }
+    public IList<Object> Children { get; set; } = new List<Object>();
 
     protected Object()
     {
@@ -91,6 +89,7 @@ public abstract class Object
     public bool Light { get; set; }
     public bool Lockable { get; private set; }
     public bool Locked { get; set; }
+    public bool Multitude { get; set; }
     public bool On { get; set; }
     public bool Open { get; set; }
     public bool Openable { get; set; }
@@ -101,19 +100,6 @@ public abstract class Object
     public bool Touched { get; set; }
     public bool Transparent { get; set; }
 
-    public void Attribute(string flag)
-    {
-        if (!attributes.ContainsKey(flag))
-        {
-            attributes[flag] = true;
-        }
-    }
-
-    public bool Has(string attribute)
-    {
-        return attributes.ContainsKey(attribute);
-    }
-
     public void LocksWithKey<T>(bool isLocked) where T : Object
     {
         Lockable = true;
@@ -122,8 +108,6 @@ public abstract class Object
     }
 
     public Object Key { get; private set; }
-
-
 
     public void Before<T>(Func<string> before) where T : Verb
     {
@@ -386,14 +370,7 @@ public abstract class Object
         ObjectMap.Remove(this);
     }
 
-    public bool InRoom
-    {
-        get
-        {
-
-            return ObjectMap.Contains(CurrentRoom.Location, this);
-        }
-    }
+    public bool InRoom => ObjectMap.Contains(CurrentRoom.Location, this);
 
     public void MoveToLocation()
     {
@@ -457,8 +434,6 @@ public abstract class Object
     {
         get
         {
-            // obviously will not work well for scenery and
-            // anything else that can be in multiple locations
             return ObjectMap.Location(this).FirstOrDefault();
         }
     }

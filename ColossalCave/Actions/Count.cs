@@ -11,7 +11,7 @@ public class Count : Verb
 
     public bool Expects(Object obj)
     {
-        if (obj.Has("multitude"))
+        if (obj.Multitude)
         {
             Print("There are a multitude.");
         }

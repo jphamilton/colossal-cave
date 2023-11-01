@@ -29,8 +29,7 @@ public class AncientOrientalDrawings : Scenic
         Name = "ancient oriental drawings";
         Synonyms.Are("paintings", "drawings", "art", "cave", "ancient", "oriental");
         Description = "They seem to depict people and animals.";
-
-        Attribute("multitude");
+        Multitude = true;
 
         FoundIn<OrientalRoom>();
     }

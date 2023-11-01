@@ -28,7 +28,7 @@ public class LimestoneFormation : Scenic
         Name = "limestone formations";
         Synonyms.Are("formations", "shape", "shapes", "lime", "limestone", "stone", "oddly", "shaped", "oddly-shaped");
         Description = "Every now and then a particularly strange shape catches your eye.";
-        Attribute("multitude");
+        Multitude = true;
 
         FoundIn<LimestonePassage>();
     }

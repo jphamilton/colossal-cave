@@ -11,8 +11,7 @@ public class RareCoins : Treasure
         IndefiniteArticle = "some";
         Description = "They're a numismatist's dream!";
         InitialDescription = "There are many coins here!";
-
-        Attribute("multitude");
+        Multitude = true;
 
         FoundIn<WestSideChamber>();
     }
