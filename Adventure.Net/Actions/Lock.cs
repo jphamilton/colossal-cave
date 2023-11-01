@@ -40,11 +40,13 @@ public class Lock : Verb
             {
                 if (held == null && Inventory.Items.Count == 1)
                 {
-                    Print("(with the {door.Key.Name})\n");
+                    Print($"(with the {door.Key.Name})");
+                    Print($"You lock {obj.DefiniteArticle} {obj.Name}.");
+                    obj.Locked = true;
                 }
                 else
                 {
-                    Print($"You lock the {obj.Name}.");
+                    Print($"You lock {obj.DefiniteArticle} {obj.Name}.");
                     obj.Locked = true;
                 }
             }

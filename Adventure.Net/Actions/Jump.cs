@@ -25,7 +25,7 @@ public class Jump : Verb
 
     public bool Expects(Preposition.Over over, Object obj)
     {
-        Print($"Jumping over {obj} would achieve nothing here.");
+        Print($"Jumping over {obj.DefiniteArticle} {obj.Name} would achieve nothing here.");
         return true;
     }
 }

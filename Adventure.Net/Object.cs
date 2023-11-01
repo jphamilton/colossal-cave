@@ -65,7 +65,7 @@ public abstract class Object
     {
         get
         {
-            if (definiteArticle == null)
+            if (string.IsNullOrEmpty(definiteArticle))
             {
                 definiteArticle = "the";
             }

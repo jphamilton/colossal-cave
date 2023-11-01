@@ -20,13 +20,13 @@ public class Wave : Verb
 
     public bool Expects(Object obj)
     {
-        Print($"You look ridiculous waving the {obj}.");
+        Print($"You look ridiculous waving {obj.DefiniteArticle} {obj.Name}.");
         return true;
     }
 
     public bool Expects(Object obj, Preposition.At at, Object indirect)
     {
-        Print($"You wave the {obj} at the {indirect}, feeling foolish.");
+        Print($"You wave {obj.DefiniteArticle} {obj.Name} at {obj.DefiniteArticle} {indirect}, feeling foolish.");
         return true;
     }
 }
