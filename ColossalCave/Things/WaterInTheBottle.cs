@@ -16,7 +16,7 @@ public class WaterInTheBottle : Object
             {
                 var bottle = Get<Bottle>();
 
-                if (bottle.Contents.Contains(this))
+                if (bottle.Children.Contains(this))
                 {
                     bottle.Remove<WaterInTheBottle>();
                     Print("You drink the cool, refreshing water, draining the bottle in the process.");

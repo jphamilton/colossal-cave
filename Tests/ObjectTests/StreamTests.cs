@@ -24,7 +24,7 @@ public class StreamTests : BaseTestFixture
         Assert.Equal("The bottle is now full of water.", Line1);
 
         Assert.True(Inventory.Contains(bottle));
-        Assert.True(bottle.Contents.Contains(water));
+        Assert.True(bottle.Children.Contains(water));
 
     }
 

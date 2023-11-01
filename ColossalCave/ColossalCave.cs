@@ -67,7 +67,7 @@ public class ColossalCaveStory : StoryBase
         grate.Locked = false;
         grate.Open = true;
 
-        Inventory.Remove(bird);
+        bird.Remove();
         cage.Add(bird);
         cage.Open = false;
 

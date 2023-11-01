@@ -57,7 +57,7 @@ public static class CurrentRoom
                 continue;
             }
 
-            foreach (var containedObj in container.Contents)
+            foreach (var containedObj in container.Children)
             {
                 if (containedObj.Light)
                 {
@@ -154,9 +154,9 @@ public static class CurrentRoom
 
             if (obj is Container container)
             {
-                if (container.Contents.Count > 0)
+                if (container.Children.Count > 0)
                 {
-                    Object child = container.Contents[0];
+                    Object child = container.Children[0];
                     group.AppendFormat("{0} {1} (which contains {2} {3})", obj.IndefiniteArticle, obj.Name, child.IndefiniteArticle, child.Name);
                 }
                 else
@@ -188,7 +188,7 @@ public static class CurrentRoom
         {
             if (obj is Container container)
             {
-                contained.AddRange(container.Contents);
+                contained.AddRange(container.Children);
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using Adventure.Net.Extensions;
+﻿using Adventure.Net.Actions;
+using Adventure.Net.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,8 @@ public static class Inventory
 
     public static void Add(Object obj)
     {
+        obj.Remove();
+        obj.Parent = Inv;
         Inv.Children.Add(obj);
         obj.Touched = true;
     }
@@ -34,7 +37,7 @@ public static class Inventory
     {
         foreach (var o in Inv.Children)
         {
-            if (o is Container c && c.Contents.Contains(obj))
+            if (o is Container c && c.Children.Contains(obj))
             {
                 return true;
             }
@@ -74,14 +77,14 @@ public static class Inventory
         return true;
     }
 
-    public static void Remove(Object obj)
-    {
-        Inv.Children.Remove(obj);
-    }
-
     public static void Clear()
     {
-        Inv.Children.Clear();
+        var copy = Inv.Children.ToList();
+
+        foreach(var obj in copy)
+        {
+            obj.Remove();
+        }
     }
 
     public static string Display()
@@ -130,7 +133,7 @@ public static class Inventory
 
         if (container.Open || container.Transparent)
         {
-            foreach (var child in container.Contents)
+            foreach (var child in container.Children)
             {
                 if (child is Container c)
                 {

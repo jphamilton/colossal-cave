@@ -20,7 +20,7 @@ public class LittleBird : Object
             var cage = Get<WickerCage>();
             var bird = Get<LittleBird>();
 
-            if (cage.Contents.Contains(bird))
+            if (cage.Children.Contains(bird))
             {
                 Print("The little bird looks unhappy in the cage.");
             }
@@ -68,7 +68,7 @@ public class LittleBird : Object
                 var cage = Get<WickerCage>();
                 var bird = Get<LittleBird>();
 
-                if (cage.Contents.Contains(bird))
+                if (cage.Children.Contains(bird))
                 {
                     Print("Oh, leave the poor unhappy bird alone.");
                     return true;
@@ -117,7 +117,7 @@ public class LittleBird : Object
 
         if (cage.InInventory)
         {
-            if (cage.Contents.Contains(bird))
+            if (cage.Children.Contains(bird))
             {
                 Print("You already have the little bird.");
                 Print("If you take it out of the cage it will likely fly away from you.");
@@ -142,7 +142,7 @@ public class LittleBird : Object
         var cage = Get<WickerCage>();
         var bird = Get<LittleBird>();
 
-        if (!cage.Contents.Contains(bird))
+        if (!cage.Children.Contains(bird))
         {
             Print("The bird is not caged now.");
             return true;

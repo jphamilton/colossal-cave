@@ -17,7 +17,6 @@ public class Eat : Verb
             // use Before/After routines on object to handle specific messages
             Print($"You eat {obj}.");
             obj.Remove();
-            Inventory.Remove(obj);
         }
         else
         {

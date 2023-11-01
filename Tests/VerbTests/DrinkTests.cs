@@ -60,12 +60,12 @@ public class DrinkTests : BaseTestFixture
 
         Inventory.Add(bottle);
 
-        Assert.Equal(1, bottle.Contents.Count);
+        Assert.Single(bottle.Children);
 
         Execute("drink water");
 
         Assert.Equal("You drink the cool, refreshing water, draining the bottle in the process.", Line1);
-        Assert.Equal(0, bottle.Contents.Count);
+        Assert.Empty(bottle.Children);
     }
 
     [Fact]

@@ -8,7 +8,6 @@ public static class ObjectMap
 {
     public static void Add(Object obj, Room room)
     {
-        //Remove(obj);
         obj.Parent = room;
         room.Children.Add(obj);
     }
@@ -29,8 +28,7 @@ public static class ObjectMap
 
     public static T Remove<T>() where T : Object
     {
-        var obj = Objects.Get<T>();
-        return (T)Remove(obj);
+        return (T)Remove(Objects.Get<T>());
     }
 
     public static bool Contains(Room room, Object obj)

@@ -351,22 +351,6 @@ public abstract class Object
 
     public void Remove()
     {
-        if (InInventory)
-        {
-            Inventory.Remove(this);
-        }
-
-        var containers = Inventory.Items.Where(obj => obj is Container);
-
-        foreach (Container container in containers)
-        {
-            if (container.Contents.Contains(this))
-            {
-                container.Contents.Remove(this);
-                break;
-            }
-        }
-
         ObjectMap.Remove(this);
     }
 
@@ -374,7 +358,6 @@ public abstract class Object
 
     public void MoveToLocation()
     {
-        Inventory.Remove(this);
         ObjectMap.MoveObject(this, CurrentRoom.Location);
     }
 

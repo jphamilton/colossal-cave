@@ -5,18 +5,18 @@ namespace Adventure.Net;
 
 public abstract class Container : Object
 {
-    protected List<Object> contents = new();
-
     protected Container()
     {
         Describe = () =>
            {
                if (IsEmpty)
-                   return $"The {Name} is empty.";
-
-               if (contents.Count == 1)
                {
-                   Object child = contents[0];
+                   return $"The {Name} is empty.";
+               }
+
+               if (Children.Count == 1)
+               {
+                   Object child = Children[0];
                    return $"In the {Name} {IsOrAre} {child.DefiniteArticle} {child.Name}.";
                }
 
@@ -37,7 +37,7 @@ public abstract class Container : Object
             }
             else
             {
-                result = Contents.Count > 0 ? "which is open" : "which is open but empty";
+                result = Children.Count > 0 ? "which is open" : "which is open but empty";
             }
 
             return result;
@@ -46,52 +46,51 @@ public abstract class Container : Object
 
     public bool IsEmpty
     {
-        get { return contents.Count == 0; }
+        get { return Children.Count == 0; }
     }
 
     public void Empty()
     {
-        contents.Clear();
+        Children.Clear();
     }
 
     public void Add<T>() where T : Object
     {
         Object obj = Objects.Get<T>();
-        contents.Add(obj);
+        Children.Add(obj);
     }
 
     public void Add(Object obj)
     {
-        contents.Add(obj);
+        Children.Add(obj);
     }
 
     public void Remove(Object obj)
     {
-        contents.Remove(obj);
+        Children.Remove(obj);
     }
 
     public new void Remove<T>() where T : Object
     {
         var obj = Objects.Get<T>();
-        contents.Remove(obj);
+        Children.Remove(obj);
     }
 
-    public IList<Object> Contents
-    {
-        get
-        {
-            return contents;
-        }
-    }
+    //public IList<Object> Contents
+    //{
+    //    get
+    //    {
+    //        return Children;
+    //    }
+    //}
 
     public bool Contains<T>() where T : Object
     {
-        Object obj = Objects.Get<T>();
-        return Contents.Contains(obj);
+        return Children.Contains(Objects.Get<T>());
     }
 
     public bool Contains(Object obj)
     {
-        return Contents.Contains(obj);
+        return Children.Contains(obj);
     }
 }
