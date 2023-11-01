@@ -434,7 +434,7 @@ public abstract class Object
     {
         get
         {
-            return ObjectMap.Location(this).FirstOrDefault();
+            return ObjectMap.Location(this);
         }
     }
 

@@ -6,13 +6,10 @@ using System.Reflection;
 namespace Adventure.Net;
 
 
-public class Objects
+public static class Objects
 {
     // all game objects
     private static readonly IList<Object> objects = new List<Object>();
-
-    public Object Parent { get; set; }
-    public IList<Object> Children { get; set; } = new List<Object>();
 
     public static void Load(IStory story)
     {
@@ -22,15 +19,13 @@ public class Objects
         
         foreach (var type in ax.GetTypes())
         {
-            if (type.IsSubclassOf(typeof(Object)) && !type.IsAbstract)
+            if (type.IsSubclassOf(typeof(Object)) && !type.IsAbstract && Activator.CreateInstance(type) is Object obj)
             {
-                if (Activator.CreateInstance(type) is Object obj)
-                {
-                    objects.Add(obj);
-                }
+                objects.Add(obj);
             }
         }
 
+        objects.Add(new InventoryRoot());
     }
 
     public static IList<Object> All => objects;
@@ -66,7 +61,7 @@ public class Objects
 
     public static IList<Object> WithRunningDaemons()
     {
-        return objects.Where(x => x.Daemon != null && x.DaemonStarted == true).ToList();
+        return objects.Where(x => x.Daemon != null && x.DaemonStarted).ToList();
     }
 
     /// <summary>

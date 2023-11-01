@@ -33,8 +33,7 @@ public class Take : Verb
             return Expects(obj);
         }
 
-        Print("What do you want to take?");
-        return false;
+        return Print("What do you want to take?");
     }
 
     public bool Expects(Object obj)

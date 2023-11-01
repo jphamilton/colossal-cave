@@ -3,58 +3,34 @@ using System.Linq;
 
 namespace Adventure.Net;
 
+
 public static class ObjectMap
 {
-    private static readonly IDictionary<Object, IList<Room>> ObjectToRooms = new Dictionary<Object, IList<Room>>();
-    private static readonly IDictionary<Room, IList<Object>> RoomToObjects = new Dictionary<Room, IList<Object>>();
-
     public static void Add(Object obj, Room room)
     {
-        if (!ObjectToRooms.ContainsKey(obj))
-        {
-            ObjectToRooms.Add(obj, new List<Room>());
-        }
-
-        if (!ObjectToRooms[obj].Contains(room))
-        {
-            ObjectToRooms[obj].Add(room);
-        }
-
-        if (!RoomToObjects.ContainsKey(room))
-        {
-            RoomToObjects.Add(room, new List<Object>());
-        }
-
-        if (!RoomToObjects[room].Contains(obj))
-        {
-            RoomToObjects[room].Add(obj);
-        }
+        //Remove(obj);
+        obj.Parent = room;
+        room.Children.Add(obj);
     }
 
-    public static void Remove(Object obj)
+    public static Object Remove(Object obj)
     {
-        // item may not necessarily be anywhere 
-        if (ObjectToRooms.TryGetValue(obj, out IList<Room> rooms))
+        if (obj == null)
         {
-            foreach (var room in rooms)
-            {
-                RoomToObjects[room].Remove(obj);
-            }
-
-            ObjectToRooms.Remove(obj);
+            return null;
         }
 
-        if (obj != null)
-        {
-            Inventory.Remove(obj);
-        }
+        obj.Parent?.Children.Remove(obj);
+
+        obj.Parent = null;
+
+        return obj;
     }
 
     public static T Remove<T>() where T : Object
     {
         var obj = Objects.Get<T>();
-        Remove(obj);
-        return obj;
+        return (T)Remove(obj);
     }
 
     public static bool Contains(Room room, Object obj)
@@ -72,21 +48,23 @@ public static class ObjectMap
 
     public static IReadOnlyList<Object> GetObjects(Room room)
     {
-        if (RoomToObjects.ContainsKey(room))
-        {
-            return RoomToObjects[room].Where(x => !x.Absent).ToList();
-        }
-
-        return new List<Object>();
+        return room.Children.Where(x => !x.Absent).ToList();
     }
 
-    public static IList<Room> Location(Object obj)
+    public static Room Location(Object obj)
     {
-        if (ObjectToRooms.ContainsKey(obj))
+        var parent = obj.Parent;
+
+        while (parent != null)
         {
-            return ObjectToRooms[obj];
+            if (parent is Room)
+            {
+                return parent as Room;
+            }
+
+            parent = parent.Parent;
         }
 
-        return new List<Room>();
+        return null;
     }
 }

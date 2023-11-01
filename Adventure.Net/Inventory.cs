@@ -5,13 +5,22 @@ using System.Text;
 
 namespace Adventure.Net;
 
-public class Inventory
+public static class Inventory
 {
-    private static readonly List<Object> objects = new();
+    private static InventoryRoot root;
+
+    private static InventoryRoot Inv
+    {
+        get
+        {
+            root ??= Objects.Get<InventoryRoot>();
+            return root;
+        }
+    }
 
     public static void Add(Object obj)
     {
-        objects.Add(obj);
+        Inv.Children.Add(obj);
         obj.Touched = true;
     }
 
@@ -23,7 +32,7 @@ public class Inventory
 
     public static bool Contains(Object obj)
     {
-        foreach (var o in objects)
+        foreach (var o in Inv.Children)
         {
             if (o is Container c && c.Contents.Contains(obj))
             {
@@ -31,12 +40,12 @@ public class Inventory
             }
         }
 
-        return objects.Contains(obj);
+        return Inv.Children.Contains(obj);
     }
 
     public static bool Contains(string objName)
     {
-        foreach (var obj in objects)
+        foreach (var obj in Inv.Children)
         {
             if (obj.Name == objName || obj.Synonyms.Contains(objName))
             {
@@ -56,7 +65,7 @@ public class Inventory
 
         foreach (Object obj in args)
         {
-            if (!objects.Contains(obj))
+            if (!Inv.Children.Contains(obj))
             {
                 return false;
             }
@@ -67,17 +76,17 @@ public class Inventory
 
     public static void Remove(Object obj)
     {
-        objects.Remove(obj);
+        Inv.Children.Remove(obj);
     }
 
     public static void Clear()
     {
-        objects.Clear();
+        Inv.Children.Clear();
     }
 
     public static string Display()
     {
-        if (objects.Count == 0)
+        if (Inv.Children.Count == 0)
         {
             return "You are carrying nothing.";
         }
@@ -87,7 +96,7 @@ public class Inventory
 
         var containers = new List<Object>();
 
-        foreach (var obj in objects.OrderBy(x => x.Description))
+        foreach (var obj in Inv.Children.OrderBy(x => x.Description))
         {
             if (obj is Container container)
             {
@@ -96,7 +105,7 @@ public class Inventory
             }
         }
 
-        foreach (var obj in objects.Where(x => !containers.Contains(x)).OrderBy(x => x.Description))
+        foreach (var obj in Inv.Children.Where(x => !containers.Contains(x)).OrderBy(x => x.Description))
         {
             sb.Append($"\t{obj.IndefiniteArticle} {obj.Name}\n");
         }
@@ -138,15 +147,11 @@ public class Inventory
         return sb.ToString();
     }
 
-    public static List<Object> Items => objects;
+    public static IList<Object> Items => Inv.Children;
 
     public static int Count
     {
-        get { return objects.Count; }
+        get { return Inv.Children.Count; }
     }
 
-    public static T Get<T>() where T : Object
-    {
-        return (T)objects.Where(x => x.GetType() == typeof(T)).FirstOrDefault();
-    }
 }

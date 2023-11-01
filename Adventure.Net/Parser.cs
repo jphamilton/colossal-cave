@@ -151,14 +151,11 @@ public partial class Parser
                 }
 
                 var multi = new List<Object>();
-                IEnumerable<Object> objectsInRoom = null;
+                IList<Object> objectsInRoom = null;
 
                 if (verb.Multi)
                 {
-                    objectsInRoom =
-                        from o in CurrentRoom.ObjectsInRoom()
-                        where !o.Animate && !o.Static && !o.Scenery
-                        select o;
+                    objectsInRoom = GetObjectsInRoom();
 
                     multi.AddRange(objectsInRoom);
                 }
@@ -342,11 +339,7 @@ public partial class Parser
             // are implicit conditions satisfied?
             if (verb.Multi)
             {
-                var objects = (
-                    from o in CurrentRoom.ObjectsInRoom()
-                    where !o.Absent && !o.Static && !o.Scenery
-                    select o
-                ).ToList();
+                var objects = GetObjectsInRoom();
 
                 if (objects.Count != 1)
                 {
@@ -367,6 +360,15 @@ public partial class Parser
         }
 
         return null;
+    }
+
+    private IList<Object> GetObjectsInRoom()
+    {
+        return (
+            from o in CurrentRoom.ObjectsInRoom()
+            where !o.Absent && !o.Animate && !o.Static && !o.Scenery
+            select o
+        ).ToList();
     }
 
     private ParserResult GetInput(Verb verb)
