@@ -50,22 +50,24 @@ public abstract class Container : Object
     public void Add<T>() where T : Object
     {
         Object obj = Objects.Get<T>();
-        Children.Add(obj);
+        Add(obj);
     }
 
     public void Add(Object obj)
     {
+        obj.Parent = this;
         Children.Add(obj);
-    }
-
-    public void Remove(Object obj)
-    {
-        Children.Remove(obj);
     }
 
     public new void Remove<T>() where T : Object
     {
         var obj = Objects.Get<T>();
+        Remove(obj);
+    }
+
+    public void Remove(Object obj)
+    {
+        obj.Remove();
         Children.Remove(obj);
     }
 

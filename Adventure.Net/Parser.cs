@@ -81,7 +81,7 @@ public partial class Parser
 
             if (obj != null)
             {
-                if (obj.InScope)
+                if (obj.InScope || !result.Verb.InScopeOnly)
                 {
                     if (result.Preposition == null || !result.Objects.Any())
                     {
@@ -290,7 +290,7 @@ public partial class Parser
         {
             var obj = objects.First();
 
-            if (obj.InScope)
+            if (obj.InScope || !result.Verb.InScopeOnly)
             {
                 return obj;
             }

@@ -13,7 +13,6 @@ public class Purloin : Verb
 
     public bool Expects(Object obj)
     {
-        obj.Remove();
         Inventory.Add(obj);
         Print("[Purloined.]");
         return true;
