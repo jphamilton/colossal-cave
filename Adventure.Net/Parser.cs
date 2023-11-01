@@ -73,9 +73,9 @@ public partial class Parser
                 continue;
             }
 
-            if (result.Objects.Contains(obj))
+            if (result.Objects.Contains(obj) && !result.IsAll)
             {
-                // will happen for something like "take the brass lamp"
+                // e.g. "take the shiny brass lamp" - all object tokens refer to the same object
                 continue;
             }
 
@@ -93,6 +93,12 @@ public partial class Parser
                     {
                         result.Ordered.Add(obj);
                         result.IndirectObject = obj;
+
+                        if (result.IsAll)
+                        {
+                            // e.g. "put all in cage" - prevent putting the cage into itself
+                            result.Objects.Remove(obj);
+                        }
                     }
                 }
                 else if (obj is MultipleObjectsFound)

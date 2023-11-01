@@ -34,7 +34,7 @@ public abstract class BaseTestFixture : IDisposable
         Context.Story.Initialize();
         Context.Story.Location = Room<InsideBuilding>();
         Inventory.Clear();
-        fakeConsole.Clear(); ;
+        fakeConsole.Clear();
     }
 
     public void Dispose()
@@ -106,10 +106,7 @@ public abstract class BaseTestFixture : IDisposable
 
     protected string Line(int number)
     {
-        if (list == null)
-        {
-            list = ConsoleOut.Split(Environment.NewLine).ToList();
-        }
+        list ??= ConsoleOut.Split(Environment.NewLine).ToList();
 
         if (list.Count > number)
         {

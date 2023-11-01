@@ -113,4 +113,26 @@ public class DropTests : BaseTestFixture
         var result = Execute("drop rod");
         Assert.Equal("Dropped.", Line1);
     }
+
+    [Fact]
+    public void should_remove_from_container_and_drop()
+    {
+        var cage = Objects.Get<WickerCage>();
+        Inventory.Add(cage);
+
+        var bottle = Objects.Get<Bottle>();
+        Inventory.Add(bottle);
+
+        Execute("put bottle in cage");
+
+        Assert.True(cage.Contains(bottle));
+        Assert.False(bottle.Location == CurrentRoom.Location);
+
+        ClearOutput();
+
+        Execute("drop bottle");
+
+        Assert.False(cage.Contains(bottle));
+        Assert.True(bottle.Location == CurrentRoom.Location);
+    }
 }
