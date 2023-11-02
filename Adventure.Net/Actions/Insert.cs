@@ -14,12 +14,12 @@ public class Insert : Verb
         MultiHeld = true;
     }
 
-    public bool Expects(Object obj, Preposition.In @in, Object indirect)
+    public bool Expects([Held]Object obj, Preposition.In @in, Object indirect)
     {
         return Receive(obj, indirect);
     }
 
-    public bool Expects(Object obj, Preposition.Into into, Object indirect)
+    public bool Expects([Held] Object obj, Preposition.Into into, Object indirect)
     {
         return Receive(obj, indirect);
     }
