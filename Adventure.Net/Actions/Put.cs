@@ -20,7 +20,7 @@ public class Put : Verb
     }
 
     // insert
-    public bool Expects(Object obj, Preposition.In @in, Object indirect)
+    public bool Expects([Held] Object obj, Preposition.In @in, Object indirect)
     {
         if (!Inventory.Contains(indirect))
         {

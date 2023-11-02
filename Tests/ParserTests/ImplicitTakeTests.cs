@@ -1,4 +1,6 @@
 ﻿using Adventure.Net;
+using ColossalCave.Places;
+using ColossalCave.Things;
 using Tests.ObjectTests;
 using Xunit;
 
@@ -24,6 +26,23 @@ namespace Tests.ParserTests
 
             Assert.Contains("The bag is too heavy.", ConsoleOut);
             Assert.False(Inventory.Contains(rocks));
+        }
+
+        [Fact]
+        public void should_implicitly_take_indirect_object()
+        {
+            Location = Rooms.Get<OutsideGrate>();
+
+            // keys are on the ground
+            var keys = Objects.Get<SetOfKeys>();
+            keys.MoveToLocation();
+
+            var parser = new Parser();
+
+            // key should be implicitly taken
+            var result = parser.Parse("unlock grate with key");
+
+            Assert.Equal(keys, result.ImplicitTake);
         }
     }
 }

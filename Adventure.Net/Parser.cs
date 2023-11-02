@@ -3,6 +3,7 @@ using Adventure.Net.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Adventure.Net;
 
@@ -442,10 +443,10 @@ public partial class Parser
         }
 
         // implicit take for held objects
-        if (result.Objects.Count == 1 && (verb.MultiHeld || verb.Held) && !Inventory.Contains(result.Objects[0]))
-        {
-            result.ImplicitTake = result.Objects[0];
-        }
+        //if (result.Objects.Count == 1 && (verb.MultiHeld || verb.Held) && !Inventory.Contains(result.Objects[0]))
+        //{
+        //    result.ImplicitTake = result.Objects[0];
+        //}
 
         if (expects == null)
         {
@@ -517,8 +518,32 @@ public partial class Parser
         }
         else
         {
+            HandleImplicitTake(result, expects);
+
             result.Expects = expects;
         }
+    }
+
+    private static void HandleImplicitTake(ParserResult result, MethodInfo expects)
+    {
+        var args = expects.GetParameters();
+
+        args.ForEach((parameter, index) =>
+        {
+            var held = parameter.GetCustomAttribute<HeldAttribute>();
+
+            if (held != null)
+            {
+                if (index == 0 && result.Objects.Count == 1 && !Inventory.Contains(result.Objects[0]))
+                {
+                    result.ImplicitTake = result.Objects[0];
+                }
+                else if (result.IndirectObject != null && result.ImplicitTake == null && !Inventory.Contains(result.IndirectObject))
+                {
+                    result.ImplicitTake = result.IndirectObject;
+                }
+            }
+        });
     }
 
     private string BuildFromPrevious(TokenizedInput tokens)

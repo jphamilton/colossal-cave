@@ -205,15 +205,10 @@ public abstract class Verb
     public bool Multi { get; set; }
 
     /// <summary>
-    /// Accepts multiple items (objects in inventory)
+    /// Accepts multiple held items (direct object must be in inventory)
     /// </summary>
     public bool MultiHeld { get; set; }
     
-    /// <summary>
-    /// Accepts single item (object in inventory)
-    /// </summary>
-    public bool Held { get; set; }
-
     public static T Get<T>() where T : Verb
     {
         return (T)Verbs.List.Single(x => x is T);
