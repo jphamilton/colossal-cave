@@ -109,7 +109,7 @@ public partial class CommandLineParserTests : BaseTestFixture
         Assert.Contains(Objects.GetByName("food"), result.Objects);
         Assert.Contains(Objects.GetByName("lamp"), result.Objects);
         Assert.Contains(Objects.GetByName("bottle"), result.Objects);
-        
+
         Assert.DoesNotContain(Objects.GetByName("pipes"), result.Objects);
         Assert.DoesNotContain(Objects.GetByName("wellhouse"), result.Objects);
         Assert.DoesNotContain(Objects.GetByName("spring"), result.Objects);

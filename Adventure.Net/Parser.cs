@@ -417,7 +417,7 @@ public partial class Parser
             }
             else
             {
-                result.Error = Messages.DidntUnderstandSentence;
+                result.Error = input.Error ?? Messages.DidntUnderstandSentence;
             }
         }
 

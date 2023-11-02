@@ -12,7 +12,7 @@ public class FeeFieFoeFooTests : BaseTestFixture
     public void eggs_should_appear()
     {
         Location = Room<GiantRoom>();
-        
+
         var eggs = Objects.Get<GoldenEggs>();
         eggs.MoveTo<InsideBuilding>();
 

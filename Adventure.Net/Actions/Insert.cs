@@ -38,7 +38,7 @@ public class Insert : Verb
             obj.Remove();
             container.Add(obj);
             return Context.Current.IsMulti ? Print("Done.") : 
-                Print($"You put {obj.IndefiniteArticle} {obj.Name} into the {container.Name}.");
+                Print($"You put {obj.DefiniteArticle} {obj.Name} into the {container.Name}.");
         }
 
         return Print("That can't contain things.");

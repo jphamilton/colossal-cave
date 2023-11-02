@@ -1,7 +1,6 @@
 ﻿using Adventure.Net;
 using ColossalCave.Places;
 using ColossalCave.Things;
-using System.Linq;
 using Xunit;
 
 namespace Tests.Verbs;
@@ -39,11 +38,11 @@ public class UnlockTests : BaseTestFixture
         var grate = Rooms.Get<Grate>();
 
         Assert.True(grate.Locked);
-        
+
         CommandPrompt.FakeInput("key");
 
         var result = Execute("unlock grate");
-        
+
         Assert.Contains("You unlock the steel grate.", result.Output[0]);
 
         Assert.False(grate.Locked);
@@ -59,11 +58,11 @@ public class UnlockTests : BaseTestFixture
         var grate = Rooms.Get<Grate>();
 
         Assert.True(grate.Locked);
-        
+
         CommandPrompt.FakeInput("key");
 
         var result = Execute("unlock grate");
-        
+
         Assert.Contains("You unlock the steel grate.", result.Output[0]);
 
         Assert.False(grate.Locked);

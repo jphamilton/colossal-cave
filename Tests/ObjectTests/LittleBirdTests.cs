@@ -249,6 +249,8 @@ public class LittleBirdTests : BaseTestFixture
 
         Execute("put bird into oven");
 
+        var x = ConsoleOut;
+
         Assert.Equal("Don't put the poor bird in the oven!", Line1);
 
     }
