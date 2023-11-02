@@ -7,9 +7,10 @@ public class Eat : Verb
     public Eat()
     {
         Name = "eat";
+        Held = true;
     }
 
-    public bool Expects([Held] Object obj)
+    public bool Expects(Object obj)
     {
 
         if (obj.Edible)

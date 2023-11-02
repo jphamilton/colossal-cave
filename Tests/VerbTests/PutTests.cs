@@ -41,8 +41,6 @@ public class PutTests : BaseTestFixture
     [Fact]
     public void what_do_you_want_to_put_the_bottle_on()
     {
-        CommandPrompt.FakeInput("keys");
-
         var bottle = Objects.Get<Bottle>();
         bottle.MoveToLocation();
 
@@ -50,6 +48,11 @@ public class PutTests : BaseTestFixture
         keys.MoveToLocation();
 
         Execute("put bottle on");
+        Assert.Contains("What do you want to put the small bottle on?", ConsoleOut);
+        ClearOutput();
+        
+        Execute("keys");
+
         Assert.Contains("You need to be holding the small bottle before you can put it on top of something else.", ConsoleOut);
     }
 
@@ -163,6 +166,8 @@ public class PutTests : BaseTestFixture
         // can fix this test by changing method in Put to use [Held] attribute,
         // but this breaks other things
         // public bool Expects([Held] Object obj, Preposition.In @in, Object indirect)
+
+        // When [Held] attribute is used, you can't "put bird in cage"
 
         Assert.Contains("(first taking the small bottle)", ConsoleOut);
         Assert.Contains("You put the small bottle into the wicker cage.", ConsoleOut);

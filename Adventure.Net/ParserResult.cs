@@ -45,16 +45,23 @@ public class Parameters
 public class ParserResult : Parameters
 {
     public Verb Verb { get; set; }
-
+    public string VerbToken { get; set; }
     public string Error { get; set; }
-
     public bool IsAll { get; set; }
-
+    public Object ImplicitTake { get; set; }
     public List<object> Ordered { get; } = new();
-
     public TokenizedInput Tokens { get; set; }
-
     public MethodInfo Expects { get; set; }
+
+    public List<string> Input
+    {
+        get
+        {
+            var command = new List<string> { VerbToken ?? ""};
+            command.AddRange(Tokens);
+            return command;
+        }
+    }
 
     public CommandHandler CommandHandler()
     {

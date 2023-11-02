@@ -195,29 +195,28 @@ public abstract class Verb
         ).ToList();
     }
 
-
     public string Name { get; protected set; }
 
     public Synonyms Synonyms = new();
 
     /// <summary>
-    /// Summary accepts multiple items (objects in scope)
+    /// Accepts multiple items (objects in scope)
     /// </summary>
     public bool Multi { get; set; }
 
     /// <summary>
-    /// Summary accepts multiple items (objects in inventory)
+    /// Accepts multiple items (objects in inventory)
     /// </summary>
     public bool MultiHeld { get; set; }
+    
+    /// <summary>
+    /// Accepts single item (object in inventory)
+    /// </summary>
+    public bool Held { get; set; }
 
     public static T Get<T>() where T : Verb
     {
         return (T)Verbs.List.Single(x => x is T);
-    }
-
-    public static Verb Get(Type type)
-    {
-        return Verbs.List.Single(x => x.GetType() == type);
     }
 
     public static bool Redirect<T>(Object item, Func<T, bool> callback) where T : Verb

@@ -38,10 +38,8 @@ public abstract class Object
     }
 
     public string Name { get; set; }
-
+    public bool PluralName { get; set; }
     public Synonyms Synonyms { get; set; }
-
-
     public Action Daemon { get; set; }
     public bool DaemonStarted { get; set; }
     public string Description { get; set; }
@@ -93,12 +91,12 @@ public abstract class Object
     public bool On { get; set; }
     public bool Open { get; set; }
     public bool Openable { get; set; }
-    public bool PluralName { get; set; }
     public bool Scenery { get; set; }
     public bool Static { get; set; }
     public bool Switchable { get; set; }
     public bool Touched { get; set; }
     public bool Transparent { get; set; }
+    public bool Wearable { get; set; }
 
     public void LocksWithKey<T>(bool isLocked) where T : Object
     {

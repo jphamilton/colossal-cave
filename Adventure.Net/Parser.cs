@@ -6,9 +6,10 @@ using System.Linq;
 
 namespace Adventure.Net;
 
-
 public partial class Parser
 {
+    private ParserResult _previous;
+
     public ParserResult Parse(string input)
     {
         var tokens = SanitizeInput(input);
@@ -18,13 +19,29 @@ public partial class Parser
             return new ParserResult { Error = Messages.DoNotUnderstand };
         }
 
-        var verbToken = tokens[0];
-        var verb = verbToken.ToVerb();
+        var verb = tokens[0].ToVerb();
 
         if (verb == null)
         {
-            return new ParserResult { Error = Messages.VerbNotRecognized };
+            // rebuild command from previous partial command
+            // e.g. "put bottle on"
+            // "What do you want to put bottle on?"
+            // > table
+            // This would generate a new command "put bottle on table"
+            var previous = BuildFromPrevious(tokens);
+
+            if (previous != null)
+            {
+                _previous = null;
+                return Parse(previous);
+            }
+            else
+            {
+                return new ParserResult { Error = Messages.VerbNotRecognized };
+            }
         }
+
+        var verbToken = tokens[0];
 
         tokens.RemoveAt(0);
 
@@ -40,8 +57,12 @@ public partial class Parser
         }
 
         var result = Parse(verb, verbToken, tokens);
+        
+        result.VerbToken = verbToken;
 
         ValidateResult(result);
+
+        _previous = result;
 
         return result;
     }
@@ -396,7 +417,6 @@ public partial class Parser
 
         Parameters parameters = result;
         var verb = result.Verb;
-
         var expects = verb.GetHandler(result);
 
         void WhatDoYouWantToDo(Prep prep)
@@ -421,6 +441,12 @@ public partial class Parser
             }
         }
 
+        // implicit take for held objects
+        if (result.Objects.Count == 1 && (verb.MultiHeld || verb.Held) && !Inventory.Contains(result.Objects[0]))
+        {
+            result.ImplicitTake = result.Objects[0];
+        }
+
         if (expects == null)
         {
             if (parameters.Key.Count == 1 && verb.AcceptedPrepositions.Count > 0)
@@ -432,7 +458,7 @@ public partial class Parser
 
                     if (verb.GetHandler(key) != null)
                     {
-                        // "unlock grate" will unlock the grate if player is hold only the key,
+                        // "unlock grate" will unlock the grate if player is holding only the key,
                         // but "put batteries" will not try to insert the batteries into itself.
                         if (Inventory.Count == 1 && !result.Objects.Contains(Inventory.Items[0]))
                         {
@@ -493,5 +519,18 @@ public partial class Parser
         {
             result.Expects = expects;
         }
+    }
+
+    private string BuildFromPrevious(TokenizedInput tokens)
+    {
+        if (_previous != null && string.IsNullOrEmpty(_previous.Error) && !string.IsNullOrEmpty(_previous.VerbToken))
+        {
+            var input = _previous.Input;
+            input.AddRange(tokens);
+
+            return string.Join(' ', input);
+        }
+
+        return null;
     }
 }

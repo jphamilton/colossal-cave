@@ -22,6 +22,12 @@ public class Put : Verb
     // insert
     public bool Expects(Object obj, Preposition.In @in, Object indirect)
     {
+        if (!Inventory.Contains(indirect))
+        {
+            Print("You aren't holding that!");
+            return false;
+        }
+
         return Redirect<Insert>(obj, v => v.Expects(obj, @in, indirect));
     }
 
@@ -40,6 +46,12 @@ public class Put : Verb
     // wear
     public bool Expects(Object obj, Preposition.On on)
     {
+        if (!obj.Wearable)
+        {
+            Print($"What do you want to put {obj.DefiniteArticle} {obj.Name} on?");
+            return false;
+        }
+
         return Redirect<Wear>(obj, v => v.Expects(obj));
     }
 

@@ -11,6 +11,7 @@ public class Insert : Verb
     {
         Name = "insert";
         Multi = true;
+        MultiHeld = true;
     }
 
     public bool Expects(Object obj, Preposition.In @in, Object indirect)
@@ -31,6 +32,11 @@ public class Insert : Verb
         if (receive != null)
         {
             return receive(obj);
+        }
+
+        if (!Inventory.Contains(indirect))
+        {
+            return Print("You aren't holding that!");
         }
 
         if (indirect is Container container)

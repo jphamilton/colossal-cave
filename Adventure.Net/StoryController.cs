@@ -23,12 +23,13 @@ public class StoryController
 
         MovePlayer.To(story.Location);
 
+        var parser = new Parser();
+
         while (!story.IsDone)
         {
             var room = CurrentRoom.Location;
             bool wasLit = CurrentRoom.IsLit();
 
-            var parser = new Parser();
             var result = parser.Parse(CommandPrompt.GetInput());
             
             if (result.Error.HasValue())

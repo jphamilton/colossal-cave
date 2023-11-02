@@ -11,6 +11,7 @@ public class CommandHandler
     private readonly CommandResult result;
     private readonly List<Object> objects;
     private readonly Object indirectObject;
+    private readonly Object implicitTake;
     private readonly Verb verb;
     private readonly Type verbType;
     private readonly Prep preposition;
@@ -23,6 +24,8 @@ public class CommandHandler
         objects = parsed.Objects;
         preposition = parsed.Preposition;
         indirectObject = parsed.IndirectObject;
+        implicitTake = parsed.ImplicitTake;
+
         verbType = verb?.GetType();
 
         result = new CommandResult
@@ -45,14 +48,23 @@ public class CommandHandler
 
         Context.Current = context;
 
-        if (objects.Count > 0)
+        if (implicitTake != null)
         {
-            failed = HandleObjects(context, commandState);
+            var take = new ImplicitTake(implicitTake);
+            failed = !take.Invoke();
         }
-        else
+
+        if (!failed)
         {
-            // one word command (e.g. look, i, south)
-            Expects(verb, null, commandState);
+            if (objects.Count > 0)
+            {
+                failed = HandleObjects(context, commandState);
+            }
+            else
+            {
+                // one word command (e.g. look, i, south)
+                Expects(verb, null, commandState);
+            }
         }
 
         context.PopState();

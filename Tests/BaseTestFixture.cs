@@ -24,9 +24,11 @@ public abstract class BaseTestFixture : IDisposable
     private StringBuilder fakeConsole;
     private string output;
     private List<string> list;
+    private Parser parser;
 
     public BaseTestFixture()
     {
+        parser = new Parser();
         fakeConsole = new StringBuilder();
         Context.Story = new ColossalCaveStory();
         Output.Initialize(new StringWriter(fakeConsole), new TestFormatter());
@@ -91,7 +93,6 @@ public abstract class BaseTestFixture : IDisposable
 
     protected ParserResult Parse(string input)
     {
-        var parser = new Parser();
         return parser.Parse(input);
     }
 

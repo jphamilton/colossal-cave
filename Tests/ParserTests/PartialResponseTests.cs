@@ -40,7 +40,6 @@ public class PartialResponseTests : BaseTestFixture
     [Fact]
     public void should_allow_multiple_partial_responses()
     {
-
         CommandPrompt.FakeInput("bottle");
 
         Execute("take");
@@ -82,7 +81,10 @@ public class PartialResponseTests : BaseTestFixture
     {
         var lamp = Objects.Get<BrassLantern>();
         var fresh = Objects.Get<FreshBatteries>();
-        Inventory.Add(fresh);
+
+        fresh.MoveToLocation();
+
+        Inventory.Add(lamp);
 
         lamp.PowerRemaining = 0;
 
@@ -90,10 +92,8 @@ public class PartialResponseTests : BaseTestFixture
 
         Execute("put batteries in");
 
-        var x = ConsoleOut;
-
-        Assert.Contains($"What do you want to put the {fresh} in?", Line1);
-        Assert.Contains("I'm taking the liberty of replacing the batteries.", Line2);
+        Assert.Contains($"What do you want to put the {fresh} in?", ConsoleOut);
+        Assert.Contains("I'm taking the liberty of replacing the batteries.", ConsoleOut);
 
         Assert.Equal(2500, lamp.PowerRemaining);
 
@@ -114,9 +114,15 @@ public class PartialResponseTests : BaseTestFixture
     [Fact]
     public void should_use_default_proposition_in_partial_command()
     {
+        var keys = Objects.Get<SetOfKeys>();
         var lamp = Objects.Get<BrassLantern>();
         var fresh = Objects.Get<FreshBatteries>();
-        Inventory.Add(fresh);
+        
+        fresh.MoveToLocation();
+        
+        // multiple items prevents implicit actions
+        Inventory.Add(lamp);
+        Inventory.Add(keys);
 
         lamp.PowerRemaining = 0;
 
@@ -124,10 +130,8 @@ public class PartialResponseTests : BaseTestFixture
 
         Execute("put batteries");
 
-        var x = ConsoleOut;
-
-        Assert.Contains($"What do you want to put the {fresh} in?", Line1);
-        Assert.Contains("I'm taking the liberty of replacing the batteries.", Line2);
+        Assert.Contains($"What do you want to put the {fresh} in?", ConsoleOut);
+        Assert.Contains("I'm taking the liberty of replacing the batteries.", ConsoleOut);
 
         Assert.Equal(2500, lamp.PowerRemaining);
 
@@ -140,8 +144,13 @@ public class PartialResponseTests : BaseTestFixture
     [Fact]
     public void should_handle_this_ridiculous_partial_command_sequence()
     {
+        // this test fails because Put/Insert should require the object to be held,
+        // but this check is bypassed because Stream implements Before<Insert>
+
+        Assert.False(Inventory.Contains(Objects.Get<Bottle>()));
+
         CommandPrompt.FakeInput("stream\rbottle");
         Execute("put");
-        Assert.Contains("The bottle is now full of water.", ConsoleOut);
+        Assert.Contains("You aren't holding that!", ConsoleOut);
     }
 }

@@ -242,16 +242,17 @@ public class LittleBirdTests : BaseTestFixture
         oven.Initialize();
 
         Objects.Add(oven, CurrentRoom.Location);
+        Inventory.Add(oven);
+
+        var cage = Objects.Get<WickerCage>();
+        Inventory.Add(cage);
 
         var bird = Objects.Get<LittleBird>();
-        //Objects.Add for testing
-        ObjectMap.MoveObject(bird, CurrentRoom.Location);
+        cage.Add(bird);
 
         Execute("put bird into oven");
 
-        var x = ConsoleOut;
-
-        Assert.Equal("Don't put the poor bird in the oven!", Line1);
+        Assert.Contains("Don't put the poor bird in the oven!", ConsoleOut);
 
     }
 
