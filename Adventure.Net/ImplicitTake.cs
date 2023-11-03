@@ -15,15 +15,30 @@ public class ImplicitTake : IInvoke
 
     public bool Invoke()
     {
+        // object is not in inventory or object is in inventory but is in a container
         if (!obj.InInventory)
         {
-            var result = Object.Execute<Take>(obj, v => v.Expects(obj));
+            var parent = obj.Parent;
 
-            // only return result.Success
+            var result = Object.Execute<Take>(obj, v => v.Expects(obj));
 
             if (result.Success)
             {
-                Context.Current.Print($"(first taking the {obj.Name})", CommandState.After);
+                string loc = "";
+
+                if (parent != null)
+                {
+                    if (parent is Container container)
+                    {
+                        loc = $" out of {container.DefiniteArticle} {container.Name}";
+                    }
+                    else if (parent is Supporter supporter)
+                    {
+                        loc = $" off of {supporter.DefiniteArticle} {supporter.Name}";
+                    }
+                }
+
+                Context.Current.Print($"(first taking the {obj.Name}{loc})", CommandState.After);
             }
 
             // filter out "Taken."

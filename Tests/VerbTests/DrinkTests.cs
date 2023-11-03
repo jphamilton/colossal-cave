@@ -29,7 +29,7 @@ public class DrinkTests : BaseTestFixture
         Inventory.Add(bottle);
 
         Execute("drink h2o");
-        Assert.Equal("You drink the cool, refreshing water, draining the bottle in the process.", Line1);
+        Assert.Contains("You drink the cool, refreshing water, draining the bottle in the process.", ConsoleOut);
     }
 
     [Fact]

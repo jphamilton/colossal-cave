@@ -15,7 +15,7 @@ public class Goto : Verb
 
         var x = CommandPrompt.GetInput();
 
-        var room = Objects.All.Where(r => r is Room && r.GetType().Name.Contains(x)).FirstOrDefault();
+        var room = Objects.All.Where(r => r is Room && r.Name != null && (r.Name.Contains(x) || r.Synonyms.Contains(x))).FirstOrDefault();
 
         if (room != null)
         {

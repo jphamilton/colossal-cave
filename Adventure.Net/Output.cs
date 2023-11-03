@@ -26,11 +26,11 @@ public static class Output
     public static void Print(string text)
     {
         if (string.IsNullOrEmpty(text))
+        {
             return;
+        }
 
-        string[] lines = text.Split('\n');
-
-        foreach (string line in lines)
+        foreach (string line in text.Split('\n'))
         {
             Target.WriteLine(Formatter.Format(line));
         }

@@ -9,7 +9,6 @@ public class BrassLantern : Object
 {
     public int PowerRemaining { get; set; }
 
-
     public override void Initialize()
     {
         Name = "brass lantern";

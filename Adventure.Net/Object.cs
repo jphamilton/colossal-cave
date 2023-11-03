@@ -91,7 +91,9 @@ public abstract class Object
     public bool On { get; set; }
     public bool Open { get; set; }
     public bool Openable { get; set; }
+    // Object is a feature of its location
     public bool Scenery { get; set; }
+    // Object is fixed in place
     public bool Static { get; set; }
     public bool Switchable { get; set; }
     public bool Touched { get; set; }

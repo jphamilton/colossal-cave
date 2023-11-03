@@ -24,6 +24,19 @@ public abstract class Door : Room
 
     public string WhenClosed { get; set; }
 
+    public string Display()
+    {
+        if (WhenOpen != null && Open)
+        {
+            return $"\n{WhenOpen}";
+        }
+        else if (WhenClosed != null && !Open)
+        {
+            return $"\n{WhenClosed}";
+        }
+
+        return null;
+    }
 
     public void DoorTo(Func<Room> action)
     {
@@ -46,11 +59,12 @@ public abstract class Door : Room
         return Activator.CreateInstance(t) as T;
     }
 
-
     protected override Room HandleMove()
     {
         if (!Locked && Open)
+        {
             return doorTo();
+        }
 
         if (doorDirection() is Down)
         {

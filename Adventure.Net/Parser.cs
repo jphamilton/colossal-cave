@@ -442,12 +442,6 @@ public partial class Parser
             }
         }
 
-        // implicit take for held objects
-        //if (result.Objects.Count == 1 && (verb.MultiHeld || verb.Held) && !Inventory.Contains(result.Objects[0]))
-        //{
-        //    result.ImplicitTake = result.Objects[0];
-        //}
-
         if (expects == null)
         {
             if (parameters.Key.Count == 1 && verb.AcceptedPrepositions.Count > 0)
@@ -526,6 +520,16 @@ public partial class Parser
 
     private static void HandleImplicitTake(ParserResult result, MethodInfo expects)
     {
+        if (result.Objects.Count == 1)
+        {
+            var obj = result.Objects[0];
+            if (obj.Parent != null && (obj.Parent is Container || obj.Parent is Supporter))
+            {
+                result.ImplicitTake = obj;
+                return;
+            }
+        }
+
         var args = expects.GetParameters();
 
         args.ForEach((parameter, index) =>
@@ -538,7 +542,7 @@ public partial class Parser
                 {
                     result.ImplicitTake = result.Objects[0];
                 }
-                else if (result.IndirectObject != null && result.ImplicitTake == null && !Inventory.Contains(result.IndirectObject))
+                else if (index > 0 && result.IndirectObject != null && result.ImplicitTake == null && !Inventory.Contains(result.IndirectObject))
                 {
                     result.ImplicitTake = result.IndirectObject;
                 }

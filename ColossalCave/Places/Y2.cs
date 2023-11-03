@@ -10,11 +10,11 @@ public class Y2 : BelowGround
 {
     public override void Initialize()
     {
-        Name = "y2";
+        Name = "At \"Y2\"";
         Description =
             "You are in a large room, with a passage to the south, " +
             "a passage to the west, and a wall of broken rock to the east. " +
-            "There is a large ~Y2~ on a rock in the room's center.";
+            "There is a large \"Y2\" on a rock in the room's center.";
 
 
         SouthTo<LowNSPassage>();
@@ -54,5 +54,17 @@ public class Y2 : BelowGround
             return true;
         });
 
+    }
+}
+
+public class Y2Rock : Supporter
+{
+    public override void Initialize()
+    {
+        Name = "\"Y2\" rock";
+        Synonyms.Are("rock", "y2");
+        Description = "There is a large \"Y2\" painted on the rock.";
+
+        FoundIn<Y2>();
     }
 }

@@ -41,9 +41,26 @@ public static class CurrentRoom
 
         var objects = ObjectMap.GetObjects(Location);
 
-        if (objects.Any(obj => obj.Light))
+        foreach(var obj in objects)
         {
-            return true;
+            if (obj.Light)
+            {
+                return true;
+            }
+
+            // light is on a supporter - e.g lamp is on a table
+            if (obj is not Supporter)
+            {
+                continue;
+            }
+
+            foreach (var supported in obj.Children)
+            {
+                if (supported.Light)
+                {
+                    return true;
+                }
+            }
         }
 
         foreach (var obj in Inventory.Items)
@@ -53,23 +70,27 @@ public static class CurrentRoom
                 return true;
             }
 
+            // light is in a container - e.g. lamp is in the wicker cage
             if (obj is not Container container || (!container.Open && !container.Transparent))
             {
                 continue;
             }
 
-            foreach (var containedObj in container.Children)
+            foreach (var contained in container.Children)
             {
-                if (containedObj.Light)
+                if (contained.Light)
                 {
                     return true;
                 }
             }
+
         }
+
 
         return false;
     }
 
+    // TODO: this needs a good refactor
     private static void DisplayRoomObjects()
     {
         if (!IsLit())
@@ -84,6 +105,12 @@ public static class CurrentRoom
 
         foreach (var obj in objects)
         {
+            if (obj is Supporter supporter && supporter.Children.Count > 0)
+            {
+                Output.PrintLine();
+                Output.Print(supporter.Display());
+            }
+
             if (obj.Scenery && obj.Describe == null)
             {
                 continue;
@@ -93,14 +120,10 @@ public static class CurrentRoom
             {
                 if (obj is Door door)
                 {
-                    if (door.WhenOpen != null && door.Open)
+                    var doorDisplay = door.Display();
+                    if (doorDisplay != null)
                     {
-                        Output.Print($"\n{door.WhenOpen}");
-                        continue;
-                    }
-                    else if (door.WhenClosed != null && !door.Open)
-                    {
-                        Output.Print($"\n{door.WhenClosed}");
+                        Output.Print(doorDisplay);
                         continue;
                     }
                 }
@@ -155,14 +178,7 @@ public static class CurrentRoom
 
             if (obj is Container container)
             {
-                if (container.Children.Count > 0)
-                {
-                    group.Append($"{obj.IndefiniteArticle} {obj.Name} (which contains {container.Children.DisplayList(definiteArticle: false)})");
-                }
-                else
-                {
-                    group.Append($"{obj.IndefiniteArticle} {obj.Name} (which is empty)");
-                }
+                group.Append(container.Display());
             }
             else
             {
@@ -180,21 +196,6 @@ public static class CurrentRoom
         }
     }
 
-    private static void AddContained(List<Object> objects)
-    {
-        var contained = new List<Object>();
-
-        foreach (var obj in objects)
-        {
-            if (obj is Container container)
-            {
-                contained.AddRange(container.Children);
-            }
-        }
-
-        objects.AddRange(contained);
-    }
-
     public static IList<Object> ObjectsInRoom()
     {
         var result = new List<Object>();
@@ -203,6 +204,7 @@ public static class CurrentRoom
         result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
         result.AddRange(objects.Where(x => x.Scenery || x.Static));
         AddContained(result);
+        AddSupported(result);
         return result;
     }
 
@@ -220,9 +222,40 @@ public static class CurrentRoom
         // note: location is added to scope to support things like Door
         result.Add(Location);
 
+        // add objects in containers
         AddContained(result);
 
+        // add objects sitting on things
+        AddSupported(result);
+
         return result;
+    }
+
+    private static void AddContained(List<Object> objects)
+    {
+        var contained = new List<Object>();
+
+        foreach (var obj in objects)
+        {
+            if (obj is Container container)
+            {
+                contained.AddRange(container.Children);
+            }
+        }
+
+        objects.AddRange(contained);
+    }
+
+    private static void AddSupported(List<Object> objects)
+    {
+        var supported = new List<Object>();
+
+        foreach (var obj in objects.Where(x => x is Supporter))
+        {
+            supported.AddRange(obj.Children);
+        }
+
+        objects.AddRange(supported);
     }
 
     public static bool Is<T>() where T : Room

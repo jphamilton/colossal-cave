@@ -14,27 +14,3 @@ public class Water : Verb
         return true;
     }
 }
-
-/*
-[ WaterSub;
-if (bottle in player) <<Empty bottle>>;
-"Water? What water?";
-];
-
-[ OilSub;
-if (bottle in player) <<Empty bottle>>;
-"Oil? What oil?";
-];
-
-Verb 'water'
-* noun                  -> Water;
-
-Verb 'oil' 'grease' 'lubricate'
-* noun                  -> Oil;
-
-Verb 'pour' 'douse'
-* 'water' 'on' noun     -> Water
-* 'oil' 'on' noun       -> Oil
-* noun                  -> Empty;
-
-*/

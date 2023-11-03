@@ -132,6 +132,8 @@ public class DropTests : BaseTestFixture
 
         Execute("drop bottle");
 
+        var x = ConsoleOut;
+
         Assert.False(cage.Contains(bottle));
         Assert.True(bottle.Location == CurrentRoom.Location);
     }

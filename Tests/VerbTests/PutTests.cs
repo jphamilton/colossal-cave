@@ -53,7 +53,8 @@ public class PutTests : BaseTestFixture
         
         Execute("keys");
 
-        Assert.Contains("You need to be holding the small bottle before you can put it on top of something else.", ConsoleOut);
+        Assert.Contains("(first taking the small bottle)", ConsoleOut);
+        Assert.Contains("Putting things on the set of keys would achieve nothing.", ConsoleOut);
     }
 
     [Fact]
@@ -171,5 +172,19 @@ public class PutTests : BaseTestFixture
 
         Assert.Contains("(first taking the small bottle)", ConsoleOut);
         Assert.Contains("You put the small bottle into the wicker cage.", ConsoleOut);
+    }
+
+    [Fact]
+    public void should_not_put_keys_in_cage()
+    {
+        var cage = Objects.Get<WickerCage>();
+        cage.MoveToLocation();
+
+        ClearOutput();
+
+        Execute("put keys");
+
+        Assert.DoesNotContain("(the wicker cage)", ConsoleOut);
+        Assert.Contains("What do you want to put the set of keys in?", ConsoleOut);
     }
 }

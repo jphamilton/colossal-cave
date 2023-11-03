@@ -24,34 +24,12 @@ public class SideOfChasm : BelowGround
         });
     }
 
-//    [ CrossRicketyBridge;
-//    if (Troll.has_caught_treasure || Troll in nothing) {
-//        Troll.has_caught_treasure = false;
-//        if (Bear.is_following_you) {
-//            remove Bear;
-//            remove self;
-//            give Wreckage ~absent;
-//            remove RicketyBridge;
-//            give RicketyBridge absent;
-//            StopDaemon(Bear);
-//            deadflag = 1;
-//            "Just as you reach the other side, the bridge buckles beneath the weight of the bear,
-//             which was still following you around.
-//             You scrabble desperately for support,
-//             but as the bridge collapses you stumble back and fall into the chasm.";
-//        }
-//        return RicketyBridge;
-//    }
-//    if (Troll in location) "The troll refuses to let you cross.";
-//    move Troll to location;
-//    "The troll steps out from beneath the bridge and blocks your way.";
-//];
     protected Room CrossRicketyBridge()
     {
         var troll = Objects.Get<BurlyTroll>();
         var bear = Objects.Get<Bear>();
         
-        if (troll.HasCaughtTreasure) // || troll in nothing
+        if (troll.HasCaughtTreasure)
         {
             troll.HasCaughtTreasure = false;
             
@@ -77,7 +55,6 @@ public class SideOfChasm : BelowGround
                 return Location;
             }
             
-            // other side needs to deal with DOOR
             return Room<RicketyBridge>();
         }
 

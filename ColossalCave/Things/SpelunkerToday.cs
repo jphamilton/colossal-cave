@@ -12,9 +12,9 @@ public class SpelunkerToday : Object
         Name = "recent issues of \"Spelunker Today\"";
         Synonyms.Are("magazines", "magazine", "issue", "issues", "spelunker", "today");
         Description = "I'm afraid the magazines are written in Dwarvish.";
-        InitialDescription = "There are a few recent issues of ~Spelunker Today~ magazine here.";
+        InitialDescription = "There are a few recent issues of \"Spelunker Today\" magazine here.";
         IndefiniteArticle = "a few";
-        // multitude
+        Multitude = true;
 
         FoundIn<Anteroom>();
 

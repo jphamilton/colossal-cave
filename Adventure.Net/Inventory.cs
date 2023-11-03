@@ -34,6 +34,7 @@ public static class Inventory
 
     public static bool Contains(Object obj)
     {
+        //return Items.Contains(obj);
         foreach (var o in Inv.Children)
         {
             if (o is Container c && c.Children.Contains(obj))
@@ -67,7 +68,7 @@ public static class Inventory
 
         foreach (Object obj in args)
         {
-            if (!Inv.Children.Contains(obj))
+            if (!Contains(obj))
             {
                 return false;
             }

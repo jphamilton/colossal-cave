@@ -17,6 +17,20 @@ public abstract class Container : Object
            };
     }
 
+    public string Display(bool definiteArticle = false)
+    {
+        var article = definiteArticle ? DefiniteArticle : IndefiniteArticle;
+
+        if (Children.Count > 0)
+        {
+            return $"{article} {Name} (which contains {Children.DisplayList(definiteArticle: definiteArticle)})";
+        }
+        else
+        {
+            return $"{article} {Name} (which is empty)";
+        }
+    }
+
     public string State
     {
         get

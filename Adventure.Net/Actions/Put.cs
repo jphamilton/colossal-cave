@@ -32,9 +32,15 @@ public class Put : Verb
     }
 
     // put something on top of something else
-    public bool Expects(Object obj, Preposition.On on, Object indirect)
+    public bool Expects([Held] Object obj, Preposition.On on, Object indirect)
     {
-        return PutOnTop(obj, indirect);
+        if (indirect is Supporter supporter)
+        {
+            supporter.Add(obj);
+            return Context.Current.IsMulti ? Print("Done.") : Print($"You put {obj.DefiniteArticle} {obj.Name} on {supporter.DefiniteArticle} {supporter.Name}.");
+        }
+
+        return Print($"Putting things on {indirect.DefiniteArticle} {indirect.Name} would achieve nothing.");
     }
 
     // put object down
@@ -54,17 +60,5 @@ public class Put : Verb
 
         return Redirect<Wear>(obj, v => v.Expects(obj));
     }
-
-    private bool PutOnTop(Object obj, Object indirect)
-    {
-        if (!obj.InInventory)
-        {
-            Print($"You need to be holding the {obj.Name} before you can put it on top of something else.");
-            return true;
-        }
-
-        throw new NotImplementedException("Put (on) not implemented");
-    }
-
 
 }
