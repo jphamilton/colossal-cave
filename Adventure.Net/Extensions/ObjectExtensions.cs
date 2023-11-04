@@ -19,9 +19,6 @@ public static class ObjectExtensions
     {
         string article(Object x) => definiteArticle ? x.DefiniteArticle : x.IndefiniteArticle;
         var list = objects.Select(x => $"{article(x)} {x.Name}").ToList();
-        
-        return list.Count < 3
-            ? string.Join($" {concat} ", list)
-            : string.Join(", ", list.GetRange(0, list.Count - 1)) + $" {concat} {list.Last()}";
+        return list.Join(concat);
     }
 }

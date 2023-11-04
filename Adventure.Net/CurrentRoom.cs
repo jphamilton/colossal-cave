@@ -39,9 +39,8 @@ public static class CurrentRoom
             return true;
         }
 
-        var objects = ObjectMap.GetObjects(Location);
-
-        foreach(var obj in objects)
+        // objects in room
+        foreach(var obj in ObjectMap.GetObjects(Location))
         {
             if (obj.Light)
             {
@@ -49,20 +48,31 @@ public static class CurrentRoom
             }
 
             // light is on a supporter - e.g lamp is on a table
-            if (obj is not Supporter)
+            if (obj is Supporter supporter)
             {
-                continue;
+                foreach (var supported in obj.Children)
+                {
+                    if (supported.Light)
+                    {
+                        return true;
+                    }
+                }
             }
 
-            foreach (var supported in obj.Children)
+            // light is in an open or transparent container
+            if (obj is Container container && container.ContentsVisible)
             {
-                if (supported.Light)
+                foreach (var contained in container.Children)
                 {
-                    return true;
+                    if (contained.Light)
+                    {
+                        return true;
+                    }
                 }
             }
         }
 
+        // objects being carried
         foreach (var obj in Inventory.Items)
         {
             if (obj.Light)
@@ -71,21 +81,17 @@ public static class CurrentRoom
             }
 
             // light is in a container - e.g. lamp is in the wicker cage
-            if (obj is not Container container || (!container.Open && !container.Transparent))
+            if (obj is Container container && container.ContentsVisible)
             {
-                continue;
-            }
-
-            foreach (var contained in container.Children)
-            {
-                if (contained.Light)
+                foreach (var contained in container.Children)
                 {
-                    return true;
+                    if (contained.Light)
+                    {
+                        return true;
+                    }
                 }
             }
-
         }
-
 
         return false;
     }

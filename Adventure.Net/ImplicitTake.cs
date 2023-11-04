@@ -24,22 +24,24 @@ public class ImplicitTake : IInvoke
 
             if (result.Success)
             {
-                string loc = "";
+                string aside = "";
 
                 if (parent != null)
                 {
                     if (parent is Container container)
                     {
-                        loc = $" out of {container.DefiniteArticle} {container.Name}";
+                        aside = $"out of {container.DefiniteArticle} {container.Name}";
                     }
                     else if (parent is Supporter supporter)
                     {
-                        loc = $" off of {supporter.DefiniteArticle} {supporter.Name}";
+                        aside = $"off of {supporter.DefiniteArticle} {supporter.Name}";
                     }
                 }
 
-                //Context.Current.Print($"(first taking the {obj.Name}{loc})", CommandState.After);
-                Context.Current.Print($"(first taking the {obj.Name}{loc})", CommandState.Before);
+                var message = $"first taking the {obj.Name} {aside}".Trim();
+                var output = $"({message})";
+
+                Context.Current.Print(output, CommandState.Before);
             }
 
             // filter out "Taken."

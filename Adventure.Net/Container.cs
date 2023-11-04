@@ -60,6 +60,8 @@ public abstract class Container : Object
         Children.Clear();
     }
 
+    public bool ContentsVisible => Open || Transparent;
+    
     public void Add<T>() where T : Object
     {
         Object obj = Objects.Get<T>();

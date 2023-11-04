@@ -1,36 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Adventure.Net.Extensions;
 
 public static class ListStringExtensions
 {
-    public static void Remove(this IList<string> input, IEnumerable<string> remove)
+    public static string Join(this List<string> list, string concat = "and")
     {
-        foreach (var item in remove)
-        {
-            input.Remove(item);
-        }
-    }
-
-    public static bool IsEmpty(this IList<string> input)
-    {
-        foreach (string item in input)
-        {
-            if (!String.IsNullOrEmpty(item))
-                return false;
-        }
-
-        return true;
-    }
-
-    public static bool StartsWithVerb(this IList<string> words)
-    {
-        bool result = false;
-
-        if (words.Count > 0)
-            result = (Verbs.Get(words[0]) != null);
-
-        return result;
+        return list.Count < 3
+            ? string.Join($" {concat} ", list)
+            : string.Join(", ", list.GetRange(0, list.Count - 1)) + $" {concat} {list.Last()}";
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Adventure.Net;
 
@@ -101,7 +102,7 @@ public static class Inventory
 
         foreach (var obj in Inv.Children.OrderBy(x => x.Description))
         {
-            if (obj is Container container)
+            if (obj is Container container && container.ContentsVisible)
             {
                 containers.Add(container);
                 sb.Append(DisplayContainer(container, 1));
@@ -110,17 +111,35 @@ public static class Inventory
 
         foreach (var obj in Inv.Children.Where(x => !containers.Contains(x)).OrderBy(x => x.Description))
         {
-            var aside = "";
-            
-            if (obj.Worn)
-            {
-                aside = "(being worn)";
-            }
-
-            sb.Append($"\t{obj.IndefiniteArticle} {obj.Name} {aside}\n");
+            sb.Append($"\t{DisplayObject(obj)}");
         }
 
         return sb.ToString();
+    }
+
+    private static string DisplayObject(Object obj)
+    {
+        var asides = new List<string>();
+        var article = obj.IndefiniteArticle;
+
+        if (obj is Container container && container.Openable)
+        {
+            asides.Add(container.State);
+        }
+
+        if (obj.Light && !CurrentRoom.Location.Light)
+        {
+            asides.Add("providing light");
+        }
+
+        if (obj.Clothing && obj.Worn)
+        {
+            asides.Add("being worn");
+        }
+
+        var aside = asides.Count > 0 ? $" ({asides.Join("and")})" : "";
+
+        return $"{article} {obj.Name}{aside}\n";
     }
 
     private static string DisplayContainer(Container container, int level)
@@ -129,14 +148,7 @@ public static class Inventory
 
         sb.Indent(level);
 
-        if (container.Openable)
-        {
-            sb.Append($"{container.IndefiniteArticle} {container.Name} ({container.State})\n");
-        }
-        else
-        {
-            sb.Append($"{container.IndefiniteArticle} {container.Name}\n");
-        }
+        sb.Append(DisplayObject(container));
 
         if (container.Open || container.Transparent)
         {
@@ -149,7 +161,7 @@ public static class Inventory
                 else
                 {
                     sb.Indent(level + 1);
-                    sb.Append($"{child.IndefiniteArticle} {child.Name}\n");
+                    sb.Append(DisplayObject(child));
                 }
             }
         }
@@ -163,7 +175,7 @@ public static class Inventory
     {
         get
         {
-            return GetCount(Inv.Children);//Inv.Children.Count; 
+            return GetCount(Inv.Children);
         }
     }
 
