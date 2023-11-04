@@ -220,8 +220,13 @@ public static class CurrentRoom
 
         var objects = ObjectMap.GetObjects(Location);
 
-        result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
-        result.AddRange(objects.Where(x => x.Scenery || x.Static));
+        var isLit = CurrentRoom.IsLit();
+
+        if (isLit)
+        {
+            result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
+            result.AddRange(objects.Where(x => x.Scenery || x.Static));
+        }
 
         result.AddRange(Inventory.Items);
 
