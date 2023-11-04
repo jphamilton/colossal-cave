@@ -1,10 +1,5 @@
-﻿using System;
+﻿namespace Adventure.Net.Actions;
 
-namespace Adventure.Net.Actions;
-
-// TODO: implement
-//Verb 'wear' 'don'
-//  * held                                      -> Wear;
 public class Wear : Verb
 {
     public Wear()
@@ -15,6 +10,13 @@ public class Wear : Verb
 
     public bool Expects([Held] Object obj)
     {
-        throw new NotImplementedException("Wear not implemented");
+        if (!obj.Clothing)
+        {
+            return Print("You can't wear that!");
+        }
+
+        obj.Worn = true;
+        Inventory.Add(obj);
+        return Print($"You put on {obj.DefiniteArticle} {obj.Name}.");
     }
 }

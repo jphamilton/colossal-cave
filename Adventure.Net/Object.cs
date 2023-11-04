@@ -83,6 +83,7 @@ public abstract class Object
     // attributes
     public bool Absent { get; set; }
     public bool Animate { get; set; }
+    public bool Clothing { get; set; }
     public bool Edible { get; set; }
     public bool Light { get; set; }
     public bool Lockable { get; private set; }
@@ -98,7 +99,7 @@ public abstract class Object
     public bool Switchable { get; set; }
     public bool Touched { get; set; }
     public bool Transparent { get; set; }
-    public bool Wearable { get; set; }
+    public bool Worn { get; set; }
 
     public void LocksWithKey<T>(bool isLocked) where T : Object
     {

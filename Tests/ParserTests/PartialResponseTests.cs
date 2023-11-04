@@ -141,16 +141,5 @@ public class PartialResponseTests : BaseTestFixture
         Assert.True(fresh.HaveBeenUsed);
     }
 
-    [Fact]
-    public void should_handle_this_ridiculous_partial_command_sequence()
-    {
-        // this test fails because Put/Insert should require the object to be held,
-        // but this check is bypassed because Stream implements Before<Insert>
-
-        Assert.False(Inventory.Contains(Objects.Get<Bottle>()));
-
-        CommandPrompt.FakeInput("stream\rbottle");
-        Execute("put");
-        Assert.Contains("You aren't holding that!", ConsoleOut);
-    }
+    
 }

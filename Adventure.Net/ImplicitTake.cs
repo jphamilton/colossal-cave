@@ -38,7 +38,8 @@ public class ImplicitTake : IInvoke
                     }
                 }
 
-                Context.Current.Print($"(first taking the {obj.Name}{loc})", CommandState.After);
+                //Context.Current.Print($"(first taking the {obj.Name}{loc})", CommandState.After);
+                Context.Current.Print($"(first taking the {obj.Name}{loc})", CommandState.Before);
             }
 
             // filter out "Taken."

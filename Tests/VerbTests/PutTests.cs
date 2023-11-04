@@ -48,12 +48,14 @@ public class PutTests : BaseTestFixture
         keys.MoveToLocation();
 
         Execute("put bottle on");
+        
+        Assert.Contains("(first taking the small bottle)", ConsoleOut);
         Assert.Contains("What do you want to put the small bottle on?", ConsoleOut);
+        
         ClearOutput();
         
         Execute("keys");
 
-        Assert.Contains("(first taking the small bottle)", ConsoleOut);
         Assert.Contains("Putting things on the set of keys would achieve nothing.", ConsoleOut);
     }
 

@@ -10,6 +10,7 @@ namespace Adventure.Net.Actions;
 //    * 'on' held                                 -> Wear
 //    * 'down' multiheld                          -> Drop
 //    * multiheld 'down'                          -> Drop;
+
 public class Put : Verb
 {
     public Put()
@@ -50,9 +51,9 @@ public class Put : Verb
     }
 
     // wear
-    public bool Expects(Object obj, Preposition.On on)
+    public bool Expects([Held] Object obj, Preposition.On on)
     {
-        if (!obj.Wearable)
+        if (!obj.Clothing)
         {
             Print($"What do you want to put {obj.DefiniteArticle} {obj.Name} on?");
             return false;

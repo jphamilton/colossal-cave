@@ -6,7 +6,7 @@ namespace Adventure.Net.Actions;
 Verb 'remove'
 * held                                      -> Disrobe
 * multi                                     -> Take
-* multiinside 'from' noun                   -> Remove;
+* multiinside 'from' noun                   -> Remove; // TODO
 */
 
 public class Remove : Verb
@@ -18,7 +18,7 @@ public class Remove : Verb
 
     public bool Expects(Object obj)
     {
-        if (obj.InInventory)
+        if (obj.InInventory && obj.Clothing && obj.Worn)
         {
             return Disrobe(obj);
         }
@@ -28,7 +28,8 @@ public class Remove : Verb
 
     private bool Disrobe(Object obj)
     {
-        throw new NotImplementedException("remove <held> (disrobe)");
+        obj.Worn = false;
+        return Print($"You take off {obj.DefiniteArticle} {obj.Name}.");
     }
 }
 

@@ -110,7 +110,14 @@ public static class Inventory
 
         foreach (var obj in Inv.Children.Where(x => !containers.Contains(x)).OrderBy(x => x.Description))
         {
-            sb.Append($"\t{obj.IndefiniteArticle} {obj.Name}\n");
+            var aside = "";
+            
+            if (obj.Worn)
+            {
+                aside = "(being worn)";
+            }
+
+            sb.Append($"\t{obj.IndefiniteArticle} {obj.Name} {aside}\n");
         }
 
         return sb.ToString();
