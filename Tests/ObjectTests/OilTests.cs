@@ -12,6 +12,8 @@ public class OilTests : BaseTestFixture
     public OilTests()
     {
         Context.Story.Location = Room<DebrisRoom>();
+        Context.Story.Location.Light = true;
+
         oil = Objects.Get<PoolOfOil>();
         ObjectMap.Add(oil, Location);
     }

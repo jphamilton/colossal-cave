@@ -51,6 +51,7 @@ public class ImplicitTakeTests : BaseTestFixture
         // not sure how to fix this test yet and keep many others passing
 
         Location = Rooms.Get<Y2>();
+        Location.Light = true;
 
         var cage = Objects.Get<WickerCage>();
         Inventory.Add(cage);
@@ -68,6 +69,8 @@ public class ImplicitTakeTests : BaseTestFixture
     public void should_print_messages_properly()
     {
         Location = Rooms.Get<HallOfMists>();
+        Location.Light = true;
+
         var axe = Objects.Get<Axe>();
         axe.MoveToLocation();
 

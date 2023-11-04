@@ -1,5 +1,18 @@
 ﻿namespace Adventure.Net.Actions;
 
+//public class TurnOff : Verb
+//{
+//    public TurnOff()
+//    {
+//        Name = "turn off";
+//    }
+
+//    public bool Expects(Object obj)
+//    {
+//        return Redirect<SwitchOff>(obj, v => v.Expects(obj, new Preposition.Off()));
+//    }
+//}
+
 public class Turn : Verb
 {
     //Verb 'turn' 'rotate' 'screw' 'twist' 'unscrew'

@@ -1,6 +1,7 @@
 ﻿using Adventure.Net;
 using ColossalCave;
 using ColossalCave.Places;
+using ColossalCave.Things;
 using System;
 using System.Collections.Generic;
 using System.IO;

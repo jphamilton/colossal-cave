@@ -13,6 +13,8 @@ public class ThrowAtTests : BaseTestFixture
     public void throw_axe_at_dwarf()
     {
         Location = Rooms.Get<Y2>();
+        Location.Light = true;
+
         var dwarf = Objects.Get<Dwarf>();
 
         dwarf.MoveToLocation();
