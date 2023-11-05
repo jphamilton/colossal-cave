@@ -44,7 +44,7 @@ public class ImplicitTake : IInvoke
             }
 
             // filter out "Taken."
-            var messages = result.CommandOutput.Messages.Where(x => !x.Contains("Taken."));
+            var messages = result.CommandOutput.Messages.Where(x => !x.Contains("Taken.") && !x.Contains("You already have that."));
 
             // before/after messages need to be displayed
             foreach (var message in messages)

@@ -278,7 +278,7 @@ public static class CurrentRoom
 
         foreach (var obj in objects)
         {
-            if (obj is Container container)
+            if (obj is Container container && container.ContentsVisible)
             {
                 contained.AddRange(container.Children);
             }

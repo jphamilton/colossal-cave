@@ -46,6 +46,50 @@ public class ImplicitTakeTests : BaseTestFixture
     }
 
     [Fact]
+    public void should_implicitly_take_indirect_object_inside_open_container()
+    {
+        Location = Rooms.Get<OutsideGrate>();
+
+        var cage = Objects.Get<WickerCage>();
+        Inventory.Add(cage);
+
+        var keys = Objects.Get<SetOfKeys>();
+        cage.Add(keys);
+
+        Execute("unlock grate with keys");
+
+        Assert.DoesNotContain("You already have that.", ConsoleOut);
+
+        Assert.Contains("(first taking the set of keys out of the wicker cage)", ConsoleOut);
+        Assert.Contains("You unlock the steel grate.", ConsoleOut);
+        Assert.True(Inventory.Contains(keys));
+    }
+
+    [Fact]
+    public void should_not_implicitly_take_indirect_object_inside_closed_container()
+    {
+        Location = Rooms.Get<OutsideGrate>();
+
+        var cage = Objects.Get<WickerCage>();
+        var keys = Objects.Get<SetOfKeys>();
+
+        // turn off transparency
+        cage.Transparent = false;
+        cage.Add(keys);
+        cage.Open = false;
+
+        Inventory.Add(cage);
+
+        Execute("unlock grate with keys");
+
+        Assert.False(cage.Open);
+        Assert.Contains(Messages.CantSeeObject, ConsoleOut);
+        Assert.DoesNotContain("(first taking the set of keys out of the wicker cage)", ConsoleOut);
+        Assert.DoesNotContain("You unlock the steel grate.", ConsoleOut);
+        Assert.False(keys.Parent is InventoryRoot);
+    }
+
+    [Fact]
     public void should_implicitly_take_item_out_of_container()
     {
         // not sure how to fix this test yet and keep many others passing

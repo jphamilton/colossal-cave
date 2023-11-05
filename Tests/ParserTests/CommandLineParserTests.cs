@@ -68,13 +68,11 @@ public partial class CommandLineParserTests : BaseTestFixture
     [Fact]
     public void multiple_objects_present_but_one_is_not()
     {
-        var result = Parse("take bottle, keys and cage");
+        Execute("take bottle, keys and cage");
 
-        Assert.Contains(Objects.GetByName("bottle"), result.Objects);
-        Assert.Contains(Objects.GetByName("keys"), result.Objects);
-        Assert.DoesNotContain(Objects.GetByName("cage"), result.Objects);
-        Assert.Equal(Messages.PartialUnderstanding(result.Verb, result.Objects.First()), result.Error);
-
+        Assert.Contains(Messages.CantSeeObject, ConsoleOut);
+        Assert.False(Inventory.Contains(Objects.Get<SetOfKeys>()));
+        Assert.False(Inventory.Contains(Objects.Get<Bottle>()));
     }
 
     [Fact]

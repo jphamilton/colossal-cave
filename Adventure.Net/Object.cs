@@ -33,10 +33,7 @@ public abstract class Object
         Synonyms = new Synonyms();
     }
 
-    public override string ToString()
-    {
-        return $"{Name}";
-    }
+    public override string ToString() => $"{Name}";
 
     public string Name { get; set; }
     public bool PluralName { get; set; }
@@ -163,10 +160,7 @@ public abstract class Object
         return Before(verbType);
     }
 
-    public Func<bool> Before(Type verbType)
-    {
-        return beforeRoutines.ContainsKey(verbType) ? beforeRoutines[verbType] : null;
-    }
+    public Func<bool> Before(Type verbType) => beforeRoutines.ContainsKey(verbType) ? beforeRoutines[verbType] : null;
 
     public void After<T>(Func<string> after) where T : Verb
     {
@@ -183,10 +177,7 @@ public abstract class Object
         After<T>(wrapper);
     }
 
-    public void After<T>(Action after) where T : Verb
-    {
-        afterRoutines.Add(typeof(T), after);
-    }
+    public void After<T>(Action after) where T : Verb => afterRoutines.Add(typeof(T), after);
 
     public Action After<T>() where T : Verb
     {
@@ -194,10 +185,7 @@ public abstract class Object
         return After(verbType);
     }
 
-    public Action After(Type verbType)
-    {
-        return afterRoutines.Get(verbType);
-    }
+    public Action After(Type verbType) => afterRoutines.Get(verbType);
 
     public void Receive(Func<Object, string> beforeReceive)
     {
@@ -216,10 +204,7 @@ public abstract class Object
         Receive(wrapper);
     }
 
-    public void Receive(Func<Object, bool> beforeReceive)
-    {
-        receiveRoutines.Add(this, beforeReceive);
-    }
+    public void Receive(Func<Object, bool> beforeReceive) => receiveRoutines.Add(this, beforeReceive);
 
     public Func<Object, bool> Receive()
     {
@@ -246,21 +231,12 @@ public abstract class Object
     }
 
     // current object being handled by the command handler
-    public static Object Noun
-    {
-        get { return Context.Current.Noun; }
-    }
+    public static Object Noun => Context.Current.Noun;
 
     // indirect object of current running command
-    public static Object Second
-    {
-        get { return Context.Current.Second; }
-    }
+    public static Object Second => Context.Current.Second;
 
-    public static T Get<T>() where T : Object
-    {
-        return Objects.Get<T>();
-    }
+    public static T Get<T>() where T : Object => Objects.Get<T>();
 
     public static bool Redirect<T>(Object obj, Func<T, bool> callback) where T : Verb
     {
@@ -321,29 +297,13 @@ public abstract class Object
         return (CurrentRoom.Location == room);
     }
 
-    protected static T Room<T>() where T : Room
-    {
-        return Rooms.Get<T>();
-    }
+    protected static T Room<T>() where T : Room => Rooms.Get<T>();
 
-    public bool InScope
-    {
-        get
-        {
-            var scoped = CurrentRoom.ObjectsInScope();
-            return scoped.Contains(this);
-        }
-    }
+    public bool InScope => CurrentRoom.ObjectsInScope().Contains(this);
 
-    public bool InInventory
-    {
-        get { return Inventory.Contains(this); }
-    }
+    public bool InInventory => Inventory.Contains(this);
 
-    public static bool IsCarrying<T>() where T : Object
-    {
-        return Inventory.Contains<T>();
-    }
+    public static bool IsCarrying<T>() where T : Object => Inventory.Contains<T>();
 
     public static void Remove<T>() where T : Object
     {
@@ -351,22 +311,17 @@ public abstract class Object
         obj.Remove();
     }
 
-    public void Remove()
-    {
-        ObjectMap.Remove(this);
-    }
+    public void Remove() => ObjectMap.Remove(this);
 
     public bool InRoom => ObjectMap.Contains(CurrentRoom.Location, this);
 
-    public void MoveToLocation()
-    {
-        ObjectMap.MoveObject(this, CurrentRoom.Location);
-    }
+    public void MoveToLocation() => ObjectMap.MoveObject(this, CurrentRoom.Location);
 
-    public void MoveTo<T>() where T : Room
-    {
-        ObjectMap.MoveObject(this, Room<T>());
-    }
+    public void MoveTo<T>() where T : Room => ObjectMap.MoveObject(this, Room<T>());
+
+    public Room Location => ObjectMap.Location(this);
+
+    public bool IsHere<T>() where T : Object => Get<T>().InRoom;
 
     public void FoundIn<R>() where R : Room
     {
@@ -415,16 +370,4 @@ public abstract class Object
         FoundIn<R7>();
     }
 
-    public Room Location
-    {
-        get
-        {
-            return ObjectMap.Location(this);
-        }
-    }
-
-    public bool IsHere<T>() where T : Object
-    {
-        return Get<T>().InRoom;
-    }
 }

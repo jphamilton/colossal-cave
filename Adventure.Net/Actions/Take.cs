@@ -56,7 +56,7 @@ public class Take : Verb
         }
         else
         {
-            if (Inventory.Count >= 7) // No way to change Inventory rules
+            if (Inventory.Count >= 7) // TODO: No way to change Inventory rules like this
             {
                 Print("You're carrying too many things already.");
                 return false;

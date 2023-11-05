@@ -88,6 +88,11 @@ public partial class Parser
         {
             var obj = GetObject(result, token);
 
+            if (result.Error != null)
+            {
+                return result;
+            }
+
             if (obj is Skip)
             {
                 continue;
@@ -206,6 +211,7 @@ public partial class Parser
             {
                 obj = result.Objects.FirstOrDefault();
 
+                //if (obj != null && !result.IsAll && Objects.WithName(token) == null)
                 if (obj != null && !result.IsAll)
                 {
                     result.Error = Messages.PartialUnderstanding(verb, obj);
@@ -282,11 +288,20 @@ public partial class Parser
     private static Object GetObject(ParserResult result, string token)
     {
         // objects may have the same synonyms, so multiple items could be returned here
+        var withName = Objects.WithName(token).Where(x => x is not Room || x is Door).ToList();
+
         var objects = (
-            from o in Objects.WithName(token)
+            from o in withName
             where !o.Absent && result.Verb.InScopeOnly ? o.InScope : true
             select o
         ).ToList();
+
+        // objects exist but are not in scope (because they are out of the room or inside containers, etc)
+        if (withName.Count > 0 && objects.Count == 0)
+        {
+            result.Error = Messages.CantSeeObject;
+            return null;
+        }
 
         if (objects.Count > 1)
         {
@@ -542,7 +557,7 @@ public partial class Parser
                 {
                     result.ImplicitTake = result.Objects[0];
                 }
-                else if (index > 0 && result.IndirectObject != null && result.ImplicitTake == null && !Inventory.Contains(result.IndirectObject))
+                else if (index > 0 && result.IndirectObject != null && result.ImplicitTake == null && result.IndirectObject.Parent is not InventoryRoot)
                 {
                     result.ImplicitTake = result.IndirectObject;
                 }

@@ -137,4 +137,39 @@ public class DropTests : BaseTestFixture
         Assert.False(cage.Contains(bottle));
         Assert.True(bottle.Location == CurrentRoom.Location);
     }
+
+    [Fact]
+    public void should_not_drop_from_closed_transparent_container()
+    {
+        var cage = Objects.Get<WickerCage>();
+        Inventory.Add(cage);
+
+        var bottle = Objects.Get<Bottle>();
+        cage.Add(bottle);
+
+        cage.Open = false;
+
+        Execute("drop bottle");
+
+        Assert.Contains("You aren't holding that!", ConsoleOut);
+        Assert.True(cage.Contains(bottle));
+    }
+
+    [Fact]
+    public void should_not_drop_from_closed_opaque_container()
+    {
+        var cage = Objects.Get<WickerCage>();
+        Inventory.Add(cage);
+
+        var bottle = Objects.Get<Bottle>();
+        cage.Add(bottle);
+
+        cage.Transparent = false;
+        cage.Open = false;
+
+        Execute("drop bottle");
+
+        Assert.Contains(Messages.CantSeeObject, ConsoleOut);
+        Assert.True(cage.Contains(bottle));
+    }
 }
