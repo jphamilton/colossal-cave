@@ -520,15 +520,15 @@ public partial class Parser
 
     private static void HandleImplicitTake(ParserResult result, MethodInfo expects)
     {
-        if (result.Objects.Count == 1)
-        {
-            var obj = result.Objects[0];
-            if (obj.Parent != null && (obj.Parent is Container || obj.Parent is Supporter))
-            {
-                result.ImplicitTake = obj;
-                return;
-            }
-        }
+        //if (result.Objects.Count == 1)
+        //{
+        //    var obj = result.Objects[0];
+        //    if (obj.Parent != null && (obj.Parent is Container || obj.Parent is Supporter))
+        //    {
+        //        result.ImplicitTake = obj;
+        //        return;
+        //    }
+        //}
 
         var args = expects.GetParameters();
 
@@ -538,7 +538,7 @@ public partial class Parser
 
             if (held != null)
             {
-                if (index == 0 && result.Objects.Count == 1 && !Inventory.Contains(result.Objects[0]))
+                if (index == 0 && result.Objects.Count == 1 && result.Objects[0].Parent is not InventoryRoot)// !Inventory.Contains(result.Objects[0]))
                 {
                     result.ImplicitTake = result.Objects[0];
                 }

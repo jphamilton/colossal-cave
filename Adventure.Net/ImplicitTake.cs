@@ -15,8 +15,7 @@ public class ImplicitTake : IInvoke
 
     public bool Invoke()
     {
-        // object is not in inventory or object is in inventory but is in a container
-        if (!obj.InInventory)
+        if (obj.Parent is not InventoryRoot && !obj.Animate)
         {
             var parent = obj.Parent;
 

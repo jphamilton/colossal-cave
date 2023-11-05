@@ -36,7 +36,6 @@ public static class Inventory
 
     public static bool Contains(Object obj)
     {
-        //return Items.Contains(obj);
         foreach (var o in Inv.Children)
         {
             if (o is Container c && c.Children.Contains(obj))
