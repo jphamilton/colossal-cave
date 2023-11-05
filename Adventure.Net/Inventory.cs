@@ -1,4 +1,5 @@
-﻿using Adventure.Net.Extensions;
+﻿using Adventure.Net.Actions;
+using Adventure.Net.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -122,11 +123,6 @@ public static class Inventory
         var asides = new List<string>();
         var article = obj.IndefiniteArticle;
 
-        if (obj is Container container && container.Openable)
-        {
-            asides.Add(container.State);
-        }
-
         if (obj.Light && !CurrentRoom.Location.Light)
         {
             asides.Add("providing light");
@@ -137,7 +133,21 @@ public static class Inventory
             asides.Add("being worn");
         }
 
-        var aside = asides.Count > 0 ? $" ({asides.Join("and")})" : "";
+        if (obj is Container container && container.Openable)
+        {
+            string clause = asides.Count == 0 ? "which is " : "";
+
+            if (container.Open)
+            {
+                asides.Add(container.Children.Count > 0 ? $"{clause}open" : $"{clause}open but empty");
+            }
+            else
+            {
+                asides.Add($"{clause}closed");
+            }
+        }
+
+        var aside = asides.Count > 0 ? $" ({string.Join(" and ", asides)})" : "";
 
         return $"{article} {obj.Name}{aside}\n";
     }

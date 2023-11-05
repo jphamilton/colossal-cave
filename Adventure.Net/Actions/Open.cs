@@ -1,4 +1,6 @@
-﻿namespace Adventure.Net.Actions;
+﻿using Adventure.Net.Extensions;
+
+namespace Adventure.Net.Actions;
 
 
 public class Open : Verb
@@ -27,9 +29,17 @@ public class Open : Verb
         else
         {
             obj.Open = true;
-            Print($"You open the {obj.Name}.");
-        }
 
+            if (obj.Transparent)
+            {
+                return Print($"You open the {obj.Name}.");
+            }
+            else
+            {
+                return Print($"You open the {obj.Name}, revealing {obj.Children.DisplayList(false)}.");
+            }
+        }
+       
         return true;
     }
 

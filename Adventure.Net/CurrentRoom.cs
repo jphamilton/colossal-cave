@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml.Linq;
 
 namespace Adventure.Net;
 
@@ -40,7 +41,7 @@ public static class CurrentRoom
         }
 
         // objects in room
-        foreach(var obj in ObjectMap.GetObjects(Location))
+        foreach (var obj in ObjectMap.GetObjects(Location))
         {
             if (obj.Light)
             {
@@ -114,7 +115,7 @@ public static class CurrentRoom
             if (obj is Supporter supporter && supporter.Children.Count > 0)
             {
                 Output.PrintLine();
-                Output.Print(supporter.Display());
+                Output.Print(DisplaySupporter(supporter));
             }
 
             if (obj.Scenery && obj.Describe == null)
@@ -184,7 +185,7 @@ public static class CurrentRoom
 
             if (obj is Container container)
             {
-                group.Append(container.Display());
+                group.Append(DisplayContainer(container));
             }
             else
             {
@@ -200,6 +201,35 @@ public static class CurrentRoom
             Output.PrintLine();
             Output.Print(group.ToString());
         }
+    }
+
+    private static string DisplayContainer(Container container)
+    {
+        var contentsVisible = container.Open || container.Transparent;
+
+        if (contentsVisible)
+        {
+            if (container.Children.Count > 0)
+            {
+                return $"{container.IndefiniteArticle} {container.Name} (which contains {container.Children.DisplayList(false)})";
+            }
+
+            return $"{container.IndefiniteArticle} {container.Name} (which is empty)";
+        }
+
+        return $"{container.IndefiniteArticle} {container.Name} (which is closed)";
+    }
+
+    private static string DisplaySupporter(Supporter supporter)
+    {
+        if (supporter.Children.Count > 0)
+        {
+            var isAre = supporter.Children.Count == 1 ? "is" : "are";
+            return $"On {supporter.DefiniteArticle} {supporter.Name} {isAre} {supporter.Children.DisplayList(definiteArticle: false)}.";
+        }
+
+        // for now supporters are static/scenic so don't show anything extra if nothing is on them
+        return null;
     }
 
     public static IList<Object> ObjectsInRoom()

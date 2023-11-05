@@ -1,6 +1,4 @@
-﻿using Adventure.Net.Extensions;
-
-namespace Adventure.Net;
+﻿namespace Adventure.Net;
 
 
 /// <summary>
@@ -12,18 +10,6 @@ public abstract class Supporter : Object
     {
         Scenery = true;
         Static = true;
-    }
-
-    public string Display()
-    {
-        if (Children.Count > 0)
-        {
-            var isAre = Children.Count == 1 ? "is" : "are";
-            return $"On {DefiniteArticle} {Name} {isAre} {Children.DisplayList(definiteArticle: false)}.";
-        }
-
-        // for now supporters are static/scenic so don't show anything extra if nothing is on them
-        return null;
     }
 
     public void Add<T>() where T : Object
