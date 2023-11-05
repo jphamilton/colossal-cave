@@ -23,12 +23,10 @@ public class DropTests : BaseTestFixture
     [Fact]
     public void should_handle_multiheld_not_held_but_in_room()
     {
-        var bottle = Objects.Get<Bottle>();
-
         // not holding bottle, but bottle is in the room
-        var result = Execute("drop bottle");
+        Execute("drop bottle");
 
-        Assert.Contains($"The {bottle.Name} is already here.", ConsoleOut);
+        Assert.Contains($"The small bottle is already here.", ConsoleOut);
     }
 
     [Fact]
@@ -132,8 +130,7 @@ public class DropTests : BaseTestFixture
 
         Execute("drop bottle");
 
-        var x = ConsoleOut;
-
+        Assert.Contains("(first taking the small bottle out of the wicker cage)", ConsoleOut);
         Assert.False(cage.Contains(bottle));
         Assert.True(bottle.Location == CurrentRoom.Location);
     }
