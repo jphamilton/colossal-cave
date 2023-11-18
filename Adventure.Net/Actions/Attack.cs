@@ -10,8 +10,7 @@ public class Attack : Verb
 
     public bool Expects(Object obj)
     {
-        Print("Violence isn't the answer to this one.");
-        return true;
+        return Print("Violence isn't the answer to this one.");
     }
 
 }

@@ -1,10 +1,5 @@
 ﻿namespace Adventure.Net.Actions;
 
-//Verb 'close' 'cover' 'shut'
-//    * noun                                      -> Close
-//    * 'up' noun                                 -> Close
-//    * 'off' noun                                -> SwitchOff;
-//
 public class Close : Verb
 {
     public Close()

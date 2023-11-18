@@ -1,10 +1,5 @@
 ﻿namespace Adventure.Net.Actions;
 
-// TODO: implement
-/*
-     Verb 'insert'
-        * multiexcept 'in'/'into' noun              -> Insert;
- */
 public class Insert : Verb
 {
     public Insert()

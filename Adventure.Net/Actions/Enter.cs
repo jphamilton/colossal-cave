@@ -10,8 +10,6 @@ public class Enter : Direction, IDirectional
 
     public bool Expects(Object obj)
     {
-        // Object must have Before<Enter> routine
-        Print("That's not something you can enter.");
-        return true;
+        return Print("That's not something you can enter.");
     }
 }

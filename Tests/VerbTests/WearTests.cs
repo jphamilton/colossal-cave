@@ -39,4 +39,48 @@ public class WearTests : BaseTestFixture
         Assert.DoesNotContain("a black cloak (being worn)", ConsoleOut);
 
     }
+
+    [Fact]
+    public void should_implicitly_wear_cloak()
+    {
+        var cloak = new BlackCloak();
+        cloak.Initialize();
+
+        Objects.Add(cloak);
+
+        Inventory.Add(cloak);
+
+        Execute("wear");
+
+        Assert.Contains("(the black cloak)", ConsoleOut);
+        Assert.Contains("You put on the black cloak.", ConsoleOut);
+
+        Assert.True(cloak.Worn);
+    }
+
+    [Fact]
+    public void should_respond_to_partial_wear()
+    {
+        var hat = new BlackHat();
+        hat.Initialize();
+
+        var cloak = new BlackCloak();
+        cloak.Initialize();
+        
+        Objects.Add(cloak);
+        Objects.Add(hat);
+
+        Inventory.Add(cloak);
+        Inventory.Add(hat);
+
+        Execute("wear");
+        Execute("cloak");
+
+        // this is returned by Wear, not the parser - need to be able to respond to this
+        Assert.Contains("What do you want to wear?", ConsoleOut);
+        
+        Assert.Contains("You put on the black cloak.", ConsoleOut);
+
+    }
+
 }

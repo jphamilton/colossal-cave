@@ -1,7 +1,5 @@
 ﻿namespace Adventure.Net.Actions;
 
-//Verb 'eat'
-//    * held                                      -> Eat;
 public class Eat : Verb
 {
     public Eat()
@@ -11,11 +9,9 @@ public class Eat : Verb
 
     public bool Expects([Held] Object obj)
     {
-
         if (obj.Edible)
         {
-            // use Before/After routines on object to handle specific messages
-            Print($"You eat {obj}.");
+            Print($"You eat {obj.DefiniteArticle} {obj.Name}.");
             obj.Remove();
         }
         else

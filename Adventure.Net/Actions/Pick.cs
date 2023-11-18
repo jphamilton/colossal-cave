@@ -1,8 +1,5 @@
 ﻿namespace Adventure.Net.Actions;
 
-//Verb 'pick'
-//    * 'up' multi                                -> Take
-//    * multi 'up'                                -> Take;
 public class Pick : Verb
 {
     public Pick()

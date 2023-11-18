@@ -1,8 +1,5 @@
 ﻿namespace Adventure.Net.Actions;
 
-//Verb 'catch' 'capture'
-//    * creature              -> Catch
-//    * creature 'with' held  -> Catch;
 public class Catch : Verb
 {
     public Catch()

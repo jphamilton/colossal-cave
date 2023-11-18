@@ -67,6 +67,7 @@ public class Empty : Verb
         return true;
     }
 
+    //TODO: Pour not implemented
     private bool Pour(Object obj, Object indirect)
     {
         throw new NotImplementedException();

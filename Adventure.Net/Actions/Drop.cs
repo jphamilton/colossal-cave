@@ -12,7 +12,6 @@ namespace Adventure.Net.Actions;
 //* multiexcept 'in'/'into'/'down' noun       -> Insert         keys, all, all except [in/into/down] or keys down well
 //* multiexcept 'on'/'onto' noun              -> PutOn          all except keys on/onto table, keys on table
 
-
 public class Drop : Verb
 {
     public Drop()

@@ -15,16 +15,16 @@ public class Open : Verb
     {
         if (!obj.Openable)
         {
-            Print($"{obj.TheyreOrThats} not something you can open.");
+            return Print($"{obj.TheyreOrThats} not something you can open.");
         }
         else if (obj.Locked)
         {
             string seems = obj.PluralName ? "They seem" : "It seems";
-            Print($"{seems} to be locked.");
+            return Print($"{seems} to be locked.");
         }
         else if (obj.Open)
         {
-            Print($"{obj.TheyreOrThats} already open.");
+            return Print($"{obj.TheyreOrThats} already open.");
         }
         else
         {
@@ -32,15 +32,18 @@ public class Open : Verb
 
             if (obj.Transparent)
             {
-                return Print($"You open the {obj.Name}.");
+                return Print($"You open {obj.DefiniteArticle} {obj.Name}.");
             }
             else
             {
-                return Print($"You open the {obj.Name}, revealing {obj.Children.DisplayList(false)}.");
+                if (obj is Container container && container.Children.Count > 0)
+                {
+                    return Print($"You open {obj.DefiniteArticle} {obj.Name}, revealing {obj.Children.DisplayList(false)}.");
+                }
+
+                return Print($"You open {obj.DefiniteArticle} {obj.Name}.");
             }
         }
-       
-        return true;
     }
 
     public bool Expects(Object obj, Preposition.With with, Object indirect)
