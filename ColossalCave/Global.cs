@@ -9,7 +9,4 @@ public static class Global
     public static Room CanyonFrom { get; set; }
     public static int TreasuresFound { get; set; }
     public static int Deaths { get; set; } = 0;
-    public static bool DarkWarning { get; set; }
-    public static int FeeFieCount { get; set; }
 }
-
