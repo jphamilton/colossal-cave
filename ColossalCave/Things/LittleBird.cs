@@ -55,7 +55,7 @@ public class LittleBird : Object
 
         Before<Insert>(() =>
             {
-                if (Second.Is<Container>() && Second.IsNot<WickerCage>())
+                if (Second is Container && Second is not WickerCage)
                 {
                     return Print($"Don't put the poor bird in {Second.DefiniteArticle} {Second.Name}!");
                 }
@@ -109,13 +109,13 @@ public class LittleBird : Object
         var bird = Get<LittleBird>();
         var blackRod = Get<BlackRod>();
 
-        if (blackRod.InInventory)
+        if (IsCarrying(blackRod))
         {
             Print("The bird was unafraid when you entered, but as you approach it becomes disturbed and you cannot catch it.");
             return true;
         }
 
-        if (cage.InInventory)
+        if (IsCarrying(cage))
         {
             if (cage.Children.Contains(bird))
             {
@@ -148,7 +148,7 @@ public class LittleBird : Object
             return true;
         }
 
-        if (cage.InInventory)
+        if (IsCarrying(cage))
         {
             cage.Open = true;
             cage.Remove(bird);

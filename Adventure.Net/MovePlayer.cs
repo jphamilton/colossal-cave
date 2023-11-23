@@ -1,4 +1,6 @@
-﻿namespace Adventure.Net;
+﻿using Adventure.Net.Places;
+
+namespace Adventure.Net;
 
 public static class MovePlayer
 {

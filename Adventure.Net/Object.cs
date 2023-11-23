@@ -8,7 +8,7 @@ namespace Adventure.Net;
 
 public abstract class Object
 {
-    private readonly static List<char> vowels = new() { 'a', 'e', 'i', 'o', 'u' };
+    private readonly static List<char> vowels = ['a', 'e', 'i', 'o', 'u'];
     private const string Theyre = "they're";
     private const string Thats = "that's";
     private const string Those = "those";
@@ -16,14 +16,17 @@ public abstract class Object
     private const string Are = "are";
     private const string Is = "is";
 
-    private readonly Dictionary<Type, Func<bool>> beforeRoutines = new();
+    private readonly Dictionary<Type, Func<bool>> beforeRoutines = [];
     private readonly AfterRoutines afterRoutines = new();
-    private readonly Dictionary<Object, Func<Object, bool>> receiveRoutines = new();
+    private readonly Dictionary<Object, Func<Object, bool>> receiveRoutines = [];
 
     private string definiteArticle;
     private string indefiniteArticle;
 
     public abstract void Initialize();
+
+    // used internally for serialization
+    public long Id { get; set; }
 
     public Object Parent { get; set; }
     public IList<Object> Children { get; set; } = new List<Object>();
@@ -106,7 +109,7 @@ public abstract class Object
         Key = Objects.Get<T>();
     }
 
-    public Object Key { get; private set; }
+    public Object Key { get; set; }
 
     public void Before<T>(Func<string> before) where T : Verb
     {
@@ -300,10 +303,8 @@ public abstract class Object
     protected static T Room<T>() where T : Room => Rooms.Get<T>();
 
     public bool InScope => CurrentRoom.ObjectsInScope().Contains(this);
-
-    public bool InInventory => Inventory.Contains(this);
-
     public static bool IsCarrying<T>() where T : Object => Inventory.Contains<T>();
+    public static bool IsCarrying(Object obj) => Inventory.Contains(obj);
 
     public static void Remove<T>() where T : Object
     {

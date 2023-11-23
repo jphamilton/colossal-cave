@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 using ColossalCave.Things;
 using Tests.ObjectTests;

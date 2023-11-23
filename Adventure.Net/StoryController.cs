@@ -1,5 +1,6 @@
 using Adventure.Net.Extensions;
 using System;
+using System.Linq;
 
 namespace Adventure.Net;
 
@@ -63,7 +64,7 @@ public class StoryController
 
     public static void RunDaemons()
     {
-        foreach (var obj in Objects.WithRunningDaemons())
+        foreach (var obj in Objects.All.Where(x => x.Daemon != null && x.DaemonStarted).ToList())
         {
             obj.Daemon();
         }

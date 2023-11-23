@@ -24,7 +24,7 @@ public class PoolOfOil : Scenic
         {
             var bottle = Bottle;
 
-            if (bottle.InInventory)
+            if (Inventory.Contains(bottle))
             {
                 bottle.Fill();
             }

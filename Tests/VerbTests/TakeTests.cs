@@ -144,10 +144,10 @@ public class TakeTests : BaseTestFixture
 
         Execute("take all except food");
 
-        Assert.True(bottle.InInventory);
-        Assert.True(keys.InInventory);
-        Assert.True(lamp.InInventory);
-        Assert.False(food.InInventory);
+        Assert.True(Inventory.Contains(bottle));
+        Assert.True(Inventory.Contains(keys));
+        Assert.True(Inventory.Contains(lamp));
+        Assert.False(Inventory.Contains(food));
     }
 
     [Fact]

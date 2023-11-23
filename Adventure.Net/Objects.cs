@@ -6,7 +6,6 @@ using System.Reflection;
 
 namespace Adventure.Net;
 
-
 public static class Objects
 {
     // all game objects
@@ -15,6 +14,7 @@ public static class Objects
     public static void Load(IStory story)
     {
         objects.Clear();
+        long id = 0;
 
         void Add(IList<Type> types)
         {
@@ -22,6 +22,7 @@ public static class Objects
             {
                 if (Activator.CreateInstance(type) is Object obj)
                 {
+                    obj.Id = ++id;
                     objects.Add(obj);
                 }
             }
@@ -38,11 +39,6 @@ public static class Objects
 
     public static IList<Object> All => objects;
 
-    public static Object GetByName(string name)
-    {
-        return objects.SingleOrDefault(x => x.Name == name || x.Synonyms.Contains(name));
-    }
-
     public static IList<Object> WithName(string name)
     {
         return objects.Where(x => x.Name == name || x.Synonyms.Contains(name)).ToList();
@@ -50,26 +46,7 @@ public static class Objects
 
     public static T Get<T>() where T : Object
     {
-        return Get(typeof(T)) as T;
-    }
-
-    private static Object Get(Type objectType)
-    {
-        foreach (var obj in objects)
-        {
-            Type objType = obj.GetType();
-            if (objType == objectType)
-            {
-                return obj;
-            }
-        }
-
-        return null;
-    }
-
-    public static IList<Object> WithRunningDaemons()
-    {
-        return objects.Where(x => x.Daemon != null && x.DaemonStarted).ToList();
+        return (T)objects.Single(x => x is T);
     }
 
     /// <summary>

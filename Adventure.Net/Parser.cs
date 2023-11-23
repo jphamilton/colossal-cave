@@ -1,5 +1,6 @@
 ﻿using Adventure.Net.Actions;
 using Adventure.Net.Extensions;
+using Adventure.Net.Things;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -307,11 +308,11 @@ public partial class Parser
         {
             if (result.Verb.MultiHeld)
             {
-                objects = objects.Where(x => x.InInventory).ToList();
+                objects = objects.Where(Inventory.Contains).ToList();
             }
             else
             {
-                var notHeld = objects.Where(o => !o.InInventory).ToList();
+                var notHeld = objects.Where(o => !Inventory.Contains(o)).ToList();
 
                 if (notHeld.Count > 0)
                 {

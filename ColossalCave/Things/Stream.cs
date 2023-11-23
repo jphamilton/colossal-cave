@@ -14,8 +14,7 @@ public class Stream : Scenic
         Synonyms.Are("stream", "water", "brook", "river", "lake", "small", "tumbling",
                      "splashing", "babbling", "rushing", "reservoir");
 
-        FoundIn<EndOfRoad, Valley, SlitInStreambed, InsideBuilding, Reservoir, InPit>();
-        // In_Cavern_With_Waterfall 
+        FoundIn<EndOfRoad, Valley, SlitInStreambed, InsideBuilding, Reservoir, InPit, CavernWithWaterfall>();
 
         Before<Drink>(() =>
             {
@@ -29,7 +28,7 @@ public class Stream : Scenic
             {
                 var bottle = Get<Bottle>();
 
-                if (!bottle.InInventory)
+                if (!Inventory.Contains(bottle))
                 {
                     Print("You have nothing in which to carry the water.");
                 }
@@ -43,9 +42,9 @@ public class Stream : Scenic
 
         Before<Insert>(() =>
         {
-            if (Second is Bottle)
+            if (Second is Bottle bottle)
             {
-                ((Bottle)Second).Fill();
+                bottle.Fill();
             }
             else
             {
@@ -57,14 +56,14 @@ public class Stream : Scenic
 
         Receive((obj) =>
             {
-                if (obj.Is<Bottle>())
+                if (obj is Bottle)
                 {
                     var bottle = Objects.Get<Bottle>();
                     bottle.Fill();
                     return true;
                 }
 
-                if (obj.Is<MingVase>())
+                if (obj is MingVase)
                 {
                     obj.Remove();
                     Objects.Get<Shards>().MoveToLocation();

@@ -22,7 +22,7 @@ public class Unlock : Verb
             return true;
         }
 
-        if (key != null && key.InInventory)
+        if (key != null && Inventory.Contains(key))
         {
             if (obj.Locked)
             {

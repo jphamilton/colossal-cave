@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace Adventure.Net;
 
@@ -9,7 +8,7 @@ public abstract class Direction : Verb
 
     protected void SetDirection(Func<Room, Room> mover, params string[] synonyms)
     {
-        Name = synonyms.First();
+        Name = synonyms[0];
         getRoom = mover;
         Synonyms.Are(synonyms);
     }

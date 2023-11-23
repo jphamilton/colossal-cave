@@ -18,7 +18,7 @@ public class Remove : Verb
 
     public bool Expects(Object obj)
     {
-        if (obj.InInventory && obj.Clothing && obj.Worn)
+        if (Inventory.Contains(obj) && obj.Clothing && obj.Worn)
         {
             return Redirect<Disrobe>(x => x.Expects(obj));
         }

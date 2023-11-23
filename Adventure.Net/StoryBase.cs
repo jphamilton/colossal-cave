@@ -29,20 +29,15 @@ public abstract class StoryBase : IStory
         Objects.Load(this);
         Verbs.Load();
 
-        var rooms = Objects.All.Where(x => x is Room);
-        
-        foreach (var obj in rooms)
+        foreach (var obj in Objects.All.Where(x => x is Room))
         {
             obj.Initialize();
         }
 
-        var objects = Objects.All.Where(x => x is not Room);
-        
-        foreach (var obj in objects)
+        foreach (var obj in Objects.All.Where(x => x is not Room))
         {
             obj.Initialize();
         }
-
 
         Start();
     }

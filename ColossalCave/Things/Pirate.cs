@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Places;
 using Adventure.Net.Utilities;
 using ColossalCave.Actions;
 using ColossalCave.Places;
@@ -22,8 +23,10 @@ public class Pirate : Object
             var bootyNearBy = false;
             var location = CurrentRoom.Location;
 
+            var noDwarf = ((BelowGround)CurrentRoom.Location).NoDwarf;
+
             // very bizarre random check, but that's what was in the Inform 6 source
-            if (Random.Number(1, 100) > 2 || location is Darkness || location is SecretCanyon || location.Light || NoDwarf)
+            if (Random.Number(1, 100) > 2 || location is Darkness || location is SecretCanyon || location.Light || noDwarf)
             {
                 return;
             }
@@ -69,8 +72,6 @@ public class Pirate : Object
                 return;
             }
 
-            // thar be booty!
-
             if (hasStolenSomething)
             {
                 return;
@@ -87,7 +88,7 @@ public class Pirate : Object
 
             foreach (var treasure in treasures)
             {
-                if (treasure.InInventory)
+                if (Inventory.Contains(treasure))
                 {
                     score -= 5;
                 }
@@ -109,12 +110,5 @@ public class Pirate : Object
 
         };
     }
-
-    private bool NoDwarf
-    {
-        get
-        {
-            return ((BelowGround)CurrentRoom.Location).NoDwarf;
-        }
-    }
+    
 }

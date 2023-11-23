@@ -1,4 +1,4 @@
-﻿namespace Adventure.Net;
+﻿namespace Adventure.Net.Places;
 
 public class Darkness : Room
 {

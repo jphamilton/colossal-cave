@@ -1,6 +1,7 @@
 ﻿
 using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Places;
 using Adventure.Net.Utilities;
 using ColossalCave.Actions;
 using ColossalCave.Places;

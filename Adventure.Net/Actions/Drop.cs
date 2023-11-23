@@ -1,4 +1,5 @@
 ﻿using Adventure.Net.Extensions;
+using Adventure.Net.Things;
 using System.Linq;
 
 namespace Adventure.Net.Actions;
@@ -56,7 +57,7 @@ public class Drop : Verb
             return Print("Dropped.");
         }
 
-        if (obj.InInventory)
+        if (Inventory.Contains(obj))
         {
             if (obj.Parent is InventoryRoot)
             {

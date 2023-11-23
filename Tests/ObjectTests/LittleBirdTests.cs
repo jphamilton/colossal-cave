@@ -173,7 +173,7 @@ public class LittleBirdTests : BaseTestFixture
         Assert.Equal("You catch the bird in the wicker cage.", Line1);
         Assert.False(CurrentRoom.Has<LittleBird>());
         Assert.True(cage.Contains<LittleBird>());
-        Assert.True(bird.InInventory);
+        Assert.True(Inventory.Contains(bird));
     }
 
     [Fact]
@@ -230,7 +230,7 @@ public class LittleBirdTests : BaseTestFixture
         Assert.Contains("The ashes blow away.", ConsoleOut);
 
         Assert.False(CurrentRoom.Has<LittleBird>());
-        Assert.False(bird.InInventory);
+        Assert.False(Inventory.Contains(bird));
         Assert.False(bird.InScope);
 
     }

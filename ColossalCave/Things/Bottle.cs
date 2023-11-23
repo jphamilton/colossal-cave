@@ -41,7 +41,7 @@ public class Bottle : Container
 
         Receive((obj) =>
             {
-                if (obj.Is<Stream>() || obj.Is<OilInTheBottle>())
+                if (obj is Stream || obj is OilInTheBottle)
                 {
                     Fill();
                 }

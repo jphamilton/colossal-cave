@@ -28,7 +28,7 @@ public partial class CommandLineParserTests : BaseTestFixture
     public void object_is_present()
     {
         var result = Parse("take bottle");
-        var bottle = Objects.GetByName("bottle");
+        var bottle = Objects.Get<Bottle>();
 
         Assert.True(result.Verb is Take);
         Assert.Contains(bottle, result.Objects);
@@ -39,9 +39,9 @@ public partial class CommandLineParserTests : BaseTestFixture
     {
         var result = Parse("take bottle, keys and lamp");
 
-        Assert.Contains(Objects.GetByName("bottle"), result.Objects);
-        Assert.Contains(Objects.GetByName("keys"), result.Objects);
-        Assert.Contains(Objects.GetByName("lamp"), result.Objects);
+        Assert.Contains(Objects.Get<Bottle>(), result.Objects);
+        Assert.Contains(Objects.Get<SetOfKeys>(), result.Objects);
+        Assert.Contains(Objects.Get<BrassLantern>(), result.Objects);
 
     }
 
@@ -103,14 +103,14 @@ public partial class CommandLineParserTests : BaseTestFixture
 
         Assert.True(result.Verb is Take);
         Assert.True(result.Objects.Count > 0);
-        Assert.Contains(Objects.GetByName("keys"), result.Objects);
-        Assert.Contains(Objects.GetByName("food"), result.Objects);
-        Assert.Contains(Objects.GetByName("lamp"), result.Objects);
-        Assert.Contains(Objects.GetByName("bottle"), result.Objects);
+        Assert.Contains(Objects.Get<SetOfKeys>(), result.Objects);
+        Assert.Contains(Objects.Get<TastyFood>(), result.Objects);
+        Assert.Contains(Objects.Get<BrassLantern>(), result.Objects);
+        Assert.Contains(Objects.Get<Bottle>(), result.Objects);
 
-        Assert.DoesNotContain(Objects.GetByName("pipes"), result.Objects);
-        Assert.DoesNotContain(Objects.GetByName("wellhouse"), result.Objects);
-        Assert.DoesNotContain(Objects.GetByName("spring"), result.Objects);
+        Assert.DoesNotContain(Objects.Get<SewerPipes>(), result.Objects);
+        Assert.DoesNotContain(Objects.Get<WellHouse>(), result.Objects);
+        Assert.DoesNotContain(Objects.Get<Spring>(), result.Objects);
 
         // should not pick up the room!
         Assert.DoesNotContain(Room<InsideBuilding>(), result.Objects);
@@ -124,7 +124,7 @@ public partial class CommandLineParserTests : BaseTestFixture
 
         Assert.True(result.Verb is Take);
         Assert.True(result.Objects.Count > 0);
-        Assert.DoesNotContain(Objects.GetByName("keys"), result.Objects);
+        Assert.DoesNotContain(Objects.Get<SetOfKeys>(), result.Objects);
     }
 
     [Fact]
@@ -134,8 +134,8 @@ public partial class CommandLineParserTests : BaseTestFixture
 
         Assert.True(result.Verb is Take);
         Assert.True(result.Objects.Count > 0);
-        Assert.DoesNotContain(Objects.GetByName("keys"), result.Objects);
-        Assert.DoesNotContain(Objects.GetByName("bottle"), result.Objects);
+        Assert.DoesNotContain(Objects.Get<SetOfKeys>(), result.Objects);
+        Assert.DoesNotContain(Objects.Get<Bottle>(), result.Objects);
     }
 
     [Fact]
@@ -200,7 +200,7 @@ public partial class CommandLineParserTests : BaseTestFixture
         var result = Parse("put bottle down");
 
         Assert.True(result.Verb is Put);
-        Assert.Contains(Objects.GetByName("bottle"), result.Objects);
+        Assert.Contains(Objects.Get<Bottle>(), result.Objects);
         Assert.True(result.Preposition is Preposition.Down);
         Assert.True(string.IsNullOrEmpty(result.Error));
     }
@@ -213,7 +213,7 @@ public partial class CommandLineParserTests : BaseTestFixture
         var result = Parse("put down bottle");
 
         Assert.True(result.Verb is Put);
-        Assert.Contains(Objects.GetByName("bottle"), result.Objects);
+        Assert.Contains(Objects.Get<Bottle>(), result.Objects);
         Assert.True(result.Preposition is Preposition.Down);
         Assert.True(string.IsNullOrEmpty(result.Error));
     }
@@ -224,9 +224,9 @@ public partial class CommandLineParserTests : BaseTestFixture
         var result = Parse("put bottle, keys and lamp down");
 
         Assert.True(result.Verb is Put);
-        Assert.Contains(Objects.GetByName("bottle"), result.Objects);
-        Assert.Contains(Objects.GetByName("keys"), result.Objects);
-        Assert.Contains(Objects.GetByName("lamp"), result.Objects);
+        Assert.Contains(Objects.Get<Bottle>(), result.Objects);
+        Assert.Contains(Objects.Get<SetOfKeys>(), result.Objects);
+        Assert.Contains(Objects.Get<BrassLantern>(), result.Objects);
         Assert.True(result.Preposition is Preposition.Down);
         Assert.True(string.IsNullOrEmpty(result.Error));
     }
@@ -247,7 +247,7 @@ public partial class CommandLineParserTests : BaseTestFixture
         var result = Parse("put all except keys down");
 
         Assert.True(result.Verb is Put);
-        Assert.DoesNotContain(Objects.GetByName("keys"), result.Objects);
+        Assert.DoesNotContain(Objects.Get<SetOfKeys>(), result.Objects);
         Assert.True(result.Preposition is Preposition.Down);
         Assert.True(string.IsNullOrEmpty(result.Error));
     }

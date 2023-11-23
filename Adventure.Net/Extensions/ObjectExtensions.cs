@@ -5,16 +5,6 @@ namespace Adventure.Net.Extensions;
 
 public static class ObjectExtensions
 {
-    public static bool Is<T>(this Object obj) where T : Object
-    {
-        return obj != null && obj is T;
-    }
-
-    public static bool IsNot<T>(this Object obj) where T : Object
-    {
-        return obj != null && obj is not T;
-    }
-
     public static string DisplayList(this IList<Object> objects, bool definiteArticle = true, string concat = "and")
     {
         string article(Object x) => definiteArticle ? x.DefiniteArticle : x.IndefiniteArticle;
