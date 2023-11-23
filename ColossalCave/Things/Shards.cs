@@ -11,6 +11,6 @@ public class Shards : Object
         Description = "They look to be the remains of what was once a beautiful vase. " +
                       "I guess some oaf must have dropped it.";
         InitialDescription = "The floor is littered with worthless shards of pottery.";
-        // has multitude
+        Multitude = true;
     }
 }

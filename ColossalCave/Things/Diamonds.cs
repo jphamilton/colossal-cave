@@ -11,7 +11,7 @@ public class Diamonds : Treasure
         Description = "They look to be of the highest quality!";
         InitialDescription = "There are diamonds here!";
         IndefiniteArticle = "some";
-        // has multitude
+        Multitude = true;
 
         FoundIn<WestSideOfFissure>();
     }

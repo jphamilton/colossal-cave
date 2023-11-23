@@ -10,14 +10,14 @@ namespace ColossalCave.Things;
 
 public class Dwarf : Object
 {
-    private int number = 5;
+    public int Count { get; set; } = 5;
     public bool HasThrownAxe { get; set; }
 
     public void Kill()
     {
-        if (number > 0)
+        if (Count > 0)
         {
-            number--;
+            Count--;
         }
     }
 
@@ -62,7 +62,7 @@ public class Dwarf : Object
                 return;
             }
 
-            if (number == 0)
+            if (Count == 0)
             {
                 DaemonStarted = false;
                 return;
@@ -79,7 +79,7 @@ public class Dwarf : Object
                     return;
                 }
 
-                if (Random.Number(1, 100) <= number)
+                if (Random.Number(1, 100) <= Count)
                 {
                     var bear = Get<Bear>();
                     var troll = Get<BurlyTroll>();
@@ -93,7 +93,7 @@ public class Dwarf : Object
 
                     if (IsHere<Dragon>())
                     {
-                        number--;
+                        Count--;
                         Print("A dwarf appears, but with one casual blast the dragon vapourises him!");
                         return;
                     }

@@ -9,8 +9,8 @@ namespace ColossalCave.Things;
 
 public class Pirate : Object
 {
-    private bool hasStolenSomething = false;
-    private bool hasBeenSpotted = false;
+    public bool HasStolenSomething { get; set; }
+    public bool HasBeenSpotted { get; set; }
 
     public override void Initialize()
     {
@@ -46,14 +46,14 @@ public class Pirate : Object
 
             if (!bootyNearBy)
             {
-                if (hasBeenSpotted)
+                if (HasBeenSpotted)
                 {
                     return;
                 }
 
-                hasBeenSpotted = true;
+                HasBeenSpotted = true;
 
-                if (hasStolenSomething)
+                if (HasStolenSomething)
                 {
                     DaemonStarted = false;
                 }
@@ -72,14 +72,14 @@ public class Pirate : Object
                 return;
             }
 
-            if (hasStolenSomething)
+            if (HasStolenSomething)
             {
                 return;
             }
 
-            hasStolenSomething = true;
+            HasStolenSomething = true;
 
-            if (hasBeenSpotted)
+            if (HasBeenSpotted)
             {
                 DaemonStarted = false;
             }

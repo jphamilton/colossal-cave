@@ -24,8 +24,6 @@ public class CaveCloser : Object
 
             Rooms.Get<CrystalBridge>().Remove();
 
-            //Get<CrystalBridge>().Remove();
-
             var grate = Rooms.Get<Grate>();
             grate.Locked = true;
             grate.Open = false;
@@ -50,7 +48,7 @@ public class CaveCloser : Object
 
 public class EndgameTimer : Object
 {
-    public int TimeLeft = 25;
+    public int TimeLeft { get; set; } = 25;
 
     public override void Initialize()
     {

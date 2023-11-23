@@ -10,7 +10,7 @@ public class DustyRocks : Scenic
         Name = "dusty rocks";
         Synonyms.Are("rocks", "boulders", "stones", "rock", "boulder", "stone", "dusty", "dirty");
         Description = "They're just rocks. (Dusty ones, that is.)";
-        // has multitude
+        Multitude = true;
 
         FoundIn<DustyRockRoom>();
 
@@ -22,7 +22,6 @@ public class DustyRocks : Scenic
 
     private bool Nope()
     {
-        Print("You'd have to blast your way through.");
-        return true;
+        return Print("You'd have to blast your way through.");
     }
 }

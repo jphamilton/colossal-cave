@@ -23,7 +23,6 @@ public class BedrockBlock : Scenic
 
     private bool HaHa()
     {
-        Print("Surely you're joking.");
-        return true;
+        return Print("Surely you're joking.");
     }
 }

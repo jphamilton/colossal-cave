@@ -20,9 +20,7 @@ public class Axe : Object
                 return false;
             }
 
-            Print("It's lying beside the bear.");
-
-            return true;
+            return Print("It's lying beside the bear.");
         });
 
         Before<Take>(() =>
@@ -32,8 +30,7 @@ public class Axe : Object
                 return false;
             }
 
-            Print("No chance. It's lying beside the ferocious bear, quite within harm's way.");
-            return true;
+            return Print("No chance. It's lying beside the ferocious bear, quite within harm's way.");
         });
     }
 }

@@ -63,7 +63,7 @@ public class MarksInTheDust : Scenic
     {
         Name = "marks in the dust";
         Description = "Evidently you're not alone here.";
-        // has multitude
+        Multitude = true;
 
         FoundIn<WindowOnPit1, WindowOnPit2>();
     }

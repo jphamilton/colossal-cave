@@ -22,8 +22,7 @@ public class Reservoir : BelowGround
 
         Before<Swim>(() =>
         {
-            Print("The water is icy cold, and you would soon freeze to death.");
-            return true;
+            return Print("The water is icy cold, and you would soon freeze to death.");
         });
     }
 }

@@ -71,7 +71,7 @@ public class RoughStoneSteps : Scenic
         Name = "rough stone steps";
         Synonyms.Are("stair", "stairs", "staircase", "rough", "stone");
         Description = "The rough stone steps lead up the dome.";
-        // has multitude
+        Multitude = true;
 
         FoundIn<HallOfMists>();
     }

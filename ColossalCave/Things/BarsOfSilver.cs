@@ -9,8 +9,8 @@ public class BarsOfSilver : Treasure
         Name = "bars of silver";
         Synonyms.Are("silver", "bars");
         Description = "They're probably worth a fortune!";
-        IndefiniteArticle = "some";
         InitialDescription = "There are bars of silver here!";
+        IndefiniteArticle = "some";
 
         FoundIn<LowNSPassage>();
     }

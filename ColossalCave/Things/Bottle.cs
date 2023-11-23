@@ -86,17 +86,3 @@ public class Bottle : Container
     }
 }
 
-//Object  -> bottle "small bottle"
-//  with  name 'bottle' 'jar' 'flask',
-//        initial "There is an empty bottle here.",
-//        before [;
-//          LetGo:
-//            if (noun in bottle)
-//                "You're holding that already (in the bottle).";
-//          Receive:
-//            if (noun == stream or Oil)
-//                <<Fill self>>;
-//            else
-//                "The bottle is only supposed to hold liquids.";
-//        ],
-//  has   container open;

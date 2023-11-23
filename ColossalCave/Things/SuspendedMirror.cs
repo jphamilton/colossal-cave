@@ -24,7 +24,6 @@ public class SuspendedMirror : Object
 
     private bool CantReach()
     {
-        Print("You can't reach it from here.");
-        return true;
+        return Print("You can't reach it from here.");
     }
 }

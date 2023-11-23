@@ -20,12 +20,10 @@ public class WellHouse : Scenic
 
                 if (In<HillInRoad>() && !insideBuilding.Visited)
                 {
-                    Print("It's too far away.");
-                    return true;
+                    return Print("It's too far away.");
                 }
 
-                MovePlayer.To<InsideBuilding>();
-                return true;
+                return MovePlayer.To<InsideBuilding>();
             }
         );
 

@@ -16,17 +16,9 @@ public class SlitInStreambed : AboveGround
         WestTo<Forest1>();
         SouthTo<OutsideGrate>();
 
-        Before<Down>(() =>
-            {
-                Print("You don't fit through a two-inch slit!");
-                return true;
-            });
+        Before<Down>(() => Print("You don't fit through a two-inch slit!"));
 
-        Before<In>(() =>
-            {
-                Print("You don't fit through a two-inch slit!");
-                return true;
-            });
+        Before<In>(() => Print("You don't fit through a two-inch slit!"));
 
     }
 }
@@ -41,11 +33,7 @@ public class TwoInchSlit : Scenic
 
         FoundIn<SlitInStreambed>();
 
-        Before<Enter>(() =>
-        {
-            Print("You don't fit through a two-inch slit!");
-            return true;
-        });
+        Before<Enter>(() => Print("You don't fit through a two-inch slit!"));
 
     }
 }

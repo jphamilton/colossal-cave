@@ -6,6 +6,8 @@ namespace ColossalCave.Places;
 
 public class SecretCanyon : BelowGround
 {
+    private Dragon Dragon => Objects.Get<Dragon>();
+
     public override void Initialize()
     {
         Name = "Secret Canyon";
@@ -24,8 +26,7 @@ public class SecretCanyon : BelowGround
 
                 Dragon.IsBeingAttacked = false;
 
-                Print("Congratulations! You have just vanquished a dragon with your bare hands! (Unbelievable, isn't it?)");
-                return true;
+                return Print("Congratulations! You have just vanquished a dragon with your bare hands! (Unbelievable, isn't it?)");
             }
 
             return false;
@@ -36,8 +37,7 @@ public class SecretCanyon : BelowGround
             if (Dragon.IsBeingAttacked)
             {
                 Dragon.IsBeingAttacked = false;
-                Print("I should think not.");
-                return true;
+                return Print("I should think not.");
             }
 
             return false;
@@ -75,20 +75,8 @@ public class SecretCanyon : BelowGround
             return Rooms.Get<SecretEWCanyon>();
         });
 
-        OutTo(() =>
-        {
-            return Global.CanyonFrom;
-        });
-
+        OutTo(() => Global.CanyonFrom);
 
     }
 
-    private static Dragon Dragon
-    {
-        get
-        {
-            return Objects.Get<Dragon>();
-        }
-    }
 }
-

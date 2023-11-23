@@ -30,7 +30,8 @@ public class InPit : BelowGround
         {
             Name = "tiny slits";
             Synonyms.Are("slit", "slits", "tiny");
-            // has multitude
+            Multitude = true;
+
             FoundIn<InPit>();
         }
     }

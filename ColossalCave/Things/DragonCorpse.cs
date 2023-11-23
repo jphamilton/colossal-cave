@@ -12,10 +12,6 @@ public class DragonCorpse : Object
         InitialDescription = "The body of a huge green dead dragon is lying off to one side.";
         Static = true;
 
-        Before<Attack>(() =>
-        {
-            Print("You've already done enough damage!");
-            return true;
-        });
+        Before<Attack>(() => Print("You've already done enough damage!"));
     }
 }

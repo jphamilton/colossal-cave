@@ -6,6 +6,11 @@ namespace ColossalCave.Things;
 
 public class Grate : Door
 {
+    public Grate()
+    {
+        Locked = true;
+    }
+
     public override void Initialize()
     {
         Name = "steel grate";
@@ -14,7 +19,7 @@ public class Grate : Door
 
         FoundIn<BelowTheGrate, OutsideGrate>();
 
-        LocksWithKey<SetOfKeys>(true);
+        LocksWithKey<SetOfKeys>(Locked);
 
         Describe = () => Open ? "\nThe grate stands open." : !Locked ? "\nThe grate is unlocked but shut." : null;
 

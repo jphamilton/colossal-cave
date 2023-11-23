@@ -5,14 +5,18 @@ namespace ColossalCave.Places;
 
 public class CrystalBridge : Door
 {
+    public CrystalBridge()
+    {
+        Absent = true;
+        Open = true;
+    }
+
     public override void Initialize()
     {
         Name = "crystal bridge";
         Synonyms.Are("crystal", "bridge");
         Description = "It spans the fissure, thereby providing you a way across.";
         InitialDescription = "A crystal bridge now spans the fissure.";
-        Open = true;
-        Absent = true;
 
         FoundIn<WestSideOfFissure, EastBankOfFissure>();
 

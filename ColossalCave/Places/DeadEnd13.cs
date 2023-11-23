@@ -1,4 +1,7 @@
-﻿namespace ColossalCave.Places;
+﻿using Adventure.Net;
+using ColossalCave.Things;
+
+namespace ColossalCave.Places;
 
 public class DeadEnd13 : DeadEnd
 {
@@ -16,12 +19,15 @@ public class DeadEnd13 : DeadEnd
 
         Initial = () =>
         {
-            // TODO: Pirate shit
-            //StopDaemon(Pirate);
+            var pirate = Objects.Get<Pirate>();
+            pirate.DaemonStarted = false;
 
-            //if (treasure_chest in self && treasure_chest hasnt moved)
-            //                "You've found the pirate's treasure chest!";
-            //        ],
+            var chest = Objects.Get<TreasureChest>();
+
+            if (chest.InRoom && !chest.Touched)
+            {
+                Print("You've found the pirate's treasure chest!");
+            }
         };
     }
 }

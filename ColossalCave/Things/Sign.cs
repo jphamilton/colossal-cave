@@ -10,17 +10,13 @@ public class Sign : Object
     {
         Name = "sign";
         Synonyms.Are("sign", "witt", "company", "construction");
-        Static = true;
         InitialDescription =
             "A sign in midair here says \"Cave under construction beyond this point. " +
             "Proceed at own risk. [Witt Construction Company]\"";
+        Static = true;
 
         FoundIn<Anteroom>();
 
-        Before<Take>(() =>
-        {
-            Print("It's hanging way above your head.");
-            return true;
-        });
+        Before<Take>(() => Print("It's hanging way above your head."));
     }
 }

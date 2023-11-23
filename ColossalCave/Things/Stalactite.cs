@@ -20,7 +20,6 @@ public class Stalactite : Scenic
 
     private bool GetAGrip()
     {
-        Print("Do get a grip on yourself.");
-        return true;
+        return Print("Do get a grip on yourself.");
     }
 }

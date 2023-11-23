@@ -6,12 +6,16 @@ namespace ColossalCave.Things;
 
 public class PlantStickingUp : Object
 {
+    public PlantStickingUp()
+    {
+        Absent = true;
+    }
+
     public override void Initialize()
     {
         Name = "beanstalk";
         Synonyms.Are("plant", "beanstalk", "stalk", "bean", "giant", "tiny", "little", "murmuring", "twelve", "foot", "tall", "bellowing");
         Static = true;
-        Absent = true;
 
         FoundIn<WestEndOfTwoPitRoom, EastEndOfTwoPitRoom>();
 

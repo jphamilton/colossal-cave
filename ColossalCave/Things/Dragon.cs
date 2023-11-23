@@ -21,29 +21,20 @@ public class Dragon : Object
         Before<Attack>(() =>
         {
             IsBeingAttacked = true;
-            Print("With what? Your bare hands?");
-            return true;
+            return Print("With what? Your bare hands?");
         });
 
-        Before<Give>(() =>
-        {
-            Print("The dragon is implacable.");
-            return true;
-        });
+        Before<Give>(() => Print("The dragon is implacable."));
 
         Before<ThrowAt>(() =>
         {
-            if (Noun is Axe)
+            if (Noun is Axe axe)
             {
-                Noun.MoveToLocation();
-                Print("The axe bounces harmlessly off the dragon's thick scales.");
+                axe.MoveToLocation();
+                return Print("The axe bounces harmlessly off the dragon's thick scales.");
             }
-            else
-            {
-                Print("You'd probably be better off using your bare hands than that thing!");
-            }
-
-            return true;
+            
+            return Print("You'd probably be better off using your bare hands than that thing!");
         });
     }
 }

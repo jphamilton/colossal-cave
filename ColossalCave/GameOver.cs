@@ -1,10 +1,11 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Utilities;
 using ColossalCave.Actions;
+using ColossalCave.Places;
 using ColossalCave.Things;
 using System;
 
-namespace ColossalCave.Places;
+namespace ColossalCave;
 
 public static class GameOver
 {

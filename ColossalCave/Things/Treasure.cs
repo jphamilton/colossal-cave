@@ -3,12 +3,12 @@ using Adventure.Net.Actions;
 using ColossalCave.Actions;
 using ColossalCave.Places;
 
-namespace ColossalCave;
+namespace ColossalCave.Things;
 
 public abstract class Treasure : Object
 {
-    public int DepositPoints { get; protected set; }
-    public bool Found { get; private set; }
+    public int DepositPoints { get; set; }
+    public bool Found { get; set; }
 
     protected Treasure()
     {

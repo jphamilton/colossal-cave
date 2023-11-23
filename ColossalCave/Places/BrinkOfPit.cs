@@ -22,8 +22,6 @@ public class BrinkOfPit : BelowGround
     }
 }
 
-#region Scenery
-
 public class MassiveOrangeColumn : Scenic
 {
     public override void Initialize()
@@ -61,5 +59,4 @@ public class Pit : Scenic
     }
 }
 
-#endregion
 

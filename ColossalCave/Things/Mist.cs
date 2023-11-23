@@ -13,6 +13,6 @@ public class Mist : Scenic
             "It can be found anywhere but is frequently a sign of a deep pit leading down to water.";
 
         FoundIn<TopOfSmallPit, HallOfMists, EastBankOfFissure, WestEndOfHallOfMists, MirrorCanyon, Reservoir, WindowOnPit2>();
-        // TODO: At_Window_On_Pit_1 In_Misty_Cavern On_Sw_Side_Of_Chasm
+        FoundIn<WindowOnPit1, MistyCavern, SwSideOfChasm>();
     }
 }

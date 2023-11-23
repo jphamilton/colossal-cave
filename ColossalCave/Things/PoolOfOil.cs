@@ -14,11 +14,7 @@ public class PoolOfOil : Scenic
 
         FoundIn<EastPit>();
 
-        Before<Drink>(() =>
-        {
-            Print("Absolutely not.");
-            return true;
-        });
+        Before<Drink>(() => Print("Absolutely not."));
 
         Before<Take>(() =>
         {
@@ -53,11 +49,5 @@ public class PoolOfOil : Scenic
         });
     }
 
-    private Bottle Bottle
-    {
-        get
-        {
-            return Objects.Get<Bottle>();
-        }
-    }
+    private Bottle Bottle => Objects.Get<Bottle>();
 }

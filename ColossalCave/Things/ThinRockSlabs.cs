@@ -11,7 +11,7 @@ public class ThinRockSlabs : Scenic
         Name = "thin rock slabs";
         Synonyms.Are("slabs", "slab", "rocks", "stairs", "thin", "rock");
         Description = "They almost form natural stairs down into the pit.";
-        // has multitude
+        Multitude = true;
 
         FoundIn<EastEndOfTwoPitRoom>();
 
@@ -23,8 +23,7 @@ public class ThinRockSlabs : Scenic
 
     public bool DontCallMeShirley()
     {
-        Print("Surely you're joking. You'd have to blast them aside.");
-        return true;
+        return Print("Surely you're joking. You'd have to blast them aside.");
     }
 }
 

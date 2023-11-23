@@ -27,12 +27,10 @@ public class WittsEnd : BelowGround
         {
             if (direction is North && Random.Number(1, 100) <= 95)
             {
-                Print("You have crawled around in some little holes and wound up back in the main passage.");
-                return true;
+                return Print("You have crawled around in some little holes and wound up back in the main passage.");
             }
 
-            MovePlayer.To<Anteroom>();
-            return true;
+            return MovePlayer.To<Anteroom>();
         });
     }
 

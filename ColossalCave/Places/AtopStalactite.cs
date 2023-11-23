@@ -20,9 +20,15 @@ public class AtopStalactite : BelowGround
         DownTo(() =>
         {
             if (Random.Number(1, 100) <= 40)
+            {
                 return Rooms.Get<AlikeMaze6>();
+            }
+
             if (Random.Number(1, 100) <= 50)
+            {
                 return Rooms.Get<AlikeMaze9>();
+            }
+
             return Rooms.Get<AlikeMaze4>();
         });
 

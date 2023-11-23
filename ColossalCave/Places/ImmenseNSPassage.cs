@@ -39,14 +39,18 @@ public class ImmenseNSPassage : BelowGround
 
 public class RustyDoor : Door
 {
+    public RustyDoor()
+    {
+        Locked = true;
+        Openable = false;
+    }
+
     public override void Initialize()
     {
         Name = "rusty door";
         Synonyms.Are("door", "hinge", "hinges", "massive", "rusty", "iron");
         Description = "It's just a big iron door.";
-        Openable = false;
-        Locked = true;
-
+        
         FoundIn<ImmenseNSPassage>();
 
         WhenOpen = "The way north leads through a massive, rusty, iron door.";

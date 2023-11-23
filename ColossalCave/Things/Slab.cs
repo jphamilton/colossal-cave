@@ -22,7 +22,6 @@ public class Slab : Scenic
 
     private bool Joking()
     {
-        Print("Surely you're joking.");
-        return true;
+        return Print("Surely you're joking.");
     }
 }

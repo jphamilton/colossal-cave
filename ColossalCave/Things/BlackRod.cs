@@ -43,9 +43,7 @@ public class BlackRod : Object
                 return true;
             }
 
-            Print("Nothing happens.");
-
-            return true;
+            return Print("Nothing happens.");
         });
     }
 }

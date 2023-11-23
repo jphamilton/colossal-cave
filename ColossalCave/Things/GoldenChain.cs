@@ -6,6 +6,11 @@ namespace ColossalCave.Things;
 
 public class GoldenChain : Treasure
 {
+    public GoldenChain()
+    {
+        Locked = true;
+    }
+
     public override void Initialize()
     {
         Name = "golden chain";
@@ -13,7 +18,7 @@ public class GoldenChain : Treasure
         Description = "The chain has thick links of solid gold!";
         DepositPoints = 14;
 
-        LocksWithKey<SetOfKeys>(true);
+        LocksWithKey<SetOfKeys>(Locked);
 
         FoundIn<BarrenRoom>();
 

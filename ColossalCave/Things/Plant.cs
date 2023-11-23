@@ -16,11 +16,15 @@ public class Plant : Object
 {
     public PlantSize Height { get; set; }
 
+    public Plant()
+    {
+        Height = PlantSize.Tiny;
+    }
+
     public override void Initialize()
     {
         Name = "plant";
         Synonyms.Are("plant", "beanstalk", "stalk", "bean", "giant", "tiny", "little", "murmuring", "twelve", "foot", "tall", "bellowing");
-        Height = PlantSize.Tiny;
 
         FoundIn<WestPit>();
 
@@ -43,8 +47,7 @@ public class Plant : Object
 
             if (Height == PlantSize.Tiny)
             {
-                Print("It's just a little plant!");
-                return true;
+                return Print("It's just a little plant!");
             }
             else if (Height == PlantSize.Tall)
             {
@@ -68,8 +71,7 @@ public class Plant : Object
 
         Before<Water>(Water);
 
-        Before<Actions.Oil>(Water);
-
+        Before<Oil>(Water);
 
         //Before Examine:
         //self.describe();

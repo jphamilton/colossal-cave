@@ -15,10 +15,7 @@ public class SetOfKeys : Object
 
         FoundIn<InsideBuilding>();
 
-        Before<Count>(() =>
-        {
-            return Print("A dozen or so keys.");
-        });
+        Before<Count>(() => Print("A dozen or so keys."));
 
     }
 }

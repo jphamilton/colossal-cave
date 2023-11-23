@@ -8,14 +8,18 @@ public class BrassLantern : Object
 {
     public int PowerRemaining { get; set; }
 
+    public BrassLantern()
+    {
+        On = false;
+        DaemonStarted = true;
+        PowerRemaining = 330;
+    }
+
     public override void Initialize()
     {
         Name = "brass lantern";
         Synonyms.Are("lamp", "headlamp", "headlight", "lantern", "light", "shiny", "brass");
-        On = false;
         Switchable = true;
-        DaemonStarted = true;
-        PowerRemaining = 330;
 
         FoundIn<InsideBuilding>();
 

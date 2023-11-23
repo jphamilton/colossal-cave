@@ -40,7 +40,6 @@ public class Curtains : Scenic
 
         FoundIn<SoftRoom>();
 
-
         Before<Take>(() =>
         {
             Print("Now don't go ripping up the place!");
@@ -54,8 +53,7 @@ public class Curtains : Scenic
 
     private bool NothingExciting()
     {
-        Print("You don't find anything exciting behind the curtains.");
-        return true;
+        return Print("You don't find anything exciting behind the curtains.");
     }
 }
 
@@ -70,11 +68,7 @@ public class Moss : Scenic
 
         FoundIn<SoftRoom>();
 
-        Before<Take>(() =>
-        {
-            Print("It crumbles to nothing in your hands.");
-            return true;
-        });
+        Before<Take>(() => Print("It crumbles to nothing in your hands."));
     }
 }
 

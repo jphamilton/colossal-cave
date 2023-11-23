@@ -36,9 +36,9 @@ public class Snake : Object
 
         Before<Give>(() =>
         {
-            if (Noun is LittleBird)
+            if (Noun is LittleBird bird)
             {
-                Noun.Remove();
+                bird.Remove();
                 Print("The snake has now devoured your bird.");
             }
             else

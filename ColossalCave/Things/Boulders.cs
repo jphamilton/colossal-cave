@@ -9,7 +9,7 @@ public class Boulders : Scenic
         Name = "boulders";
         Synonyms.Are("boulder", "boulders", "rocks", "stones");
         Description = "They're just ordinary boulders.";
-        // has multitude
+        Multitude = true;
 
         FoundIn<SlabRoom>();
     }

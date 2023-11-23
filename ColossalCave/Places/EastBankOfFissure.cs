@@ -25,7 +25,7 @@ public class EastBankOfFissure : FissureRoom
 
     public void BridgeDisappears()
     {
-        Get<CrystalBridge>().Absent = true; ;
+        Get<CrystalBridge>().Absent = true;
         WestTo(CannotCross);
     }
 }

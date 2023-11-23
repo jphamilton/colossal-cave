@@ -1,4 +1,4 @@
-﻿namespace ColossalCave;
+﻿namespace ColossalCave.Places;
 
 public abstract class AboveGround : BelowGround
 {

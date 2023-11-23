@@ -31,12 +31,16 @@ public class SwEnd : BelowGround
 
 public class RepositoryGrate : Door
 {
+    public RepositoryGrate()
+    {
+        Locked = true;
+    }
+
     public override void Initialize()
     {
         Name = "steel grate";
         Synonyms.Are("ordinary", "steel", "grate", "grating");
         Description = "It just looks like an ordinary steel grate.";
-        Locked = true;
 
         FoundIn<SwEnd>();
 
@@ -50,7 +54,6 @@ public class RepositoryGrate : Door
             return "The grate is closed.";
         };
 
-        //with_key nothing
         DoorDirection(Direction<Down>);
 
         DoorTo(() => Room<OutsideGrate>());

@@ -164,12 +164,16 @@ public class RicketyBridge : Door
 
 public class WreckedBridge : Object
 {
+    public WreckedBridge()
+    {
+        Absent = true;
+    }
+
     public override void Initialize()
     {
         Name = "wreckage of bridge";
         Synonyms.Are("wreckage", "wreck", "bridge", "dead", "bear");
         InitialDescription = "The wreckage of the troll bridge (and a dead bear) can be seen at the bottom of the chasm.";
-        Absent = true;
         Static = true;
 
         FoundIn<SwSideOfChasm, NeSideOfChasm>();
