@@ -227,13 +227,13 @@ public abstract class Verb
 
     protected static bool Print(string message, CommandState? state = null)
     {
-        if (state != null)
+        if (Context.Current == null)
         {
-            Context.Current.Print(message, state);
+            Output.Print(message);
         }
         else
         {
-            Output.Print(message);
+            Context.Current.Print(message, state);
         }
 
         return true;
