@@ -23,6 +23,11 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
             throw new ArgumentException($"Object with type {w.T} not found.");
         }
 
+        // clear current parent/children
+        obj.Parent = null;
+        obj.Children = [];
+
+        // update parent/children from save
         if (w.P > 0)
         {
             obj.Parent = Objects.All.Single(x => x.Id == w.P);

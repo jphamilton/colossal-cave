@@ -307,7 +307,7 @@ public partial class Parser
 
         var objects = result.Verb is ResolveObjects ? Objects.WithName(token) : (
             from o in withName
-            where !o.Absent && result.Verb.InScopeOnly ? o.InScope : true
+            where !o.Absent && (result.Verb.InScopeOnly ? o.InScope : true)
             select o
         ).ToList();
 

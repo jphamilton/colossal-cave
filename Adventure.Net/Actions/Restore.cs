@@ -39,7 +39,6 @@ public class Restore : ForwardTokens
 
         var game = JsonSerializer.Deserialize<SaveGame>(json, options);
 
-        // as of now, this is an in place update - yes very horrible, I agree.
         foreach (var w in game.O)
         {
             SaveObjectConverter.ToObject(w);

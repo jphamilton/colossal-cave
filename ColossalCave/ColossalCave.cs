@@ -2,8 +2,6 @@ using Adventure.Net;
 using ColossalCave.Actions;
 using ColossalCave.Places;
 using ColossalCave.Things;
-using System.Linq;
-using System.Text.Json;
 
 namespace ColossalCave;
 
@@ -43,22 +41,6 @@ public class ColossalCaveStory : StoryBase
         Output.PrintLine();
 
         Location = Rooms.Get<EndOfRoad>();
-
-        // ----------------
-        
-        //var saveGame = new SaveGame
-        //{
-        //    O = Objects.All.Select(x => new ObjectWrapper(x)).ToList(),
-        //    L = Context.Story.Location.Id,
-        //    M = Context.Story.Moves,
-        //    CS = Context.Story.CurrentScore
-        //};
-
-        //var json = saveGame.Serialize();
-
-        //var game = SaveGame.Deserialize(json);
-
-        //game.Restore();
     }
 
 }

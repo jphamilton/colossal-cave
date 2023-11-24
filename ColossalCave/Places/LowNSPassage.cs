@@ -15,4 +15,3 @@ public class LowNSPassage : BelowGround
         NorthTo<Y2>();
     }
 }
-
