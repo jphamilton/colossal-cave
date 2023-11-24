@@ -33,7 +33,7 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
             obj.Children = Objects.All.Where(x => w.C.Contains(x.Id)).ToList();
         }
 
-        SetAttributes(w, obj);
+        SetBools(w, obj);
 
         SetNumbers(w, obj);
         
@@ -86,13 +86,6 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
         }
     }
 
-    private static IOrderedEnumerable<PropertyInfo> GetStringProps(Object obj)
-    {
-        return obj.GetType().GetProperties()
-            .Where(prop => prop.PropertyType == typeof(string) && prop.CanRead && prop.CanWrite && prop.Name != "Id" && prop.GetCustomAttribute<JsonIgnoreAttribute>() == null)
-            .OrderBy(prop => prop.Name);
-    }
-
     private static void WriteNumbers(Utf8JsonWriter writer, Object obj)
     {
         var numericProps = GetNumericProps(obj);
@@ -110,13 +103,6 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
 
             writer.WriteEndArray();
         }
-    }
-
-    private static IOrderedEnumerable<PropertyInfo> GetNumericProps(Object obj)
-    {
-        return obj.GetType().GetProperties()
-            .Where(prop => IsNumericType(prop.PropertyType) && prop.CanRead && prop.CanWrite && prop.Name != "Id" && prop.GetCustomAttribute<JsonIgnoreAttribute>() == null)
-            .OrderBy(prop => prop.Name);
     }
 
     private static void WriteChildren(Utf8JsonWriter writer, Object obj)
@@ -141,7 +127,6 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
         var attributes = GetAttributes(obj, out int bitCount);
         writer.WriteBase64String("a", attributes);
         writer.WriteNumber("ax", bitCount);
-
     }
 
     private static byte[] GetAttributes(Object obj, out int bitCount)
@@ -160,10 +145,26 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
         return GetBytes(boolValues);
     }
 
+    private static bool ReadWriteProps(PropertyInfo prop) => prop.CanRead && prop.CanWrite && prop.GetCustomAttribute<JsonIgnoreAttribute>() == null;
+
     private static IOrderedEnumerable<PropertyInfo> GetBoolProps(Object obj)
     {
         return obj.GetType().GetProperties()
-            .Where(prop => prop.PropertyType == typeof(bool) && prop.CanRead && prop.CanWrite && prop.GetCustomAttribute<JsonIgnoreAttribute>() == null)
+            .Where(prop => prop.PropertyType == typeof(bool) && ReadWriteProps(prop))
+            .OrderBy(prop => prop.Name);
+    }
+
+    private static IOrderedEnumerable<PropertyInfo> GetNumericProps(Object obj)
+    {
+        return obj.GetType().GetProperties()
+            .Where(prop => IsNumericType(prop.PropertyType) && prop.Name != "Id" && ReadWriteProps(prop))
+            .OrderBy(prop => prop.Name);
+    }
+
+    private static IOrderedEnumerable<PropertyInfo> GetStringProps(Object obj)
+    {
+        return obj.GetType().GetProperties()
+            .Where(prop => prop.PropertyType == typeof(string) && ReadWriteProps(prop))
             .OrderBy(prop => prop.Name);
     }
 
@@ -219,7 +220,7 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
         }
     }
 
-    private static void SetAttributes(SaveObject w, Object obj)
+    private static void SetBools(SaveObject w, Object obj)
     {
         var boolProps = GetBoolProps(obj);
         byte[] bytes = Convert.FromBase64String(w.A);

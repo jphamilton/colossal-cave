@@ -7,9 +7,9 @@ public class Take : Verb
     /*
     Verb 'take' 'carry' 'hold'
         * multi                                     -> Take
-        * 'off' <held>                              -> Disrobe //TODO: not implemented
-        * multiinside 'from'/'off' noun             -> Remove
-        * 'inventory'                               -> Inv;    // TODO: not implemented
+        * 'off' <held>                              -> Disrobe
+        * multiinside 'from'/'off' noun             -> Remove  // TODO: not implemented
+        * 'inventory'                               -> Inv;    // TODO: not implemented - not possible with current parser
     */
     public Take()
     {
@@ -22,11 +22,12 @@ public class Take : Verb
     {
         var objects =
             (from o in CurrentRoom.ObjectsInRoom()
-            where !o.Static && !o.Scenery
-            select o).ToList();
+             where !o.Static && !o.Scenery
+             select o).ToList();
 
         if (objects.Count == 1)
         {
+            // TODO: Can this be replaced with ImplicitTake?
             // implicit take
             var obj = objects.Single();
             Print($"({obj.DefiniteArticle} {obj.Name})");
@@ -56,7 +57,9 @@ public class Take : Verb
         }
         else
         {
-            if (Inventory.Count >= 7) // TODO: No way to change Inventory rules like this
+            // TODO: No way to change Inventory rules like this - this probably needs to be moved to InventoryRoot maybe?
+
+            if (Inventory.Count >= 8)
             {
                 Print("You're carrying too many things already.");
                 return false;
@@ -69,5 +72,9 @@ public class Take : Verb
         return true;
     }
 
+    public bool Expects([Held]Object obj, Preposition.Off off)
+    {
+        return Redirect<Disrobe>(x => x.Expects(obj));
+    }
 
 }

@@ -64,7 +64,7 @@ public class Dwarf : Object
 
             if (Count == 0)
             {
-                DaemonStarted = false;
+                DaemonRunning = false;
                 return;
             }
 

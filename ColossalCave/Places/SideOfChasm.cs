@@ -39,7 +39,7 @@ public class SideOfChasm : BelowGround
                 var wreckedBridge = Objects.Get<WreckedBridge>();
 
                 bear.Remove();
-                bear.DaemonStarted = false;
+                bear.DaemonRunning = false;
 
                 ricketyBridge.Absent = true;
                 ricketyBridge.Remove();

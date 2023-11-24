@@ -16,7 +16,7 @@ public class CaveCloser : Object
                 return;
             }
 
-            DaemonStarted = false;
+            DaemonRunning = false;
 
             Global.State.CavesClosed = true;
 
@@ -30,14 +30,14 @@ public class CaveCloser : Object
 
             Get<SetOfKeys>().Remove();
 
-            Get<Dwarf>().DaemonStarted = false;
-            Get<Pirate>().DaemonStarted = false;
+            Get<Dwarf>().DaemonRunning = false;
+            Get<Pirate>().DaemonRunning = false;
 
             Get<BurlyTroll>().Remove();
             Get<Bear>().Remove();
             Get<Dragon>().Remove();
 
-            Get<EndgameTimer>().DaemonStarted = true;
+            Get<EndgameTimer>().DaemonRunning = true;
 
             Print("\nA sepulchral voice reverberating through the cave says, \"Cave " +
                 "closing soon. All adventurers exit immediately through main office.\"");
@@ -53,7 +53,7 @@ public class EndgameTimer : Object
     public override void Initialize()
     {
 
-        DaemonStarted = false;
+        DaemonRunning = false;
 
         Daemon = () =>
         {
@@ -64,7 +64,7 @@ public class EndgameTimer : Object
                 return;
             }
 
-            DaemonStarted = false;
+            DaemonRunning = false;
 
             Score.Add(10, true);
 

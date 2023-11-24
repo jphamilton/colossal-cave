@@ -55,7 +55,7 @@ public class Pirate : Object
 
                 if (HasStolenSomething)
                 {
-                    DaemonStarted = false;
+                    DaemonRunning = false;
                 }
 
                 Print(
@@ -81,7 +81,7 @@ public class Pirate : Object
 
             if (HasBeenSpotted)
             {
-                DaemonStarted = false;
+                DaemonRunning = false;
             }
 
             var score = 0;

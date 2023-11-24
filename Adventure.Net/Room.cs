@@ -18,20 +18,23 @@ public abstract class Room : Object
         DefiniteArticle = "";
     }
 
+    /// <summary>
+    /// Room has been visited
+    /// </summary>
+    public bool Visited { get; set; }
+
     [JsonIgnore]
     public string CantGo { get; set; }
 
+    /// <summary>
+    /// Routine that is called when player is moving in darkness
+    /// </summary>
     public Action DarkToDark { get; set; }
 
     /// <summary>
     /// Called the first time a player enters the room
     /// </summary>
     public Action Initial { get; set; }
-
-    /// <summary>
-    /// Room has been visited
-    /// </summary>
-    public bool Visited { get; set; }
 
     private void AddToRoomMap<T>(string direction) where T : Room
     {

@@ -26,8 +26,8 @@ public abstract class Object
 
     public abstract void Initialize();
 
-    // used internally for serialization
-    public int Id { get; set; }
+    public int Id { get; set; } // used internally for serialization
+    public override string ToString() => $"{Name}";
 
     [JsonIgnore]
     public Object Parent { get; set; }
@@ -36,14 +36,7 @@ public abstract class Object
     public IList<Object> Children { get; set; } = new List<Object>();
 
     [JsonIgnore]
-    public Synonyms Synonyms { get; set; }
-
-    protected Object()
-    {
-        Synonyms = new Synonyms();
-    }
-
-    public override string ToString() => $"{Name}";
+    public Synonyms Synonyms { get; set; } = [];
 
     [JsonIgnore]
     public string Name { get; set; }
@@ -98,28 +91,25 @@ public abstract class Object
     public string ThatOrThose => PluralName ? Those : That;
     public string IsOrAre => PluralName ? Are : Is;
 
-    // attributes
-    public bool Absent { get; set; }
-    public bool Animate { get; set; }
-    public bool Clothing { get; set; }
-    public bool Edible { get; set; }
-    public bool Light { get; set; }
-    public bool Lockable { get; private set; }
-    public bool Locked { get; set; }
-    public bool Multitude { get; set; }
-    public bool On { get; set; }
-    public bool Open { get; set; }
-    public bool Openable { get; set; }
-    // Object is a feature of its location
-    public bool Scenery { get; set; }
-    // Object is fixed in place
-    public bool Static { get; set; }
-    public bool Switchable { get; set; }
-    public bool Touched { get; set; }
-    public bool Transparent { get; set; }
-    public bool Worn { get; set; }
-
-    public bool DaemonStarted { get; set; }
+    // Object Attributes
+    public bool Absent { get; set; }                    // When true, Object is currently unavailable/not visible at it's location
+    public bool Animate { get; set; }                   // Is alive
+    public bool Clothing { get; set; }                  // Is clothing that can be worn
+    public bool Edible { get; set; }                    // Can be eaten
+    public bool Light { get; set; }                     // Provides light
+    public bool Lockable { get; private set; }          // Can be locked
+    public bool Locked { get; set; }                    // Is locked/unlocked
+    public bool Multitude { get; set; }                 // more than one (e.g. a pile of leaves)
+    public bool On { get; set; }                        // Is on/off
+    public bool Open { get; set; }                      // Is open/closed
+    public bool Openable { get; set; }                  // Can open/close
+    public bool Scenery { get; set; }                   // Object is a feature of its location (described in room text)
+    public bool Static { get; set; }                    // Object is fixed in place
+    public bool Switchable { get; set; }                // Can turn on/off
+    public bool Touched { get; set; }                   // Has been picked up
+    public bool Transparent { get; set; }               // See-thru
+    public bool Worn { get; set; }                      // Clothing is being worn
+    public bool DaemonRunning { get; set; }             // Daemon is running
 
     public void LocksWithKey<T>(bool isLocked) where T : Object
     {
@@ -317,11 +307,10 @@ public abstract class Object
     public static bool In<T>() where T : Room
     {
         Object room = Rooms.Get<T>();
-        return (CurrentRoom.Location == room);
+        return CurrentRoom.Location == room;
     }
 
     protected static T Room<T>() where T : Room => Rooms.Get<T>();
-
     public bool InScope => CurrentRoom.ObjectsInScope().Contains(this);
     public static bool IsCarrying<T>() where T : Object => Inventory.Contains<T>();
     public static bool IsCarrying(Object obj) => Inventory.Contains(obj);

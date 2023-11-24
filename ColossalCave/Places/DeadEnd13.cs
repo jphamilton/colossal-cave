@@ -20,7 +20,7 @@ public class DeadEnd13 : DeadEnd
         Initial = () =>
         {
             var pirate = Objects.Get<Pirate>();
-            pirate.DaemonStarted = false;
+            pirate.DaemonRunning = false;
 
             var chest = Objects.Get<TreasureChest>();
 

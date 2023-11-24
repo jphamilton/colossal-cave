@@ -22,8 +22,9 @@ public class InventoryTests : BaseTestFixture
 
         Inventory.Add(Objects.Get<EggSizedEmerald>());
         Inventory.Add(Objects.Get<RareCoins>());
+        Inventory.Add(Objects.Get<PreciousJewelry>());
 
-        Assert.Equal(7, Inventory.Count);
+        Assert.Equal(8, Inventory.Count);
 
         var diamonds = Objects.Get<Diamonds>();
         diamonds.MoveToLocation();

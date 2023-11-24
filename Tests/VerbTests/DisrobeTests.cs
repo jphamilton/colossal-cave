@@ -39,6 +39,39 @@ public class DisrobeTests : BaseTestFixture
     }
 
     [Fact]
+    public void should_take_off_cloak()
+    {
+        var cloak = new BlackCloak();
+        cloak.Initialize();
+
+        Objects.Add(cloak);
+
+        cloak.MoveToLocation();
+
+        Assert.False(cloak.Worn);
+
+        Execute("wear cloak");
+
+        Assert.Contains("(first taking the black cloak)", ConsoleOut);
+        Assert.Contains("You put on the black cloak.", ConsoleOut);
+
+        Assert.True(Inventory.Contains(cloak));
+
+        Assert.True(cloak.Worn);
+
+        ClearOutput();
+
+        Execute("take off cloak");
+
+        Assert.Contains("You take off the black cloak.", ConsoleOut);
+
+        Assert.True(Inventory.Contains(cloak));
+        Assert.False(cloak.Worn);
+
+    }
+
+
+    [Fact]
     public void should_implicitly_disrobe()
     {
         var cloak = new BlackCloak();

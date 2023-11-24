@@ -11,7 +11,7 @@ public class BrassLantern : Object
     public BrassLantern()
     {
         On = false;
-        DaemonStarted = true;
+        DaemonRunning = true;
         PowerRemaining = 330;
     }
 
@@ -37,7 +37,7 @@ public class BrassLantern : Object
         {
             if (!On)
             {
-                DaemonStarted = false;
+                DaemonRunning = false;
                 return;
             }
 
@@ -162,7 +162,7 @@ public class BrassLantern : Object
         After<SwitchOn>(() =>
         {
             Light = true;
-            DaemonStarted = true;
+            DaemonRunning = true;
         });
 
         After<SwitchOff>(() => Light = false);

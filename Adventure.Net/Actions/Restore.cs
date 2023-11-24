@@ -26,7 +26,7 @@ public class Restore : ForwardTokens
 
         if (!File.Exists(path))
         {
-            Print("File not found.");
+            return Print("File not found.");
         }
 
         var json = File.ReadAllText(path);

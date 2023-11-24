@@ -86,7 +86,7 @@ public class Bear : Object
             }
 
             IsFollowingYou = true;
-            DaemonStarted = true;
+            DaemonRunning = true;
 
             return Print("Ok, the bear's now following you around.");
         });
@@ -99,7 +99,7 @@ public class Bear : Object
             }
 
             IsFollowingYou = false;
-            DaemonStarted = false;
+            DaemonRunning = false;
 
             var troll = Get<BurlyTroll>();
 
