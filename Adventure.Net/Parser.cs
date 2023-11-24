@@ -75,6 +75,11 @@ public partial class Parser
 
         _previous = result;
 
+        if (result.Verb is ResolveObjects resolved && result.Objects.Count > 0)
+        {
+            result.Handled = resolved.Handle(result.Objects);
+        }
+
         return result;
     }
 
@@ -116,7 +121,11 @@ public partial class Parser
 
             if (obj != null)
             {
-                if (obj.InScope || !result.Verb.InScopeOnly)
+                if (obj is MultipleObjectsFound found)
+                {
+                    return ResolveMultipleObjects(verb, found);
+                }
+                else if (obj.InScope || !result.Verb.InScopeOnly || result.Verb is ResolveObjects)
                 {
                     if (result.Preposition == null || !result.Objects.Any())
                     {
@@ -135,10 +144,6 @@ public partial class Parser
                             result.Objects.Remove(obj);
                         }
                     }
-                }
-                else if (obj is MultipleObjectsFound found)
-                {
-                    return ResolveMultipleObjects(verb, found);
                 }
                 else
                 {
@@ -300,12 +305,13 @@ public partial class Parser
         // objects may have the same synonyms, so multiple items could be returned here
         var withName = Objects.WithName(token).Where(x => x is not Room || x is Door).ToList();
 
-        var objects = (
+        var objects = result.Verb is ResolveObjects ? Objects.WithName(token) : (
             from o in withName
             where !o.Absent && result.Verb.InScopeOnly ? o.InScope : true
             select o
         ).ToList();
 
+        
         // objects exist but are not in scope (because they are out of the room or inside containers, etc)
         if (withName.Count > 0 && objects.Count == 0)
         {
@@ -335,7 +341,7 @@ public partial class Parser
         {
             var obj = objects[0];
 
-            if (obj.InScope || !result.Verb.InScopeOnly)
+            if (obj.InScope || !result.Verb.InScopeOnly || result.Verb is ResolveObjects)
             {
                 return obj;
             }
@@ -436,7 +442,7 @@ public partial class Parser
 
     private void ValidateResult(ParserResult result)
     {
-        if (result.Error.HasValue())
+        if (result.Error.HasValue() || result.Verb is ResolveObjects)
         {
             return;
         }

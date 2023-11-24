@@ -7,6 +7,7 @@ public class OutsideGrate : AboveGround
     public override void Initialize()
     {
         Name = "Outside Grate";
+        Synonyms.Are("outside", "grate");
 
         Description = "You are in a 20-foot depression floored with bare dirt. " +
                       "Set into the dirt is a strong steel grate mounted in concrete. " +

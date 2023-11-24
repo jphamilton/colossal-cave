@@ -15,10 +15,7 @@ public static class MovePlayer
     {
         if (Context.Current != null)
         {
-            Context.Current.Move = () =>
-            {
-                return Move(room);
-            };
+            Context.Current.Move = () => Move(room);
         }
         else
         {
