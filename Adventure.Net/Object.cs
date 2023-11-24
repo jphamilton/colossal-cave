@@ -1,10 +1,11 @@
 ﻿using Adventure.Net.Actions;
-using Adventure.Net.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Adventure.Net;
+
 
 public abstract class Object
 {
@@ -26,10 +27,16 @@ public abstract class Object
     public abstract void Initialize();
 
     // used internally for serialization
-    public long Id { get; set; }
+    public int Id { get; set; }
 
+    [JsonIgnore]
     public Object Parent { get; set; }
+
+    [JsonIgnore]
     public IList<Object> Children { get; set; } = new List<Object>();
+
+    [JsonIgnore]
+    public Synonyms Synonyms { get; set; }
 
     protected Object()
     {
@@ -38,14 +45,22 @@ public abstract class Object
 
     public override string ToString() => $"{Name}";
 
+    [JsonIgnore]
     public string Name { get; set; }
+    
+    [JsonIgnore]
     public bool PluralName { get; set; }
-    public Synonyms Synonyms { get; set; }
+    
+    [JsonIgnore]
     public Action Daemon { get; set; }
-    public bool DaemonStarted { get; set; }
+    
+    [JsonIgnore]
     public string Description { get; set; }
+    
+    [JsonIgnore]
     public string InitialDescription { get; set; }
 
+    [JsonIgnore]
     public string IndefiniteArticle
     {
         get
@@ -60,6 +75,7 @@ public abstract class Object
         set { indefiniteArticle = value; }
     }
 
+    [JsonIgnore]
     public string DefiniteArticle
     {
         get
@@ -75,6 +91,7 @@ public abstract class Object
         set => definiteArticle = value;
     }
 
+    [JsonIgnore]
     public Func<string> Describe { get; set; }
 
     public string TheyreOrThats => PluralName ? Theyre : Thats;
@@ -102,6 +119,8 @@ public abstract class Object
     public bool Transparent { get; set; }
     public bool Worn { get; set; }
 
+    public bool DaemonStarted { get; set; }
+
     public void LocksWithKey<T>(bool isLocked) where T : Object
     {
         Lockable = true;
@@ -109,6 +128,7 @@ public abstract class Object
         Key = Objects.Get<T>();
     }
 
+    [JsonIgnore]
     public Object Key { get; set; }
 
     public void Before<T>(Func<string> before) where T : Verb
@@ -371,4 +391,16 @@ public abstract class Object
         FoundIn<R7>();
     }
 
+    public override int GetHashCode()
+    {
+        unchecked // Overflow is fine, just wrap
+        {
+            int hash = 17;
+            foreach (char c in GetType().FullName)
+            {
+                hash = (hash * 31) + c;
+            }
+            return hash;
+        }
+    }
 }

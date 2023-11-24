@@ -19,7 +19,7 @@ public class SecretNSCanyon : BelowGround
         {
             if (direction is South)
             {
-                Global.CanyonFrom = this;
+                Global.State.CanyonFrom = this;
             }
 
             return false;

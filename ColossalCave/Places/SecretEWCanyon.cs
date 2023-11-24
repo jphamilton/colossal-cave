@@ -24,7 +24,7 @@ public class SecretEWCanyon : BelowGround
         {
             if (direction is West)
             {
-                Global.CanyonFrom = this;
+                Global.State.CanyonFrom = this;
             }
 
             return false;

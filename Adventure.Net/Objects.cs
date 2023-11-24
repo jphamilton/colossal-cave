@@ -14,7 +14,7 @@ public static class Objects
     public static void Load(IStory story)
     {
         objects.Clear();
-        long id = 0;
+        int id = 0;
 
         void Add(IList<Type> types)
         {

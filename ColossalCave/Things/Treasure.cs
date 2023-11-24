@@ -29,7 +29,7 @@ public abstract class Treasure : Object
             {
                 score += 2;
                 Found = true;
-                Global.TreasuresFound++;
+                Global.State.TreasuresFound++;
             }
 
             Score.Add(score, true);

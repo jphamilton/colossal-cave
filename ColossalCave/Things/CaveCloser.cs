@@ -11,14 +11,14 @@ public class CaveCloser : Object
     {
         Daemon = () =>
         {
-            if (Global.TreasuresFound < Global.MaxTreasures)
+            if (Global.State.TreasuresFound < Global.MaxTreasures)
             {
                 return;
             }
 
             DaemonStarted = false;
 
-            Global.CavesClosed = true;
+            Global.State.CavesClosed = true;
 
             Score.Add(25, true);
 

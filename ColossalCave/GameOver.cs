@@ -20,7 +20,7 @@ public static class GameOver
     {
         const string youDied = "*** You have died ***";
 
-        Global.Deaths++; // this is models after the inform source which is why it's not just a private variable here
+        Global.State.Deaths++; // this is models after the inform source which is why it's not just a private variable here
         int score = -10;
 
         Output.Print("\n\n");
@@ -29,7 +29,7 @@ public static class GameOver
         //if (caves_closed)
         //    "It looks as though you're dead. Well, seeing as how it's so close to closing time anyway,
         //    I think we'll just call it a day.";
-        switch (Global.Deaths)
+        switch (Global.State.Deaths)
         {
             case 1:
                 Output.Print("Oh dear, you seem to have gotten yourself killed. " +
@@ -54,7 +54,7 @@ public static class GameOver
 
         if (yes)
         {
-            switch (Global.Deaths)
+            switch (Global.State.Deaths)
             {
                 case 1:
                     Output.Print(
@@ -108,7 +108,7 @@ public static class GameOver
         }
         else
         {
-            switch (Global.Deaths)
+            switch (Global.State.Deaths)
             {
                 case 1:
                     Output.Print("Very well.");

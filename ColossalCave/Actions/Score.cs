@@ -13,6 +13,9 @@ public class Score : Verb
     public bool Expects()
     {
         Print($"You have so far scored {Context.Story.CurrentScore} out of a possible {Context.Story.PossibleScore}, in {Context.Story.Moves} turns, earning you the rank of {GetRank()}");
+        
+        // don't count this command as a turn
+        Context.Story.Moves--;
         return true;
     }
 

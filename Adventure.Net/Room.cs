@@ -1,13 +1,14 @@
 using Adventure.Net.Actions;
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Adventure.Net;
 
 public abstract class Room : Object
 {
-    private readonly Dictionary<string, Func<Room>> roomMap = new();
-    private readonly Dictionary<Type, Func<Direction, bool>> beforeMoveRoutines = new();
+    private readonly Dictionary<string, Func<Room>> roomMap = [];
+    private readonly Dictionary<Type, Func<Direction, bool>> beforeMoveRoutines = [];
 
     protected Room()
     {
@@ -17,6 +18,7 @@ public abstract class Room : Object
         DefiniteArticle = "";
     }
 
+    [JsonIgnore]
     public string CantGo { get; set; }
 
     public Action DarkToDark { get; set; }

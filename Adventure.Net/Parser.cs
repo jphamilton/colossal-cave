@@ -47,6 +47,15 @@ public partial class Parser
 
         tokens.RemoveAt(0);
 
+        if (verb is ForwardTokens forward)
+        {
+            // response is returned as an error so that processing does not continue
+            return new ParserResult
+            {
+                Handled = forward.Handle(tokens),
+            };
+        }
+
         if (tokens.Count == 0)
         {
             var partial = CheckForPossiblePartial(verb);

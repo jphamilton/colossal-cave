@@ -33,7 +33,7 @@ public abstract class Verb
     }
 
     public bool InScopeOnly { get; set; } = true;
-
+    
     public MethodInfo GetHandler(string key)
     {
         var parameters = key.Split('.').ToList();
@@ -227,7 +227,15 @@ public abstract class Verb
 
     protected static bool Print(string message, CommandState? state = null)
     {
-        Context.Current.Print(message, state);
+        if (state != null)
+        {
+            Context.Current.Print(message, state);
+        }
+        else
+        {
+            Output.Print(message);
+        }
+
         return true;
     }
 }

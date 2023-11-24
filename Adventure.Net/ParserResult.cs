@@ -52,6 +52,7 @@ public class ParserResult : Parameters
     public List<object> Ordered { get; } = new();
     public TokenizedInput Tokens { get; set; }
     public MethodInfo Expects { get; set; }
+    public bool Handled { get; set; }
 
     public List<string> Input
     {

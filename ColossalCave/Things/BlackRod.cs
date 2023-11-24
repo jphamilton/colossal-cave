@@ -22,7 +22,7 @@ public class BlackRod : Object
 
             if (CurrentRoom.Is<WestSideOfFissure>() || CurrentRoom.Is<EastBankOfFissure>())
             {
-                if (Global.CavesClosed)
+                if (Global.State.CavesClosed)
                 {
                     return Print("Peculiar. Nothing happens.");
                 }

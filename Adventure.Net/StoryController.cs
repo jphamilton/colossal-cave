@@ -33,6 +33,11 @@ public class StoryController
 
             var result = parser.Parse(CommandPrompt.GetInput());
             
+            if (result.Handled)
+            {
+                continue;
+            }
+
             if (result.Error.HasValue())
             {
                 Output.Print(result.Error);

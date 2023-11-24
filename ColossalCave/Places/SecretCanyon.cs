@@ -45,7 +45,7 @@ public class SecretCanyon : BelowGround
 
         EastTo(() =>
         {
-            if (Global.CanyonFrom is SecretEWCanyon canyon)
+            if (Global.State.CanyonFrom is SecretEWCanyon canyon)
             {
                 return canyon;
             }
@@ -61,7 +61,7 @@ public class SecretCanyon : BelowGround
 
         NorthTo(() =>
         {
-            if (Global.CanyonFrom is SecretNSCanyon canyon)
+            if (Global.State.CanyonFrom is SecretNSCanyon canyon)
             {
                 return canyon;
             }
@@ -75,7 +75,7 @@ public class SecretCanyon : BelowGround
             return Rooms.Get<SecretEWCanyon>();
         });
 
-        OutTo(() => Global.CanyonFrom);
+        OutTo(() => Global.State.CanyonFrom);
 
     }
 
