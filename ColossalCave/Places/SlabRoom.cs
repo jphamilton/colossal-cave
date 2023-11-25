@@ -16,7 +16,7 @@ public class SlabRoom : BelowGround
 
         SouthTo<WestEndOfTwoPitRoom>();
 
-        UpTo<SecretNSCanyon>();
+        UpTo<SecretNSCanyon0>();
 
         NorthTo<Bedquilt>();
 

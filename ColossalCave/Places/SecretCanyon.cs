@@ -61,7 +61,7 @@ public class SecretCanyon : BelowGround
 
         NorthTo(() =>
         {
-            if (Global.State.CanyonFrom is SecretNSCanyon canyon)
+            if (Global.State.CanyonFrom is SecretNSCanyon0 canyon)
             {
                 return canyon;
             }
@@ -72,7 +72,7 @@ public class SecretCanyon : BelowGround
                 return this;
             }
 
-            return Rooms.Get<SecretEWCanyon>();
+            return Rooms.Get<SecretNSCanyon0>();
         });
 
         OutTo(() => Global.State.CanyonFrom);

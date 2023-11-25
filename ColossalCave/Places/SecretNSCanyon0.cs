@@ -3,7 +3,7 @@ using Adventure.Net.Actions;
 
 namespace ColossalCave.Places;
 
-public class SecretNSCanyon : BelowGround
+public class SecretNSCanyon0 : BelowGround
 {
     public override void Initialize()
     {

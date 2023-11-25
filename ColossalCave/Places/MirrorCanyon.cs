@@ -17,7 +17,7 @@ public class MirrorCanyon : BelowGround
             "\n\n" +
             "A small window can be seen in either wall, some fifty feet up.";
 
-        SouthTo<SecretNSCanyon>();
+        SouthTo<SecretNSCanyon0>();
 
         NorthTo<Reservoir>();
     }

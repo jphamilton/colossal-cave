@@ -10,10 +10,9 @@ public class SaveObject
     public List<int> C { get; set; } = [];
     public string A { get; set; }
     public int AX { get; set; }
-
     public List<double> N { get; set; } = [];
-
     public List<string> S { get; set; } = [];
+    public List<int> O { get; set; } = [];
 
     public Object Object { get; }
 

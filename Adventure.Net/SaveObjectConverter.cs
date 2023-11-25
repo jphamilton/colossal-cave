@@ -11,10 +11,10 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
 {
     public override SaveObject Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {
-        throw new Exception("Deserialize directly to ObjectWrapper");
+        throw new Exception("Deserialize directly to SaveGame");
     }
 
-    public static Object ToObject(SaveObject w)
+    public static Object Restore(SaveObject w)
     {
         var obj = Objects.All.FirstOrDefault(x => x.GetHashCode() == w.T);
 
@@ -44,6 +44,8 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
         
         SetStrings(w, obj);
 
+        SetObjects(w, obj);
+
         return obj;
     }
 
@@ -68,8 +70,29 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
         WriteNumbers(writer, obj);
 
         WriteStrings(writer, obj);
+        
+        WriteObjects(writer, obj);
 
         writer.WriteEndObject();
+    }
+
+    private static void WriteObjects(Utf8JsonWriter writer, Object obj)
+    {
+        var objProps = GetObjectProps(obj);
+
+        var objects = objProps.Select(p => (Object)p.GetValue(obj)).ToList();
+
+        if (objects.Count > 0)
+        {
+            writer.WriteStartArray("o");
+
+            foreach (var o in objects)
+            {
+                JsonSerializer.Serialize(writer, o?.Id ?? -1);
+            }
+
+            writer.WriteEndArray();
+        }
     }
 
     private static void WriteStrings(Utf8JsonWriter writer, Object obj)
@@ -163,6 +186,13 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
     {
         return obj.GetType().GetProperties()
             .Where(prop => IsNumericType(prop.PropertyType) && prop.Name != "Id" && ReadWriteProps(prop))
+            .OrderBy(prop => prop.Name);
+    }
+
+    private static IOrderedEnumerable<PropertyInfo> GetObjectProps(Object obj)
+    {
+        return obj.GetType().GetProperties()
+            .Where(prop => prop.PropertyType.IsSubclassOf(typeof(Object)) && ReadWriteProps(prop))
             .OrderBy(prop => prop.Name);
     }
 
@@ -299,6 +329,25 @@ public class SaveObjectConverter : JsonConverter<SaveObject>
         {
             stringProp.SetValue(obj, stringValues[0]);
             stringValues.RemoveAt(0);
+        }
+    }
+
+    private static void SetObjects(SaveObject w, Object obj)
+    {
+        var objProps = GetObjectProps(obj);
+        var objValues = w.O;
+
+        foreach (var objProp in objProps)
+        {
+            var id = objValues[0];
+
+            if (id > 0)
+            {
+                var o = Objects.All.Single(x => x.Id == id);
+                objProp.SetValue(obj, o);
+            }
+
+            objValues.RemoveAt(0);
         }
     }
 }

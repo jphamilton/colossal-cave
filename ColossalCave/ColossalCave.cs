@@ -30,10 +30,10 @@ public class ColossalCaveStory : StoryBase
         Score.Add(36);
 
         var dwarf = Objects.Get<Dwarf>();
-        dwarf.DaemonRunning = true;
+        //dwarf.DaemonRunning = true;
 
         var pirate = Objects.Get<Pirate>();
-        pirate.DaemonRunning = true;
+        //pirate.DaemonRunning = true;
 
         var closer = Objects.Get<CaveCloser>();
         closer.DaemonRunning = true;

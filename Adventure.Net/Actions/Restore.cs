@@ -41,7 +41,7 @@ public class Restore : ForwardTokens
 
         foreach (var w in game.O)
         {
-            SaveObjectConverter.ToObject(w);
+            SaveObjectConverter.Restore(w);
         }
 
         Context.Story.Location = (Room)Objects.All.Single(x => x.Id == game.L);
