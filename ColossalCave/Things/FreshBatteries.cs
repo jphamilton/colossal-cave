@@ -15,6 +15,12 @@ public class FreshBatteries : Object
         Description = "They look like ordinary batteries. (A sepulchral voice says, \"Still going!\")";
         InitialDescription = "There are fresh batteries here.";
 
+        // Vending machine is not a container but mimics one for the batteries
+        var vendingMachine = Objects.Get<VendingMachine>();
+        Parent = vendingMachine;
+        vendingMachine.Children.Add(this);
+        
+
         Before<Count>(() => "A pair.");
     }
 }

@@ -18,16 +18,16 @@ public class DeadEnd14 : BelowGround
         OutTo<DifferentMaze2>();
 
     }
+}
 
-    public class MessageInTheDust : Scenic
+public class MessageInTheDust : Scenic
+{
+    public override void Initialize()
     {
-        public override void Initialize()
-        {
-            Name = "message in the dust";
-            Synonyms.Are("message", "scrawl", "writing", "script", "scrawled", "flowery");
-            Description = "The message reads, \"This is not the maze where the pirate leaves his treasure chest.\"";
+        Name = "message in the dust";
+        Synonyms.Are("message", "scrawl", "writing", "script", "scrawled", "flowery");
+        Description = "The message reads, \"This is not the maze where the pirate leaves his treasure chest.\"";
 
-            FoundIn<DeadEnd14>();
-        }
+        FoundIn<DeadEnd14>();
     }
 }

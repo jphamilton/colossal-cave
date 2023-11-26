@@ -49,11 +49,20 @@ public partial class Parser
 
         if (verb is ForwardTokens forward)
         {
-            // response is returned as an error so that processing does not continue
             return new ParserResult
             {
                 Handled = forward.Handle(tokens),
             };
+        }
+
+        if (verb is ResolveObjects r)
+        {
+            var resolvedResult = ResolveObjects(r, tokens);
+            
+            if (resolvedResult.Handled || !string.IsNullOrEmpty(resolvedResult.Error))
+            {
+                return resolvedResult;
+            }
         }
 
         if (tokens.Count == 0)
@@ -68,7 +77,7 @@ public partial class Parser
         }
 
         var result = Parse(verb, verbToken, tokens);
-        
+
         result.VerbToken = verbToken;
 
         ValidateResult(result);
@@ -310,8 +319,15 @@ public partial class Parser
             where !o.Absent && (result.Verb.InScopeOnly ? o.InScope : true)
             select o
         ).ToList();
+        //var withName = Objects.WithName(token).Where(x => x is not Room || x is Door).ToList();
 
-        
+        //var objects = (
+        //    from o in withName
+        //    where !o.Absent && (result.Verb.InScopeOnly ? o.InScope : true)
+        //    select o
+        //).ToList();
+
+
         // objects exist but are not in scope (because they are out of the room or inside containers, etc)
         if (withName.Count > 0 && objects.Count == 0)
         {
@@ -334,14 +350,14 @@ public partial class Parser
                     objects = notHeld;
                 }
             }
-            
+
         }
 
         if (objects.Count == 1)
         {
             var obj = objects[0];
 
-            if (obj.InScope || !result.Verb.InScopeOnly || result.Verb is ResolveObjects)
+            if (obj.InScope || !result.Verb.InScopeOnly)// || result.Verb is ResolveObjects)
             {
                 return obj;
             }
@@ -398,7 +414,7 @@ public partial class Parser
                 expects = null;
             }
         }
-        
+
 
         if (expects == null)
         {
@@ -551,16 +567,6 @@ public partial class Parser
 
     private static void HandleImplicitTake(ParserResult result, MethodInfo expects)
     {
-        //if (result.Objects.Count == 1)
-        //{
-        //    var obj = result.Objects[0];
-        //    if (obj.Parent != null && (obj.Parent is Container || obj.Parent is Supporter))
-        //    {
-        //        result.ImplicitTake = obj;
-        //        return;
-        //    }
-        //}
-
         var args = expects.GetParameters();
 
         args.ForEach((parameter, index) =>
@@ -592,5 +598,34 @@ public partial class Parser
         }
 
         return null;
+    }
+
+    private ParserResult ResolveObjects(ResolveObjects verb, TokenizedInput tokens)
+    {
+        var result = new ParserResult();
+
+        List<Object> resolved = [];
+
+        foreach (var token in tokens)
+        {
+            foreach (var obj in Objects.WithName(token))
+            {
+                if (!resolved.Contains(obj))
+                {
+                    resolved.Add(obj);
+                }
+            }
+        }
+
+        if (resolved.Count > 0)
+        {
+            result.Handled = verb.Handle(resolved);
+        }
+        else
+        {
+            result.Error = Messages.CantSeeObject;
+        }
+
+        return result;
     }
 }
