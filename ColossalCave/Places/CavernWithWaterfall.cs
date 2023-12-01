@@ -26,7 +26,7 @@ public class Waterfall : Scenic
     {
         Name = "waterfall";
         Synonyms.Are("waterfall", "whirlpool", "sparkling", "whirling");
-        Description = "Wouldn't want to go down in in a barrel!";
+        Description = "Wouldn't want to go down that in a barrel!";
 
         FoundIn<CavernWithWaterfall>();
     }

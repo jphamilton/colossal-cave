@@ -188,4 +188,14 @@ public class MultipleMatchedItemsTests : BaseTestFixture
         Assert.Contains("Which do you mean, the red hat, the black hat or the white hat?", Line1);
         Assert.Contains("Which do you mean, the red hat, the black hat or the white hat?", Line2);
     }
+
+    [Fact]
+    public void should_resolve_object_when_multiple_objects_have_same_adjective()
+    {
+        // in Colossal Cave "bottled" will find "bottled oil" and "bottled water"
+        Execute("purloin bottled oil");
+
+        Assert.DoesNotContain("Which do you mean", ConsoleOut);
+        Assert.Contains("[Purloined.]", ConsoleOut);
+    }
 }

@@ -58,7 +58,7 @@ public partial class Parser
         if (verb is ResolveObjects r)
         {
             var resolvedResult = ResolveObjects(r, tokens);
-            
+
             if (resolvedResult.Handled || !string.IsNullOrEmpty(resolvedResult.Error))
             {
                 return resolvedResult;
@@ -108,9 +108,12 @@ public partial class Parser
 
         var lastToken = "";
 
-        foreach (string token in tokens)
+        for (var t = 0; t < tokens.Count; t++)
         {
-            var obj = GetObject(result, token);
+            var token = tokens[t];
+            var remaining = tokens[t..];
+
+            var obj = GetObject(result, token, remaining);
 
             if (result.Error != null)
             {
@@ -309,77 +312,105 @@ public partial class Parser
         return null;
     }
 
-    private static Object GetObject(ParserResult result, string token)
+    private static Object GetObject(ParserResult result, string token, List<string> remaining = null)
     {
         // objects may have the same synonyms, so multiple items could be returned here
-        var withName = Objects.WithName(token).Where(x => x is not Room || x is Door).ToList();
+        var globalObjects = Objects.WithName(token).Where(x => x is not Room || x is Door).ToList();
 
-        var objects = result.Verb is ResolveObjects ? Objects.WithName(token) : (
-            from o in withName
-            where !o.Absent && (result.Verb.InScopeOnly ? o.InScope : true)
-            select o
-        ).ToList();
-        //var withName = Objects.WithName(token).Where(x => x is not Room || x is Door).ToList();
+        IList<Object> find(string token)
+        {
+            return result.Verb is ResolveObjects ? Objects.WithName(token) : (
+                from o in globalObjects
+                where !o.Absent && (result.Verb.InScopeOnly ? o.InScope : true)
+                select o
+            ).ToList();
+        }
 
-        //var objects = (
-        //    from o in withName
-        //    where !o.Absent && (result.Verb.InScopeOnly ? o.InScope : true)
-        //    select o
-        //).ToList();
-
+        var found = find(token);
 
         // objects exist but are not in scope (because they are out of the room or inside containers, etc)
-        if (withName.Count > 0 && objects.Count == 0)
+        if (globalObjects.Count > 0 && found.Count == 0)
         {
             result.Error = Messages.CantSeeObject;
             return null;
         }
 
-        if (objects.Count > 1)
+        if (found.Count > 1 && remaining?.Count > 0)
+        {
+            // attempt to reduce found list, by processing next tokens
+            
+            // example:
+            // > take the shiny ring
+            //
+            // "shiny" token yields "shiny coins" and "shiny ring"
+            // so we read the next token "ring" which filters the
+            // found list down to the proper object
+
+            // remaining includes token
+            remaining.RemoveAt(0);
+
+            var filtered = found.ToList();
+
+            foreach (var r in remaining)
+            {
+                var next = find(r);
+                filtered = filtered.Where(x => x.Synonyms.Contains(r)).ToList();
+
+                if (filtered.Count == 0)
+                {
+                    break;
+                }
+                else if (filtered.Count == 1)
+                {
+                    return filtered[0];
+                }
+                else if (filtered.Count > 1)
+                {
+                    found = filtered;
+                }
+            }
+        }
+
+        if (found.Count > 1)
         {
             if (result.Verb.MultiHeld)
             {
-                objects = objects.Where(Inventory.Contains).ToList();
+                found = found.Where(Inventory.Contains).ToList();
             }
             else
             {
-                var notHeld = objects.Where(o => !Inventory.Contains(o)).ToList();
+                var notHeld = found.Where(o => !Inventory.Contains(o)).ToList();
 
                 if (notHeld.Count > 0)
                 {
-                    objects = notHeld;
+                    found = notHeld;
                 }
             }
 
         }
 
-        if (objects.Count == 1)
+        if (found.Count == 1)
         {
-            var obj = objects[0];
+            var obj = found[0];
 
-            if (obj.InScope || !result.Verb.InScopeOnly)// || result.Verb is ResolveObjects)
+            if (obj.InScope || !result.Verb.InScopeOnly)
             {
                 return obj;
             }
         }
-        else if (objects.Count > 1)
+        else if (found.Count > 1)
         {
             var last = result.Ordered?.LastOrDefault();
 
             if (last != null && last is Object obj)
             {
-                if (!obj.Name.Contains(token) && !obj.Synonyms.Contains(token))
+                if (obj.Name.Contains(token) || obj.Synonyms.Contains(token))
                 {
-                    return new MultipleObjectsFound(objects);
+                    return new Skip();
                 }
-
-                return new Skip();
             }
-            else
-            {
-                return new MultipleObjectsFound(objects);
-            }
-
+            
+            return new MultipleObjectsFound(found);
         }
 
         return null;

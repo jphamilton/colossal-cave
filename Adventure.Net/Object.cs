@@ -103,7 +103,7 @@ public abstract class Object
     public bool On { get; set; }                        // Is on/off
     public bool Open { get; set; }                      // Is open/closed
     public bool Openable { get; set; }                  // Can open/close
-    public bool Scenery { get; set; }                   // Object is a feature of its location (described in room text)
+    public bool Scenery { get; set; }                   // Object is described in the text of the room and will not be listed with the other objects present.
     public bool Static { get; set; }                    // Object is fixed in place
     public bool Switchable { get; set; }                // Can turn on/off
     public bool Touched { get; set; }                   // Has been picked up
