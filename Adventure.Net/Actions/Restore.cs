@@ -11,6 +11,7 @@ public class Restore : ForwardTokens
     {
         Name = "restore";
         Synonyms.Are("load");
+        GameVerb = true;
     }
 
     public override bool Handle(List<string> tokens)

@@ -8,7 +8,7 @@ namespace Adventure.Net;
 public abstract class Room : Object
 {
     private readonly Dictionary<string, Func<Room>> roomMap = [];
-    private readonly Dictionary<Type, Func<Direction, bool>> beforeMoveRoutines = [];
+    private readonly Dictionary<Type, Func<Direction, bool>> beforeMoveActions = [];
 
     protected Room()
     {
@@ -48,8 +48,8 @@ public abstract class Room : Object
 
     public void Before<T>(Func<Direction, bool> before) where T : IDirectional
     {
-        beforeMoveRoutines.Remove(typeof(T));
-        beforeMoveRoutines.Add(typeof(T), before);
+        beforeMoveActions.Remove(typeof(T));
+        beforeMoveActions.Add(typeof(T), before);
     }
 
     private void AddToRoomMap(string direction, Func<Room> getRoom)
@@ -253,9 +253,9 @@ public abstract class Room : Object
         var direction = (Direction)Verbs.Get(dir);
         var goType = typeof(Go);
 
-        if (beforeMoveRoutines.ContainsKey(goType))
+        if (beforeMoveActions.ContainsKey(goType))
         {
-            var before = beforeMoveRoutines[goType];
+            var before = beforeMoveActions[goType];
 
             if (before != null && before(direction))
             {

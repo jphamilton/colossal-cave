@@ -9,6 +9,7 @@ public class Save : ForwardTokens
     public Save()
     {
         Name = "save";
+        GameVerb = true;
     }
 
     public override bool Handle(List<string> tokens)

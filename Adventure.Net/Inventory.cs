@@ -81,9 +81,7 @@ public static class Inventory
 
     public static void Clear()
     {
-        var copy = Player.Children.ToList();
-
-        foreach(var obj in copy)
+        foreach(var obj in Player.Children.ToList())
         {
             obj.Remove();
         }
