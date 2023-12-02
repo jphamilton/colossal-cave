@@ -1,4 +1,7 @@
-﻿namespace Adventure.Net.Actions;
+﻿using Adventure.Net.Utilities;
+using System.Runtime.CompilerServices;
+
+namespace Adventure.Net.Actions;
 
 public class Quit : Verb
 {
@@ -6,12 +9,17 @@ public class Quit : Verb
     {
         Name = "quit";
         Synonyms.Are("q");
+        GameVerb = true;
     }
 
     public bool Expects()
     {
-        Context.Story.Quit();
-        return true;
+        if (YesOrNo.Ask("Are you sure you want to quit?"))
+        {
+            Context.Story.IsDone = true;
+        }
+
+        return false;
     }
 
 }

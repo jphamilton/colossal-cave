@@ -8,5 +8,4 @@ public interface IStory
     int CurrentScore { get; set; }
     int PossibleScore { get; set; }
     void Initialize();
-    void Quit();
 }

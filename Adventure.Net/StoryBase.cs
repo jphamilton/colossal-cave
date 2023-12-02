@@ -36,13 +36,4 @@ public abstract class StoryBase : IStory
         Start();
     }
 
-    public virtual void Quit()
-    {
-        if (YesOrNo.Ask("Are you sure you want to quit?"))
-        {
-            IsDone = true;
-        }
-    }
-
-
 }
