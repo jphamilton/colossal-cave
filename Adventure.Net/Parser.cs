@@ -606,11 +606,11 @@ public partial class Parser
 
             if (held != null)
             {
-                if (index == 0 && result.Objects.Count == 1 && result.Objects[0].Parent is not InventoryRoot)// !Inventory.Contains(result.Objects[0]))
+                if (index == 0 && result.Objects.Count == 1 && result.Objects[0].Parent is not Player)
                 {
                     result.ImplicitTake = result.Objects[0];
                 }
-                else if (index > 0 && result.IndirectObject != null && result.ImplicitTake == null && result.IndirectObject.Parent is not InventoryRoot)
+                else if (index > 0 && result.IndirectObject != null && result.ImplicitTake == null && result.IndirectObject.Parent is not Player)
                 {
                     result.ImplicitTake = result.IndirectObject;
                 }

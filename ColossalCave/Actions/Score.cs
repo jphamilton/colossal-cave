@@ -8,30 +8,38 @@ public class Score : Verb
     public Score()
     {
         Name = "score";
+        GameVerb = true;
     }
 
     public bool Expects()
     {
-        Print($"You have so far scored {Context.Story.CurrentScore} out of a possible {Context.Story.PossibleScore}, in {Context.Story.Moves} turns, earning you the rank of {GetRank()}");
-        
-        // don't count this command as a turn
-        Context.Story.Moves--;
-        return true;
+        return Print($"You have so far scored {Context.Story.CurrentScore} out of a possible {Context.Story.PossibleScore}, in {Context.Story.Moves} turns, earning you the rank of {GetRank()}");
     }
 
     public static string GetRank()
     {
         var score = Context.Story.CurrentScore;
-        if (score >= 348) return "Grandmaster Adventurer!";
-        if (score >= 330) return "Master, first class.";
-        if (score >= 300) return "Master, second class.";
-        if (score >= 200) return "Junior Master.";
-        if (score >= 130) return "Seasoned Adventurer.";
-        if (score >= 100) return "Experienced Adventurer.";
-        if (score >= 35) return "Adventurer.";
-        if (score >= 10) return "Novice.";
-
-        return "Amateur.";
+        switch (score)
+        {
+            case >= 348:
+                return "Grandmaster Adventurer!";
+            case >= 330:
+                return "Master, first class.";
+            case >= 300:
+                return "Master, second class.";
+            case >= 200:
+                return "Junior Master.";
+            case >= 130:
+                return "Seasoned Adventurer.";
+            case >= 100:
+                return "Experienced Adventurer.";
+            case >= 35:
+                return "Adventurer.";
+            case >= 10:
+                return "Novice.";
+            default:
+                return "Amateur.";
+        }
     }
 
     public static void Add(int value, bool display = false)

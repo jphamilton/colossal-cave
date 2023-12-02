@@ -87,7 +87,7 @@ public class ImplicitTakeTests : BaseTestFixture
         Assert.Contains(Messages.CantSeeObject, ConsoleOut);
         Assert.DoesNotContain("(first taking the set of keys out of the wicker cage)", ConsoleOut);
         Assert.DoesNotContain("You unlock the steel grate.", ConsoleOut);
-        Assert.False(keys.Parent is InventoryRoot);
+        Assert.False(keys.Parent is Player);
     }
 
     [Fact]

@@ -58,7 +58,10 @@ public class StoryController
                 Output.Print("\r\nIt is now pitch dark in here!");
             }
 
-            story.Moves++;
+            if (!result.Verb.GameVerb)
+            {
+                story.Moves++;
+            }
 
             RunDaemons();
 

@@ -15,7 +15,7 @@ public class ImplicitTake : IInvoke
 
     public bool Invoke()
     {
-        if (obj.Parent is not InventoryRoot && !obj.Animate)
+        if (obj.Parent is not Player && !obj.Animate)
         {
             var parent = obj.Parent;
 

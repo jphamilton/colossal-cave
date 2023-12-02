@@ -59,7 +59,7 @@ public class Drop : Verb
 
         if (Inventory.Contains(obj))
         {
-            if (obj.Parent is InventoryRoot)
+            if (obj.Parent is Player)
             {
                 return Dropped();
             }

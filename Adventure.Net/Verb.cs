@@ -32,6 +32,9 @@ public abstract class Verb
         }
     }
 
+    // Score is an example of a game verb. When true, command does not increment game turns.
+    public bool GameVerb { get; set; }
+
     public bool InScopeOnly { get; set; } = true;
     
     public MethodInfo GetHandler(string key)
