@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 using ColossalCave.Things;
 using Xunit;
@@ -11,8 +12,8 @@ public class OilTests : BaseTestFixture
 
     public OilTests()
     {
-        Context.Story.Location = Room<DebrisRoom>();
-        Context.Story.Location.Light = true;
+        Player.Location = Room<DebrisRoom>();
+        Player.Location.Light = true;
 
         oil = Objects.Get<PoolOfOil>();
         ObjectMap.Add(oil, Location);

@@ -1,5 +1,6 @@
 ﻿using Adventure.Net.Extensions;
 using Adventure.Net.Places;
+using Adventure.Net.Things;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ public static class CurrentRoom
 {
     public static Room Location
     {
-        get { return Context.Story.Location; }
+        get { return Player.Location; }
     }
 
     public static void Look(bool showFull)

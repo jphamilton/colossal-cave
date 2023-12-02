@@ -1,4 +1,5 @@
 ﻿using Adventure.Net.Extensions;
+using Adventure.Net.Things;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,7 +76,7 @@ public class CommandHandler
 
         if (Context.Current.Move != null)
         {
-            Context.Story.Location = Context.Current.Move();
+            Player.Location = Context.Current.Move();
         }
 
         Context.Current = null;

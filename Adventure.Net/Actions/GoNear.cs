@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Adventure.Net.Things;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Adventure.Net.Actions;
@@ -27,28 +28,38 @@ public class GoNear : ResolveObjects
             }
         }
 
-        if (obj is Room room)
+        var room = FindRoom(obj);
+
+        if (room != null)
         {
-            Context.Story.Location = room;
+            Player.Location = room;
             CurrentRoom.Look(true);
             return true;
-        }
-        else
-        {
-            var parent = obj.Parent;
-            while (parent != null)
-            {
-                if (parent is Room room2)
-                {
-                    Context.Story.Location = room2;
-                    CurrentRoom.Look(true);
-                    return true;
-                }
-
-                parent = parent.Parent;
-            }
         }
 
         return false;
     }
+
+    private Room FindRoom(Object obj)
+    {
+        if (obj is Room)
+        {
+            return (Room)obj;
+        }
+
+        var parent = obj.Parent;
+
+        while (parent != null)
+        {
+            if (parent is Room room)
+            {
+                return room;
+            }
+
+            parent = parent.Parent;
+        }
+
+        return null;
+    }
+
 }

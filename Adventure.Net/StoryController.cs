@@ -1,4 +1,5 @@
 using Adventure.Net.Extensions;
+using Adventure.Net.Things;
 using System;
 using System.Linq;
 
@@ -22,7 +23,7 @@ public class StoryController
 
         story.Initialize();
 
-        MovePlayer.To(story.Location);
+        MovePlayer.To(Player.Location);
 
         var parser = new Parser();
 
@@ -64,8 +65,6 @@ public class StoryController
             }
 
             RunDaemons();
-
-            story.AfterTurn();
         }
 
     }

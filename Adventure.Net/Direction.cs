@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adventure.Net.Things;
+using System;
 
 namespace Adventure.Net;
 
@@ -15,15 +16,15 @@ public abstract class Direction : Verb
 
     public bool Expects()
     {
-        var room = getRoom(Context.Story.Location);
+        var room = getRoom(Player.Location);
 
-        if (room == Context.Story.Location)
+        if (room == Player.Location)
         {
             // do nothing
         }
         else if (room == null)
         {
-            Print(Context.Story.Location.CantGo);
+            Print(Player.Location.CantGo);
         }
         else
         {

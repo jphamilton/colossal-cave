@@ -1,5 +1,6 @@
 using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 using ColossalCave.Things;
 using System.Linq;
@@ -280,7 +281,7 @@ public partial class CommandLineParserTests : BaseTestFixture
     [Fact]
     public void room_as_object()
     {
-        Context.Story.Location = Room<EndOfRoad>();
+        Player.Location = Room<EndOfRoad>();
         var wellHouse = Objects.Get<WellHouse>();
 
         var result = Parse("go house");

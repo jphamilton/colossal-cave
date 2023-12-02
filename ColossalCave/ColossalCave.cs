@@ -1,4 +1,5 @@
 using Adventure.Net;
+using Adventure.Net.Things;
 using ColossalCave.Actions;
 using ColossalCave.Places;
 using ColossalCave.Things;
@@ -40,7 +41,7 @@ public class ColossalCaveStory : StoryBase
 
         Output.PrintLine();
 
-        Location = Rooms.Get<EndOfRoad>();
+        Player.Location = Rooms.Get<EndOfRoad>();
     }
 
 }

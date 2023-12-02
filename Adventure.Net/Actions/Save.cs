@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Adventure.Net.Things;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -29,7 +30,7 @@ public class Save : ForwardTokens
             var saveGame = new SaveGame
             {
                 O = Objects.All.Select(x => new SaveObject(x)).ToList(),
-                L = Context.Story.Location.Id,
+                L = Player.Location.Id,
                 M = Context.Story.Moves,
                 CS = Context.Story.CurrentScore
             };

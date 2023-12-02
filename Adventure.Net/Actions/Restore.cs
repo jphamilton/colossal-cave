@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Adventure.Net.Things;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
@@ -44,11 +45,11 @@ public class Restore : ForwardTokens
         {
             SaveObjectConverter.Restore(w);
         }
-
-        Context.Story.Location = (Room)Objects.All.Single(x => x.Id == game.L);
+        
         Context.Story.Moves = game.M;
         Context.Story.CurrentScore = game.CS;
 
+        Player.Location = (Room)Objects.All.Single(x => x.Id == game.L);
         CurrentRoom.Look(true);
 
         return true;

@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 using ColossalCave.Things;
 using System.Collections.Generic;
@@ -28,11 +29,11 @@ public class CommandHandlerTests : BaseTestFixture
     [Fact]
     public void go_house()
     {
-        Context.Story.Location = Room<EndOfRoad>();
+        Player.Location = Room<EndOfRoad>();
 
         Execute("go house");
 
-        Assert.Equal(Room<InsideBuilding>(), Context.Story.Location);
+        Assert.Equal(Room<InsideBuilding>(), Player.Location);
     }
 
     [Fact]

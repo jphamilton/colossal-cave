@@ -1,7 +1,4 @@
-﻿using Adventure.Net.Places;
-
-namespace Adventure.Net.Things;
-
+﻿namespace Adventure.Net.Things;
 
 public class Player : Object
 {
@@ -12,5 +9,15 @@ public class Player : Object
         _player = Objects.Get<Player>();
     }
 
-    public static Room Room => (Room)_player.Parent;
+    public static new Room Location
+    {
+        get
+        {
+            return (Room)_player.Parent;
+        }
+        set
+        {
+            _player.Parent = value;
+        }
+    }
 }

@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Things;
 using ColossalCave;
 using ColossalCave.Places;
 using System;
@@ -34,7 +35,7 @@ public abstract class BaseTestFixture : IDisposable
         Output.Initialize(new StringWriter(fakeConsole), new TestFormatter());
         CommandPrompt.Initialize(new StringWriter(), new StringReader(""));
         Context.Story.Initialize();
-        Context.Story.Location = Room<InsideBuilding>();
+        Player.Location = Room<InsideBuilding>();
         Inventory.Clear();
         fakeConsole.Clear();
     }
@@ -63,11 +64,11 @@ public abstract class BaseTestFixture : IDisposable
     {
         get
         {
-            return Context.Story.Location;
+            return Player.Location;
         }
         set
         {
-            Context.Story.Location = value;
+            Player.Location = value;
         }
     }
 

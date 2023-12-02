@@ -1,4 +1,5 @@
 ﻿using Adventure.Net.Places;
+using Adventure.Net.Things;
 
 namespace Adventure.Net;
 
@@ -19,7 +20,7 @@ public static class MovePlayer
         }
         else
         {
-            Context.Story.Location = Move(room);
+            Player.Location = Move(room);
         }
     }
 
@@ -32,7 +33,7 @@ public static class MovePlayer
             room = Rooms.Get<Darkness>();
         }
 
-        Context.Story.Location = room;
+        Player.Location = room;
 
         if (!room.Visited)
         {

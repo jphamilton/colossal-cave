@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Things;
 using Xunit;
 
 namespace Tests.ParserTests;
@@ -8,7 +9,7 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     [Fact]
     public void should_handle_two_objects_with_same_name()
     {
-        var room = Context.Story.Location;
+        var room = Player.Location;
 
         var red = new RedHat();
         red.Initialize();
@@ -31,7 +32,7 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     [Fact]
     public void should_handle_more_than_two_objects_with_same_name()
     {
-        var room = Context.Story.Location;
+        var room = Player.Location;
 
         var red = new RedHat();
         red.Initialize();
@@ -58,7 +59,7 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     [Fact]
     public void should_handle_two_objects_with_same_name_in_except_clause()
     {
-        var room = Context.Story.Location;
+        var room = Player.Location;
 
         var red = new RedHat();
         red.Initialize();
@@ -89,7 +90,7 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     [Fact]
     public void should_handle_command_reentry_in_except_clause_that_has_multiple_matching_items()
     {
-        var room = Context.Story.Location;
+        var room = Player.Location;
 
         var red = new RedHat();
         red.Initialize();
@@ -118,7 +119,7 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     [Fact]
     public void should_handle_a_specific_multiple_matched_item_entered_using_two_words()
     {
-        var room = Context.Story.Location;
+        var room = Player.Location;
 
         var red = new RedHat();
         red.Initialize();
@@ -141,7 +142,7 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     [Fact]
     public void should_handle_bad_command_reentry_in_except_clause_that_has_multiple_matching_items()
     {
-        var room = Context.Story.Location;
+        var room = Player.Location;
 
         var red = new RedHat();
         red.Initialize();
@@ -166,7 +167,7 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     [Fact]
     public void should_repeatedly_try_to_resolve_multiple_objects()
     {
-        var room = Context.Story.Location;
+        var room = Player.Location;
 
         var red = new RedHat();
         red.Initialize();
