@@ -11,8 +11,6 @@ public class ColossalCaveStory : StoryBase
     public ColossalCaveStory()
     {
         Story = "ADVENTURE";
-        CurrentScore = 0;
-        PossibleScore = 350;
     }
 
     protected override void Start()
@@ -26,6 +24,9 @@ public class ColossalCaveStory : StoryBase
             "Ported from Inform 6 to C# by J.P. Hamilton (2009)\n" +
             "[In memoriam Stephen Bishop (1820?-1857): GN]\n"
         );
+
+        CurrentScore = 0;
+        PossibleScore = 350;
 
         // just for showing up!
         Score.Add(36);

@@ -1,4 +1,4 @@
-﻿using Adventure.Net.Utilities;
+﻿using Adventure.Net.Things;
 using System.Linq;
 
 namespace Adventure.Net;
@@ -34,6 +34,8 @@ public abstract class StoryBase : IStory
         }
 
         Start();
+
+        MovePlayer.To(Player.Location);
     }
 
 }

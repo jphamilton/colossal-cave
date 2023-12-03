@@ -2,7 +2,7 @@ using Adventure.Net;
 
 namespace ColossalCave;
 
-class Program
+static class Program
 {
     static void Main(string[] args)
     {

@@ -1,5 +1,4 @@
 using Adventure.Net.Extensions;
-using Adventure.Net.Things;
 using System;
 using System.Linq;
 
@@ -10,11 +9,9 @@ public class StoryController
     public StoryController(IStory story)
     {
         Console.Title = story.Story;
-
         Output.Initialize(Console.Out, new WordWrap());
         CommandPrompt.Initialize(Console.Out, Console.In);
-
-        Context.Story = story ?? throw new ArgumentNullException("story");
+        Context.Story = story ?? throw new ArgumentNullException(nameof(story));
     }
 
     public void Run()
@@ -22,8 +19,6 @@ public class StoryController
         var story = Context.Story;
 
         story.Initialize();
-
-        MovePlayer.To(Player.Location);
 
         var parser = new Parser();
 
