@@ -68,14 +68,14 @@ public class Bottle : Container
 
             if (stream.InScope || spring.InScope)
             {
-                Touched = true;
+                Touched = true; // TODO: possible bug - WaterInTheBottle should be Touched?
                 Add<WaterInTheBottle>();
                 Print("The bottle is now full of water.");
             }
             else if (oil.InScope)
             {
-                Touched = true;
-                Add<OilInTheBottle>();
+                Touched = true; // TODO: possible bug - OilInTheBottle should be Touched?
+                Add<OilInTheBottle>(); 
                 Print("The bottle is now full of oil.");
             }
             else

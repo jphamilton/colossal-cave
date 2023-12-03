@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -18,7 +19,7 @@ public class WellHouse : Scenic
             {
                 var insideBuilding = Room<InsideBuilding>();
 
-                if (In<HillInRoad>() && !insideBuilding.Visited)
+                if (Player.Location is HillInRoad && !insideBuilding.Visited)
                 {
                     return Print("It's too far away.");
                 }

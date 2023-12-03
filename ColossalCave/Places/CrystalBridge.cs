@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 
 namespace ColossalCave.Places;
 
@@ -22,8 +23,8 @@ public class CrystalBridge : Door
 
         Describe = () => "A crystal bridge now spans the fissure.";
 
-        DoorDirection(() => In<WestSideOfFissure>() ? Direction<East>() : Direction<West>());
+        DoorDirection(() => Player.Location is WestSideOfFissure ? Direction<East>() : Direction<West>());
 
-        DoorTo(() => In<WestSideOfFissure>() ? Room<EastBankOfFissure>() : Room<WestSideOfFissure>());
+        DoorTo(() => Player.Location is WestSideOfFissure ? Room<EastBankOfFissure>() : Room<WestSideOfFissure>());
     }
 }

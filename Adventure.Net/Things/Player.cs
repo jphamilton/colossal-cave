@@ -20,4 +20,8 @@ public class Player : Object
             _player.Parent = value;
         }
     }
+
+    public static bool IsCarrying<T>() where T : Object => Inventory.Contains<T>();
+
+    public static bool IsCarrying(Object obj) => Inventory.Contains(obj);
 }

@@ -38,7 +38,7 @@ public class HallOfMists : BelowGround
 
         UpTo(() =>
         {
-            if (IsCarrying<LargeGoldNugget>())
+            if (Player.IsCarrying<LargeGoldNugget>())
             {
                 Output.Print("The dome is unclimbable.");
                 return this;
@@ -87,7 +87,7 @@ public class Dome : Scenic
 
         Before<Examine>(() =>
         {
-            if (IsCarrying<LargeGoldNugget>())
+            if (Player.IsCarrying<LargeGoldNugget>())
             {
                 Print("I'm not sure you'll be able to get up it with what you're carrying.");
             }

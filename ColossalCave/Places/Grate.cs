@@ -1,5 +1,6 @@
 using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -23,11 +24,9 @@ public class Grate : Door
 
         Describe = () => Open ? "\nThe grate stands open." : !Locked ? "\nThe grate is unlocked but shut." : null;
 
-        DoorDirection(() => In<BelowTheGrate>() ? Direction<Up>() : Direction<Down>());
+        DoorDirection(() => Player.Location is BelowTheGrate ? Direction<Up>() : Direction<Down>());
 
-        DoorTo(() => In<BelowTheGrate>() ? Room<OutsideGrate>() : Room<BelowTheGrate>());
-
-
+        DoorTo(() => Player.Location is BelowTheGrate ? Room<OutsideGrate>() : Room<BelowTheGrate>());
     }
 }
 

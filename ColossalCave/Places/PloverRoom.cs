@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Actions;
 using ColossalCave.Things;
 
@@ -26,7 +27,7 @@ public class PloverRoom : BelowGround
         {
             var carrying = Inventory.Items.Count;
 
-            if (carrying == 0 || carrying == 1 && IsCarrying<EggSizedEmerald>())
+            if (carrying == 0 || carrying == 1 && Player.IsCarrying<EggSizedEmerald>())
             {
                 return Room<Alcove>();
             }
@@ -38,7 +39,7 @@ public class PloverRoom : BelowGround
 
         Before<Plover>(() =>
         {
-            if (IsCarrying<EggSizedEmerald>())
+            if (Player.IsCarrying<EggSizedEmerald>())
             {
                 Move<EggSizedEmerald>.To<PloverRoom>();
                 Score.Add(-5, true);

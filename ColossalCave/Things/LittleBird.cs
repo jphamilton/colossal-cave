@@ -1,6 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
 using Adventure.Net.Extensions;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -109,13 +110,13 @@ public class LittleBird : Object
         var bird = Get<LittleBird>();
         var blackRod = Get<BlackRod>();
 
-        if (IsCarrying(blackRod))
+        if (Player.IsCarrying(blackRod))
         {
             Print("The bird was unafraid when you entered, but as you approach it becomes disturbed and you cannot catch it.");
             return true;
         }
 
-        if (IsCarrying(cage))
+        if (Player.IsCarrying(cage))
         {
             if (cage.Children.Contains(bird))
             {
@@ -148,7 +149,7 @@ public class LittleBird : Object
             return true;
         }
 
-        if (IsCarrying(cage))
+        if (Player.IsCarrying(cage))
         {
             cage.Open = true;
             cage.Remove(bird);

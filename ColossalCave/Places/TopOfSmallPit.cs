@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Things;
 
 namespace ColossalCave.Places;
@@ -29,7 +30,7 @@ public class TopOfSmallPit : BelowGround
 
         DownTo(() =>
             {
-                if (IsCarrying<LargeGoldNugget>())
+                if (Player.IsCarrying<LargeGoldNugget>())
                 {
                     Print("You are at the bottom of the pit with a broken neck.");
                     GameOver.Dead();

@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using Adventure.Net.Utilities;
 using ColossalCave.Actions;
 using ColossalCave.Things;
@@ -43,7 +44,7 @@ public class Y2 : BelowGround
                 return false;
             }
 
-            if (IsCarrying<EggSizedEmerald>())
+            if (Player.IsCarrying<EggSizedEmerald>())
             {
                 Move<EggSizedEmerald>.To<PloverRoom>();
                 Score.Add(-5);

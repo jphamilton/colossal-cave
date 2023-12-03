@@ -305,17 +305,10 @@ public abstract class Object
         return success;
     }
 
-    public static bool In<T>() where T : Room
-    {
-        Object room = Rooms.Get<T>();
-        return Player.Location == room;
-    }
-
     protected static T Room<T>() where T : Room => Rooms.Get<T>();
+    
     public bool InScope => CurrentRoom.ObjectsInScope().Contains(this);
-    public static bool IsCarrying<T>() where T : Object => Inventory.Contains<T>();
-    public static bool IsCarrying(Object obj) => Inventory.Contains(obj);
-
+    
     public static void Remove<T>() where T : Object
     {
         var obj = Get<T>();

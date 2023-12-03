@@ -31,7 +31,7 @@ public class Bear : Object
                 return "There is a ferocious cave bear eyeing you from the far end of the room!";
             }
 
-            if (In<BarrenRoom>())
+            if (Player.Location is BarrenRoom)
             {
                 return "There is a gentle cave bear sitting placidly in one corner.";
             }
@@ -41,7 +41,7 @@ public class Bear : Object
 
         Before<Attack>(() =>
         {
-            if (IsCarrying<Axe>())
+            if (Player.IsCarrying<Axe>())
             {
                 return ThrowAt(Noun);
             }

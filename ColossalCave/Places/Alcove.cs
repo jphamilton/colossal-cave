@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Things;
 using ColossalCave.Things;
 
 namespace ColossalCave.Places;
@@ -24,7 +25,7 @@ public class Alcove : BelowGround
         {
             var carrying = Inventory.Items.Count;
 
-            if (carrying == 0 || carrying == 1 && IsCarrying<EggSizedEmerald>())
+            if (carrying == 0 || carrying == 1 && Player.IsCarrying<EggSizedEmerald>())
             {
                 return Room<PloverRoom>();
             }
