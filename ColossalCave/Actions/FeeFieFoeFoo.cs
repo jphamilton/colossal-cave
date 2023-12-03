@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 using ColossalCave.Things;
 
@@ -50,7 +51,7 @@ public abstract class FeeFieFoeFoo : Verb
 
             Move<GoldenEggs>.To<GiantRoom>();
 
-            if (CurrentRoom.Is<GiantRoom>())
+            if (Player.Location is GiantRoom)
             {
                 Print("\n\nA large nest full of golden eggs suddenly appears out of nowhere!");
             }

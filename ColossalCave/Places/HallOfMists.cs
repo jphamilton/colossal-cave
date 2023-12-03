@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Actions;
 using ColossalCave.Things;
 
@@ -100,7 +101,7 @@ public class Dome : Scenic
 
         Before<Climb>(() =>
         {
-            CurrentRoom.Location.DOWN();
+            Player.Location.DOWN();
             return true;
         });
 

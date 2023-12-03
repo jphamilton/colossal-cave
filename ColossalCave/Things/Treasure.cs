@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Actions;
 using ColossalCave.Places;
 
@@ -18,7 +19,7 @@ public abstract class Treasure : Object
         {
             int score = 0;
 
-            if (CurrentRoom.Location is InsideBuilding)
+            if (Player.Location is InsideBuilding)
             {
                 score -= DepositPoints;
             }
@@ -42,7 +43,7 @@ public abstract class Treasure : Object
         {
             int score = -5;
 
-            if (CurrentRoom.Location is InsideBuilding)
+            if (Player.Location is InsideBuilding)
             {
                 score += DepositPoints;
                 Print("Safely deposited.");

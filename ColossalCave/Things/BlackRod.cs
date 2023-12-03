@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -20,7 +21,7 @@ public class BlackRod : Object
             var westSideOfFissure = Rooms.Get<WestSideOfFissure>();
             var eastBankOfFissure = Rooms.Get<EastBankOfFissure>();
 
-            if (CurrentRoom.Is<WestSideOfFissure>() || CurrentRoom.Is<EastBankOfFissure>())
+            if (Player.Location is WestSideOfFissure || Player.Location is EastBankOfFissure)
             {
                 if (Global.State.CavesClosed)
                 {

@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Things;
 using ColossalCave.Things;
 using Xunit;
 
@@ -12,7 +13,7 @@ public class LittleBirdTests : BaseTestFixture
     {
         var bird = Objects.Get<LittleBird>();
 
-        ObjectMap.MoveObject(bird, CurrentRoom.Location);
+        ObjectMap.MoveObject(bird, Player.Location);
 
         Execute("release bird");
 
@@ -38,7 +39,7 @@ public class LittleBirdTests : BaseTestFixture
     public void bird_should_be_happy()
     {
         var bird = Objects.Get<LittleBird>();
-        ObjectMap.MoveObject(bird, CurrentRoom.Location);
+        ObjectMap.MoveObject(bird, Player.Location);
 
         Execute("examine bird");
 
@@ -133,7 +134,7 @@ public class LittleBirdTests : BaseTestFixture
     public void cannot_catch_bird_without_cage()
     {
         var bird = Objects.Get<LittleBird>();
-        ObjectMap.MoveObject(bird, CurrentRoom.Location);
+        ObjectMap.MoveObject(bird, Player.Location);
 
         Execute("catch bird");
 
@@ -151,7 +152,7 @@ public class LittleBirdTests : BaseTestFixture
         Inventory.Add(cage);
 
         var bird = Objects.Get<LittleBird>();
-        ObjectMap.MoveObject(bird, CurrentRoom.Location);
+        ObjectMap.MoveObject(bird, Player.Location);
 
         Execute("catch bird");
 
@@ -166,7 +167,7 @@ public class LittleBirdTests : BaseTestFixture
         Inventory.Add(cage);
 
         var bird = Objects.Get<LittleBird>();
-        ObjectMap.MoveObject(bird, CurrentRoom.Location);
+        ObjectMap.MoveObject(bird, Player.Location);
 
         Execute("take bird");
 
@@ -183,7 +184,7 @@ public class LittleBirdTests : BaseTestFixture
         Inventory.Add(cage);
 
         var bird = Objects.Get<LittleBird>();
-        ObjectMap.MoveObject(bird, CurrentRoom.Location);
+        ObjectMap.MoveObject(bird, Player.Location);
 
         Execute("release bird");
 
@@ -201,7 +202,7 @@ public class LittleBirdTests : BaseTestFixture
         cage.Add(bird);
 
         var snake = Objects.Get<Snake>();
-        ObjectMap.MoveObject(snake, CurrentRoom.Location);
+        ObjectMap.MoveObject(snake, Player.Location);
 
         Execute("release bird");
 
@@ -221,7 +222,7 @@ public class LittleBirdTests : BaseTestFixture
         cage.Add(bird);
 
         var dragon = Objects.Get<Dragon>();
-        ObjectMap.MoveObject(dragon, CurrentRoom.Location);
+        ObjectMap.MoveObject(dragon, Player.Location);
 
         Execute("release bird");
 
@@ -241,7 +242,7 @@ public class LittleBirdTests : BaseTestFixture
         var oven = new Oven();
         oven.Initialize();
 
-        Objects.Add(oven, CurrentRoom.Location);
+        Objects.Add(oven, Player.Location);
         Inventory.Add(oven);
 
         var cage = Objects.Get<WickerCage>();
@@ -263,7 +264,7 @@ public class LittleBirdTests : BaseTestFixture
         Inventory.Add(cage);
 
         var bird = Objects.Get<LittleBird>();
-        ObjectMap.MoveObject(bird, CurrentRoom.Location);
+        ObjectMap.MoveObject(bird, Player.Location);
 
         Execute("put bird into cage");
 
@@ -278,7 +279,7 @@ public class LittleBirdTests : BaseTestFixture
 
         var bird = Objects.Get<LittleBird>();
 
-        ObjectMap.MoveObject(bird, CurrentRoom.Location);
+        ObjectMap.MoveObject(bird, Player.Location);
 
         Execute("catch bird");
 
@@ -304,7 +305,7 @@ public class LittleBirdTests : BaseTestFixture
     {
         var bird = Objects.Get<LittleBird>();
 
-        ObjectMap.MoveObject(bird, CurrentRoom.Location);
+        ObjectMap.MoveObject(bird, Player.Location);
 
         Execute("attack bird");
 
@@ -315,11 +316,11 @@ public class LittleBirdTests : BaseTestFixture
     public void cannot_ask_bird_about_stuff()
     {
         var bird = Objects.Get<LittleBird>();
-        ObjectMap.MoveObject(bird, CurrentRoom.Location);
+        ObjectMap.MoveObject(bird, Player.Location);
 
         var snake = Objects.Get<Snake>();
 
-        ObjectMap.MoveObject(snake, CurrentRoom.Location);
+        ObjectMap.MoveObject(snake, Player.Location);
 
         Execute("ask bird about snake");
         var x = ConsoleOut;

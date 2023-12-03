@@ -1,4 +1,5 @@
 using Adventure.Net.Extensions;
+using Adventure.Net.Things;
 using System;
 using System.Linq;
 
@@ -24,7 +25,7 @@ public class StoryController
 
         while (!story.IsDone)
         {
-            var room = CurrentRoom.Location;
+            var room = Player.Location;
             bool wasLit = CurrentRoom.IsLit();
 
             var result = parser.Parse(CommandPrompt.GetInput());
@@ -44,7 +45,7 @@ public class StoryController
                 handler.Run();
             }
 
-            if (!wasLit && CurrentRoom.IsLit() && CurrentRoom.Location == room)
+            if (!wasLit && CurrentRoom.IsLit() && Player.Location == room)
             {
                 CurrentRoom.Look(true);
             }

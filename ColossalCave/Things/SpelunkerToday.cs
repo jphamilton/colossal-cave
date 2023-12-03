@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Actions;
 using ColossalCave.Places;
 
@@ -20,7 +21,7 @@ public class SpelunkerToday : Object
 
         After<Take>(() =>
         {
-            if (CurrentRoom.Location is WittsEnd)
+            if (Player.Location is WittsEnd)
             {
                 Score.Add(-1);
             }
@@ -28,7 +29,7 @@ public class SpelunkerToday : Object
 
         After<Drop>(() =>
         {
-            if (CurrentRoom.Location is WittsEnd)
+            if (Player.Location is WittsEnd)
             {
                 Score.Add(1);
                 Print("You really are at wit's end.");

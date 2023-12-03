@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Places;
+using Adventure.Net.Things;
 using Adventure.Net.Utilities;
 using ColossalCave.Actions;
 using ColossalCave.Places;
@@ -21,9 +22,9 @@ public class Pirate : Object
         Daemon = () =>
         {
             var bootyNearBy = false;
-            var location = CurrentRoom.Location;
+            var location = Player.Location;
 
-            var noDwarf = ((BelowGround)CurrentRoom.Location).NoDwarf;
+            var noDwarf = ((BelowGround)Player.Location).NoDwarf;
 
             // very bizarre random check, but that's what was in the Inform 6 source
             if (Random.Number(1, 100) > 2 || location is Darkness || location is SecretCanyon || location.Light || noDwarf)

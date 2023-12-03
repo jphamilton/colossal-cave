@@ -18,8 +18,8 @@ public class ImplicitTakeTests : BaseTestFixture
         var rocks = new BagOfRocks();
         rocks.Initialize();
 
-        Objects.Add(oven, CurrentRoom.Location);
-        Objects.Add(rocks, CurrentRoom.Location);
+        Objects.Add(oven, Player.Location);
+        Objects.Add(rocks, Player.Location);
         
         Inventory.Add(oven);
 

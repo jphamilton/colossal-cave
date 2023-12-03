@@ -4,17 +4,11 @@ using Adventure.Net.Things;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 
 namespace Adventure.Net;
 
 public static class CurrentRoom
 {
-    public static Room Location
-    {
-        get { return Player.Location; }
-    }
-
     public static void Look(bool showFull)
     {
         // look is special in that it uses extra formatting like bold,
@@ -22,11 +16,11 @@ public static class CurrentRoom
 
         Output.PrintLine();
 
-        Room room = IsLit() ? Location : Rooms.Get<Darkness>();
+        Room room = IsLit() ? Player.Location : Rooms.Get<Darkness>();
 
         Output.Bold(room.Name);
 
-        if (showFull || !Location.Visited)
+        if (showFull || !Player.Location.Visited)
         {
             Output.Print(room.Description);
         }
@@ -37,13 +31,13 @@ public static class CurrentRoom
 
     public static bool IsLit()
     {
-        if (Location.Light)
+        if (Player.Location.Light)
         {
             return true;
         }
 
         // objects in room
-        foreach (var obj in ObjectMap.GetObjects(Location))
+        foreach (var obj in ObjectMap.GetObjects(Player.Location))
         {
             if (obj.Light)
             {
@@ -110,7 +104,7 @@ public static class CurrentRoom
         var ordinary = new List<Object>();
         int total = 0;
 
-        var objects = ObjectMap.GetObjects(Location);
+        var objects = ObjectMap.GetObjects(Player.Location);
 
         foreach (var obj in objects)
         {
@@ -237,7 +231,7 @@ public static class CurrentRoom
     public static IList<Object> ObjectsInRoom()
     {
         var result = new List<Object>();
-        var objects = ObjectMap.GetObjects(Location);
+        var objects = ObjectMap.GetObjects(Player.Location);
 
         result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
         result.AddRange(objects.Where(x => x.Scenery || x.Static));
@@ -250,11 +244,9 @@ public static class CurrentRoom
     {
         var result = new List<Object>();
 
-        var objects = ObjectMap.GetObjects(Location);
+        var objects = ObjectMap.GetObjects(Player.Location);
 
-        var isLit = CurrentRoom.IsLit();
-
-        if (isLit)
+        if (IsLit())
         {
             result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
             result.AddRange(objects.Where(x => x.Scenery || x.Static));
@@ -263,7 +255,7 @@ public static class CurrentRoom
         result.AddRange(Inventory.Items);
 
         // note: location is added to scope to support things like Door
-        result.Add(Location);
+        result.Add(Player.Location);
 
         // add objects in containers
         AddContained(result);
@@ -301,14 +293,9 @@ public static class CurrentRoom
         objects.AddRange(supported);
     }
 
-    public static bool Is<T>() where T : Room
-    {
-        return Location.GetType() == typeof(T);
-    }
-
     public static bool Has<T>() where T : Object
     {
-        var objects = ObjectMap.GetObjects(Location);
+        var objects = ObjectMap.GetObjects(Player.Location);
 
         return objects.Any(obj => obj is T);
     }

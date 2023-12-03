@@ -1,3 +1,4 @@
+using Adventure.Net.Things;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -224,7 +225,7 @@ public abstract class Verb
 
     public static bool Redirect<T>(Func<T, bool> callback) where T : Verb
     {
-        var room = CurrentRoom.Location;
+        var room = Player.Location;
         return Object.Redirect(room, callback);
     }
 

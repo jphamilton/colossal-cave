@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 
 namespace ColossalCave.Actions;
@@ -22,7 +23,7 @@ public class Blast : Verb
 
     public bool Expects()
     {
-        var location = CurrentRoom.Location;
+        var location = Player.Location;
         var blackMarkRod = Objects.Get<BlackMarkRod>();
 
         if (location is not NeEnd and not SwEnd)

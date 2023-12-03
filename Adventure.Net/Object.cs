@@ -1,4 +1,5 @@
 ﻿using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -307,7 +308,7 @@ public abstract class Object
     public static bool In<T>() where T : Room
     {
         Object room = Rooms.Get<T>();
-        return CurrentRoom.Location == room;
+        return Player.Location == room;
     }
 
     protected static T Room<T>() where T : Room => Rooms.Get<T>();
@@ -323,9 +324,9 @@ public abstract class Object
 
     public void Remove() => ObjectMap.Remove(this);
 
-    public bool InRoom => ObjectMap.Contains(CurrentRoom.Location, this);
+    public bool InRoom => ObjectMap.Contains(Player.Location, this);
 
-    public void MoveToLocation() => ObjectMap.MoveObject(this, CurrentRoom.Location);
+    public void MoveToLocation() => ObjectMap.MoveObject(this, Player.Location);
 
     public void MoveTo<T>() where T : Room => ObjectMap.MoveObject(this, Room<T>());
 

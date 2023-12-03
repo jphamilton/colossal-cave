@@ -121,7 +121,7 @@ public static class Inventory
         var asides = new List<string>();
         var article = obj.IndefiniteArticle;
 
-        if (obj.Light && !CurrentRoom.Location.Light)
+        if (obj.Light && !Player.Location.Light)
         {
             asides.Add("providing light");
         }

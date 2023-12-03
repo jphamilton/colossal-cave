@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 using ColossalCave.Things;
 using Xunit;
@@ -124,7 +125,7 @@ public class DropTests : BaseTestFixture
         Execute("put bottle in cage");
 
         Assert.True(cage.Contains(bottle));
-        Assert.False(bottle.Location == CurrentRoom.Location);
+        Assert.False(bottle.Location == Player.Location);
 
         ClearOutput();
 
@@ -132,7 +133,7 @@ public class DropTests : BaseTestFixture
 
         Assert.Contains("(first taking the small bottle out of the wicker cage)", ConsoleOut);
         Assert.False(cage.Contains(bottle));
-        Assert.True(bottle.Location == CurrentRoom.Location);
+        Assert.True(bottle.Location == Player.Location);
     }
 
     [Fact]

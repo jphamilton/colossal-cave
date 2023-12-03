@@ -1,6 +1,7 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
 using Adventure.Net.Places;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -119,14 +120,14 @@ public class Bear : Object
         {
             var bear = Get<Bear>();
 
-            if (CurrentRoom.Location is Darkness)
+            if (Player.Location is Darkness)
             {
                 return;
             }
 
             if (bear.InRoom)
             {
-                if (CurrentRoom.Is<BreathtakingView>())
+                if (Player.Location is BreathtakingView)
                 {
                     Print("\nThe bear roars with delight.");
                 }

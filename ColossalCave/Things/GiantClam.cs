@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -41,7 +42,7 @@ public class GiantClam : Object
 
         Before<Examine>(() =>
         {
-            if (CurrentRoom.Is<NeEnd>() || CurrentRoom.Is<SwEnd>())
+            if (Player.Location is NeEnd || Player.Location is SwEnd)
             {
                 return
                     "Interesting. " +
@@ -56,7 +57,7 @@ public class GiantClam : Object
 
         Before<Unlock>(() =>
         {
-            if (!(Second is JeweledTrident))
+            if (Second is not JeweledTrident)
             {
                 return Print($"The {Second.Name} isn't strong enough to open the clam.");
             }

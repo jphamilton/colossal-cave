@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Actions;
 using ColossalCave.Things;
 
@@ -142,7 +143,7 @@ public class RicketyBridge : Door
 
         DoorDirection(() =>
         {
-            if (CurrentRoom.Is<SwSideOfChasm>())
+            if (Player.Location is SwSideOfChasm)
             {
                 return Direction<Northeast>();
             }
@@ -152,7 +153,7 @@ public class RicketyBridge : Door
 
         DoorTo(() =>
         {
-            if (CurrentRoom.Is<SwSideOfChasm>())
+            if (Player.Location is SwSideOfChasm)
             {
                 return Rooms.Get<NeSideOfChasm>();
             }

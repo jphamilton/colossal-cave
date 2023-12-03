@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Things;
 using Adventure.Net.Utilities;
 using ColossalCave.Actions;
 using ColossalCave.Places;
@@ -94,7 +95,7 @@ public static class GameOver
 
             foreach (var item in Inventory.Items)
             {
-                ObjectMap.MoveObject(item, CurrentRoom.Location);
+                ObjectMap.MoveObject(item, Player.Location);
             }
 
             Inventory.Items.Clear();

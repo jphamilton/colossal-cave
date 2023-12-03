@@ -2,6 +2,7 @@
 using Adventure.Net;
 using Adventure.Net.Actions;
 using Adventure.Net.Places;
+using Adventure.Net.Things;
 using Adventure.Net.Utilities;
 using ColossalCave.Actions;
 using ColossalCave.Places;
@@ -57,7 +58,7 @@ public class Dwarf : Object
 
         Daemon = () =>
         {
-            if (CurrentRoom.Is<Darkness>())
+            if (Player.Location is Darkness)
             {
                 return;
             }
@@ -68,11 +69,11 @@ public class Dwarf : Object
                 return;
             }
 
-            var location = Location;
+            var dwarfLocation = Location;
 
-            if (location == null)
+            if (dwarfLocation == null)
             {
-                var room = CurrentRoom.Location;
+                var room = Player.Location;
 
                 if (((BelowGround)room).NoDwarf || room.Light)
                 {
@@ -105,19 +106,19 @@ public class Dwarf : Object
                 return;
             }
 
-            if (location != CurrentRoom.Location)
+            if (dwarfLocation != Player.Location)
             {
-                if (location is Darkness)
+                if (dwarfLocation is Darkness)
                 {
                     return;
                 }
 
-                if (((BelowGround)location).NoDwarf || location.Light)
+                if (((BelowGround)dwarfLocation).NoDwarf || dwarfLocation.Light)
                 {
                     return;
                 }
 
-                if (Random.Number(1, 100) <= 96 && location is not MirrorCanyon)
+                if (Random.Number(1, 100) <= 96 && dwarfLocation is not MirrorCanyon)
                 {
                     MoveToLocation();
                     Print("\nThe dwarf stalks after you...\n");
@@ -144,7 +145,7 @@ public class Dwarf : Object
                     return;
                 }
 
-                if (location is MirrorCanyon)
+                if (dwarfLocation is MirrorCanyon)
                 {
                     Print("The dwarf admires himself in the mirror.");
                     return;

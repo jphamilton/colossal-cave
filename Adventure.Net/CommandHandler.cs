@@ -169,7 +169,7 @@ public class CommandHandler
         var handled = false;
         var success = false;
 
-        var before = CurrentRoom.Location.Before(verb.GetType());
+        var before = Player.Location.Before(verb.GetType());
 
         if (before != null)
         {
@@ -184,7 +184,7 @@ public class CommandHandler
 
             if (success)
             {
-                var after = CurrentRoom.Location.After(verb.GetType());
+                var after = Player.Location.After(verb.GetType());
 
                 if (after != null)
                 {

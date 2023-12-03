@@ -1,5 +1,6 @@
 ﻿using Adventure.Net;
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -59,7 +60,7 @@ public class BrassLantern : Object
                 {
                     message = "\nYour lamp has run out of power.";
 
-                    if (!Inventory.Contains(freshBatteries) && !CurrentRoom.Location.Light)
+                    if (!Inventory.Contains(freshBatteries) && !Player.Location.Light)
                     {
                         // TODO: deadflag = 3;
                         message += " You can't explore the cave without a lamp. So let's call it a day.";

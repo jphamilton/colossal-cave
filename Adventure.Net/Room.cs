@@ -1,4 +1,5 @@
 using Adventure.Net.Actions;
+using Adventure.Net.Things;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
@@ -282,7 +283,7 @@ public abstract class Room : Object
 
                 if (beforeEnter != null && beforeEnter())
                 {
-                    return CurrentRoom.Location;
+                    return Player.Location;
                 }
             }
 
