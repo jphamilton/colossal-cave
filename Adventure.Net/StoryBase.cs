@@ -15,11 +15,16 @@ public abstract class StoryBase : IStory
 
     protected StoryBase()
     {
-        IsDone = false;
+        // derived classes should modify any static library primitives or values in their constructor.
+        // For example, adding values to IgnoredWords or ReplacedWords or new Compass directions.
+
+        // instance variables should NOT be set here
     }
 
     public void Initialize()
     {
+        IsDone = false;
+
         Objects.Load(this);
         Verbs.Load();
 

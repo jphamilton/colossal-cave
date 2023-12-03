@@ -27,15 +27,8 @@ public class Examine : Verb
         }
         else if (obj.Describe != null)
         {
-            string result = obj.Describe();
-            if (result.HasValue())
-            {
-                return Print(result);
-            }
-            else
-            {
-                return Print(obj.Description);
-            }
+            string describe = obj.Describe();
+            return describe.HasValue() ? Print(describe) : Print(obj.Description);
         }
         else if (obj.Description.HasValue())
         {

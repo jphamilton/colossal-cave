@@ -15,9 +15,7 @@ public class InputTokenizer
 
         if (input != null)
         {
-            var tokens = input.ToLower().Replace(',', ' ').Split(' ');
-
-            foreach (string token in tokens)
+            foreach (string token in input.ToLower().Replace(',', ' ').Split(' '))
             {
                 if (IgnoredWords.Contains(token))
                 {

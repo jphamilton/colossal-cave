@@ -19,17 +19,7 @@ public static class StringExtensions
 
     public static bool In(this string input, IList<string> values)
     {
-        return (values.Contains(input));
-    }
-
-    public static bool IsPreposition(this string input)
-    {
-        return Prepositions.Contains(input);
-    }
-
-    public static bool IsDirection(this string input)
-    {
-        return Compass.Directions.Contains(input);
+        return values.Contains(input);
     }
 
     public static Verb ToVerb(this string input)

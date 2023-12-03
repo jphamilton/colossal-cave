@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Adventure.Net;
@@ -6,7 +6,7 @@ namespace Adventure.Net;
 /// <summary>
 /// Words that are replaced during parsing. Used to normalize input.
 /// </summary>
-public class ReplacedWords : IEnumerable<string>
+public static class ReplacedWords
 {
     private static readonly Dictionary<string, string> replaced = new() {
         {"everything", "all"},
@@ -18,11 +18,25 @@ public class ReplacedWords : IEnumerable<string>
         {"into", "in"},
         {"onto", "on"},
         {"outside", "out"},
+        {"underneath", "under"},
+        {"beneath", "under"},
+        {"below", "under"},
+        {"using", "with"}, // Zork 1 source replaces "using", "through", and "thru" with this as well -- but I don't get it???
+        {"n", "north"},
+        {"s", "south"},
+        {"e" , "east"},
+        {"w" , "west"},
+        {"d" , "down"},
+        {"u" , "up"},
+        {"nw" , "northwest"},
+        {"ne" , "northeast"},
+        {"sw" , "southwest"},
+        {"se" , "southeast"},
     };
 
     public static string ReplacementFor(string word)
     {
-        return replaced.ContainsKey(word) ? replaced[word] : "";
+        return replaced.TryGetValue(word, out var value) ? value : throw new Exception($"There is no replacement word for [{word}]");
     }
 
     public static void Add(string word, string replacement)
@@ -36,15 +50,5 @@ public class ReplacedWords : IEnumerable<string>
     public static bool Contains(string word)
     {
         return replaced.ContainsKey(word);
-    }
-
-    public IEnumerator<string> GetEnumerator()
-    {
-        return replaced.Keys.GetEnumerator();
-    }
-
-    IEnumerator IEnumerable.GetEnumerator()
-    {
-        return GetEnumerator();
     }
 }

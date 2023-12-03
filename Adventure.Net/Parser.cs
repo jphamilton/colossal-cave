@@ -165,14 +165,14 @@ public partial class Parser
             }
 
             // distinguish between prepositions and movement - "go south", "put bottle down", "close up grate"
-            else if ((result.Verb is IDirectional) && token.IsDirection() && !result.Objects.Any())
+            else if ((result.Verb is IDirectional) && Compass.Directions.Contains(token) && result.Objects.Count == 0)
             {
                 var v = token.ToVerb();
                 result.Ordered.Add(v);
                 result.Verb = v;
             }
 
-            else if (token.IsPreposition())
+            else if (Prepositions.Contains(token))
             {
                 // e.g. Drop has the synonym "throw", so "throw bottle" will just drop it.
                 // However, "throw axe at dwarf" is redirected in Drop to ThrowAt. We need
@@ -274,7 +274,7 @@ public partial class Parser
             // TODO: handle multiple objects with same name
             var next = tokens[i];
 
-            if (next.IsPreposition() && result.Preposition == null)
+            if (Prepositions.Contains(next) && result.Preposition == null)
             {
                 result.Preposition = Prepositions.Get(next);
                 continue;
