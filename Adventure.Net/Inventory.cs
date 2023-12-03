@@ -1,10 +1,9 @@
-﻿using Adventure.Net.Actions;
-using Adventure.Net.Extensions;
+﻿using Adventure.Net.Extensions;
 using Adventure.Net.Things;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Xml.Linq;
 
 namespace Adventure.Net;
 
@@ -21,8 +20,14 @@ public static class Inventory
         }
     }
 
+    // these can be replaced by games with more complicated rules for inventory
+    public static Func<bool> CanAdd = () => Count < 8;
+    public static Func<string> CarryingTooMuch = () => "You're carrying too many things already.";
+
     public static void Add(Object obj)
     {
+        // CanAdd is not called here because debugging verbs like Purloin will work no matter
+        // how many objects are in inventory
         obj.Remove();
         obj.Parent = Player;
         Player.Children.Add(obj);

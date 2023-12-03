@@ -22,13 +22,11 @@ public class Take : Verb
     {
         var objects =
             (from o in CurrentRoom.ObjectsInRoom()
-             where !o.Static && !o.Scenery
+             where !o.Absent && !o.Static && !o.Scenery
              select o).ToList();
 
         if (objects.Count == 1)
         {
-            // TODO: Can this be replaced with ImplicitTake?
-            // implicit take
             var obj = objects.Single();
             Print($"({obj.DefiniteArticle} {obj.Name})");
             return Expects(obj);
@@ -57,16 +55,14 @@ public class Take : Verb
         }
         else
         {
-            // TODO: No way to change Inventory rules like this - this probably needs to be moved to InventoryRoot maybe?
-
-            if (Inventory.Count >= 8)
+            if (Inventory.CanAdd())
             {
-                Print("You're carrying too many things already.");
-                return false;
+                Inventory.Add(obj);
+                return Print("Taken.");
             }
 
-            Inventory.Add(obj);
-            Print("Taken.");
+            Print(Inventory.CarryingTooMuch());
+            return false;
         }
 
         return true;
