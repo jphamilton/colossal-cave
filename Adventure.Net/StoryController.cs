@@ -9,7 +9,7 @@ public class StoryController
 {
     public StoryController(IStory story)
     {
-        Console.Title = story.Story;
+        Console.Title = story.Name;
         Output.Initialize(Console.Out, new WordWrap());
         CommandPrompt.Initialize(Console.Out, Console.In);
         Context.Story = story ?? throw new ArgumentNullException(nameof(story));
@@ -45,15 +45,7 @@ public class StoryController
                 handler.Run();
             }
 
-            if (!wasLit && CurrentRoom.IsLit() && Player.Location == room)
-            {
-                CurrentRoom.Look(true);
-            }
-
-            if (wasLit && !CurrentRoom.IsLit())
-            {
-                Output.Print("\r\nIt is now pitch dark in here!");
-            }
+            Look(room, wasLit);
 
             if (!result.Verb.GameVerb)
             {
@@ -65,9 +57,25 @@ public class StoryController
 
     }
 
-    public static void RunDaemons()
+    private static void Look(Room originalRoom, bool wasLit)
     {
-        foreach (var obj in Objects.All.Where(x => x.Daemon != null && x.DaemonRunning).ToList())
+        // player was in darkness, did not move, and light source was turned on
+        if (!wasLit && CurrentRoom.IsLit() && Player.Location == originalRoom)
+        {
+            CurrentRoom.Look(true);
+            return;
+        }
+
+        // player had light, did not move, and light source was turned off
+        if (wasLit && Player.Location == originalRoom && !CurrentRoom.IsLit())
+        {
+            Output.Print("\r\nIt is now pitch dark in here!");
+        }
+    }
+    
+    private static void RunDaemons()
+    {
+        foreach (var obj in Objects.All.Where(x => x.Daemon != null && x.DaemonRunning))
         {
             obj.Daemon();
         }

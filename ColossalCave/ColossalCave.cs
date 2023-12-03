@@ -10,7 +10,7 @@ public class ColossalCaveStory : StoryBase
 {
     public ColossalCaveStory()
     {
-        Story = "ADVENTURE";
+        Name = "ADVENTURE";
     }
 
     protected override void Start()

@@ -20,7 +20,7 @@ public static class CurrentRoom
 
         Output.Bold(room.Name);
 
-        if (showFull || !Player.Location.Visited)
+        if (showFull || !Player.Location.Visited || Context.Story.Verbose)
         {
             Output.Print(room.Description);
         }
