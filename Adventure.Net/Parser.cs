@@ -328,6 +328,12 @@ public partial class Parser
 
         var found = find(token);
 
+        if (result.Verb is IDirectional && Compass.Directions.Contains(token))
+        {
+            // weird case where a preposition is also an object synonym (see OldBatteries)
+            return null;
+        }
+
         // objects exist but are not in scope (because they are out of the room or inside containers, etc)
         if (globalObjects.Count > 0 && found.Count == 0)
         {

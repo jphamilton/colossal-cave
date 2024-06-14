@@ -30,6 +30,9 @@ public abstract class Object
     public int Id { get; set; } // used internally for serialization
     public override string ToString() => $"{Name}";
 
+    public string DName => $"{DefiniteArticle} {Name}";
+    public string IName => $"{IndefiniteArticle} {Name}";
+
     [JsonIgnore]
     public Object Parent { get; set; }
 

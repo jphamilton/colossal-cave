@@ -38,6 +38,7 @@ public class StoryController
             if (result.Error.HasValue())
             {
                 Output.Print(result.Error);
+                continue;
             }
             else
             {

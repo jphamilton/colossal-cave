@@ -1,6 +1,6 @@
 namespace Adventure.Net.Actions;
 
-public class Out : Direction
+public class Out : Direction, IDirectional
 {
     public Out()
     {
