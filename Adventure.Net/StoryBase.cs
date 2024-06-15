@@ -26,18 +26,36 @@ public abstract class StoryBase : IStory
     {
         IsDone = false;
 
+        Context.Story.CurrentScore = 0;
+        Context.Story.Moves = 0;
+
+        Dictionary.Load();
+        Routines.Load();
         Objects.Load(this);
-        Verbs.Load();
+        
+        Inventory.Items.Clear();
 
         foreach (var obj in Objects.All.Where(x => x is Room))
         {
             obj.Initialize();
+
+            if (obj is Door door)
+            {
+                Dictionary.AddDoor(door);
+            }
+            else if (obj is Room room)
+            {
+                Dictionary.AddRoom(room);
+            }
         }
 
         foreach (var obj in Objects.All.Where(x => x is not Room))
         {
             obj.Initialize();
+            Dictionary.AddObject(obj);
         }
+
+        Dictionary.Sort();
 
         Start();
 

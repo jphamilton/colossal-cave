@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Utilities;
 
 namespace ColossalCave.Places;
@@ -34,7 +34,7 @@ public class AtopStalactite : BelowGround
 
         Before<Climb>(() =>
         {
-            MovePlayer.To(DOWN());
+            MovePlayer.To(TryMove<Down>());
             return true;
         });
     }

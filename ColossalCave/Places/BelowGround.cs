@@ -10,6 +10,9 @@ public abstract class BelowGround : Room
 {
     private static bool darkWarning;
 
+    public bool NoDwarf { get; set; }
+
+
     protected BelowGround()
     {
         // we generally allow dwarves and their ilk to freely roam at will
@@ -19,24 +22,26 @@ public abstract class BelowGround : Room
         Light = false;
 
         DarkToDark = () =>
+        {
+            if (!darkWarning)
             {
-                if (!darkWarning)
+                darkWarning = true;
+                Print("It is now pitch dark. If you proceed you will likely fall into a pit.");
+            }
+            else
+            {
+                if (Random.Number(1, 4) == 1)
                 {
-                    darkWarning = true;
-                    Print("It is now pitch dark. If you proceed you will likely fall into a pit.");
+                    Print("You fell into a pit and broke every bone in your body!");
+                    Dead();
                 }
                 else
                 {
-                    if (Random.Number(1, 4) == 1)
-                    {
-                        Print("You fell into a pit and broke every bone in your body!");
-                        GameOver.Dead();
-                    }
+                    Print("It is now pitch dark. If you proceed you will likely fall into a pit.");
                 }
+            }
 
-            };
+            return true;
+        };
     }
-
-    public bool NoDwarf { get; set; }
 }
-

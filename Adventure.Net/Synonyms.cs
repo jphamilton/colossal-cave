@@ -14,9 +14,7 @@ public class Synonyms : List<string>
 
     public void Are(string commaSeparatedList)
     {
-        string[] values = commaSeparatedList.Split(',');
-
-        foreach (string value in values)
+        foreach (string value in commaSeparatedList.Split(','))
         {
             Add(value.Trim());
         }

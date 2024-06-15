@@ -8,7 +8,7 @@ namespace Tests.Verbs;
 public class PutTests : BaseTestFixture
 {
     [Fact]
-    public void what_do_you_want_to_put_the_bottle_in()
+    public void what_do_you_want_to_put_the_bird_in_2()
     {
 
         var bird = Objects.Get<LittleBird>();
@@ -20,6 +20,7 @@ public class PutTests : BaseTestFixture
         CommandPrompt.FakeInput("cage");
 
         Execute("put bird");
+        Assert.Contains($"What do you want to put {bird.DName} in?", ConsoleOut);
         Assert.Contains("You catch the bird in the wicker cage.", ConsoleOut);
     }
 
@@ -47,15 +48,12 @@ public class PutTests : BaseTestFixture
         var keys = Objects.Get<SetOfKeys>();
         keys.MoveToLocation();
 
+        CommandPrompt.FakeInput("keys");
+
         Execute("put bottle on");
         
         Assert.Contains("(first taking the small bottle)", ConsoleOut);
         Assert.Contains("What do you want to put the small bottle on?", ConsoleOut);
-        
-        ClearOutput();
-        
-        Execute("keys");
-
         Assert.Contains("Putting things on the set of keys would achieve nothing.", ConsoleOut);
     }
 
@@ -95,13 +93,15 @@ public class PutTests : BaseTestFixture
         bird.MoveToLocation();
 
         Execute("put");
+        Assert.Contains($"What do you want to put?", ConsoleOut);
+        Assert.Contains($"What do you want to put {bird.DName} in?", ConsoleOut);
         Assert.Contains("You catch the bird in the wicker cage.", ConsoleOut);
     }
 
     [Fact]
     public void what_do_you_want_to_put_the_bird_in()
     {
-        // inventory = bird in cage
+        // inventory = cage
         // put
         // what do you want put?
         // bird
@@ -126,6 +126,8 @@ public class PutTests : BaseTestFixture
     [Fact]
     public void just_put_all_except()
     {
+        var x = Location;
+
         CommandPrompt.FakeInput("bird");
 
         Execute("put all except");
@@ -134,6 +136,18 @@ public class PutTests : BaseTestFixture
         Assert.Equal(Messages.CantSeeObject, Line2);
     }
 
+    [Fact]
+    public void just_put_all_except_2()
+    {
+        var x = Location;
+
+        CommandPrompt.FakeInput("bird");
+
+        Execute("put all except lamp");
+
+        Assert.Contains("What do you want to put those things in?", ConsoleOut);
+        Assert.Equal(Messages.CantSeeObject, Line2);
+    }
     [Fact]
     public void should_put_multiple_held_into_held_container()
     {
@@ -166,27 +180,18 @@ public class PutTests : BaseTestFixture
 
         Execute("put bottle in cage");
 
-        // can fix this test by changing method in Put to use [Held] attribute,
-        // but this breaks other things
-        // public bool Expects([Held] Object obj, Preposition.In @in, Object indirect)
-
-        // When [Held] attribute is used, you can't "put bird in cage"
-
         Assert.Contains("(first taking the small bottle)", ConsoleOut);
         Assert.Contains("You put the small bottle into the wicker cage.", ConsoleOut);
     }
 
     [Fact]
-    public void should_not_put_keys_in_cage()
+    public void should_implicit_take_keys()
     {
-        var cage = Objects.Get<WickerCage>();
-        cage.MoveToLocation();
-
-        ClearOutput();
+        var keys = Objects.Get<SetOfKeys>();
 
         Execute("put keys");
 
-        Assert.DoesNotContain("(the wicker cage)", ConsoleOut);
-        Assert.Contains("What do you want to put the set of keys in?", ConsoleOut);
+        Assert.Contains($"(first taking {keys.DName})", ConsoleOut);
+        Assert.Contains($"What do you want to put {keys.DName} in?", ConsoleOut);
     }
 }

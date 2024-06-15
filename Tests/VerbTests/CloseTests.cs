@@ -1,11 +1,9 @@
 ﻿using Adventure.Net;
 using ColossalCave.Places;
 using ColossalCave.Things;
-using System.Linq;
 using Xunit;
 
 namespace Tests.Verbs;
-
 
 public class CloseTests : BaseTestFixture
 {
@@ -59,7 +57,7 @@ public class CloseTests : BaseTestFixture
 
         Execute("close off lamp");
 
-        Assert.Equal("You switch the brass lantern off.", Line1);
+        Assert.Contains("You switch the brass lantern off.", ConsoleOut);
     }
 
     [Fact]
@@ -67,8 +65,8 @@ public class CloseTests : BaseTestFixture
     {
         Location = Room<InsideBuilding>();
 
-        var result = Parse("close on lamp");
+        Execute("close on lamp");
 
-        Assert.Contains(Messages.PartialUnderstanding(result.Verb, result.Objects.First()), result.Error);
+        Assert.Contains(Messages.CantSeeObject, ConsoleOut);
     }
 }

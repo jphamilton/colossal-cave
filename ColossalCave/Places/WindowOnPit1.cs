@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Things;
 
 namespace ColossalCave.Places;
@@ -23,7 +23,7 @@ public class WindowOnPit1 : BelowGround
 
         EastTo<Y2>();
 
-        Before<WaveHands>(() =>
+        Before<Wave>(() =>
         {
             Print("The shadowy figure waves back at you!");
             return true;

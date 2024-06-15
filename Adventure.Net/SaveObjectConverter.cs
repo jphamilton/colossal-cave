@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
-using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json;
+using System;
 
 namespace Adventure.Net;
 
+[ExcludeFromCodeCoverage]
 public class SaveObjectConverter : JsonConverter<SaveObject>
 {
     public override SaveObject Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)

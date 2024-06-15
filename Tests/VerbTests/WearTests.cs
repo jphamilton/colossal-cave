@@ -9,11 +9,7 @@ public class WearTests : BaseTestFixture
     [Fact]
     public void should_put_on_and_take_off_cloak()
     {
-        var cloak = new BlackCloak();
-        cloak.Initialize();
-
-        Objects.Add(cloak);
-
+        var cloak = Objects.Get<BlackCloak>();
         cloak.MoveToLocation();
 
         Execute("put on cloak");
@@ -43,10 +39,8 @@ public class WearTests : BaseTestFixture
     [Fact]
     public void should_implicitly_wear_cloak()
     {
-        var cloak = new BlackCloak();
-        cloak.Initialize();
-
-        Objects.Add(cloak);
+        var cloak = Objects.Get<BlackCloak>();
+        cloak.MoveToLocation();
 
         Inventory.Add(cloak);
 
@@ -61,24 +55,21 @@ public class WearTests : BaseTestFixture
     [Fact]
     public void should_respond_to_partial_wear()
     {
-        var hat = new BlackHat();
-        hat.Initialize();
+        var hat = Objects.Get<BlackHat>();
+        hat.MoveToLocation();
 
-        var cloak = new BlackCloak();
-        cloak.Initialize();
+        var cloak = Objects.Get<BlackCloak>();
+        cloak.MoveToLocation();
         
-        Objects.Add(cloak);
-        Objects.Add(hat);
-
         Inventory.Add(cloak);
         Inventory.Add(hat);
 
+        CommandPrompt.FakeInput("cloak");
+        
         Execute("wear");
-        Execute("cloak");
-
+        
         // this is returned by Wear, not the parser - need to be able to respond to this
         Assert.Contains("What do you want to wear?", ConsoleOut);
-        
         Assert.Contains("You put on the black cloak.", ConsoleOut);
 
     }

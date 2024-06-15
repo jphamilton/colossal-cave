@@ -1,5 +1,4 @@
-﻿using Adventure.Net.Extensions;
-using Adventure.Net.Places;
+﻿using Adventure.Net.Places;
 using Adventure.Net.Things;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +10,11 @@ public static class CurrentRoom
 {
     public static void Look(bool showFull)
     {
-        // look is special in that it uses extra formatting like bold,
-        // so this is sent directly to the console
-
         Output.PrintLine();
 
-        Room room = IsLit() ? Player.Location : Rooms.Get<Darkness>();
+        bool isLit = IsLit();
+
+        Room room = isLit ? Player.Location : Rooms.Get<Darkness>();
 
         Output.Bold(room.Name);
 
@@ -25,139 +23,135 @@ public static class CurrentRoom
             Output.Print(room.Description);
         }
 
-        DisplayRoomObjects();
+        if (isLit)
+        {
+            DisplayRoomObjects();
+        }
+    }
 
+    public static void Look(Room originalRoom, bool wasLit)
+    {
+        // player was in darkness, did not move, and light source was turned on
+        if (!wasLit && IsLit() && Player.Location == originalRoom)
+        {
+            Look(true);
+            return;
+        }
+
+        // player had light, did not move, and light source was turned off
+        if (wasLit && Player.Location == originalRoom && !IsLit())
+        {
+            Output.Print("\nIt is now pitch dark in here!");
+        }
     }
 
     public static bool IsLit()
     {
-        if (Player.Location.Light)
+        var tree = new ObjectTree(Player.Location, false);
+        return tree.Any(x => x.Light);
+    }
+
+    private static void DisplayRoomObjects()
+    {
+        var ordinary = new List<Object>();
+        int total = 0;
+
+        foreach (var obj in ObjectMap.GetObjects(Player.Location))
+        {
+            DisplaySupporter(obj);
+
+            if (TryDisplayScenery(obj))
+            {
+                continue;
+            }
+
+            if (TryDisplayStatic(obj))
+            {
+                continue;
+            }
+
+            total++;
+
+            if (!DisplayInitialOrDescribe(obj))
+            {
+                ordinary.Add(obj);
+            }
+        }
+
+        DisplayAdditionalObjects(ordinary, total);
+    }
+
+    private static bool DisplayInitialOrDescribe(Object obj)
+    {
+        if (!obj.Touched && !string.IsNullOrEmpty(obj.InitialDescription))
+        {
+            Output.PrintLine();
+            Output.Print(obj.InitialDescription);
+            return true;
+        }
+        else if (obj.Describe != null && obj is not Container)
+        {
+            var describe = obj.Describe();
+            if (describe != null)
+            {
+                Output.PrintLine();
+                Output.Print(describe);
+            }
+            
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool TryDisplayScenery(Object obj)
+    {
+        if (obj.Scenery && obj.Describe == null)
         {
             return true;
         }
 
-        // objects in room
-        foreach (var obj in ObjectMap.GetObjects(Player.Location))
+        return false;
+    }
+
+    private static bool TryDisplayStatic(Object obj)
+    {
+        if (obj.Static)
         {
-            if (obj.Light)
+            if (obj is Door door && door.TryDisplay(out string doorMessage))
             {
+                Output.Print(doorMessage);
                 return true;
             }
 
-            // light is on a supporter - e.g lamp is on a table
-            if (obj is Supporter supporter)
-            {
-                foreach (var supported in obj.Children)
-                {
-                    if (supported.Light)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            // light is in an open or transparent container
-            if (obj is Container container && container.ContentsVisible)
-            {
-                foreach (var contained in container.Children)
-                {
-                    if (contained.Light)
-                    {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        // objects being carried
-        foreach (var obj in Inventory.Items)
-        {
-            if (obj.Light)
+            if (obj.Describe == null && obj.InitialDescription == null)
             {
                 return true;
-            }
-
-            // light is in a container - e.g. lamp is in the wicker cage
-            if (obj is Container container && container.ContentsVisible)
-            {
-                foreach (var contained in container.Children)
-                {
-                    if (contained.Light)
-                    {
-                        return true;
-                    }
-                }
             }
         }
 
         return false;
     }
 
-    // TODO: this needs a good refactor
-    private static void DisplayRoomObjects()
+    private static void DisplaySupporter(Object obj)
     {
-        if (!IsLit())
+        if (obj is Supporter supporter && supporter.TryDisplay(out string supporterMessage))
+        {
+            Output.PrintLine();
+            Output.Print(supporterMessage);
+        }
+    }
+
+    private static void DisplayAdditionalObjects(List<Object> objects, int total)
+    {
+        if (objects.Count == 0)
         {
             return;
         }
 
-        var ordinary = new List<Object>();
-        int total = 0;
-
-        var objects = ObjectMap.GetObjects(Player.Location);
-
-        foreach (var obj in objects)
-        {
-            if (obj is Supporter supporter && supporter.Children.Count > 0)
-            {
-                Output.PrintLine();
-                Output.Print(DisplaySupporter(supporter));
-            }
-
-            if (obj.Scenery && obj.Describe == null)
-            {
-                continue;
-            }
-
-            if (obj.Static)
-            {
-                if (obj is Door door)
-                {
-                    var doorDisplay = door.Display();
-                    if (doorDisplay != null)
-                    {
-                        Output.Print(doorDisplay);
-                        continue;
-                    }
-                }
-
-                if (obj.Describe == null && obj.InitialDescription == null)
-                {
-                    continue;
-                }
-            }
-
-            total++;
-
-            if (!obj.Touched && !string.IsNullOrEmpty(obj.InitialDescription))
-            {
-                Output.PrintLine();
-                Output.Print(obj.InitialDescription);
-            }
-            else if (obj.Describe != null && obj is not Container)
-            {
-                Output.PrintLine();
-                Output.Print(obj.Describe());
-            }
-            else
-            {
-                ordinary.Add(obj);
-            }
-        }
-
         var group = new StringBuilder();
 
-        if (total > ordinary.Count)
+        if (total > objects.Count)
         {
             group.Append("You can also see ");
         }
@@ -166,11 +160,11 @@ public static class CurrentRoom
             group.Append("You can see ");
         }
 
-        for (int i = 0; i < ordinary.Count; i++)
+        for (int i = 0; i < objects.Count; i++)
         {
-            Object obj = ordinary[i];
+            Object obj = objects[i];
 
-            if (i == ordinary.Count - 1 && i > 0)
+            if (i == objects.Count - 1 && i > 0)
             {
                 group.Append(" and ");
             }
@@ -179,118 +173,36 @@ public static class CurrentRoom
                 group.Append(", ");
             }
 
-            if (obj is Container container)
+            if(obj is Container container && container.TryDisplay(out string containerMessage))
             {
-                group.Append(DisplayContainer(container));
+                group.Append(containerMessage);
             }
             else
             {
-                group.Append($"{obj.IndefiniteArticle} {obj.Name}");
+                group.Append($"{obj.IName}");
             }
 
         }
 
         group.Append(" here.");
 
-        if (ordinary.Count > 0)
-        {
-            Output.PrintLine();
-            Output.Print(group.ToString());
-        }
+        Output.PrintLine();
+        Output.Print(group.ToString());
     }
 
-    private static string DisplayContainer(Container container)
+    public static List<Object> ObjectsInScope(bool includeAbsent = true)
     {
-        var contentsVisible = container.Open || container.Transparent;
+        var tree = new ObjectTree(Player.Location, includeAbsent);
+        var objects = tree.GetObjects(out bool lit);
 
-        if (contentsVisible)
+        objects = [.. objects.Where(x => x != Player.Location)];
+
+        if (!lit)
         {
-            if (container.Children.Count > 0)
-            {
-                return $"{container.IndefiniteArticle} {container.Name} (which contains {container.Children.DisplayList(false)})";
-            }
-
-            return $"{container.IndefiniteArticle} {container.Name} (which is empty)";
+            objects = [.. objects.Where(Inventory.Contains)];
         }
 
-        return $"{container.IndefiniteArticle} {container.Name} (which is closed)";
-    }
-
-    private static string DisplaySupporter(Supporter supporter)
-    {
-        if (supporter.Children.Count > 0)
-        {
-            var isAre = supporter.Children.Count == 1 ? "is" : "are";
-            return $"On {supporter.DefiniteArticle} {supporter.Name} {isAre} {supporter.Children.DisplayList(definiteArticle: false)}.";
-        }
-
-        // for now supporters are static/scenic so don't show anything extra if nothing is on them
-        return null;
-    }
-
-    public static IList<Object> ObjectsInRoom()
-    {
-        var result = new List<Object>();
-        var objects = ObjectMap.GetObjects(Player.Location);
-
-        result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
-        result.AddRange(objects.Where(x => x.Scenery || x.Static));
-        AddContained(result);
-        AddSupported(result);
-        return result;
-    }
-
-    public static List<Object> ObjectsInScope()
-    {
-        var result = new List<Object>();
-
-        var objects = ObjectMap.GetObjects(Player.Location);
-
-        if (IsLit())
-        {
-            result.AddRange(objects.Where(x => !x.Scenery && !x.Static));
-            result.AddRange(objects.Where(x => x.Scenery || x.Static));
-        }
-
-        result.AddRange(Inventory.Items);
-
-        // note: location is added to scope to support things like Door
-        result.Add(Player.Location);
-
-        // add objects in containers
-        AddContained(result);
-
-        // add objects sitting on things
-        AddSupported(result);
-
-        return result;
-    }
-
-    private static void AddContained(List<Object> objects)
-    {
-        var contained = new List<Object>();
-
-        foreach (var obj in objects)
-        {
-            if (obj is Container container && container.ContentsVisible)
-            {
-                contained.AddRange(container.Children);
-            }
-        }
-
-        objects.AddRange(contained);
-    }
-
-    private static void AddSupported(List<Object> objects)
-    {
-        var supported = new List<Object>();
-
-        foreach (var obj in objects.Where(x => x is Supporter))
-        {
-            supported.AddRange(obj.Children);
-        }
-
-        objects.AddRange(supported);
+        return objects;
     }
 
     public static bool Has<T>() where T : Object

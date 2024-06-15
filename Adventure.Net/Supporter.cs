@@ -1,4 +1,6 @@
-﻿namespace Adventure.Net;
+﻿using Adventure.Net.Extensions;
+
+namespace Adventure.Net;
 
 
 /// <summary>
@@ -11,13 +13,7 @@ public abstract class Supporter : Object
         Scenery = true;
         Static = true;
     }
-
-    public void Add<T>() where T : Object
-    {
-        Object obj = Objects.Get<T>();
-        Add(obj);
-    }
-
+    
     public void Add(Object obj)
     {
         obj.Remove();
@@ -25,15 +21,32 @@ public abstract class Supporter : Object
         Children.Add(obj);
     }
 
-    public new void Remove<T>() where T : Object
+    public bool TryDisplay(out string message)
     {
-        var obj = Objects.Get<T>();
-        Remove(obj);
+        message = null;
+
+        if (Children.Count == 0)
+        {
+            return false;
+        }
+
+        var isAre = Children.Count == 1 ? "is" : "are";
+        
+        message = $"On {DName} {isAre} {Children.DisplayList(definiteArticle: false)}.";
+        
+        return true;
     }
 
-    public void Remove(Object obj)
+    public bool ProvidingLight()
     {
-        obj.Remove();
-        Children.Remove(obj);
+        foreach (var supported in Children)
+        {
+            if (supported.Light)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

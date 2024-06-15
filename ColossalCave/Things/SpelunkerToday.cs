@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
 using ColossalCave.Actions;
 using ColossalCave.Places;
@@ -31,7 +31,7 @@ public class SpelunkerToday : Object
         {
             if (Player.Location is WittsEnd)
             {
-                Score.Add(1);
+                Score.Add(1, true);
                 Print("You really are at wit's end.");
             }
         });

@@ -8,17 +8,18 @@ public static class YesOrNo
     {
         if (question != null)
         {
-            Output.Print(question);
+            Output.Print(question, true);
         }
 
         while (true)
         {
-            string[] affirmative = new[] { "y", "yes", "yep", "yeah" };
-            string[] negative = new[] { "n", "no", "nope", "nah", "naw" };
+            string[] affirmative = ["y", "yes", "yep", "yeah"];
+            string[] negative = ["n", "no", "nope", "nah", "naw"];
             string response = CommandPrompt.GetInput();
+            
             if (!response.In(affirmative) && !response.In(negative))
             {
-                Output.Print("Please answer yes or no.");
+                Output.Print("Please answer yes or no.", true);
             }
             else
             {

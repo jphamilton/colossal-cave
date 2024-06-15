@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Adventure.Net;
 
 /// <summary>
 /// Words that are replaced during parsing. Used to normalize input.
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class ReplacedWords
 {
     private static readonly Dictionary<string, string> replaced = new() {

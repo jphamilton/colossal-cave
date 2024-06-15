@@ -1,4 +1,6 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Places;
+using ColossalCave.Places;
 using ColossalCave.Things;
 using Xunit;
 
@@ -83,11 +85,36 @@ public class BrassLanternTests : BaseTestFixture
     }
 
     [Fact]
+    public void can_turn_on_lamp_alernate()
+    {
+        lamp.On = false;
+        lamp.Light = false;
+
+        Assert.False(lamp.Light);
+
+        Execute("switch on lamp");
+
+        Assert.True(lamp.On);
+        Assert.True(lamp.Light);
+    }
+
+    [Fact]
     public void can_turn_off_lamp()
     {
         lamp.On = true;
 
         Execute("turn off lamp");
+
+        Assert.False(lamp.On);
+        Assert.False(lamp.Light);
+    }
+
+    [Fact]
+    public void can_turn_off_lamp_alt()
+    {
+        lamp.On = true;
+
+        Execute("switch off lamp");
 
         Assert.False(lamp.On);
         Assert.False(lamp.Light);
@@ -120,32 +147,126 @@ public class BrassLanternTests : BaseTestFixture
     }
 
     [Fact]
-    public void should_turn_on_lamp_with_just_on()
+    public void should_display_room_after_turning_on_lamp_in_darkness()
     {
-        lamp.On = false;
-        lamp.Light = false;
+        Location = Rooms.Get<CobbleCrawl>();
 
-        Execute("on");
+        var lamp = Objects.Get<BrassLantern>();
+        Inventory.Add(lamp);
 
-        // implicit switch
-        Assert.Equal("You switch the brass lantern on.", Line1);
+        Execute("w");
 
-        Assert.True(lamp.On);
-        Assert.True(lamp.Light);
+        Assert.False(CurrentRoom.IsLit());
+
+        ClearOutput();
+
+        Execute("turn on lamp");
+
+        Assert.True(CurrentRoom.IsLit());
+
+        Assert.Contains($"You switch {lamp.DName} on.", ConsoleOut);
+        Assert.Contains("You are in a debris room", ConsoleOut);
     }
 
     [Fact]
-    public void should_turn_on_lamp_with_just_off()
+    public void room_was_dark_now_its_not()
     {
-        lamp.On = true;
-        lamp.Light = true;
+        Location = Rooms.Get<SwSideOfChasm>();
 
-        Execute("off");
+        Execute("look");
+        Assert.Contains("It's pitch dark, and you can't see a thing.", ConsoleOut);
 
-        // implicit switch
-        Assert.Equal("You switch the brass lantern off.", Line1);
+        ClearOutput();
 
-        Assert.False(lamp.On);
-        Assert.False(lamp.Light);
+        var lamp = Inventory.Add<BrassLantern>();
+        Execute("turn on lamp");
+
+        Assert.Contains("You are on one side of a large, deep chasm.", ConsoleOut);
+
+    }
+
+    [Fact]
+    public void room_was_lit_now_its_not()
+    {
+        Location = Rooms.Get<SwSideOfChasm>();
+
+        Execute("look");
+        Assert.Contains("It's pitch dark, and you can't see a thing.", ConsoleOut);
+
+        ClearOutput();
+
+        var lamp = Inventory.Add<BrassLantern>();
+        Execute("turn on lamp");
+
+        Assert.Contains("You are on one side of a large, deep chasm.", ConsoleOut);
+
+        ClearOutput();
+
+        Execute("turn off lamp");
+
+        Assert.Contains("It is now pitch dark in here!", ConsoleOut);
+    }
+
+    [Fact]
+    public void light_is_in_a_transparent_container()
+    {
+        Location = Rooms.Get<SwSideOfChasm>();
+
+        Execute("look");
+        Assert.Contains("It's pitch dark, and you can't see a thing.", ConsoleOut);
+
+        ClearOutput();
+
+        var cage = Inventory.Add<WickerCage>();
+        var lamp = Inventory.Add<BrassLantern>();
+
+        var x = Inventory.Items;
+
+        Execute("turn on lamp");
+
+        Assert.Contains("You are on one side of a large, deep chasm.", ConsoleOut);
+
+        ClearOutput();
+
+        Execute("put lamp in cage");
+        Execute("close cage");
+        Execute("look");
+
+        ClearOutput();
+
+        Assert.True(CurrentRoom.IsLit());
+    }
+
+    [Fact]
+    public void light_is_in_an_opaque_container()
+    {
+        Location = Rooms.Get<SwSideOfChasm>();
+
+        Execute("look");
+        Assert.Contains("It's pitch dark, and you can't see a thing.", ConsoleOut);
+
+        ClearOutput();
+
+        var box = Inventory.Add<OpaqueBox>();
+        Assert.False(box.Transparent);
+        Assert.True(box.Open);
+
+        var lamp = Inventory.Add<BrassLantern>();
+
+        // turn on lamp to see room
+        Execute("turn on lamp");
+        Assert.Contains("You are on one side of a large, deep chasm.", ConsoleOut);
+        ClearOutput();
+
+        var x = ConsoleOut;
+
+        Execute("put lamp in box");
+        Execute("close box");
+
+        Assert.Contains("It is now pitch dark in here!", ConsoleOut);
+
+        ClearOutput();
+
+        Assert.False(CurrentRoom.IsLit());
     }
 }

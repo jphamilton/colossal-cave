@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Actions;
 using ColossalCave.Things;
 
@@ -22,7 +22,7 @@ public class NarrowCorridor : BelowGround
         Before<Jump>(() =>
         {
             Print("You fall and break your neck!");
-            GameOver.Dead();
+            Dead();
             return true;
         });
     }

@@ -21,14 +21,20 @@ public static class MovePlayer
         else
         {
             Player.Location = Move(room);
+           
         }
     }
 
     private static Room Move(Room room)
     {
+        var currentLocation = Player.Location;
+        bool wasLit = currentLocation.Light;
+        
+        // this is the actual room the player is in,
+        // even though he could be moving between "Darkness" rooms
         Room nextRoom = room;
 
-        if (!CurrentRoom.IsLit() && !room.Light)
+        if (!Inventory.ProvidingLight() && !room.Light)
         {
             room = Rooms.Get<Darkness>();
         }
@@ -45,10 +51,23 @@ public static class MovePlayer
         {
             if (!CurrentRoom.IsLit() && room.Visited)
             {
-                nextRoom.DarkToDark();
+                try
+                {
+                    nextRoom.DarkToDark();
+                }
+                catch (DeathException)
+                {
+                    // player died from moving around in the dark
+                    // so set location to the room they would
+                    // have been in had the lights been on
+                    Player.Location = nextRoom;
+                    throw;
+                }
             }
-
-            CurrentRoom.Look(false);
+            else
+            {
+                CurrentRoom.Look(false);
+            }
         }
 
 

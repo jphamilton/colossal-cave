@@ -1,16 +1,18 @@
 ﻿using Adventure.Net;
+using Adventure.Net.ActionRoutines;
 
 namespace ColossalCave.Actions;
 
-public class Kick : Verb
+public class Kick : Routine
 {
     public Kick()
     {
-        Name = "kick";
+        Verbs = ["kick"];
+        Requires = [O.Noun];
     }
 
-    public bool Expects(Object obj)
+    public override bool Handler(Object obj, Object _)
     {
-        return Print("Violence isn't the answer to this one.");
+        return Fail("Violence isn't the answer to this one.");
     }
 }

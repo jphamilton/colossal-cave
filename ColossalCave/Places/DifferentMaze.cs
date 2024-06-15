@@ -1,5 +1,8 @@
-﻿namespace ColossalCave.Places;
+﻿using System.Diagnostics.CodeAnalysis;
 
+namespace ColossalCave.Places;
+
+[ExcludeFromCodeCoverage]
 public abstract class DifferentMaze : BelowGround
 {
     public override void Initialize()

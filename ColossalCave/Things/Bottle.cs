@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Extensions;
 using ColossalCave.Places;
 
@@ -44,13 +44,11 @@ public class Bottle : Container
                 if (obj is Stream || obj is OilInTheBottle)
                 {
                     Fill();
-                }
-                else
-                {
-                    Print("The bottle is only supposed to hold liquids.");
+                    return true;
                 }
 
-                return true;
+                Print("The bottle is only supposed to hold liquids.");
+                return false;
             });
     }
 
@@ -85,4 +83,3 @@ public class Bottle : Container
         }
     }
 }
-

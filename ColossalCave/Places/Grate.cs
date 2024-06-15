@@ -1,5 +1,5 @@
 using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
 using ColossalCave.Places;
 
@@ -22,7 +22,7 @@ public class Grate : Door
 
         LocksWithKey<SetOfKeys>(Locked);
 
-        Describe = () => Open ? "\nThe grate stands open." : !Locked ? "\nThe grate is unlocked but shut." : null;
+        Describe = () => Open ? "The grate stands open." : !Locked ? "The grate is unlocked but shut." : null;
 
         DoorDirection(() => Player.Location is BelowTheGrate ? Direction<Up>() : Direction<Down>());
 

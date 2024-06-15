@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace Adventure.Net;
 
+[DebuggerDisplay("{Object.Name}")]
 public class SaveObject
 {
     public int Id { get; set; }
@@ -16,13 +19,15 @@ public class SaveObject
 
     public Object Object { get; }
 
+    [JsonConstructor]
     public SaveObject()
     {
-
+        // for serialization
     }
 
     public SaveObject(Object obj)
     {
+        Id = obj.Id;
         Object = obj;
     }
 }

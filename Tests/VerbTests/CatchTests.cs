@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Places;
 using Xunit;
 
@@ -12,7 +12,7 @@ public class CatchTests : BaseTestFixture
     {
         Location = Room<InsideBuilding>();
         Execute("catch bottle");
-        Assert.Equal("You can only do that to something animate.", Line1);
+        Assert.Contains(Messages.AnimateOnly, ConsoleOut);
     }
 
     [Fact]
@@ -20,10 +20,8 @@ public class CatchTests : BaseTestFixture
     {
         Location = Room<InsideBuilding>();
 
-        var shark = new Shark();
-        shark.Initialize();
-
-        Objects.Add(shark, Location);
+        var shark = Objects.Get<Shark>();
+        shark.MoveToLocation();
 
         Execute("catch shark");
         Assert.Equal("You can't catch that.", Line1);
@@ -34,10 +32,8 @@ public class CatchTests : BaseTestFixture
     {
         Location = Room<InsideBuilding>();
 
-        var octopus = new Octopus();
-        octopus.Initialize();
-
-        Objects.Add(octopus, Location);
+        var octopus = Objects.Get<Octopus>();
+        octopus.MoveToLocation();
 
         Execute("catch octopus");
         Assert.Equal("Yeah right!", Line1);
@@ -50,6 +46,7 @@ public class Shark : Object
     public override void Initialize()
     {
         Name = "shark";
+        Synonyms.Are("shark", "great white", "white shark");
         Animate = true;
     }
 }
@@ -59,6 +56,7 @@ public class Octopus : Object
     public override void Initialize()
     {
         Name = "octopus";
+        Synonyms.Are("octopus", "octopi");
         Animate = true;
 
         Before<Catch>(() =>

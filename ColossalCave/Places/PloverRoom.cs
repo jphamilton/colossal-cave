@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
 using ColossalCave.Actions;
 using ColossalCave.Things;
@@ -54,7 +54,7 @@ public class PloverRoom : BelowGround
         {
             if (direction is Out)
             {
-                MovePlayer.To(W());
+                MovePlayer.To(TryMove<West>());
                 return true;
             }
 

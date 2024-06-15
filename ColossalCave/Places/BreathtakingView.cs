@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Things;
 
 namespace ColossalCave.Places;
@@ -14,7 +14,7 @@ public class BreathtakingView : BelowGround
         Synonyms.Are("breath-taking", "breathtaking", "breath", "taking", "view");
         Description =
             "You are on the edge of a breath-taking view. " +
-            "Far below you is an active volcano, from which great gouts of molten lava come surging  out, " +
+            "Far below you is an active volcano, from which great gouts of molten lava come surging out, " +
             "cascading back down into the depths. " +
             "The glowing rock fills the farthest reaches of the cavern with a blood-red glare, " +
             "giving everything an eerie, macabre appearance. " +

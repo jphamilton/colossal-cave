@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Adventure.Net;
 
 /// <summary>
 /// Words ignored by the parser
 /// </summary>
+[ExcludeFromCodeCoverage]
 public static class IgnoredWords
 {
     private static readonly List<string> ignored = [

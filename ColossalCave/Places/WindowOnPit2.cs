@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 
 namespace ColossalCave.Places;
 
@@ -25,11 +25,11 @@ public class WindowOnPit2 : BelowGround
         Before<Jump>(() =>
         {
             Print("You jump and break your neck!");
-            GameOver.Dead();
+            Dead();
             return true;
         });
 
-        Before<WaveHands>(() =>
+        Before<Wave>(() =>
         {
             Print("The shadowy figure waves back at you!");
             return true;

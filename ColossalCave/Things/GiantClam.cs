@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
 using ColossalCave.Places;
 
@@ -71,7 +71,7 @@ public class GiantClam : Object
                 Move<GlisteningPearl>.To<CulDeSac>();
 
                 Print(
-                    "A glistening pearl falls out of the clam and rolls away. " +
+                    "\nA glistening pearl falls out of the clam and rolls away. " +
                     "Goodness, this must really be an oyster. " +
                     "(I never was very good at identifying bivalves.) " +
                     "Whatever it is, it has now snapped shut again."

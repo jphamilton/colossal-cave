@@ -1,10 +1,12 @@
 using Adventure.Net.Extensions;
 using Adventure.Net.Things;
-using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System;
 
 namespace Adventure.Net;
 
+[ExcludeFromCodeCoverage]
 public class StoryController
 {
     public StoryController(IStory story)
@@ -22,33 +24,48 @@ public class StoryController
         story.Initialize();
 
         var parser = new Parser();
+        ParserResult previous = null;
 
         while (!story.IsDone)
         {
             var room = Player.Location;
             bool wasLit = CurrentRoom.IsLit();
 
-            var result = parser.Parse(CommandPrompt.GetInput());
-            
-            if (result.Handled)
+            var pr = parser.Parse(CommandPrompt.GetInput(), previous);
+
+            // implicit actions can trigger things like death
+            if (story.IsDone)
             {
+                break;
+            }
+
+            if (pr.IsError || pr.IsPartial)
+            {
+                Output.Print(pr.Error); // will print partial message if it exists here
+                previous = pr;
                 continue;
             }
 
-            if (result.Error.HasValue())
+            previous = null;
+
+            if (!pr.IsHandled)
             {
-                Output.Print(result.Error);
-                continue;
-            }
-            else
-            {
-                var handler = result.CommandHandler();
-                handler.Run();
+                Output.Print(pr.Aside);
+
+                var command = new Command(pr);
+                var run = command.Run();
+                
+                if (Context.Story.IsDone)
+                {
+                    break;
+                }
+
+                Output.Print(run.Output);
+
+                CurrentRoom.Look(room, wasLit);
             }
 
-            Look(room, wasLit);
-
-            if (!result.Verb.GameVerb)
+            if (!pr.Routine.IsGameVerb)
             {
                 story.Moves++;
             }
@@ -56,22 +73,8 @@ public class StoryController
             RunDaemons();
         }
 
-    }
-
-    private static void Look(Room originalRoom, bool wasLit)
-    {
-        // player was in darkness, did not move, and light source was turned on
-        if (!wasLit && CurrentRoom.IsLit() && Player.Location == originalRoom)
-        {
-            CurrentRoom.Look(true);
-            return;
-        }
-
-        // player had light, did not move, and light source was turned off
-        if (wasLit && Player.Location == originalRoom && !CurrentRoom.IsLit())
-        {
-            Output.Print("\r\nIt is now pitch dark in here!");
-        }
+        Console.WriteLine("\nPress any key to exit...");
+        Console.ReadKey(true);
     }
     
     private static void RunDaemons()

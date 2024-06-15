@@ -10,14 +10,14 @@ public class SwitchTests : BaseTestFixture
     public void should_not_switch_on_things_without_switches()
     {
         Execute("switch on keys");
-        Assert.Equal("That's not something you can switch.", Line1);
+        Assert.Equal("That's not something you can switch on.", Line1);
     }
 
     [Fact]
     public void should_not_switch_off_things_without_switches()
     {
         Execute("switch off keys");
-        Assert.Equal("That's not something you can switch.", Line1);
+        Assert.Equal("That's not something you can switch off.", Line1);
     }
 
     [Fact]
@@ -30,7 +30,7 @@ public class SwitchTests : BaseTestFixture
 
         Execute("on");
 
-        Assert.Contains($"You switch {lamp.DefiniteArticle} {lamp} on.", ConsoleOut);
+        Assert.Contains($"You switch {lamp.DName} on.", ConsoleOut);
         Assert.True(lamp.On);
     }
 
@@ -44,7 +44,7 @@ public class SwitchTests : BaseTestFixture
 
         Execute("off");
 
-        Assert.Contains($"You switch {lamp.DefiniteArticle} {lamp} off.", ConsoleOut);
+        Assert.Contains($"You switch {lamp.DName} off.", ConsoleOut);
         Assert.False(lamp.On);
     }
 }

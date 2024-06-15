@@ -1,4 +1,6 @@
 ﻿using Adventure.Net.Extensions;
+using System.ComponentModel;
+using System.Xml.Linq;
 
 namespace Adventure.Net;
 
@@ -62,5 +64,37 @@ public abstract class Container : Object
     public bool Contains(Object obj)
     {
         return Children.Contains(obj);
+    }
+
+    public bool TryDisplay(out string message)
+    {
+        var contentsVisible = Open || Transparent;
+
+        if (contentsVisible)
+        {
+            message = Children.Count > 0 ? $"{IName} (which contains {Children.DisplayList(false)})" : $"{IName} (which is empty)";
+        }
+        else
+        {
+            message = $"{IName} (which is closed)";
+        }
+
+        return true;
+    }
+
+    public bool ProvidingLight()
+    {
+        if (ContentsVisible)
+        {
+            foreach (var contained in Children)
+            {
+                if (contained.Light)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

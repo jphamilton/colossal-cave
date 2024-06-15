@@ -1,6 +1,6 @@
 ﻿
 using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Places;
 using Adventure.Net.Things;
 using Adventure.Net.Utilities;
@@ -36,7 +36,7 @@ public class Dwarf : Object
 
         Before<Give>(Give);
 
-        Before<ThrowAt>(() =>
+        Before<Throw>(() =>
         {
             if (Noun is Axe)
             {
@@ -58,7 +58,7 @@ public class Dwarf : Object
 
         Daemon = () =>
         {
-            if (Player.Location is Darkness)
+            if (Player.Location is Darkness || Player.Location is not BelowGround room)
             {
                 return;
             }
@@ -73,9 +73,9 @@ public class Dwarf : Object
 
             if (dwarfLocation == null)
             {
-                var room = Player.Location;
+                //var room = Player.Location;
 
-                if (((BelowGround)room).NoDwarf || room.Light)
+                if (room.NoDwarf || room.Light)
                 {
                     return;
                 }
@@ -85,14 +85,16 @@ public class Dwarf : Object
                     var bear = Get<Bear>();
                     var troll = Get<BurlyTroll>();
 
-                    if (IsHere<Bear>() || IsHere<BurlyTroll>())
+                    if (bear.InRoom || troll.InRoom)
                     {
                         return;
                     }
 
                     Print("\n");
 
-                    if (IsHere<Dragon>())
+                    var dragon = Get<Dragon>();
+
+                    if (dragon.InRoom)
                     {
                         Count--;
                         Print("A dwarf appears, but with one casual blast the dragon vapourises him!");
@@ -156,7 +158,7 @@ public class Dwarf : Object
                 if (Random.Number(1, 1000) < 95)
                 {
                     Print($"{throws} and hits!");
-                    GameOver.Dead();
+                    Dead();
                     return;
                 }
 

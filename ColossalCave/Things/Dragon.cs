@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -26,7 +26,7 @@ public class Dragon : Object
 
         Before<Give>(() => Print("The dragon is implacable."));
 
-        Before<ThrowAt>(() =>
+        Before<Throw>(() =>
         {
             if (Noun is Axe axe)
             {

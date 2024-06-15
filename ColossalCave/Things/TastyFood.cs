@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -17,11 +17,6 @@ public class TastyFood : Object
 
         FoundIn<InsideBuilding>();
 
-        After<Eat>(() =>
-        {
-            Print("Delicious!");
-        });
-
+        After<Eat>(() => Print("Delicious!"));
     }
 }
-

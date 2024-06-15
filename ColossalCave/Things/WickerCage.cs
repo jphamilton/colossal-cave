@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -30,7 +30,7 @@ public class WickerCage : Container
 
                 var bird = Get<LittleBird>();
 
-                Redirect<Release>(bird, v => v.Expects(bird));
+                Redirect.To<Release>(bird);
             }
 
         });

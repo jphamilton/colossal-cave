@@ -45,6 +45,7 @@ public class DrinkTests : BaseTestFixture
 
         Execute("drink water");
 
+        Assert.Equal("(the stream)", Line1);
         Assert.Contains("You have taken a drink from the stream.", ConsoleOut);
         Assert.Contains("The water tastes strongly of minerals, but is not unpleasant.", ConsoleOut);
         Assert.Contains("It is extremely cold.", ConsoleOut);
@@ -75,9 +76,7 @@ public class DrinkTests : BaseTestFixture
 
         Execute("drink water");
 
-        Assert.Equal("You have taken a drink from the stream. " +
-                        "The water tastes strongly of minerals, but is not unpleasant. " +
-                        "It is extremely cold.", Line1);
+        Assert.Contains("You have taken a drink from the stream", ConsoleOut);
     }
 
     [Fact]

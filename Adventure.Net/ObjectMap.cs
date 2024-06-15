@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Adventure.Net.Things;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Adventure.Net;
@@ -46,7 +47,7 @@ public static class ObjectMap
 
     public static IReadOnlyList<Object> GetObjects(Room room)
     {
-        return room.Children.Where(x => !x.Absent).ToList();
+        return [.. room.Children.Where(x => !x.Absent && x is not Player)];
     }
 
     public static Room Location(Object obj)

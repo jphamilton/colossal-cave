@@ -1,11 +1,13 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
 
 public class PersianRug : Treasure
 {
+    private bool DragonIsHere => CurrentRoom.Has<Dragon>();
+
     public override void Initialize()
     {
         Name = "Persian rug";
@@ -33,14 +35,5 @@ public class PersianRug : Treasure
 
             return false;
         });
-    }
-
-    private bool DragonIsHere
-    {
-        get
-        {
-            var dragon = Objects.Get<Dragon>();
-            return dragon.InRoom;
-        }
     }
 }

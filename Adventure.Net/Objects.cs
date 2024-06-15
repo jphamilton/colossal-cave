@@ -1,6 +1,7 @@
 ﻿using Adventure.Net.Extensions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
@@ -9,11 +10,11 @@ namespace Adventure.Net;
 public static class Objects
 {
     // all game objects
-    private static readonly IList<Object> objects = new List<Object>();
+    private static List<Object> _objects = [];
 
     public static void Load(IStory story)
     {
-        objects.Clear();
+        _objects = [];//.Clear();
         int id = 0;
 
         void Add(IList<Type> types)
@@ -22,8 +23,14 @@ public static class Objects
             {
                 if (Activator.CreateInstance(type) is Object obj)
                 {
+                    obj.Parent = null;
                     obj.Id = ++id;
-                    objects.Add(obj);
+                    
+                    if (!All.Contains(obj))
+                    {
+                        _objects.Add(obj);
+                    }
+                    
                 }
             }
         }
@@ -37,16 +44,11 @@ public static class Objects
         Add(ax.GetObjectTypes());
     }
 
-    public static IList<Object> All => objects;
-
-    public static IList<Object> WithName(string name)
-    {
-        return objects.Where(x => x.Name == name || x.Synonyms.Contains(name)).ToList();
-    }
+    public static List<Object> All => _objects;
 
     public static T Get<T>() where T : Object
     {
-        return (T)objects.Single(x => x is T);
+        return (T)_objects.Single(x => x is T);
     }
 
     /// <summary>
@@ -55,7 +57,7 @@ public static class Objects
     /// <param name="obj"></param>
     public static void Add(Object obj, Room room = null)
     {
-        objects.Add(obj);
+        _objects.Add(obj);
 
         if (room != null)
         {

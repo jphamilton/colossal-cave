@@ -1,17 +1,17 @@
 ﻿using Adventure.Net;
+using Adventure.Net.ActionRoutines;
 
 namespace ColossalCave.Actions;
 
-public class Xyzzy : Verb
+public class Xyzzy : Routine
 {
     public Xyzzy()
     {
-        Name = "xyzzy";
+        Verbs = ["xyzzy"];
     }
 
-    public bool Expects()
+    public override bool Handler(Object _, Object __ = null)
     {
-        Print("Nothing happens.");
-        return true;
+        return Fail("Nothing happens.");
     }
 }

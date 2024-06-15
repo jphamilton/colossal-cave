@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -43,7 +43,7 @@ public class PlantStickingUp : Object
 
             if (plant.Height == PlantSize.Huge)
             {
-                return Redirect<Climb>(plant, v => v.Expects(plant));
+                return Redirect.To<Climb>(plant);
             }
 
             return false;

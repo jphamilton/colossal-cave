@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Extensions;
 using Adventure.Net.Things;
 using ColossalCave.Places;
@@ -36,29 +36,15 @@ public class LittleBird : Object
 
         Before<Release>(Release);
 
-        Before<Drop>(() =>
-            {
-                var cage = Get<WickerCage>();
-                if (cage.Contains<LittleBird>())
-                {
-                    Print("(The bird is released from the cage.)");
-                    return Release();
-                }
+        Before<Drop,Remove>(BeforeDrop);
 
-                return false;
-            });
-
-        Before<Remove>(Before<Drop>());
-
-        Before<Take>(Take);
-
-        Before<Catch>(Before<Take>());
+        Before<Take,Catch>(Take);
 
         Before<Insert>(() =>
             {
                 if (Second is Container && Second is not WickerCage)
                 {
-                    return Print($"Don't put the poor bird in {Second.DefiniteArticle} {Second.Name}!");
+                    return Print($"Don't put the poor bird in {Second.DName}!");
                 }
 
                 return Take();
@@ -102,6 +88,18 @@ public class LittleBird : Object
             return Print("The little bird is now dead. Its body disappears.");
         });
 
+    }
+
+    private bool BeforeDrop()
+    {
+        var cage = Get<WickerCage>();
+        if (cage.Contains<LittleBird>())
+        {
+            Print("(The bird is released from the cage.)");
+            return Release();
+        }
+
+        return false;
     }
 
     private bool Take()

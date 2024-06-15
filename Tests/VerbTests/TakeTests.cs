@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Places;
 using ColossalCave.Things;
 using Xunit;
@@ -39,7 +39,7 @@ public class TakeTests : BaseTestFixture
     {
         Execute("take building");
 
-        Assert.Equal("That's hardly portable.", Line1);
+        Assert.Equal("The well house is hardly portable.", Line1);
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public class TakeTests : BaseTestFixture
     {
         Location = Room<OutsideGrate>();
         var result = Execute("take grate");
-        Assert.Equal("That's fixed in place.", Line1);
+        Assert.Equal("The steel grate is fixed in place.", Line1);
     }
 
     [Fact]
@@ -182,15 +182,15 @@ public class TakeTests : BaseTestFixture
     public void take_except()
     {
         Execute("take except");
-        Assert.Equal(Messages.CantSeeObject, Line1);
-
+        Assert.Contains("What do you want to take?", ConsoleOut);
     }
 
     [Fact]
     public void take_bottle_lantern_food_except_bottle()
     {
         Execute("take bottle lantern food except bottle");
-        Assert.Contains("I only understood you as far as wanting to take the small bottle.", ConsoleOut);
+        Assert.Contains($"brass lantern: Taken.", ConsoleOut);
+        Assert.Contains($"tasty food: Taken.", ConsoleOut);
     }
 
     [Fact]
@@ -216,17 +216,17 @@ public class TakeTests : BaseTestFixture
     [Fact]
     public void implicit_take_2()
     {
-        Execute("take all except lamp");
+        Location = Rooms.Get<EndOfRoad>();
+
         var lamp = Objects.Get<BrassLantern>();
+        lamp.MoveToLocation();
 
         Assert.False(Inventory.Contains(lamp));
 
-        ClearOutput();
-
         Execute("take");
 
-        Assert.Equal("(the brass lantern)", Line1);
-        Assert.Equal("Taken.", Line2);
+        Assert.Contains("(the brass lantern)", ConsoleOut);
+        Assert.Contains("Taken.",ConsoleOut);
 
         Assert.True(Inventory.Contains(lamp));
     }
@@ -240,6 +240,7 @@ public class TakeTests : BaseTestFixture
         // here it's not, but it is in the room - so take it for
         // the player automatically
         var tastyFood = Objects.Get<TastyFood>();
+        tastyFood.MoveToLocation();
 
         tastyFood.Before<Take>(() =>
         {
@@ -249,13 +250,13 @@ public class TakeTests : BaseTestFixture
 
         Assert.False(Inventory.Contains(tastyFood));
 
-        var result = Execute("eat food");
+        Execute("eat food");
 
-        // Assert.Equal("(first taking the tasty food)", Line1);
-        Assert.Equal(blocked, Line1);
+        Assert.Equal("(first taking the tasty food)", Line1);
+        Assert.Equal(blocked, Line2);
 
-        Assert.True(CurrentRoom.Has<TastyFood>());
         Assert.False(Inventory.Contains(tastyFood));
+        Assert.True(CurrentRoom.Has<TastyFood>());
     }
 
 

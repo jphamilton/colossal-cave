@@ -1,9 +1,11 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Utilities;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ColossalCave.Places;
 
+[ExcludeFromCodeCoverage]
 public class Bedquilt : BelowGround
 {
     public override void Initialize()

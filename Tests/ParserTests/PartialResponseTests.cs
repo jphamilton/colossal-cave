@@ -48,9 +48,23 @@ public class PartialResponseTests : BaseTestFixture
         Assert.Contains("Taken.", ConsoleOut);
         Assert.Contains(Objects.Get<Bottle>(), Inventory.Items);
 
-        var result = Execute("bottle");
+        ClearOutput();
 
-        Assert.Equal(Messages.VerbNotRecognized, result.Output.Single());
+        Execute("bottle");
+        
+        Assert.Contains(Messages.VerbNotRecognized, ConsoleOut);
+    }
+
+    [Fact]
+    public void should_allow_full_command_from_partial()
+    {
+        CommandPrompt.FakeInput("take the bottle");
+
+        Execute("take");
+
+        Assert.Equal("What do you want to take?", Line1);
+        Assert.Equal("Taken.", Line2);
+        Assert.Contains(Objects.Get<Bottle>(), Inventory.Items);
     }
 
     [Fact]
@@ -96,7 +110,6 @@ public class PartialResponseTests : BaseTestFixture
         Assert.Contains("I'm taking the liberty of replacing the batteries.", ConsoleOut);
 
         Assert.Equal(2500, lamp.PowerRemaining);
-
 
         var old = Objects.Get<OldBatteries>();
 

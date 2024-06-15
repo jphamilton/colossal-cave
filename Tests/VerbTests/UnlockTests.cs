@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Extensions;
 using ColossalCave.Places;
 using ColossalCave.Things;
 using Xunit;
@@ -9,13 +10,14 @@ namespace Tests.Verbs;
 public class UnlockTests : BaseTestFixture
 {
     [Fact]
-    public void when_holding_keys_can_unlock_without_specifying_keys_in_input()
+    public void should_not_implict_unlock_grate_when_inventory_contains_multiple_items()
     {
         Location = Rooms.Get<OutsideGrate>();
+        var grate = Objects.Get<Grate>();
         Inventory.Add(Objects.Get<SetOfKeys>());
+        Inventory.Add(Objects.Get<BrassLantern>());
         Execute("unlock grate");
-        Assert.Equal("(with the set of keys)", Line1);
-        Assert.Equal("You unlock the steel grate.", Line2);
+        Assert.Contains($"What do you want to unlock {grate.DName} with?", Line1);
     }
 
     [Fact]
@@ -39,31 +41,34 @@ public class UnlockTests : BaseTestFixture
 
         Assert.True(grate.Locked);
 
-        CommandPrompt.FakeInput("key");
+        ClearOutput();
 
-        var result = Execute("unlock grate");
+        Execute("unlock grate");
 
-        Assert.Contains("You unlock the steel grate.", result.Output[0]);
+        Assert.Contains($"What do you want to unlock {grate.DName} with?", ConsoleOut);
 
-        Assert.False(grate.Locked);
+        Assert.True(grate.Locked);
     }
 
     [Fact]
     public void should_unlock_with_partial_response()
     {
-        Location = Rooms.Get<InsideBuilding>();
-        Execute("take all");
-
         Location = Room<OutsideGrate>();
+
+        Inventory.Add(Objects.Get<SetOfKeys>());
+        Inventory.Add(Objects.Get<BrassLantern>());
+        Inventory.Add(Objects.Get<TastyFood>());
+
         var grate = Rooms.Get<Grate>();
 
         Assert.True(grate.Locked);
 
         CommandPrompt.FakeInput("key");
 
-        var result = Execute("unlock grate");
+        Execute("unlock grate");
 
-        Assert.Contains("You unlock the steel grate.", result.Output[0]);
+        Assert.Contains($"What do you want to unlock {grate.DName} with?", ConsoleOut);
+        Assert.Contains("You unlock the steel grate.", ConsoleOut);
 
         Assert.False(grate.Locked);
     }
@@ -77,11 +82,30 @@ public class UnlockTests : BaseTestFixture
         var grate = Rooms.Get<Grate>();
 
         Assert.True(grate.Locked);
-        var result = Execute("unlock grate");
+
+        Execute("unlock grate");
+
         Assert.Equal("(with the set of keys)", Line1);
         Assert.Equal("You unlock the steel grate.", Line2);
 
         Assert.False(grate.Locked);
+    }
+
+    [Fact]
+    public void should_not_unlock_with_non_key()
+    {
+        Location = Rooms.Get<OutsideGrate>();
+        var bottle = Inventory.Add<Bottle>();
+
+        var grate = Rooms.Get<Grate>();
+
+        Assert.True(grate.Locked);
+
+        Execute("unlock grate with bottle");
+
+        Assert.Contains($"{bottle.DName.Capitalize()} doesn't seem to fit the lock.", ConsoleOut);
+
+        Assert.True(grate.Locked);
     }
 
     [Fact]
@@ -101,22 +125,43 @@ public class UnlockTests : BaseTestFixture
     }
 
     [Fact]
-    public void should_not_mimic_inform6_when_attempting_implicit_lock_on_non_lockable()
+    public void should_not_unlock_unlockable_object()
     {
         // first add to inventory, which would trigger implicit action
-        Inventory.Add(Objects.Get<Bottle>());
+        var bottle = Objects.Get<Bottle>();
+        Inventory.Add(bottle);
 
-        var result = Execute("unlock bottle");
+        Execute("unlock bottle");
 
-        Assert.NotEqual("(with the small bottle)", Line1);
-        Assert.Equal("What do you want to unlock the small bottle with?", Line1);
+        Assert.Equal($"(with {bottle.DName})", Line1);
+        Assert.Equal($"The small bottle doesn't seem to be something you can unlock.", Line2);
     }
 
     [Fact]
-    public void should_not_mimic_inform6_when_attempting_unlock_non_lockable()
+    public void should_not_unlock_unlockable_object_2()
     {
+        // first add to inventory, which would trigger implicit action
+        var bottle = Objects.Get<Bottle>();
+        var keys = Object.Get<SetOfKeys>();
+        
+        Inventory.Add(bottle);
+        Inventory.Add(keys);
+
         Execute("unlock bottle");
-        Assert.Equal("What do you want to unlock the small bottle with?", Line1);
+
+        Assert.Equal($"What do you want to unlock {bottle.DName} with?", Line1);
     }
 
+    [Fact]
+    public void should_not_offer_to_unlock_grate()
+    {
+        Location = Rooms.Get<OutsideGrate>();
+        var grate = Objects.Get<Grate>();
+        Inventory.Add(Objects.Get<SetOfKeys>());
+        Inventory.Add(Objects.Get<BrassLantern>());
+
+        Execute("unlock");
+
+        Assert.Contains($"What do you want to unlock?", ConsoleOut);
+    }
 }

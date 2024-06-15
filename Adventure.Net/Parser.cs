@@ -1,668 +1,954 @@
-﻿using Adventure.Net.Actions;
+﻿using Adventure.Net.ActionRoutines;
 using Adventure.Net.Extensions;
 using Adventure.Net.Things;
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
+using System.Text;
+using System;
 
 namespace Adventure.Net;
 
-public partial class Parser
+public class Parser
 {
-    private ParserResult _previous;
-
-    public ParserResult Parse(string input)
+    public ParserResult Parse(string input, ParserResult previous = null)
     {
-        var tokens = SanitizeInput(input);
-
-        if (tokens.Count == 0)
-        {
-            return new ParserResult { Error = Messages.DoNotUnderstand };
-        }
-
-        var verb = tokens[0].ToVerb();
-
-        if (verb == null)
-        {
-            // rebuild command from previous partial command
-            // e.g. "put bottle on"
-            // "What do you want to put bottle on?"
-            // > table
-            // This would generate a new command "put bottle on table"
-            var previous = BuildFromPrevious(tokens);
-
-            if (previous != null)
-            {
-                _previous = null;
-                return Parse(previous);
-            }
-            else
-            {
-                return new ParserResult { Error = Messages.VerbNotRecognized };
-            }
-        }
-
-        var verbToken = tokens[0];
-
-        tokens.RemoveAt(0);
-
-        if (verb is ForwardTokens forward)
-        {
-            return new ParserResult
-            {
-                Handled = forward.Handle(tokens),
-            };
-        }
-
-        if (verb is ResolveObjects r)
-        {
-            var resolvedResult = ResolveObjects(r, tokens);
-
-            if (resolvedResult.Handled || !string.IsNullOrEmpty(resolvedResult.Error))
-            {
-                return resolvedResult;
-            }
-        }
-
-        if (tokens.Count == 0)
-        {
-            var partial = CheckForPossiblePartial(verb);
-
-            if (partial != null)
-            {
-                ValidateResult(partial);
-                return partial;
-            }
-        }
-
-        var result = Parse(verb, verbToken, tokens);
-
-        result.VerbToken = verbToken;
-
-        ValidateResult(result);
-
-        _previous = result;
-
-        if (result.Verb is ResolveObjects resolved && result.Objects.Count > 0)
-        {
-            result.Handled = resolved.Handle(result.Objects);
-        }
-
-        return result;
+        var parsed = Preparse(input, previous?.Parsed);
+        return new ParserResult(parsed);
     }
 
-    private TokenizedInput SanitizeInput(string input)
+    public Parsed Preparse(string input, Parsed previous = null)
     {
         var tokenizer = new InputTokenizer();
-        return tokenizer.Tokenize(input);
+        var tokens = tokenizer.Tokenize(input);
+
+        if (tokens.Count == 0)
+        {
+            return Error(Messages.DoNotUnderstand);
+        }
+
+        var pr = CreatedParsed(previous, tokens, out int index);
+
+        if (pr.Error.HasValue())
+        {
+            return pr;
+        }
+
+        if (pr.PossibleRoutines.Count == 1 && pr.PossibleRoutines[0] is ForwardTokens)
+        {
+            // e.g. save/restore and token is file name - routine will process tokens directly
+            return pr;
+        }
+
+        Debug.Assert(pr.PossibleRoutines.Count > 0, "No routines found for verb");
+
+        var remainingTokens = tokens.Count > index ? tokens[index..] : new TokenizedInput([]);
+
+        if (remainingTokens.Count > 0)
+        {
+            pr = GetObjects(pr, remainingTokens);
+        }
+
+        if (pr.Error.HasValue())
+        {
+            return pr;
+        }
+
+        // swap indirect object with object if necessary (e.g. "put down lamp" -> "put lamp down")
+        TryObjectIndirectSwap(pr);
+
+        // can only have one indirect object
+        if (pr.IndirectObjects.Count > 1)
+        {
+            pr.Error = Messages.DidntUnderstandSentence;
+            TryParialUnderstanding(pr);
+            return pr;
+        }
+
+        // implict take
+        if (ImplicitTaker.CanTake(pr))
+        {
+            var routine = pr.PossibleRoutines[0];
+            var r1 = routine.Requires[0];
+
+            var flags = new List<O> { O.Held, O.MultiHeld, O.Multi, O.MultiExcept/*, O.MultiInside */};
+
+            if (flags.Contains(r1) && !ImplicitTaker.Take(pr, pr.Objects.First()))
+            {
+                return pr;
+            }
+        }
+
+        // try to narrow the list of possible routines
+        if (pr.PossibleRoutines.Count > 1 && !TryNarrowRoutines(pr))
+        {
+            pr.PossibleRoutines = [pr.PossibleRoutines[0]];
+
+            if (pr.Objects.Count > 0)
+            {
+                pr.Preposition = pr.PossibleRoutines[0].Prepositions.FirstOrDefault();
+            }
+
+            pr.PartialMessage = WhatDoYouWant(pr);
+            return pr;
+        }
+
+        // if have multiple objects that have matched a token, we need to narrow it to one
+        if (!TryNarrowObjects(pr) || pr.Error.HasValue())
+        {
+            return pr;
+        }
+
+        // verify the objects we have are valid for the routine
+        return Verify(pr);
     }
 
-    private ParserResult Parse(Verb verb, string verbToken, TokenizedInput tokens)
+    private Parsed CreatedParsed(Parsed previous, TokenizedInput tokens, out int index)
     {
-        var result = new ParserResult
+        var pr = new Parsed { Input = tokens };
+
+        index = 0;
+
+        var twoWordVerb = tokens.Count > 1 ? $"{tokens[0]} {tokens[1]}" : null;
+
+        if (tokens.Count > 1 && Dictionary.IsVerb(twoWordVerb))
         {
-            Verb = verb,
-            Tokens = tokens
-        };
-
-        var lastToken = "";
-
-        for (var t = 0; t < tokens.Count; t++)
-        {
-            var token = tokens[t];
-            var remaining = tokens[t..];
-
-            var obj = GetObject(result, token, remaining);
-
-            if (result.Error != null)
+            if (Dictionary.IsPreposition(tokens[1]))
             {
-                return result;
+                // e.g. "put on" -> verb root is "put", verb token is "put on"
+                pr.VerbRoot = tokens[0];
+                index = 1;
             }
-
-            if (obj is Skip)
-            {
-                continue;
-            }
-
-            if (result.Objects.Contains(obj) && !result.IsAll)
-            {
-                // e.g. "take the shiny brass lamp" - all object tokens refer to the same object
-                continue;
-            }
-
-            if (obj != null)
-            {
-                if (obj is MultipleObjectsFound found)
-                {
-                    return ResolveMultipleObjects(verb, found);
-                }
-                else if (obj.InScope || !result.Verb.InScopeOnly || result.Verb is ResolveObjects)
-                {
-                    if (result.Preposition == null || !result.Objects.Any())
-                    {
-                        // handles commands like "put on coat", "put down book", etc.
-                        result.Ordered.Add(obj);
-                        result.Objects.Add(obj);
-                    }
-                    else
-                    {
-                        result.Ordered.Add(obj);
-                        result.IndirectObject = obj;
-
-                        if (result.IsAll)
-                        {
-                            // e.g. "put all in cage" - prevent putting the cage into itself
-                            result.Objects.Remove(obj);
-                        }
-                    }
-                }
-                else
-                {
-                    result.Error = Messages.CantSeeObject;
-                    return result;
-                }
-            }
-
-            // distinguish between prepositions and movement - "go south", "put bottle down", "close up grate"
-            else if ((result.Verb is IDirectional) && Compass.Directions.Contains(token) && result.Objects.Count == 0)
-            {
-                var v = token.ToVerb();
-                result.Ordered.Add(v);
-                result.Verb = v;
-            }
-
-            else if (Prepositions.Contains(token))
-            {
-                // e.g. Drop has the synonym "throw", so "throw bottle" will just drop it.
-                // However, "throw axe at dwarf" is redirected in Drop to ThrowAt. We need
-                // to bypass this redirect and try to remap to the appropriate verb.
-                var remapped = Verbs.Get($"{verbToken} {token}");
-                if (remapped != null)
-                {
-                    result.Verb = remapped;
-                }
-
-                var p = Prepositions.Get(token);
-                result.Ordered.Add(p);
-                result.Preposition = p;
-            }
-
-            else if (token == "all" && !result.Objects.Any())
-            {
-                result.IsAll = true;
-
-                if (!verb.Multi && !verb.MultiHeld)
-                {
-                    result.Error = Messages.MultiNotAllowed;
-                    break;
-                }
-
-                var multi = new List<Object>();
-                IList<Object> objectsInRoom = null;
-
-                if (verb.Multi)
-                {
-                    objectsInRoom = GetObjectsInRoom();
-
-                    multi.AddRange(objectsInRoom);
-                }
-
-                if (verb.MultiHeld)
-                {
-                    multi.AddRange(Inventory.Items);
-                }
-
-                // if object count is only 1, we don't add it so it can be handled in the verb using implict
-                // messages e.g. (the small bottle) - unless there is only 1 object in the room
-                if (multi.Count > 1 || objectsInRoom?.Count == 1)
-                {
-                    result.Objects.AddRange(multi);
-                }
-
-            }
-
-            else if (token == "except" && (verb.Multi || verb.MultiHeld) && lastToken == "all")
-            {
-                var except = HandleExcept(result, tokens, token);
-
-                if (except != null)
-                {
-                    return except;
-                }
-
-                break;
-            }
-
             else
             {
-                obj = result.Objects.FirstOrDefault();
+                // e.g. verb is like "avada kedavra"
+                pr.VerbRoot = twoWordVerb;
+                index = 2;
+            }
+            
+            pr.VerbToken = twoWordVerb;
+            tokens = tokens[[pr.VerbToken], 2..];
+        }
+        else if (Dictionary.LookUp(tokens[0], out WordFlags f1) && (f1 & WordFlags.Verb) != 0)
+        {
+            pr.VerbRoot = tokens[0];
+            pr.VerbToken = tokens[0];
+            pr.VerbIsAlsoPrep = (f1 & WordFlags.Preposition) != 0;
+            index = 1;
+        }
+        else if (previous?.IsPartial == true)
+        {
+            // Previous command was partial and this command does not start with a verb
+            var fromPartial = CreateParsedFromPrevious(previous, tokens);
+            index = fromPartial.CurrentReadIndex;
+            return fromPartial;
+        }
+        else
+        {
+            return new Parsed { Error = Messages.VerbNotRecognized };
+        }
 
-                //if (obj != null && !result.IsAll && Objects.WithName(token) == null)
-                if (obj != null && !result.IsAll)
+        string prep = null;
+        int objects = 0;
+        int indirectObjects = 0;
+
+        for (int i = index; i < tokens.Count; i++)
+        {
+            if (Dictionary.LookUp(tokens[i], out WordFlags f2) || tokens[i] == "all")
+            {
+                if ((f2 & WordFlags.Preposition) != 0)
                 {
-                    result.Error = Messages.PartialUnderstanding(verb, obj);
+                    // pr.Preposition is assigned later
+                    prep = tokens[i];
+                    continue;
+                }
+
+                if (prep == null)
+                {
+                    objects = 1;
                 }
                 else
                 {
-                    result.Error = Messages.CantSeeObject;
+                    indirectObjects = 1;
                 }
+            }
+        }
 
-                return result;
+        var requires = objects + indirectObjects;
+
+        var routines = Routines.Find(pr.VerbToken, prep, requires);
+
+        if (routines.Count == 0)
+        {
+            return new Parsed { Error = Messages.CantSeeObject };
+        }
+
+        pr.PossibleRoutines = routines;
+
+        // if all of the possible routines have no prepositions, just take the first one
+        if (pr.PossibleRoutines.Count > 1 && !pr.PossibleRoutines.Any(x => x.Prepositions.Count > 0))
+        {
+            pr.PossibleRoutines = [pr.PossibleRoutines[0]];
+        }
+
+        if (pr.Preposition == null && pr.VerbIsAlsoPrep)
+        {
+            pr.Preposition = pr.VerbToken;
+        }
+
+        return pr;
+    }
+
+    private Parsed CreateParsedFromPrevious(Parsed previous, TokenizedInput tokens)
+    {
+        previous.PartialMessage = null;
+
+        var pr = new Parsed();
+
+        pr.Update(GetObjects(previous, tokens));
+
+        if (!TryNarrowObjects(pr) || pr.Error.HasValue())
+        {
+            return pr;
+        }
+
+        return Verify(pr);
+    }
+
+    public Parsed GetObjects(Parsed pr, List<string> tokens)
+    {
+        var wordTokens = TokenizeWords(tokens);
+        if (wordTokens.Count == 0)
+        {
+            return Error(Messages.CantSeeObject);
+        }
+
+        pr.WordTokens.AddRange(wordTokens);
+
+        for (int i = pr.CurrentReadIndex; i < pr.WordTokens.Count; i++, pr.CurrentReadIndex++)
+        {
+            if (pr.IsError)
+            {
+                return pr;
             }
 
-            lastToken = token;
+            var wordToken = pr.WordTokens[i];
+            var inScopeObjects = ResolveInScopeObjects(pr);
+
+#pragma warning disable IDE0011 // Add braces
+            if (HandleObjectToken(pr, wordToken, inScopeObjects)) continue;
+            if (HandleVerbOrPreposition(pr, wordToken)) continue;
+            if (HandleSpecialWords(pr, wordToken, inScopeObjects)) continue;
+#pragma warning restore IDE0011 // Add braces
+        }
+
+        return pr;
+    }
+
+    private static List<WordToken> TokenizeWords(List<string> tokens)
+    {
+        var result = new List<WordToken>();
+
+        foreach (var token in tokens)
+        {
+            if (Dictionary.LookUp(token, out var wordFlags))
+            {
+                result.Add(new WordToken(token, wordFlags));
+            }
+            else if (token == "all" || token == "except")
+            {
+                result.Add(new WordToken(token, WordFlags.None));
+            }
+            else
+            {
+                return [];
+            }
         }
 
         return result;
     }
 
-    private ParserResult HandleExcept(ParserResult result, TokenizedInput tokens, string currentToken)
+    private List<Object> ResolveInScopeObjects(Parsed pr)
     {
-        var index = tokens.IndexOf(currentToken) + 1;
+        var wordToken = pr.WordTokens[pr.CurrentReadIndex];
 
-        if (index >= tokens.Count)
+        bool includeOutOfScope = false;
+        O r = O.None;
+
+        if (pr.PossibleRoutines.Count == 1)
         {
-            return null;
+            includeOutOfScope = !pr.PossibleRoutines[0].InScopeOnly;
+
+            var requires = pr.PossibleRoutines[0].Requires;
+
+            if (requires.Count > 0)
+            {
+                r = pr.Preposition == null ? requires[0] : requires.Count > 1 ? requires[1] : O.None;
+            }
         }
 
-        var except = new List<Object>();
+        var candidates = includeOutOfScope ? Objects.All : CurrentRoom.ObjectsInScope(false);
 
-        // process rest of the tokens as objects
-        for (int i = index; i < tokens.Count; i++)
+        if (!includeOutOfScope && r == O.Noun && !wordToken.IsDoor)
         {
-            // TODO: handle multiple objects with same name
-            var next = tokens[i];
+            candidates.Add(Player.Location);
+        }
 
-            if (Prepositions.Contains(next) && result.Preposition == null)
+        if (wordToken.IsObject || wordToken.IsDoor)
+        {
+            candidates = [.. candidates.Where(x => x.Name == wordToken.Name || x.Synonyms.Contains(wordToken.Name))];
+        }
+
+        return candidates;
+    }
+
+    private bool HandleObjectToken(Parsed pr, WordToken wordToken, List<Object> inScopeObjects)
+    {
+        if (!wordToken.IsObject && !wordToken.IsDoor)
+        {
+            return false;
+        }
+
+        Object obj = null;
+        
+        if (inScopeObjects.Count == 0)
+        {
+            pr.Error = Messages.CantSeeObject;
+            
+            if (!pr.IsAll && !pr.IsExcept && pr.Objects.Count > 0)
             {
-                result.Preposition = Prepositions.Get(next);
-                continue;
+                TryParialUnderstanding(pr);
             }
 
-            var obj = GetObject(result, next);
+            return true;
+        }
 
-            if (obj == null)
+        // we might have unresolved objects or indirect objects (token matches more than one object)
+        var unresolved = pr.Preposition == null ? pr.UnresolvedObjects : pr.UnresolvedIndirectObjects;
+
+        if (inScopeObjects.Count == 1)
+        {
+            // we have matched a single object
+            obj = inScopeObjects[0];
+        }
+        
+        if (inScopeObjects.Count > 1)
+        {
+            if (!pr.IsExcept && inScopeObjects.Any(x => pr.Objects.Contains(x) || pr.IndirectObjects.Contains(x)))
             {
-                result.Error = Messages.CantSeeObject;
-                return result;
+                return true; // synonyms already in list
             }
-            else if (obj is MultipleObjectsFound)
+            
+            // we might have 3 unresolved "hats", but the current object narrows it down to the "purple hat"
+            var intersect = unresolved.Intersect(inScopeObjects).ToList();
+            if (intersect.Count == 1)
             {
-                var input = GetInput(result.Verb);
-
-                if (input.Error.HasValue())
-                {
-                    return input;
-                }
-
-                if (input.Objects.Count > 0)
-                {
-                    except.AddRange(input.Objects);
-                }
+                obj = intersect[0];
             }
             else
             {
-                except.Add(obj);
+                unresolved.AddRange(inScopeObjects);
             }
         }
 
-        result.Objects = result.Objects.Where(x => !except.Contains(x)).ToList();
-
-        return null;
-    }
-
-    private static Object GetObject(ParserResult result, string token, List<string> remaining = null)
-    {
-        // objects may have the same synonyms, so multiple items could be returned here
-        var globalObjects = Objects.WithName(token).Where(x => x is not Room || x is Door).ToList();
-
-        IList<Object> find(string token)
+        if (obj != null)
         {
-            return result.Verb is ResolveObjects ? Objects.WithName(token) : (
-                from o in globalObjects
-                where !o.Absent && (result.Verb.InScopeOnly ? o.InScope : true)
-                select o
-            ).ToList();
-        }
-
-        var found = find(token);
-
-        if (result.Verb is IDirectional && Compass.Directions.Contains(token))
-        {
-            // weird case where a preposition is also an object synonym (see OldBatteries)
-            return null;
-        }
-
-        // objects exist but are not in scope (because they are out of the room or inside containers, etc)
-        if (globalObjects.Count > 0 && found.Count == 0)
-        {
-            result.Error = Messages.CantSeeObject;
-            return null;
-        }
-
-        if (found.Count > 1 && remaining?.Count > 0)
-        {
-            // attempt to reduce found list, by processing next tokens
-            
-            // example:
-            // > take the shiny ring
-            //
-            // "shiny" token yields "shiny coins" and "shiny ring"
-            // so we read the next token "ring" which filters the
-            // found list down to the proper object
-
-            // remaining includes token
-            remaining.RemoveAt(0);
-
-            var filtered = found.ToList();
-
-            foreach (var r in remaining)
+            if (unresolved.Contains(obj))
             {
-                var next = find(r);
-                filtered = filtered.Where(x => x.Synonyms.Contains(r)).ToList();
-
-                if (filtered.Count == 0)
-                {
-                    break;
-                }
-                else if (filtered.Count == 1)
-                {
-                    return filtered[0];
-                }
-                else if (filtered.Count > 1)
-                {
-                    found = filtered;
-                }
+                unresolved.Clear();
             }
-        }
 
-        if (found.Count > 1)
-        {
-            if (result.Verb.MultiHeld)
+            var target = pr.Preposition == null ? pr.Objects : pr.IndirectObjects;
+
+            if (pr.IsExcept)
             {
-                found = found.Where(Inventory.Contains).ToList();
+                // e.g. take all except hat
+                // remove exceptions from the object list
+                pr.Objects = [.. pr.Objects.Where(x => x != obj)];
             }
             else
             {
-                var notHeld = found.Where(o => !Inventory.Contains(o)).ToList();
-
-                if (notHeld.Count > 0)
-                {
-                    found = notHeld;
-                }
-            }
-
-        }
-
-        if (found.Count == 1)
-        {
-            var obj = found[0];
-
-            if (obj.InScope || !result.Verb.InScopeOnly)
-            {
-                return obj;
+                target.Add(obj);
             }
         }
-        else if (found.Count > 1)
-        {
-            var last = result.Ordered?.LastOrDefault();
 
-            if (last != null && last is Object obj)
+        return true;
+    }
+
+    private bool HandleVerbOrPreposition(Parsed pr, WordToken wordToken)
+    {
+        if (!wordToken.IsVerb)
+        {
+            return false;
+        }
+
+        if (pr.PossibleRoutines.Any(x => x is Direction))
+        {
+            var direction = Routines.List.First(x => x.Verbs.Contains(wordToken.Name));
+            pr.PossibleRoutines = [direction];
+            return true;
+        }
+
+        if (wordToken.IsPreposition)
+        {
+            if (pr.Preposition != null)
             {
-                if (obj.Name.Contains(token) || obj.Synonyms.Contains(token))
-                {
-                    return new Skip();
-                }
+                pr.Error = Messages.CantSeeObject;
+                return true;
+            }
+            pr.Preposition = wordToken.Name;
+            return true;
+        }
+
+        if (pr.Routine != null)
+        {
+            // e.g. look west
+            var direction = (Direction)Routines.List.First(x => x is Direction && x.Verbs.Contains(wordToken.Name));
+            var obj = direction.ToObject();
+            
+            if (pr.Preposition == null)
+            {
+                pr.Objects.Add(obj);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool HandleSpecialWords(Parsed pr, WordToken wordToken, List<Object> inScopeObjects)
+    {
+        if (wordToken.IsPreposition)
+        {
+            pr.Preposition = wordToken.Name;
+            return true;
+        }
+
+        if (wordToken.IsAll && pr.Objects.Count == 0)
+        {
+            foreach (var obj in inScopeObjects.Where(o => !o.Animate && !o.Static && !o.Scenery).ToList())
+            {
+                pr.Objects.Add(obj);
             }
             
-            return new MultipleObjectsFound(found);
+            pr.IsAll = true;
+            return true;
         }
 
-        return null;
-    }
-
-    private ParserResult ResolveMultipleObjects(Verb verb, MultipleObjectsFound multiple)
-    {
-        Output.Print($"Which do you mean, {multiple.Objects.DisplayList(definiteArticle: true, "or")}?");
-        return GetInput(verb);
-    }
-
-    private ParserResult CheckForPossiblePartial(Verb verb)
-    {
-        // one-word command or partial command
-        var verbType = verb.GetType();
-        var expects = verbType.GetMethod("Expects", Array.Empty<Type>());
-
-        if (expects != null)
+        if (wordToken.IsExcept)
         {
-            // are implicit conditions satisfied?
-            if (verb.Multi)
+            pr.IsExcept = true;
+            return true;
+        }
+
+        if (wordToken.IsRoom)
+        {
+            pr.Objects = [.. Objects.All.Where(x => x is Room && x.Synonyms.Contains(wordToken.Name))];
+            return true;
+        }
+
+        return false;
+    }
+
+    private static bool TryNarrowObjects(Parsed pr)
+    {
+        var routine = pr.PossibleRoutines[0];
+        var objects = pr.Objects.ToList();
+        var indirect = pr.IndirectObjects.FirstOrDefault();
+
+        if (objects.Count > 0 && !pr.Preposition.HasValue())
+        {
+            pr.Preposition = routine.Prepositions.FirstOrDefault();
+        }
+
+        // r1 can be any type
+        var r1 = routine.Requires.Count > 0 ? routine.Requires[0] : O.None;
+
+        // r2 will only be Noun, Held, Animate or Topic
+        var r2 = routine.Requires.Count > 1 ? routine.Requires[1] : O.None;
+
+        if (pr.UnresolvedObjects.Count == 0 && pr.UnresolvedIndirectObjects.Count == 0)
+        {
+            return true;
+        }
+
+        List<Object> ResolveObjects(List<Object> unresolved, O f)
+        {
+            if (pr.Routine != null && !pr.Routine.InScopeOnly)
             {
-                var objects = GetObjectsInRoom();
-
-                if (objects.Count != 1)
-                {
-                    expects = null;
-                }
+                return [.. unresolved];
             }
-            else if (verb.MultiHeld && Inventory.Count != 1)
+            else if (f == O.MultiHeld || f == O.Held)
             {
-                expects = null;
+                return [.. unresolved.Where(Inventory.Contains)];
+            }
+            else
+            {
+                return [.. unresolved.Where(x => x.InScope && !Inventory.Contains(x))];
             }
         }
 
-
-        if (expects == null)
+        bool WhichDoYouMean(List<Object> unresolved)
         {
-            Output.Print($"What do you want to {verb.Name}?");
-            return GetInput(verb);
+            pr.PartialMessage = $"Which do you mean, {unresolved.DisplayList(definiteArticle: true, "or")}?";
+            return false;
         }
 
-        return null;
-    }
+        List<Object> resolved = null;
 
-    private IList<Object> GetObjectsInRoom()
-    {
-        return (
-            from o in CurrentRoom.ObjectsInRoom()
-            where !o.Absent && !o.Animate && !o.Static && !o.Scenery
-            select o
-        ).ToList();
-    }
-
-    private ParserResult GetInput(Verb verb)
-    {
-        var response = CommandPrompt.GetInput();
-
-        var tokens = SanitizeInput(response);
-
-        if (tokens.Count == 0)
+        if (pr.UnresolvedObjects.Count > 1)
         {
-            return new ParserResult { Error = Messages.DoNotUnderstand };
+            resolved = ResolveObjects(pr.UnresolvedObjects, r1);
+
+            if (resolved.Count > 1)
+            {
+                pr.UnresolvedObjects.Clear();
+                return WhichDoYouMean(resolved);
+            }
+
+            pr.Aside = $"({resolved[0].DName})";
+            pr.Objects.Add(resolved[0]);
         }
 
-        var verbToken = tokens[0];
-        if (verbToken.ToVerb() != null)
+        if (pr.UnresolvedIndirectObjects.Count > 1)
         {
-            // a new command was entered instead of a partial response
-            return Parse(string.Join(' ', tokens));
+            resolved = ResolveObjects(pr.UnresolvedIndirectObjects, r1);
+
+            if (resolved.Count > 1)
+            {
+                pr.UnresolvedIndirectObjects.Clear();
+                return WhichDoYouMean(resolved);
+            }
         }
 
-        // parse original verb with the entered tokens
-        return Parse(verb, verbToken, tokens);
+        return true;
+    }
+    
+    private Parsed Verify(Parsed pr)
+    {
+        var routine = pr.PossibleRoutines[0];
+        var objects = pr.Objects.ToList();
+        var indirect = pr.IndirectObjects.FirstOrDefault();
+        var prep = pr.Preposition;
+        bool empty = routine.Requires.Count == 0;
+
+        O r1 = routine.Requires.Count > 0 ? routine.Requires[0] : O.None;
+        O r2 = routine.Requires.Count > 1 ? routine.Requires[1] : O.None;
+
+        if (empty && objects.Count == 0 || routine is Direction && objects.Count == 0)
+        {
+            return pr;
+        }
+
+#pragma warning disable IDE0011 // Add braces
+        if (HandleReverseRoutine(pr, routine, objects, indirect, prep)) return pr;
+        if (HandleAnimate(pr, r1)) return pr;
+        if (HandleNoun(pr, routine, objects, r1, prep)) return pr;
+        if (HandleMulti(pr, routine, objects, r1)) return pr;
+        if (HandleHeld(pr, routine, objects, r1)) return pr;
+        if (HandleMultiExcept(pr, routine, objects, indirect, prep, r1)) return pr;
+        if (HandleMultiInside(pr, objects, indirect, prep, routine, r1)) return pr;
+        if (HandleMultiHeld(pr, routine, objects, r1)) return pr;
+        if (HandleImplicitIndirect(pr, routine, objects, indirect, prep, r2)) return pr;
+#pragma warning restore IDE0011 // Add braces
+
+        return pr;
     }
 
-    private void ValidateResult(ParserResult result)
+    private bool HandleReverseRoutine(Parsed pr, Routine routine, List<Object> objects, Object indirect, string prep)
     {
-        if (result.Error.HasValue() || result.Verb is ResolveObjects)
+        if (!routine.Reverse)
+        {
+            return false;
+        }
+
+        if (objects.Count == 1 && indirect == null)
+        {
+            if (ImplicitTaker.TryGetImplicitObject(routine, prep, routine.Requires[1], out Object obj, out string aside))
+            {
+                pr.Aside = aside;
+                pr.IndirectObjects = [objects[0]];
+                pr.Objects = [obj];
+                return true;
+            }
+
+            return false;
+        }
+
+        if (objects.Count == 2 && indirect == null)
+        {
+            pr.Objects = [objects[1]];
+            pr.IndirectObjects = [objects[0]];
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool HandleAnimate(Parsed pr, O r1)
+    {
+        if (r1 == O.Animate)
+        {
+            var first = pr.Objects.Count > 0 ? pr.Objects.First() : null;
+            var second = pr.IndirectObjects.Count > 0 ? pr.IndirectObjects.First() : null;
+
+            if (pr.Objects.Count == 0)
+            {
+                pr.Objects = [Objects.Get<Player>()];
+                pr.PartialMessage = WhatDoYouWant(pr);
+                return true;
+            }
+            else if (first?.Animate != true && second?.Animate != true)
+            {
+                pr.Error = Messages.AnimateOnly;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private bool HandleNoun(Parsed pr, Routine routine, List<Object> objects, O r1, string prep)
+    {
+        if (r1 != O.Noun)
+        {
+            return false;
+        }
+
+        if (objects.Count == 0 && ImplicitTaker.TryGetImplicitObject(routine, prep, r1, out Object obj, out string aside))
+        {
+            pr.Aside = aside;
+            pr.Objects = [obj];
+            return true;
+        }
+
+        if (objects.Count > 1)
+        {
+            pr.Error = Messages.MultiNotAllowed;
+            return true;
+        }
+
+        if (objects.Count == 0)
+        {
+            pr.PartialMessage = WhatDoYouWant(pr);
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool HandleMulti(Parsed pr, Routine routine, List<Object> objects, O r1)
+    {
+        if (r1 != O.Multi)
+        {
+            return false;
+        }
+
+        if (objects.Count == 0)
+        {
+            if (ImplicitTaker.TryGetImplicitObject(routine, pr.Preposition, r1, out Object obj, out string aside))
+            {
+                pr.Aside = aside;
+                pr.Objects = [obj];
+                return true;
+            }
+
+            pr.PartialMessage = WhatDoYouWant(pr);
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool HandleHeld(Parsed pr, Routine routine, List<Object> objects, O r1)
+    {
+        if (r1 != O.Held)
+        {
+            return false;
+        }
+
+        if (objects.Count == 0)
+        {
+            if (ImplicitTaker.TryGetImplicitObject(routine, pr.Preposition, r1, out Object obj, out string aside))
+            {
+                pr.Aside = aside;
+                pr.Objects = [obj];
+                return true;
+            }
+
+            pr.PartialMessage = WhatDoYouWant(pr);
+            return true;
+        }
+
+        if (objects.Count > 1)
+        {
+            pr.Error = Messages.MultiNotAllowed;
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool HandleMultiExcept(Parsed pr, Routine routine, List<Object> objects, Object indirect, string prep, O r1)
+    {
+        if (r1 != O.MultiExcept)
+        {
+            return false;
+        }
+
+        if (!ValidateMultiExceptInside(pr, out string error, out string question))
+        {
+            if (error != null)
+            {
+                pr.Error = error;
+            }
+            else if (question != null)
+            {
+                pr.PartialMessage = question;
+            }
+
+            return true;
+        }
+
+        pr.Objects = [.. pr.Objects.Where(x => x != indirect)];
+        ImplicitTaker.Take(pr, [.. pr.Objects]);
+        pr.IndirectObjects = [indirect];
+
+        return true;
+    }
+
+    private bool HandleMultiInside(Parsed pr, List<Object> objects, Object indirect, string prep, Routine routine, O r1)
+    {
+        if (r1 != O.MultiInside)
+        {
+            return false;
+        }
+
+        if (!ValidateMultiExceptInside(pr, out string error, out string question))
+        {
+            if (error != null)
+            {
+                pr.Error = error;
+            }
+            else if (question != null)
+            {
+                pr.PartialMessage = question;
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool HandleMultiHeld(Parsed pr, Routine routine, List<Object> objects, O r1)
+    {
+        if (r1 != O.MultiHeld)
+        {
+            return false;
+        }
+
+        if (pr.IsAll)
+        {
+            var held = objects.Where(Inventory.Contains).ToList();
+            pr.Objects = [.. held];
+            objects = held;
+        }
+
+        if (objects.Count == 1 && pr.IsAll)
+        {
+            pr.Aside = $"({objects[0].DName})";
+            return true;
+        }
+        else if (objects.Count == 1 && InContainer(objects[0], out Container container))
+        {
+            pr.Aside = $"(first taking {objects[0].DName} out of {container.DName})";
+            return true;
+        }
+        else if (objects.Count == 0)
+        {
+            if (ImplicitTaker.TryGetImplicitObject(routine, pr.Preposition, r1, out Object obj, out string aside))
+            {
+                pr.Aside = aside;
+                pr.Objects = [obj];
+            }
+            else
+            {
+                pr.PartialMessage = WhatDoYouWant(pr);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private bool HandleImplicitIndirect(Parsed pr, Routine routine, List<Object> objects, Object indirect, string prep, O r2)
+    {
+        if (r2 != O.Held || objects.Count != 1)
+        {
+            return false;
+        }
+
+        if (indirect == null)
+        {
+            var obj = routine.ImplicitObject(r2);
+            if (obj != null)
+            {
+                pr.Aside = $"({prep} {obj.DName})";
+                pr.IndirectObjects = [obj];
+                return true;
+            }
+            else
+            {
+                pr.PartialMessage = WhatDoYouWant(pr);
+                return true;
+            }
+        }
+
+        ImplicitTaker.Take(pr, indirect);
+        return true;
+    }
+
+    private bool ValidateMultiExceptInside(Parsed pr, out string error, out string question)
+    {
+        error = null;
+        question = null;
+
+        var routine = pr.PossibleRoutines[0];
+        var empty = routine.Requires.Count == 0;
+        var objects = pr.Objects.ToList();
+        var indirect = pr.IndirectObjects.FirstOrDefault();
+        var prep = pr.Preposition;
+
+        if (!empty && objects.Count == 0 && indirect == null)
+        {
+            error = Messages.CantSeeObject;
+        }
+        else if (objects.Count == 1 && objects[0] == indirect)
+        {
+            error = $"You can't {routine.Verb} something {prep} itself.";
+        }
+        else if (objects.Count > 0 && indirect == null && prep != null)
+        {
+            var name = objects.Count > 1 ? "those things" : $"{objects[0].DName}";
+            question = $"What do you want to {routine.Verbs[0]} {name} {prep}?";
+        }
+
+        return string.IsNullOrEmpty(error) && string.IsNullOrEmpty(question);
+    }
+
+    private static bool TryNarrowRoutines(Parsed pr)
+    {
+        if (pr.Objects.Count > 0)
+        {
+            if (pr.Objects.Count == 1)
+            {
+                ImplicitTaker.Take(pr, pr.Objects.First());
+            }
+
+            pr.PossibleRoutines = [.. pr.PossibleRoutines.Where(x => x.Requires.Count > 0)];
+        }
+
+        return pr.PossibleRoutines.Count == 1;
+    }
+
+    private static string WhatDoYouWant(Parsed pr)
+    {
+        var routine = pr.PossibleRoutines[0];
+        var objects = pr.Objects;
+        var prep = pr.Preposition ?? (objects.Count > 0 ? routine.Prepositions.FirstOrDefault() : null);
+
+        var sb = new StringBuilder($"What do you want to {pr.VerbRoot}");
+
+        if (objects.Count > 1)
+        {
+            sb.Append(" those things");
+        }
+        else if (objects.Count == 1)
+        {
+            var obj = pr.Objects.First();
+            var target = obj is Player ? "yourself" : obj.DName;
+            sb.Append($" {target}");
+        }
+
+        if (!string.IsNullOrEmpty(prep))
+        {
+            sb.Append($" {prep}");
+        }
+
+        sb.Append('?');
+
+        return sb.ToString();
+    }
+
+    private static void TryObjectIndirectSwap(Parsed pr)
+    {
+        if (pr.Preposition.HasValue() && pr.Objects.Count == 0 && pr.IndirectObjects.Count > 0)
+        {
+            // e.g. turn on lamp -> turn lamp on
+            pr.Objects = pr.IndirectObjects;
+            pr.IndirectObjects = [];
+        }
+    }
+
+    private static void TryParialUnderstanding(Parsed pr)
+    {
+        var routine = pr.PossibleRoutines[0];
+
+        // these always require indirect objects
+        if (routine.Requires.Count == 2 && pr.IndirectObjects.Count == 0)
         {
             return;
         }
 
-        Parameters parameters = result;
-        var verb = result.Verb;
-        var expects = verb.GetHandler(result);
+        var objects = pr.Objects.ToList();
+        var indirect = pr.IndirectObjects.FirstOrDefault();
+        var prep = pr.Preposition;
 
-        void WhatDoYouWantToDo(Prep prep)
+        var sb = new StringBuilder($"I only understood you as far as wanting to {routine.Verb} ");
+
+        if (prep != null && indirect == null)
         {
-            var message = result.Objects.Count > 1 ?
-                $"What do you want to {verb.Name} those things {prep}?" :
-                $"What do you want to {verb.Name} the {result.Objects[0]} {prep}?";
-
-            Output.Print(message);
-
-            var input = GetInput(verb);
-
-            if (input.Objects.Count == 1)
-            {
-                result.Preposition = prep;
-                result.IndirectObject = input.Objects[0];
-                ValidateResult(result);
-            }
-            else
-            {
-                result.Error = input.Error ?? Messages.DidntUnderstandSentence;
-            }
+            sb.Append($"{prep} ");
         }
 
-        if (expects == null)
+        if (objects.Count > 0)
         {
-            if (parameters.Key.Count == 1 && verb.AcceptedPrepositions.Count > 0)
-            {
-                // possible partial command entry
-                foreach (var prep in verb.AcceptedPrepositions)
-                {
-                    var key = $"obj.{prep}.obj";
-
-                    if (verb.GetHandler(key) != null)
-                    {
-                        // "unlock grate" will unlock the grate if player is holding only the key,
-                        // but "put batteries" will not try to insert the batteries into itself.
-                        if (Inventory.Count == 1 && !result.Objects.Contains(Inventory.Items[0]))
-                        {
-                            var first = Inventory.Items[0];
-                            Output.Print($"({prep} the {first.Name})");
-                            result.Preposition = prep;
-                            result.IndirectObject = first;
-                            expects = verb.GetHandler(result);
-
-                            if (expects != null)
-                            {
-                                result.Expects = expects;
-                                return;
-                            }
-                        }
-
-                        WhatDoYouWantToDo(prep);
-
-                        return;
-                    }
-                }
-
-                result.Error = Messages.PartialUnderstanding(result.Verb);
-            }
-            else if (parameters.Key.Count == 2)
-            {
-                // possible partial command entry
-                var key = $"{parameters}.obj";
-
-                if (verb.GetHandler(key) != null)
-                {
-                    WhatDoYouWantToDo(result.Preposition);
-                }
-                else
-                {
-                    result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects[0]);
-                }
-
-            }
-            else if (parameters.Key.Count == 3)
-            {
-                // possible partial command entry
-                if (verb.GetHandler("obj") != null)
-                {
-                    result.Error = Messages.PartialUnderstanding(result.Verb, result.Objects[0]);
-                }
-            }
-            else if (result.Preposition != null)
-            {
-                result.Error = Messages.CantSeeObject;
-            }
-            else
-            {
-                result.Error = Messages.DidntUnderstandSentence;
-            }
+            sb.Append(objects.DisplayList(definiteArticle: true, "and"));
         }
-        else
+
+        if (prep != null && indirect != null)
         {
-            HandleImplicitTake(result, expects);
-
-            result.Expects = expects;
+            sb.Append($" {prep} {indirect.DName}");
         }
+
+        sb.Append('.');
+
+        pr.PartialMessage = sb.ToString();
     }
 
-    private static void HandleImplicitTake(ParserResult result, MethodInfo expects)
+    private bool InContainer(Object obj, out Container container)
     {
-        var args = expects.GetParameters();
+        container = null;
 
-        args.ForEach((parameter, index) =>
+        if (obj.Animate)
         {
-            var held = parameter.GetCustomAttribute<HeldAttribute>();
+            return false;
+        }
 
-            if (held != null)
-            {
-                if (index == 0 && result.Objects.Count == 1 && result.Objects[0].Parent is not Player)
-                {
-                    result.ImplicitTake = result.Objects[0];
-                }
-                else if (index > 0 && result.IndirectObject != null && result.ImplicitTake == null && result.IndirectObject.Parent is not Player)
-                {
-                    result.ImplicitTake = result.IndirectObject;
-                }
-            }
-        });
+        if (obj.Parent is Container c && Inventory.Contains(c) && c.Open)
+        {
+            container = c;
+            return true;
+        }
+
+        return false;
     }
 
-    private string BuildFromPrevious(TokenizedInput tokens)
+    private Parsed Error(string error)
     {
-        if (_previous != null && string.IsNullOrEmpty(_previous.Error) && !string.IsNullOrEmpty(_previous.VerbToken))
-        {
-            var input = _previous.Input;
-            input.AddRange(tokens);
-
-            return string.Join(' ', input);
-        }
-
-        return null;
-    }
-
-    private ParserResult ResolveObjects(ResolveObjects verb, TokenizedInput tokens)
-    {
-        var result = new ParserResult();
-
-        List<Object> resolved = [];
-
-        foreach (var token in tokens)
-        {
-            foreach (var obj in Objects.WithName(token))
-            {
-                if (!resolved.Contains(obj))
-                {
-                    resolved.Add(obj);
-                }
-            }
-        }
-
-        if (resolved.Count > 0)
-        {
-            result.Handled = verb.Handle(resolved);
-        }
-        else
-        {
-            result.Error = Messages.CantSeeObject;
-        }
-
-        return result;
+        return new Parsed { Error = error };
     }
 }

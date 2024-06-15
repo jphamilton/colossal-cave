@@ -59,4 +59,28 @@ public class MovementTests : BaseTestFixture
         Execute("enter");
         Assert.Equal(Room<InsideBuilding>(), Location);
     }
+
+    [Fact]
+    public void can_leave()
+    {
+        Location = Room<InsideBuilding>();
+        Execute("out");
+        Assert.NotEqual(Room<InsideBuilding>(), Location);
+    }
+
+    [Fact]
+    public void can_leave_alt()
+    {
+        Location = Room<InsideBuilding>();
+        Execute("exit");
+        Assert.NotEqual(Room<InsideBuilding>(), Location);
+    }
+
+    [Fact]
+    public void can_leave_alt_2()
+    {
+        Location = Room<InsideBuilding>();
+        Execute("leave");
+        Assert.NotEqual(Room<InsideBuilding>(), Location);
+    }
 }

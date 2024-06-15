@@ -1,71 +1,49 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
+﻿using Adventure.Net.ActionRoutines;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Adventure.Net;
 
-public class Parameters
+public class ParserResult
 {
-    public List<Object> Objects { get; set; } = new List<Object>();
+    private string _error;
 
-    public Prep Preposition { get; set; }
-
+    public Routine Routine { get; set; }
+    public List<Object> Objects { get; set; } = [];
     public Object IndirectObject { get; set; }
+    public Parsed Parsed { get; }
+    public bool IsHandled { get; set; }
+    public bool IsError => Error != null && !IsPartial;
+    public bool IsPartial => PartialMessage != null;
+    public string PartialMessage { get; set; }
+    public string Aside { get; set; }
 
-    public List<string> Key
+    public string Error
     {
         get
         {
-            var key = new List<string>();
-
-            if (Objects.Count > 0)
-            {
-                key.Add("obj");
-            }
-
-            if (Preposition != null)
-            {
-                key.Add($"{Preposition}");
-            }
-
-            if (IndirectObject != null)
-            {
-                key.Add("obj");
-            }
-
-            return key;
+            return PartialMessage ?? _error;
         }
-    }
-
-    public override string ToString()
-    {
-        return string.Join('.', Key);
-    }
-}
-
-public class ParserResult : Parameters
-{
-    public Verb Verb { get; set; }
-    public string VerbToken { get; set; }
-    public string Error { get; set; }
-    public bool IsAll { get; set; }
-    public Object ImplicitTake { get; set; }
-    public List<object> Ordered { get; } = new();
-    public TokenizedInput Tokens { get; set; }
-    public MethodInfo Expects { get; set; }
-    public bool Handled { get; set; }
-
-    public List<string> Input
-    {
-        get
+        set
         {
-            var command = new List<string> { VerbToken ?? ""};
-            command.AddRange(Tokens);
-            return command;
+            _error = !string.IsNullOrEmpty(value) ? value : null;
         }
     }
 
-    public CommandHandler CommandHandler()
+    public ParserResult()
     {
-        return new CommandHandler(this);
+
+    }
+
+    public ParserResult(Parsed p)
+    {
+        Aside = p.Aside;
+        Error = p.Error;
+        IndirectObject = p.IndirectObjects.FirstOrDefault();
+        IsHandled = p.IsHandled;
+        Objects = [.. p.Objects];
+        Parsed = p;
+        PartialMessage = p.PartialMessage;
+        Routine = p.PossibleRoutines.Count > 0 ? p.PossibleRoutines[0] : null;
     }
 }

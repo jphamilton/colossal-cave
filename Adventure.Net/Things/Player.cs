@@ -1,8 +1,17 @@
-﻿namespace Adventure.Net.Things;
+﻿using System.Diagnostics;
 
+namespace Adventure.Net.Things;
+
+[DebuggerDisplay("(yourself) in {Location}")]
 public class Player : Object
 {
     private static Player _player;
+
+    public Player()
+    {
+        Synonyms.Are("me");
+        Animate = true;
+    }
 
     public override void Initialize()
     {
@@ -17,7 +26,9 @@ public class Player : Object
         }
         set
         {
+            _player.Remove();
             _player.Parent = value;
+            _player.Parent.Children.Add(_player);
         }
     }
 

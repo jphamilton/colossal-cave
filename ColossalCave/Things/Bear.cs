@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Places;
 using Adventure.Net.Things;
 using ColossalCave.Places;
@@ -54,7 +54,7 @@ public class Bear : Object
             return Print("With what? Your bare hands? Against *his* bear hands??");
         });
 
-        Before<ThrowAt>(() => ThrowAt(Noun));
+        Before<Throw>(() => ThrowAt(Noun));
 
         Before<Give>(() => Give(Noun));
 

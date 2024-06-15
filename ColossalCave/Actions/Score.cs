@@ -1,25 +1,28 @@
 ﻿using Adventure.Net;
+using Adventure.Net.ActionRoutines;
 using System;
+using System.Diagnostics.CodeAnalysis;
+using Object = Adventure.Net.Object;
 
 namespace ColossalCave.Actions;
 
-public class Score : Verb
+[ExcludeFromCodeCoverage]
+public class Score : Routine
 {
     public Score()
     {
-        Name = "score";
-        GameVerb = true;
+        Verbs = ["score"];
+        IsGameVerb = true;
     }
 
-    public bool Expects()
+    public override bool Handler(Object _, Object __ = null)
     {
         return Print($"You have so far scored {Context.Story.CurrentScore} out of a possible {Context.Story.PossibleScore}, in {Context.Story.Moves} turns, earning you the rank of {GetRank()}");
     }
 
     public static string GetRank()
     {
-        var score = Context.Story.CurrentScore;
-        switch (score)
+        switch (Context.Story.CurrentScore)
         {
             case >= 348:
                 return "Grandmaster Adventurer!";
@@ -60,14 +63,6 @@ public class Score : Verb
             {
                 Output.Print(output);
             }
-        }
-    }
-
-    public static int Current
-    {
-        get
-        {
-            return Context.Story.CurrentScore;
         }
     }
 }

@@ -1,22 +1,26 @@
-﻿using Adventure.Net.Actions;
+﻿using Adventure.Net.ActionRoutines;
+using Adventure.Net.Extensions;
 using Adventure.Net.Things;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Adventure.Net;
 
-
+[DebuggerDisplay("{DebuggerDisplay,nq}")]
 public abstract class Object
 {
     private readonly static List<char> vowels = ['a', 'e', 'i', 'o', 'u'];
+    private const string They = "they";
     private const string Theyre = "they're";
     private const string Thats = "that's";
     private const string Those = "those";
     private const string That = "that";
     private const string Are = "are";
     private const string Is = "is";
+    private const string It = "it";
 
     private readonly Dictionary<Type, Func<bool>> beforeRoutines = [];
     private readonly AfterRoutines afterRoutines = new();
@@ -44,16 +48,16 @@ public abstract class Object
 
     [JsonIgnore]
     public string Name { get; set; }
-    
+
     [JsonIgnore]
     public bool PluralName { get; set; }
-    
+
     [JsonIgnore]
     public Action Daemon { get; set; }
-    
+
     [JsonIgnore]
     public string Description { get; set; }
-    
+
     [JsonIgnore]
     public string InitialDescription { get; set; }
 
@@ -94,14 +98,14 @@ public abstract class Object
     public string TheyreOrThats => PluralName ? Theyre : Thats;
     public string ThatOrThose => PluralName ? Those : That;
     public string IsOrAre => PluralName ? Are : Is;
-
+    public string TheyOrIt => PluralName ? They : It;
     // Object Attributes
     public bool Absent { get; set; }                    // When true, Object is currently unavailable/not visible at it's location
     public bool Animate { get; set; }                   // Is alive
     public bool Clothing { get; set; }                  // Is clothing that can be worn
     public bool Edible { get; set; }                    // Can be eaten
     public bool Light { get; set; }                     // Provides light
-    public bool Lockable { get; private set; }          // Can be locked
+    public bool Lockable { get; set; }          // Can be locked
     public bool Locked { get; set; }                    // Is locked/unlocked
     public bool Multitude { get; set; }                 // more than one (e.g. a pile of leaves)
     public bool On { get; set; }                        // Is on/off
@@ -125,7 +129,12 @@ public abstract class Object
     [JsonIgnore]
     public Object Key { get; set; }
 
-    public void Before<T>(Func<string> before) where T : Verb
+    public bool Before<T>() where T : Routine
+    {
+        return beforeRoutines.Any(x => x.Key == typeof(T));
+    }
+
+    public void Before<T>(Func<string> before) where T : Routine
     {
         bool wrapper()
         {
@@ -143,43 +152,38 @@ public abstract class Object
     }
 
     public void Before<T, R>(Func<bool> before)
-        where T : Verb
-        where R : Verb
+        where T : Routine
+        where R : Routine
     {
         Before<T>(before);
         Before<R>(before);
     }
 
     public void Before<T, R, S>(Func<bool> before)
-        where T : Verb
-        where R : Verb
-        where S : Verb
+        where T : Routine
+        where R : Routine
+        where S : Routine
     {
         Before<T>(before);
         Before<R>(before);
         Before<S>(before);
     }
 
-    public void Before<T>(Func<bool> before) where T : Verb
+    public void Before<T>(Func<bool> before) where T : Routine
     {
-        if (typeof(T) == typeof(Receive))
+        var type = typeof(T);
+
+        var subTypes = Routines.List?.Where(x => x.GetType().IsSubclassOf(type)).ToList() ?? new List<Routine>();
+
+        beforeRoutines.TryAdd(type, before);
+
+        foreach (var subType in subTypes)
         {
-            throw new NotSupportedException("Before<Receive> is not supported. Use Receive instead.");
+            beforeRoutines.TryAdd(subType.GetType(), before);
         }
-
-        beforeRoutines.Remove(typeof(T));
-        beforeRoutines.Add(typeof(T), before);
     }
 
-    public Func<bool> Before<T>() where T : Verb
-    {
-        var verbType = typeof(T);
-        return Before(verbType);
-    }
-
-    public Func<bool> Before(Type verbType) => beforeRoutines.ContainsKey(verbType) ? beforeRoutines[verbType] : null;
-
-    public void After<T>(Func<string> after) where T : Verb
+    public void After<T>(Func<string> after) where T : Routine
     {
         void wrapper()
         {
@@ -194,15 +198,10 @@ public abstract class Object
         After<T>(wrapper);
     }
 
-    public void After<T>(Action after) where T : Verb => afterRoutines.Add(typeof(T), after);
+    public void After<T>(Action after) where T : Routine => afterRoutines.Add(typeof(T), after);
 
-    public Action After<T>() where T : Verb
-    {
-        Type verbType = typeof(T);
-        return After(verbType);
-    }
-
-    public Action After(Type verbType) => afterRoutines.Get(verbType);
+    public Func<bool> GetBeforeRoutine(Type verbType) => beforeRoutines.TryGetValue(verbType, out var value) ? value : null;
+    public Action GetAfterRoutine(Type verbType) => afterRoutines.Get(verbType);
 
     public void Receive(Func<Object, string> beforeReceive)
     {
@@ -216,7 +215,8 @@ public abstract class Object
             }
 
             return false;
-        };
+        }
+        ;
 
         Receive(wrapper);
     }
@@ -233,85 +233,39 @@ public abstract class Object
         return null;
     }
 
-    public static bool Print(string message)
+    protected static bool Print(string message)
     {
-        if (Context.Current != null)
-        {
-            Context.Current.Print(message);
-        }
-        else
-        {
-            Output.Print(message);
-        }
-
+        message = message.Capitalize();
+        Output.Print(message);
         return true;
     }
 
+    protected static bool Success(string message)
+    {
+        message = message.Capitalize();
+        Output.Print(message);
+        return true;
+    }
+
+    protected static bool Fail(string message)
+    {
+        message = message.Capitalize();
+        Output.Print(message);
+        return false;
+    }
+
     // current object being handled by the command handler
-    public static Object Noun => Context.Current.Noun;
+    public static Object Noun => Context.Current.First;
 
     // indirect object of current running command
     public static Object Second => Context.Current.Second;
 
     public static T Get<T>() where T : Object => Objects.Get<T>();
 
-    public static bool Redirect<T>(Object obj, Func<T, bool> callback) where T : Verb
-    {
-        var command = Context.Current.PushState();
-
-        var handled = RunCommand(command, obj, callback);
-
-        Context.Current.PopState();
-
-        return handled;
-    }
-
-    internal static ExecuteResult Execute<T>(Object obj, Func<T, bool> callback) where T : Verb
-    {
-        var commandOutput = new CommandOutput();
-        var command = Context.Current.PushState(commandOutput);
-
-        var handled = RunCommand(command, obj, callback);
-
-        Context.Current.PopState(commandOutput);
-
-        return new ExecuteResult(handled, commandOutput);
-    }
-
-    private static bool RunCommand<T>(ICommandState command, Object obj, Func<T, bool> callback) where T : Verb
-    {
-        var handled = false;
-        var success = false;
-
-        var before = obj.Before<T>();
-
-        if (before != null)
-        {
-            command.State = CommandState.Before;
-            handled = before();
-        }
-
-        if (!handled)
-        {
-            command.State = CommandState.During;
-            success = callback(Verb.Get<T>());
-
-            var after = obj.After<T>();
-
-            if (success && after != null)
-            {
-                command.State = CommandState.After;
-                after();
-            }
-        }
-
-        return success;
-    }
-
     protected static T Room<T>() where T : Room => Rooms.Get<T>();
-    
+
     public bool InScope => CurrentRoom.ObjectsInScope().Contains(this);
-    
+
     public static void Remove<T>() where T : Object
     {
         var obj = Get<T>();
@@ -327,8 +281,6 @@ public abstract class Object
     public void MoveTo<T>() where T : Room => ObjectMap.MoveObject(this, Room<T>());
 
     public Room Location => ObjectMap.Location(this);
-
-    public bool IsHere<T>() where T : Object => Get<T>().InRoom;
 
     public void FoundIn<R>() where R : Room
     {
@@ -388,5 +340,12 @@ public abstract class Object
             }
             return hash;
         }
+    }
+
+    private string DebuggerDisplay => Name != null ? $"{Name} in {Location}" : $"{GetType().Name}";
+
+    protected void Dead()
+    {
+        throw new DeathException();
     }
 }

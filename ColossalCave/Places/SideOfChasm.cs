@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
 using ColossalCave.Actions;
 using ColossalCave.Things;
@@ -20,7 +20,7 @@ public class SideOfChasm : BelowGround
             }
 
             Print("You didn't make it.");
-            GameOver.Dead();
+            Dead();
             return true;
         });
     }
@@ -52,7 +52,7 @@ public class SideOfChasm : BelowGround
                      "You scrabble desperately for support, " +
                      "but as the bridge collapses you stumble back and fall into the chasm.");
 
-                GameOver.Dead();
+                Dead();
                 return Location;
             }
             
@@ -128,14 +128,14 @@ public class RicketyBridge : Door
         Describe = () =>
         {
             var result =
-                "A rickety wooden bridge extends across the chasm, vanishing into the mist. " +
+                "\rA rickety wooden bridge extends across the chasm, vanishing into the mist. " +
                 "\n\nA sign posted on the bridge reads, \"Stop! Pay troll!\"\n";
 
             var troll = Get<BurlyTroll>();
 
             if (!troll.InRoom)
             {
-                result += "The troll is nowhere to be seen.";
+                result += "\nThe troll is nowhere to be seen.";
             }
 
             return result;
@@ -198,7 +198,7 @@ public class BurlyTroll : Object
 
         Before<Attack>(() => "The troll laughs aloud at your pitiful attempt to injure him.");
 
-        Before<ThrowAt, Give>(() =>
+        Before<Throw, Give>(() =>
         {
             if (Noun is Treasure)
             {
@@ -215,7 +215,7 @@ public class BurlyTroll : Object
                 return Print("Gluttony is not one of the troll's vices. Avarice, however, is.");
             }
 
-            return Print($"The troll deftly catches {Noun.DefiniteArticle} {Noun.Name}, examines it carefully, and tosses it back, declaring, " +
+            return Print($"The troll deftly catches {Noun.DName}, examines it carefully, and tosses it back, declaring, " +
               "\"Good workmanship, but it's not valuable enough.\"");
         });
 

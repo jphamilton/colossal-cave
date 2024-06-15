@@ -12,8 +12,10 @@ public class SupporterTests : BaseTestFixture
     public void should_put_and_take_object_on_surface()
     {
         Execute("take all");
-        Execute("on");
+        Execute("turn on lamp");
         Location = Rooms.Get<Y2>();
+
+        var x = ConsoleOut;
 
         ClearOutput();
 
@@ -31,6 +33,7 @@ public class SupporterTests : BaseTestFixture
         // can take lamp from the rock
         Execute("take lamp");
 
+        
         Assert.True(Inventory.Contains(Objects.Get<BrassLantern>()));
 
     }

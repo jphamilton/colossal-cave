@@ -1,18 +1,18 @@
 ﻿using Adventure.Net;
+using Adventure.Net.ActionRoutines;
 
 namespace ColossalCave.Actions;
 
-public class Oil : Verb
+public class Oil : Routine
 {
     public Oil()
     {
-        Name = "oil";
-        Synonyms.Are("grease", "lubricate");
+        Verbs = ["oil", "grease", "lubricate", "lube"];
+        Requires = [O.Noun];
     }
 
-    public bool Expects(Object obj)
+    public override bool Handler(Object obj, Object _)
     {
-        Print("Oil? What oil?");
-        return true;
+        return Fail("Oil? What oil?");
     }
 }

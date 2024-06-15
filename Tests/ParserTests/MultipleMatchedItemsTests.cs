@@ -1,5 +1,8 @@
 ﻿using Adventure.Net;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
+using ColossalCave.Things;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Tests.ParserTests;
@@ -11,14 +14,11 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     {
         var room = Player.Location;
 
-        var red = new RedHat();
-        red.Initialize();
+        var red = Objects.Get<RedHat>();
+        red.MoveToLocation();
 
-        var black = new BlackHat();
-        black.Initialize();
-
-        Objects.Add(red, room);
-        Objects.Add(black, room);
+        var black = Objects.Get<BlackHat>();
+        black.MoveToLocation();
 
         CommandPrompt.FakeInput("red");
 
@@ -34,18 +34,14 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     {
         var room = Player.Location;
 
-        var red = new RedHat();
-        red.Initialize();
+        var red = Objects.Get<RedHat>();
+        red.MoveToLocation();
 
-        var black = new BlackHat();
-        black.Initialize();
+        var black = Objects.Get<BlackHat>();
+        black.MoveToLocation();
 
-        var white = new WhiteHat();
-        white.Initialize();
-
-        Objects.Add(red, room);
-        Objects.Add(black, room);
-        Objects.Add(white, room);
+        var white = Objects.Get<WhiteHat>();
+        white.MoveToLocation();
 
         CommandPrompt.FakeInput("white");
 
@@ -61,18 +57,14 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     {
         var room = Player.Location;
 
-        var red = new RedHat();
-        red.Initialize();
+        var red = Objects.Get<RedHat>();
+        red.MoveToLocation();
 
-        var black = new BlackHat();
-        black.Initialize();
+        var black = Objects.Get<BlackHat>();
+        black.MoveToLocation();
 
-        var white = new WhiteHat();
-        white.Initialize();
-
-        Objects.Add(red, room);
-        Objects.Add(black, room);
-        Objects.Add(white, room);
+        var white = Objects.Get<WhiteHat>();
+        white.MoveToLocation();
 
         CommandPrompt.FakeInput("white");
 
@@ -92,18 +84,14 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     {
         var room = Player.Location;
 
-        var red = new RedHat();
-        red.Initialize();
+        var red = Objects.Get<RedHat>();
+        red.MoveToLocation();
 
-        var black = new BlackHat();
-        black.Initialize();
+        var black = Objects.Get<BlackHat>();
+        black.MoveToLocation();
 
-        var white = new WhiteHat();
-        white.Initialize();
-
-        Objects.Add(red, room);
-        Objects.Add(black, room);
-        Objects.Add(white, room);
+        var white = Objects.Get<WhiteHat>();
+        white.MoveToLocation();
 
         // this should bail out of the except clause handler
         CommandPrompt.FakeInput("take white hat");
@@ -111,9 +99,9 @@ public class MultipleMatchedItemsTests : BaseTestFixture
         Execute("take all except hat");
 
         Assert.DoesNotContain("white hat: Taken.", ConsoleOut);
-        Assert.DoesNotContain(white, Inventory.Items);
-        Assert.Contains(red, Inventory.Items);
-        Assert.Contains(black, Inventory.Items);
+        Assert.Contains(white, Inventory.Items);
+        Assert.DoesNotContain(red, Inventory.Items);
+        Assert.DoesNotContain(black, Inventory.Items);
     }
 
     [Fact]
@@ -121,18 +109,14 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     {
         var room = Player.Location;
 
-        var red = new RedHat();
-        red.Initialize();
+        var red = Objects.Get<RedHat>();
+        red.MoveToLocation();
 
-        var black = new BlackHat();
-        black.Initialize();
+        var black = Objects.Get<BlackHat>();
+        black.MoveToLocation();
 
-        var white = new WhiteHat();
-        white.Initialize();
-
-        Objects.Add(red, room);
-        Objects.Add(black, room);
-        Objects.Add(white, room);
+        var white = Objects.Get<WhiteHat>();
+        white.MoveToLocation();
 
         Execute("take white hat");
 
@@ -144,43 +128,33 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     {
         var room = Player.Location;
 
-        var red = new RedHat();
-        red.Initialize();
+        var red = Objects.Get<RedHat>();
+        red.MoveToLocation();
 
-        var black = new BlackHat();
-        black.Initialize();
+        var black = Objects.Get<BlackHat>();
+        black.MoveToLocation();
 
-        var white = new WhiteHat();
-        white.Initialize();
-
-        Objects.Add(red, room);
-        Objects.Add(black, room);
-        Objects.Add(white, room);
+        var white = Objects.Get<WhiteHat>();
+        white.MoveToLocation();
 
         CommandPrompt.FakeInput("donkey");
 
         Execute("take all except hat");
 
-        Assert.Equal(Messages.CantSeeObject, Line1);
+        Assert.Contains(Messages.CantSeeObject, ConsoleOut);
     }
 
     [Fact]
     public void should_repeatedly_try_to_resolve_multiple_objects()
     {
-        var room = Player.Location;
+        var red = Objects.Get<RedHat>();
+        red.MoveToLocation();
 
-        var red = new RedHat();
-        red.Initialize();
+        var black = Objects.Get<BlackHat>();
+        black.MoveToLocation();
 
-        var black = new BlackHat();
-        black.Initialize();
-
-        var white = new WhiteHat();
-        white.Initialize();
-
-        Objects.Add(red, room);
-        Objects.Add(black, room);
-        Objects.Add(white, room);
+        var white = Objects.Get<WhiteHat>();
+        white.MoveToLocation();
 
         CommandPrompt.FakeInput("hat");
 
@@ -191,6 +165,28 @@ public class MultipleMatchedItemsTests : BaseTestFixture
     }
 
     [Fact]
+    public void should_resolve_multiple_indirects()
+    {
+        var keys = Inventory.Add<SetOfKeys>();
+
+        var orange = Objects.Get<OrangeBox>();
+        orange.MoveToLocation();
+
+        var opaque = Objects.Get<OpaqueBox>();
+        opaque.MoveToLocation();
+
+        var magenta = Objects.Get<MagentaBox>();
+        magenta.MoveToLocation();
+
+        CommandPrompt.FakeInput("opaque box");
+
+        Execute("put keys in box");
+
+        Assert.Contains($"Which do you mean, {orange.DName}, {opaque.DName} or {magenta.DName}?", ConsoleOut);
+        Assert.Contains($"You put {keys.DName} into {opaque.DName}.", ConsoleOut);
+    }
+
+    [Fact]
     public void should_resolve_object_when_multiple_objects_have_same_adjective()
     {
         // in Colossal Cave "bottled" will find "bottled oil" and "bottled water"
@@ -198,5 +194,36 @@ public class MultipleMatchedItemsTests : BaseTestFixture
 
         Assert.DoesNotContain("Which do you mean", ConsoleOut);
         Assert.Contains("[Purloined.]", ConsoleOut);
+    }
+
+    [Fact]
+    public void should_resolve_object_when_multiple_objects_have_same_adjective_indirect()
+    {
+        var red = Objects.Get<RedHat>();
+        red.MoveToLocation();
+
+        var oil = Objects.Get<OilInTheBottle>();
+        oil.MoveToLocation();
+
+        var water = Objects.Get<WaterInTheBottle>();
+        water.MoveToLocation();
+
+        var parsed = new Parsed
+        {
+            VerbToken = "take",
+            PossibleRoutines = [Routines.Get<Take>()],
+        };
+
+        // in Colossal Cave "bottled" will find "bottled oil" and "bottled water"
+        // nonsense sentence but fine for a test
+        var tokens = new List<string> { "hat", "from", "bottled", "water" };
+
+        var parser = new Parser();
+        parsed = parser.GetObjects(parsed, tokens);
+
+        Assert.DoesNotContain("Which do you mean", ConsoleOut);
+        Assert.Single(parsed.Objects);
+        Assert.Single(parsed.IndirectObjects);
+        Assert.Contains(water, parsed.IndirectObjects);
     }
 }

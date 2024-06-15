@@ -5,13 +5,6 @@ namespace Adventure.Net.Extensions;
 
 public static class StringExtensions
 {
-
-    public static string TitleCase(this string input)
-    {
-        TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
-        return textInfo.ToTitleCase(input);
-    }
-
     public static bool HasValue(this string input)
     {
         return !string.IsNullOrEmpty(input) && !string.IsNullOrWhiteSpace(input);
@@ -22,26 +15,19 @@ public static class StringExtensions
         return values.Contains(input);
     }
 
-    public static Verb ToVerb(this string input)
-    {
-        return Verbs.Get(input);
-    }
-
     public static string Capitalize(this string input)
     {
-        if (!string.IsNullOrEmpty(input))
+        if (string.IsNullOrEmpty(input))
         {
-            if (input.Length == 1)
-            {
-                input = input.ToUpper();
-            }
-            else
-            {
-                input = char.ToUpper(input[0]) + input[1..];
-            }
+            return input;
         }
 
-        return input;
+        if (input.Length == 1)
+        {
+            return char.ToUpper(input[0], CultureInfo.CurrentCulture).ToString();
+        }
+
+        return char.ToUpper(input[0], CultureInfo.CurrentCulture) + input[1..];
     }
 
 }

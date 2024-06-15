@@ -1,34 +1,45 @@
 ﻿using Adventure.Net;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
 using ColossalCave.Places;
 
 namespace ColossalCave.Actions;
 
-public class Blast : Verb
+public class BlastWith : Routine
+{
+    public BlastWith()
+    {
+        Verbs = ["blast"];
+        Prepositions = ["with"];
+        Requires = [O.Noun, O.Held];
+    }
+
+    public override bool Handler(Object first, Object held)
+    {
+        if (held is not BlackMarkRod)
+        {
+            return Fail("Blasting requires dynamite.");
+        }
+
+        return Fail("Been eating those funny brownies again?");
+    }
+}
+
+public class Blast : Routine
 {
     public Blast()
     {
-        Name = "blast";
+        Verbs = ["blast"];
     }
 
-    public bool Expects(Object noun, Preposition.With with, [Held] Object second)
-    {
-        if (second is not BlackMarkRod)
-        {
-            return Print("Blasting requires dynamite.");
-        }
-
-        return Print("Been eating those funny brownies again?");
-    }
-
-    public bool Expects()
+    public override bool Handler(Object _, Object __)
     {
         var location = Player.Location;
         var blackMarkRod = Objects.Get<BlackMarkRod>();
 
         if (location is not NeEnd and not SwEnd)
         {
-            return Print("Frustrating, isn't it?");
+            return Fail("Frustrating, isn't it?");
         }
 
         if (location is SwEnd && blackMarkRod.Location is NeEnd)
@@ -40,7 +51,7 @@ public class Blast : Verb
                 "You march through the hole and find yourself in the main office, " +
                 "where a cheering band of friendly elves carry the conquering adventurer off into the sunset.";
             Print(message);
-            GameOver.Finished();
+            GameOver.Win();
             return true;
         }
 
@@ -52,14 +63,13 @@ public class Blast : Verb
                 "burying the snakes in the rubble. " +
                 "A river of molten lava pours in through the hole, destroying everything in its path, including you!";
             Print(message);
-            GameOver.Dead();
+            Dead();
             return true;
         }
 
         Print("There is a loud explosion, and you are suddenly splashed across the walls of the room.");
-        GameOver.Dead();
+        Dead();
 
         return true;
     }
-
 }

@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
 using ColossalCave.Actions;
 using ColossalCave.Things;
@@ -35,6 +35,8 @@ public class HallOfMists : BelowGround
         WestTo<EastBankOfFissure>();
 
         DownTo<HallOfMtKing>();
+        
+        NorthTo<HallOfMtKing>();
 
         UpTo(() =>
         {
@@ -101,7 +103,7 @@ public class Dome : Scenic
 
         Before<Climb>(() =>
         {
-            Player.Location.DOWN();
+            Player.Location.TryMove<Down>();
             return true;
         });
 

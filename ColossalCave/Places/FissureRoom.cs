@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Things;
 
 namespace ColossalCave.Places;
@@ -18,7 +18,7 @@ public abstract class FissureRoom : BelowGround
 
             Print("You didn't make it.");
 
-            GameOver.Dead();
+            Dead();
 
             return true;
         });
@@ -48,4 +48,3 @@ public class Fissure : Scenic
         FoundIn<WestSideOfFissure, EastBankOfFissure>();
     }
 }
-

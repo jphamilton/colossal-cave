@@ -6,33 +6,40 @@ namespace Adventure.Net;
 
 public static class Output
 {
-    private static TextWriter Target;
-    private static IOutputFormatter Formatter;
+    private static TextWriter _target;
+    private static IOutputFormatter _formatter;
 
     public static void Initialize(TextWriter destination, IOutputFormatter formatter)
     {
-        Target = destination;
-        Formatter = formatter;
+        _target = destination;
+        _formatter = formatter;
     }
 
     public static void Bold(string text)
     {
-        var currentColor = Console.ForegroundColor;
-        Console.ForegroundColor = ConsoleColor.White;
+        Console.Write($"\x1b[1m");
         Print(text);
-        Console.ForegroundColor = currentColor;
+        Console.Write($"\x1b[0m");
     }
 
-    public static void Print(string text)
+    public static void Print(string message, bool direct = false)
     {
-        if (string.IsNullOrEmpty(text))
+        if (string.IsNullOrEmpty(message))
         {
             return;
         }
 
-        foreach (string line in text.Split('\n'))
+        message = message.Replace("\n", Environment.NewLine);
+
+        var formatted = OutputOverride(_formatter.Format(message));
+
+        if (Context.Current != null && !direct)
         {
-            Target.WriteLine(Formatter.Format(line));
+            Context.Current.Print(formatted);
+        }
+        else
+        {
+            _target.WriteLine(formatted);
         }
     }
 
@@ -44,26 +51,42 @@ public static class Output
         }
     }
 
-    public static void Print(string format, params object[] arg)
+    private static Func<string, string> OutputOverride = (x) => x;
+
+    private class OutputOverrider : IDisposable
     {
-        Target.WriteLine(Formatter.Format(format), arg);
+        public void Dispose()
+        {
+            OutputOverride = (x) => x;
+
+            if (Context.Current != null)
+            {
+                Context.Current.PrintOverride = (x) => x;
+            }
+        }
+    }
+
+    public static IDisposable Override(Func<string,string> x)
+    {
+        OutputOverride = x;
+
+        if (Context.Current != null)
+        {
+            Context.Current.PrintOverride = x;
+        }
+
+        return new OutputOverrider();
     }
 
     public static void PrintLine()
     {
-        Target.WriteLine();
-    }
-
-    public static void Write(string text)
-    {
-        Target.Write(Formatter.Format(text));
-    }
-
-    public static string Buffer
-    {
-        get
+        if (Context.Current != null)
         {
-            return Target.ToString();
+            Context.Current.Print("\r");
+        }
+        else
+        {
+            _target.WriteLine();
         }
     }
 

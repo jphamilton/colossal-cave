@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Actions;
 using ColossalCave.Places;
 
@@ -117,7 +117,7 @@ public class Plant : Object
                 break;
         }
 
-        Describe();
+        Print(Describe());
 
         return true;
     }

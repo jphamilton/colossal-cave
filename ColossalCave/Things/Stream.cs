@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Extensions;
 using ColossalCave.Actions;
 using ColossalCave.Places;
@@ -77,7 +77,7 @@ public class Stream : Scenic
                 if (obj is Treasure)
                 {
                     Score.Add(-5);
-                    Print($"{obj.DefiniteArticle.TitleCase()} washes away with the stream."); // TODO: print_ret(The) noun, " washes away with the stream."
+                    Print($"{obj.DName.Capitalize} washes away with the stream.");
                 }
 
                 return true;

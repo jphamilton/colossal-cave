@@ -1,17 +1,17 @@
 ﻿using Adventure.Net;
+using Adventure.Net.ActionRoutines;
 
 namespace ColossalCave.Actions;
 
-public class Plugh : Verb
+public class Plugh : Routine
 {
     public Plugh()
     {
-        Name = "plugh";
+        Verbs = ["plugh"];
     }
 
-    public bool Expects()
+    public override bool Handler(Object first, Object second = null)
     {
-        Print("Nothing happens.");
-        return true;
+        return Fail("Nothing happens.");
     }
 }

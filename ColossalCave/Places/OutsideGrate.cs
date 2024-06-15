@@ -1,4 +1,5 @@
-﻿using ColossalCave.Things;
+﻿using Adventure.Net.ActionRoutines;
+using ColossalCave.Things;
 
 namespace ColossalCave.Places;
 
@@ -24,9 +25,7 @@ public class OutsideGrate : AboveGround
 
             if (!grate.Locked && !grate.Open)
             {
-                // TODO: this
-                Print("(first opening the grate)");
-                grate.Open = true;
+                Implicit.Action<Open>(grate);
             }
 
             return grate;

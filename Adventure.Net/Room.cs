@@ -1,14 +1,16 @@
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text.Json.Serialization;
+using System;
 
 namespace Adventure.Net;
 
+[DebuggerDisplay("{Name,nq}")]
 public abstract class Room : Object
 {
-    private readonly Dictionary<string, Func<Room>> roomMap = [];
+    private readonly Dictionary<Type, Func<Room>> roomMap = [];
     private readonly Dictionary<Type, Func<Direction, bool>> beforeMoveActions = [];
 
     protected Room()
@@ -30,213 +32,157 @@ public abstract class Room : Object
     /// <summary>
     /// Routine that is called when player is moving in darkness
     /// </summary>
-    public Action DarkToDark { get; set; }
+    /// <remarks>Should return false if player has died</remarks>
+    public Func<bool> DarkToDark { get; set; }
 
     /// <summary>
     /// Called the first time a player enters the room
     /// </summary>
     public Action Initial { get; set; }
 
-    private void AddToRoomMap<T>(string direction) where T : Room
+    private void AddToRoomMap<T, D>()
+        where T : Room
+        where D : Direction
     {
         Room room = Rooms.Get<T>();
+
         if (room != null)
         {
-            roomMap.Remove(direction);
-            roomMap.Add(direction, () => room);
+            roomMap.Remove(typeof(D));
+            roomMap.Add(typeof(D), () => room);
         }
     }
 
-    public void Before<T>(Func<Direction, bool> before) where T : IDirectional
+    private void AddToRoomMap<D>(Func<Room> getRoom) where D : Direction
+    {
+        roomMap.Remove(typeof(D));
+        roomMap.Add(typeof(D), getRoom);
+    }
+
+    public void Before<T>(Func<Direction, bool> before) where T : Direction
     {
         beforeMoveActions.Remove(typeof(T));
         beforeMoveActions.Add(typeof(T), before);
     }
 
-    private void AddToRoomMap(string direction, Func<Room> getRoom)
-    {
-        roomMap.Remove(direction);
-        roomMap.Add(direction, getRoom);
-    }
-
     public void NorthTo<T>() where T : Room
     {
-        AddToRoomMap<T>("n");
+        AddToRoomMap<T, North>();
     }
 
     public void NorthTo(Func<Room> getRoom)
     {
-        AddToRoomMap("n", getRoom);
-    }
-
-    public Room N()
-    {
-        return TryMove("n");
+        AddToRoomMap<North>(getRoom);
     }
 
     public void SouthTo<T>() where T : Room
     {
-        AddToRoomMap<T>("s");
+        AddToRoomMap<T, South>();
     }
 
     public void SouthTo(Func<Room> getRoom)
     {
-        AddToRoomMap("s", getRoom);
-    }
-
-    public Room S()
-    {
-        return TryMove("s");
+        AddToRoomMap<South>(getRoom);
     }
 
     public void EastTo<T>() where T : Room
     {
-        AddToRoomMap<T>("e");
+        AddToRoomMap<T, East>();
     }
 
     public void EastTo(Func<Room> getRoom)
     {
-        AddToRoomMap("e", getRoom);
-    }
-
-    public Room E()
-    {
-        return TryMove("e");
+        AddToRoomMap<East>(getRoom);
     }
 
     public void WestTo<T>() where T : Room
     {
-        AddToRoomMap<T>("w");
+        AddToRoomMap<T, West>();
     }
 
     public void WestTo(Func<Room> getRoom)
     {
-        AddToRoomMap("w", getRoom);
-    }
-
-    public Room W()
-    {
-        return TryMove("w");
+        AddToRoomMap<West>(getRoom);
     }
 
     public void NorthWestTo<T>() where T : Room
     {
-        AddToRoomMap<T>("nw");
+        AddToRoomMap<T, Northwest>();
     }
 
     public void NorthWestTo(Func<Room> getRoom)
     {
-        AddToRoomMap("nw", getRoom);
-    }
-
-    public Room NW()
-    {
-        return TryMove("nw");
+        AddToRoomMap<Northwest>(getRoom);
     }
 
     public void NorthEastTo<T>() where T : Room
     {
-        AddToRoomMap<T>("ne");
+        AddToRoomMap<T, Northeast>();
     }
 
     public void NorthEastTo(Func<Room> getRoom)
     {
-        AddToRoomMap("ne", getRoom);
-    }
-
-    public Room NE()
-    {
-        return TryMove("ne");
+        AddToRoomMap<Northeast>(getRoom);
     }
 
     public void SouthWestTo<T>() where T : Room
     {
-        AddToRoomMap<T>("sw");
+        AddToRoomMap<T, Southwest>();
     }
 
     public void SouthWestTo(Func<Room> getRoom)
     {
-        AddToRoomMap("sw", getRoom);
-    }
-
-    public Room SW()
-    {
-        return TryMove("sw");
+        AddToRoomMap<Southwest>(getRoom);
     }
 
     public void SouthEastTo<T>() where T : Room
     {
-        AddToRoomMap<T>("se");
+        AddToRoomMap<T, Southeast>();
     }
 
     public void SouthEastTo(Func<Room> getRoom)
     {
-        AddToRoomMap("se", getRoom);
-    }
-
-    public Room SE()
-    {
-        return TryMove("se");
+        AddToRoomMap<Southeast>(getRoom);
     }
 
     public void InTo<T>() where T : Room
     {
-        AddToRoomMap<T>("in");
+        AddToRoomMap<T, In>();
     }
 
     public void InTo(Func<Room> getRoom)
     {
-        AddToRoomMap("in", getRoom);
-    }
-
-    public Room IN()
-    {
-        return TryMove("in");
+        AddToRoomMap<In>(getRoom);
     }
 
     public void OutTo<T>() where T : Room
     {
-        AddToRoomMap<T>("out");
+        AddToRoomMap<T, Out>();
     }
 
     public void OutTo(Func<Room> getRoom)
     {
-        AddToRoomMap("out", getRoom);
-    }
-
-    public Room OUT()
-    {
-        return TryMove("out");
+        AddToRoomMap<Out>(getRoom);
     }
 
     public void UpTo<T>() where T : Room
     {
-        AddToRoomMap<T>("up");
+        AddToRoomMap<T,Up>();
     }
 
     public void UpTo(Func<Room> getRoom)
     {
-        AddToRoomMap("up", getRoom);
-    }
-
-    public Room UP()
-    {
-        return TryMove("up");
+        AddToRoomMap<Up>(getRoom);
     }
 
     public void DownTo<T>() where T : Room
     {
-        AddToRoomMap<T>("down");
+        AddToRoomMap<T,Down>();
     }
 
     public void DownTo(Func<Room> getRoom)
     {
-        AddToRoomMap("down", getRoom);
-    }
-
-    public Room DOWN()
-    {
-        return TryMove("down");
+        AddToRoomMap<Down>(getRoom);
     }
 
     protected virtual Room HandleMove()
@@ -244,14 +190,19 @@ public abstract class Room : Object
         return this;
     }
 
-    protected virtual Room TryMove(string dir)
+    public virtual Room TryMove<T>() where T : Direction
     {
-        if (!roomMap.ContainsKey(dir))
+        var direction = Routines.Get<T>();
+        return TryMove(direction);
+    }
+
+    public virtual Room TryMove<T>(T direction) where T : Direction
+    {
+        if (!roomMap.ContainsKey(typeof(T)))
         {
             return null;
         }
 
-        var direction = (Direction)Verbs.Get(dir);
         var goType = typeof(Go);
 
         if (beforeMoveActions.ContainsKey(goType))
@@ -264,7 +215,7 @@ public abstract class Room : Object
             }
         }
 
-        var getRoom = roomMap[dir];
+        var getRoom = roomMap[typeof(T)];
 
         var room = getRoom();
 
@@ -279,7 +230,7 @@ public abstract class Room : Object
             }
             else
             {
-                var beforeEnter = room.Before<Enter>();
+                var beforeEnter = room.GetBeforeRoutine(typeof(Enter));
 
                 if (beforeEnter != null && beforeEnter())
                 {
@@ -293,4 +244,10 @@ public abstract class Room : Object
         return room;
     }
 
+    public Object Add<T>() where T : Object
+    {
+        Object obj = Objects.Get<T>();
+        obj.MoveToLocation();
+        return obj;
+    }
 }

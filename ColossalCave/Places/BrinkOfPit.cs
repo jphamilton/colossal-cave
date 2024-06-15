@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
 using ColossalCave.Things;
 
@@ -35,7 +35,7 @@ public class MassiveOrangeColumn : Scenic
 
         Before<Climb>(() =>
         {
-            Player.Location.DOWN();
+            Player.Location.TryMove<Down>();
             return true;
         });
 
@@ -54,7 +54,7 @@ public class Pit : Scenic
 
         Before<Climb>(() =>
         {
-            Player.Location.DOWN();
+            Player.Location.TryMove<Down>();
             return true;
         });
     }

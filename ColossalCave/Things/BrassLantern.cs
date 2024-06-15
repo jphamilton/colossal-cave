@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
 using ColossalCave.Places;
 
@@ -65,7 +65,7 @@ public class BrassLantern : Object
                         // TODO: deadflag = 3;
                         message += " You can't explore the cave without a lamp. So let's call it a day.";
                         Print(message);
-                        GameOver.Dead();
+                        Dead();
                         return;
                     }
                     else
@@ -115,7 +115,6 @@ public class BrassLantern : Object
 
         Before<Examine>(() =>
         {
-
             string result = "It is a shiny brass lamp";
 
             if (!On)

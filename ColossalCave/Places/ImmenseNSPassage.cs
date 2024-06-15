@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Actions;
 using ColossalCave.Things;
 
@@ -21,7 +21,7 @@ public class ImmenseNSPassage : BelowGround
 
             if (rustyDoor.Locked)
             {
-                Redirect<Open>(rustyDoor, v => v.Expects(rustyDoor));
+                Redirect.To<Open>(rustyDoor);
                 return this;
             }
 

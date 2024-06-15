@@ -1,65 +1,26 @@
-﻿using Adventure.Net.Extensions;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Adventure.Net;
 
-public interface ICommandState
-{
-    CommandState State { get; set; }
-}
-
-public class CommandOutput : ICommandState
-{
-    public CommandState State { get; set; }
-
-    public IList<string> BeforeOutput { get; } = new List<string>();
-    public IList<string> DuringOutput { get; } = new List<string>();
-    public IList<string> AfterOutput { get; } = new List<string>();
-
-    public IList<string> Messages
-    {
-        get
-        {
-            var result = new List<string>();
-
-            result.AddRange(BeforeOutput);
-
-            // After messages are shown before During messages which,
-            // allows objects to add "observations" to mundane actions.
-            //
-            // An example is the dropping the Ming Vase in Colossal Cave:
-            //
-            // > drop vase
-            // (coming to rest, delicately, on the velvet pillow)
-            // Dropped.
-            result.AddRange(AfterOutput);
-
-            result.AddRange(DuringOutput);
-
-            return result;
-        }
-    }
-}
-
 public class CommandContext : ICommandState
 {
-    private List<IList<string>> OrderedOutput { get; }
+    public List<IList<string>> OrderedOutput { get; set; }
 
     private Stack<CommandOutput> OutputStack { get; }
 
-    public CommandContext(ParserResult parsed)
-    {
-        Parsed = parsed;
-        IsMulti = parsed.Objects.Count > 1 && (parsed.Verb.Multi || parsed.Verb.MultiHeld);
-        Second = parsed.IndirectObject;
+    public Func<string, string> PrintOverride { get; set; } = (x) => x;
 
-        OrderedOutput = new List<IList<string>>();
+    public CommandContext(ParserResult pr)
+    {
+        IsMulti = pr.Objects.Count > 1 && pr.Routine.AcceptsManyObjects;
+        Second = pr.IndirectObject;
+        OrderedOutput = [];
         OutputStack = new Stack<CommandOutput>();
     }
 
-    public bool IsMulti { get; }
+    public bool IsMulti { get; set; }
 
     public Func<Room> Move { get; set; }
 
@@ -81,14 +42,11 @@ public class CommandContext : ICommandState
         }
     }
 
-    public ParserResult Parsed { get; }
-
     // this changes as the command handler iterates the objects
-    public Object Noun { get; set; }
+    public Object First { get; set; }
 
     // this never changes.
     public Object Second { get; }
-
 
     public ICommandState PushState(CommandOutput commandOutput = null)
     {
@@ -99,14 +57,15 @@ public class CommandContext : ICommandState
         return state;
     }
 
-    public void PopState(CommandOutput commandOutput = null)
+    public bool PopState(CommandOutput commandOutput = null)
     {
-        var popped = OutputStack.Pop();
-
-        if (commandOutput == null)
+        if (OutputStack.TryPop(out var popped) && commandOutput == null)
         {
             OrderedOutput.Add(popped.Messages);
+            return true;
         }
+
+        return false;
     }
 
     public CommandState State
@@ -121,7 +80,7 @@ public class CommandContext : ICommandState
         }
     }
 
-    public void Print(string message, CommandState? state = null)
+    public void Print(string message)
     {
         if (OutputStack.Count == 0)
         {
@@ -129,27 +88,33 @@ public class CommandContext : ICommandState
             return;
         }
 
+        var after = message;
+
         var messages = OutputStack.Peek();
-        var process = state ?? State;
 
-        message = message.Capitalize();
+        if (IsMulti && State != CommandState.After)
+        {
+            message = $"{First.Name}: {message}";
+        }
+        else
+        {
+            message = PrintOverride(message);
+        }
 
-        switch (process)
+        switch (State)
         {
             case CommandState.Before:
-                messages.BeforeOutput.Add(IsMulti ? $"{Noun.Name}: {message}" : message);
+                messages.BeforeOutput.Add(message);
                 break;
 
             case CommandState.During:
-                messages.DuringOutput.Add(IsMulti ? $"{Noun.Name}: {message}" : message);
+                messages.DuringOutput.Add(message);
                 break;
 
             case CommandState.After:
                 messages.DuringOutput.Clear();
-                messages.AfterOutput.Add(message);
+                messages.AfterOutput.Add(after);
                 break;
         }
     }
-
-
 }

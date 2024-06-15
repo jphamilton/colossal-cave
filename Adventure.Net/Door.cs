@@ -1,12 +1,12 @@
-﻿using Adventure.Net.Actions;
+﻿using Adventure.Net.ActionRoutines;
 using System;
 
 namespace Adventure.Net;
 
 public abstract class Door : Room
 {
-    private Func<Room> doorTo;
-    private Func<Direction> doorDirection;
+    private Func<Room> _doorTo;
+    private Func<Direction> _doorDirection;
 
     protected Door()
     {
@@ -15,8 +15,8 @@ public abstract class Door : Room
 
         Before<Enter>(() =>
         {
-            var dir = doorDirection();
-            return dir.Expects();
+            var dir = _doorDirection();
+            return dir.Handler();
         });
     }
 
@@ -24,33 +24,35 @@ public abstract class Door : Room
 
     public string WhenClosed { get; set; }
 
-    public string Display()
+    public bool TryDisplay(out string message)
     {
+        message = null;
+
         if (WhenOpen != null && Open)
         {
-            return $"\n{WhenOpen}";
+            message = $"\n{WhenOpen}";
         }
         else if (WhenClosed != null && !Open)
         {
-            return $"\n{WhenClosed}";
+            message = $"\n{WhenClosed}";
         }
 
-        return null;
+        return message != null;
     }
 
     public void DoorTo(Func<Room> action)
     {
-        doorTo = action;
+        _doorTo = action;
     }
 
     public Room DoorTo()
     {
-        return doorTo();
+        return _doorTo();
     }
 
     public void DoorDirection(Func<Direction> action)
     {
-        doorDirection = action;
+        _doorDirection = action;
     }
 
     protected T Direction<T>() where T : Direction
@@ -63,18 +65,18 @@ public abstract class Door : Room
     {
         if (!Locked && Open)
         {
-            return doorTo();
+            return _doorTo();
         }
 
-        if (doorDirection() is Down)
+        if (_doorDirection() is Down)
         {
             Print($"You are unable to descend by the {Name}.");
         }
-        else if (doorDirection() is Up)
+        else if (_doorDirection() is Up)
         {
             Print($"You are unable to ascend by the {Name}");
         }
-        else if (doorDirection() != null)
+        else if (_doorDirection() != null)
         {
             Print("You can't go that way.");
         }

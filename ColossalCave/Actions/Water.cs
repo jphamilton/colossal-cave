@@ -1,15 +1,17 @@
 ﻿using Adventure.Net;
+using Adventure.Net.ActionRoutines;
 
 namespace ColossalCave.Actions;
 
-public class Water : Verb
+public class Water : Routine
 {
     public Water()
     {
-        Name = "water";
+        Verbs = ["water"];
+        Requires = [O.Noun];
     }
 
-    public bool Expects(Object obj)
+    public override bool Handler(Object obj, Object _ = null)
     {
         return true;
     }

@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using Adventure.Net.Things;
 using Adventure.Net.Utilities;
 using ColossalCave.Actions;
@@ -27,7 +27,7 @@ public class Y2 : BelowGround
         {
             if (Random.Number(1, 100) < 25)
             {
-                Print("\r\nA hollow voice says, \"Plugh.\"\n");
+                Print("\nA hollow voice says, \"Plugh.\"\n");
             }
         });
 

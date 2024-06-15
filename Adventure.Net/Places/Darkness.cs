@@ -6,7 +6,7 @@ public class Darkness : Room
     {
         Name = "Darkness";
         Light = false;
-        Description = "It's pitch black. You can't see a thing.";
+        Description = "It's pitch dark, and you can't see a thing.";
     }
 
     public override void Initialize()

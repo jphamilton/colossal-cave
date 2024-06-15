@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Places;
 
 namespace ColossalCave.Things;
@@ -12,7 +12,7 @@ public class Snake : Object
     public override void Initialize()
     {
         Name = "snake";
-        Synonyms.Are("cobra", "asp", "huge", "fierce", "green", "ferocious",
+        Synonyms.Are("snake", "cobra", "asp", "huge", "fierce", "green", "ferocious",
             "venemous", "venomous", "large", "big", "killer");
         Description = "I wouldn't mess with it if I were you.";
         InitialDescription = "A huge green fierce snake bars the way!";
@@ -24,7 +24,7 @@ public class Snake : Object
 
         Before<Order, Ask, Answer>(() => Print("Hiss!"));
 
-        Before<ThrowAt>(() =>
+        Before<Throw>(() =>
         {
             if (Noun is Axe)
             {
@@ -52,7 +52,7 @@ public class Snake : Object
         Before<Take>(() =>
         {
             Print("It takes you instead. Glrp!");
-            GameOver.Dead();
+            Dead();
             return true;
         });
     }

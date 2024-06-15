@@ -1,5 +1,5 @@
 ﻿using Adventure.Net;
-using Adventure.Net.Actions;
+using Adventure.Net.ActionRoutines;
 using ColossalCave.Things;
 
 namespace ColossalCave.Places;
@@ -93,7 +93,7 @@ public class SleepingDwarves : Scenic
         Print("The resulting ruckus has awakened the dwarves. " +
             "There are now dozens of threatening little dwarves in the room with you! " +
             "Most of them throw knives at you! All of them get you!");
-        GameOver.Dead();
+        Dead();
         return true;
     }
 }

@@ -1,26 +1,24 @@
 ﻿using Adventure.Net;
+using Adventure.Net.ActionRoutines;
 
 namespace ColossalCave.Actions;
 
-public class Count : Verb
+public class Count : Routine
 {
     public Count()
     {
-        Name = "count";
+        Verbs = ["count"];
+        Requires = [O.Noun];
     }
 
-    public bool Expects(Object obj)
+    public override bool Handler(Object obj, Object _)
     {
         if (obj.Multitude)
         {
-            Print("There are a multitude.");
+            return Print("There are a multitude.");
         }
-        else
-        {
-            Print($"There is exactly one (1) {obj}");
-        }
-
-        return true;
+        
+        return Print($"There is exactly one (1) {obj}");
     }
 
 }

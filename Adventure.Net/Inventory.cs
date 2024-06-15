@@ -9,21 +9,11 @@ namespace Adventure.Net;
 
 public static class Inventory
 {
-    private static Player player;
-
-    private static Player Player
-    {
-        get
-        {
-            player ??= Objects.Get<Player>();
-            return player;
-        }
-    }
+    private static Player Player => Objects.Get<Player>();
 
     // these can be replaced by games with more complicated rules for inventory
     public static Func<bool> CanAdd = () => Count < 8;
-    public static Func<string> CarryingTooMuch = () => "You're carrying too many things already.";
-
+    
     public static void Add(Object obj)
     {
         // CanAdd is not called here because debugging verbs like Purloin will work no matter
@@ -32,6 +22,13 @@ public static class Inventory
         obj.Parent = Player;
         Player.Children.Add(obj);
         obj.Touched = true;
+    }
+
+    public static Object Add<T>() where T : Object
+    {
+        Object obj = Objects.Get<T>();
+        Add(obj);
+        return obj;
     }
 
     public static bool Contains<T>() where T : Object
@@ -44,7 +41,7 @@ public static class Inventory
     {
         foreach (var o in Player.Children)
         {
-            if (o is Container c && c.Children.Contains(obj))
+            if (o is Container c && c.ContentsVisible && c.Children.Contains(obj))
             {
                 return true;
             }
@@ -124,7 +121,6 @@ public static class Inventory
     private static string DisplayObject(Object obj)
     {
         var asides = new List<string>();
-        var article = obj.IndefiniteArticle;
 
         if (obj.Light && !Player.Location.Light)
         {
@@ -152,7 +148,7 @@ public static class Inventory
 
         var aside = asides.Count > 0 ? $" ({string.Join(" and ", asides)})" : "";
 
-        return $"{article} {obj.Name}{aside}\n";
+        return $"{obj.IName}{aside}\n";
     }
 
     private static string DisplayContainer(Container container, int level)
@@ -190,6 +186,19 @@ public static class Inventory
         {
             return GetCount(Player.Children);
         }
+    }
+
+    public static bool ProvidingLight()
+    {
+        foreach (var obj in Items)
+        {
+            if (obj.Light || obj is Container container && container.ProvidingLight())
+            {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
     private static int GetCount(IList<Object> objects)

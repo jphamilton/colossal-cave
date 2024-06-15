@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Adventure.Net.ActionRoutines;
+using System;
 using System.Collections.Generic;
 
 namespace Adventure.Net;
@@ -9,25 +10,29 @@ public class AfterRoutines
 
     public void Add(Type type, Action after)
     {
-        if (routines.ContainsKey(type))
+        while (type != typeof(Routine))
         {
-            var routine = routines[type];
-
-            void wrapper()
+            if (routines.ContainsKey(type))
             {
-                routine();
-                after();
+                var routine = routines[type];
+
+                void wrapper()
+                {
+                    routine();
+                    after();
+                }
+
+                routines.Remove(type);
+
+                routines.Add(type, wrapper);
+            }
+            else
+            {
+                routines.Add(type, after);
             }
 
-            routines.Remove(type);
-
-            routines.Add(type, wrapper);
+            type = type.BaseType;
         }
-        else
-        {
-            routines.Add(type, after);
-        }
-
     }
 
     public Action Get(Type verbType)

@@ -1,13 +1,17 @@
 ﻿using Adventure.Net;
+using Adventure.Net.ActionRoutines;
+using ColossalCave.Actions;
+using ColossalCave.Places;
 using ColossalCave.Things;
 using Xunit;
+using static ColossalCave.Actions.FeeFieFoeFoo;
 
 namespace Tests.Library;
 
 public class InventoryTests : BaseTestFixture
 {
     [Fact]
-    public void should_include_contained_objects()
+    public void carrying_too_much_should_include_contained_objects()
     {
         Execute("take all");
 
@@ -35,5 +39,21 @@ public class InventoryTests : BaseTestFixture
         Assert.False(Inventory.Contains(diamonds));
 
         Assert.Contains("You're carrying too many things already.", ConsoleOut);
+    }
+
+    [Fact]
+    public void should_display_container_contents()
+    {
+        var cage = Inventory.Add<WickerCage>();
+
+        Execute("put all in cage");
+        ClearOutput();
+        Execute("i");
+
+        Assert.Contains("a wicker cage (which is open)", ConsoleOut);
+        Assert.Contains("\ta small bottle", ConsoleOut);
+        Assert.Contains("\ta brass lantern", ConsoleOut);
+        Assert.Contains("\ta set of keys", ConsoleOut);
+        Assert.Contains("\tsome tasty food", ConsoleOut);
     }
 }
