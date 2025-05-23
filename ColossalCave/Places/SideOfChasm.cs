@@ -200,9 +200,9 @@ public class BurlyTroll : Object
 
         Before<Throw, Give>(() =>
         {
-            if (Noun is Treasure)
+            if (First is Treasure)
             {
-                Noun.Remove();
+                First.Remove();
                 MoveTo<RicketyBridge>();
                 HasCaughtTreasure = true;
                 Print("The troll catches your treasure and scurries away out of sight.");
@@ -210,12 +210,12 @@ public class BurlyTroll : Object
                 return true;
             }
 
-            if (Noun is TastyFood)
+            if (First is TastyFood)
             {
                 return Print("Gluttony is not one of the troll's vices. Avarice, however, is.");
             }
 
-            return Print($"The troll deftly catches {Noun.DName}, examines it carefully, and tosses it back, declaring, " +
+            return Print($"The troll deftly catches {First.DName}, examines it carefully, and tosses it back, declaring, " +
               "\"Good workmanship, but it's not valuable enough.\"");
         });
 

@@ -18,7 +18,7 @@ public class InsideBuilding : AboveGround
 
         Before<Enter>(() =>
         {
-            if (Noun is Spring || Noun is SewerPipes)
+            if (First is Spring || First is SewerPipes)
             {
                 return Print("The stream flows out through a pair of 1 foot diameter sewer pipes. It would be advisable to use the exit.");
             }

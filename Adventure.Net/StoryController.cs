@@ -1,4 +1,3 @@
-using Adventure.Net.Extensions;
 using Adventure.Net.Things;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -9,7 +8,7 @@ namespace Adventure.Net;
 [ExcludeFromCodeCoverage]
 public class StoryController
 {
-    public StoryController(IStory story)
+    public StoryController(Story story)
     {
         Console.Title = story.Name;
         Output.Initialize(Console.Out, new WordWrap());

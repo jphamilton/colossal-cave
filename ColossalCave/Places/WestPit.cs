@@ -20,7 +20,7 @@ public class WestPit : BelowGround
 
         Before<Climb>(() =>
         {
-            if (Noun is Plant)
+            if (First is Plant)
             {
                 return false;
             }

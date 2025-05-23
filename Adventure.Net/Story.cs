@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Adventure.Net;
 
-public abstract class StoryBase : IStory
+public abstract class Story
 {
     public string Name { get; set; }
     public bool IsDone { get; set; }
@@ -14,7 +14,7 @@ public abstract class StoryBase : IStory
 
     protected abstract void Start();
 
-    protected StoryBase()
+    protected Story()
     {
         // derived classes should modify any static library primitives or values in their constructor.
         // For example, adding values to IgnoredWords or ReplacedWords or new Compass directions.
@@ -61,5 +61,4 @@ public abstract class StoryBase : IStory
 
         MovePlayer.To(Player.Location);
     }
-
 }

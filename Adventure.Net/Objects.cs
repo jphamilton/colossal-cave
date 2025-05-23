@@ -12,7 +12,7 @@ public static class Objects
     // all game objects
     private static List<Object> _objects = [];
 
-    public static void Load(IStory story)
+    public static void Load(Story story)
     {
         _objects = [];//.Clear();
         int id = 0;

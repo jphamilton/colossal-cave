@@ -43,7 +43,7 @@ public class Bear : Object
         {
             if (Player.IsCarrying<Axe>())
             {
-                return ThrowAt(Noun);
+                return ThrowAt(First);
             }
 
             if (IsFriendly)
@@ -54,9 +54,9 @@ public class Bear : Object
             return Print("With what? Your bare hands? Against *his* bear hands??");
         });
 
-        Before<Throw>(() => ThrowAt(Noun));
+        Before<Throw>(() => ThrowAt(First));
 
-        Before<Give>(() => Give(Noun));
+        Before<Give>(() => Give(First));
 
         Before<Order, Ask, Answer>(() => Print("This is a Bear of very little brain."));
 

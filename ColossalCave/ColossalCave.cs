@@ -6,7 +6,7 @@ using ColossalCave.Things;
 
 namespace ColossalCave;
 
-public class ColossalCaveStory : StoryBase
+public class ColossalCaveStory : Story
 {
     public ColossalCaveStory()
     {

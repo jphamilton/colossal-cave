@@ -28,7 +28,7 @@ public class WestEndOfTwoPitRoom : BelowGround
 
         Before<Enter>(() =>
         {
-            if (Noun is HoleAbovePit)
+            if (First is HoleAbovePit)
             {
                 Print("It is too far up for you to reach.");
             }

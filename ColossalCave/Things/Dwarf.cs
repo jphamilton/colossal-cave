@@ -38,17 +38,17 @@ public class Dwarf : Object
 
         Before<Throw>(() =>
         {
-            if (Noun is Axe)
+            if (First is Axe)
             {
                 if (Random.Number(1, 3) != 1)
                 {
                     Remove();
-                    Noun.MoveToLocation();
+                    First.MoveToLocation();
                     Kill();
                     return Print("You killed a little dwarf! The body vanishes in a cloud of greasy black smoke.");
                 }
 
-                Noun.MoveToLocation();
+                First.MoveToLocation();
 
                 return Print("Missed! The little dwarf dodges out of the way of the axe.");
             }
@@ -176,7 +176,7 @@ public class Dwarf : Object
 
     private bool Give()
     {
-        if (Noun is TastyFood)
+        if (First is TastyFood)
         {
             return Print("You fool, dwarves eat only coal! Now you've made him *really* mad!");
         }

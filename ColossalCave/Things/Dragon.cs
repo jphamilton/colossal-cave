@@ -28,7 +28,7 @@ public class Dragon : Object
 
         Before<Throw>(() =>
         {
-            if (Noun is Axe axe)
+            if (First is Axe axe)
             {
                 axe.MoveToLocation();
                 return Print("The axe bounces harmlessly off the dragon's thick scales.");

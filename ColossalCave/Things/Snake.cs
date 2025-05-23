@@ -26,7 +26,7 @@ public class Snake : Object
 
         Before<Throw>(() =>
         {
-            if (Noun is Axe)
+            if (First is Axe)
             {
                 return TooDangerous;
             }
@@ -36,7 +36,7 @@ public class Snake : Object
 
         Before<Give>(() =>
         {
-            if (Noun is LittleBird bird)
+            if (First is LittleBird bird)
             {
                 bird.Remove();
                 Print("The snake has now devoured your bird.");

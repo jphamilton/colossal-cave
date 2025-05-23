@@ -32,16 +32,18 @@ public abstract class Object
     public abstract void Initialize();
 
     public int Id { get; set; } // used internally for serialization
-    public override string ToString() => $"{Name}";
 
+    // "the brass lantern"
     public string DName => $"{DefiniteArticle} {Name}";
+
+    // "a brass lantern"
     public string IName => $"{IndefiniteArticle} {Name}";
 
     [JsonIgnore]
     public Object Parent { get; set; }
 
     [JsonIgnore]
-    public IList<Object> Children { get; set; } = new List<Object>();
+    public IList<Object> Children { get; set; } = [];
 
     [JsonIgnore]
     public Synonyms Synonyms { get; set; } = [];
@@ -52,54 +54,39 @@ public abstract class Object
     [JsonIgnore]
     public bool PluralName { get; set; }
 
+    /// <summary>
+    /// This runs once per turn and provides clock-like behavior.
+    /// Useful for moving things around like NPC's and draining
+    /// batteries in a brass lantern
+    /// </summary>
     [JsonIgnore]
     public Action Daemon { get; set; }
 
+    /// <summary>
+    /// Normal every day object description
+    /// </summary>
     [JsonIgnore]
     public string Description { get; set; }
 
-    [JsonIgnore]
-    public string InitialDescription { get; set; }
-
-    [JsonIgnore]
-    public string IndefiniteArticle
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(indefiniteArticle) && !string.IsNullOrEmpty(Name))
-            {
-                var startsWithVowel = vowels.Contains(Name.ToLower().First());
-                indefiniteArticle = startsWithVowel && !PluralName ? "an" : "a";
-            }
-            return indefiniteArticle;
-        }
-        set { indefiniteArticle = value; }
-    }
-
-    [JsonIgnore]
-    public string DefiniteArticle
-    {
-        get
-        {
-            if (string.IsNullOrEmpty(definiteArticle))
-            {
-                definiteArticle = "the";
-            }
-
-            return definiteArticle;
-        }
-
-        set => definiteArticle = value;
-    }
-
+    /// <summary>
+    /// Useful for changing an Object's description based on game conditions
+    /// </summary>
     [JsonIgnore]
     public Func<string> Describe { get; set; }
+
+    /// <summary>
+    /// Description shown when player visits room for the first time
+    /// </summary>
+    [JsonIgnore]
+    public string InitialDescription { get; set; }
 
     public string TheyreOrThats => PluralName ? Theyre : Thats;
     public string ThatOrThose => PluralName ? Those : That;
     public string IsOrAre => PluralName ? Are : Is;
     public string TheyOrIt => PluralName ? They : It;
-    // Object Attributes
+
+    #region Object Attributes
+
     public bool Absent { get; set; }                    // When true, Object is currently unavailable/not visible at it's location
     public bool Animate { get; set; }                   // Is alive
     public bool Clothing { get; set; }                  // Is clothing that can be worn
@@ -126,8 +113,17 @@ public abstract class Object
         Key = Objects.Get<T>();
     }
 
+    /// <summary>
+    /// The key that opens this object
+    /// </summary>
     [JsonIgnore]
     public Object Key { get; set; }
+
+    #endregion
+
+    #region Before Action Helpers
+
+    public Func<bool> GetBeforeRoutine(Type verbType) => beforeRoutines.TryGetValue(verbType, out var value) ? value : null;
 
     public bool Before<T>() where T : Routine
     {
@@ -183,6 +179,12 @@ public abstract class Object
         }
     }
 
+    #endregion
+
+    #region After Action Helpers
+
+    public Action GetAfterRoutine(Type verbType) => afterRoutines.Get(verbType);
+
     public void After<T>(Func<string> after) where T : Routine
     {
         void wrapper()
@@ -200,8 +202,7 @@ public abstract class Object
 
     public void After<T>(Action after) where T : Routine => afterRoutines.Add(typeof(T), after);
 
-    public Func<bool> GetBeforeRoutine(Type verbType) => beforeRoutines.TryGetValue(verbType, out var value) ? value : null;
-    public Action GetAfterRoutine(Type verbType) => afterRoutines.Get(verbType);
+    #endregion
 
     public void Receive(Func<Object, string> beforeReceive)
     {
@@ -233,6 +234,8 @@ public abstract class Object
         return null;
     }
 
+    #region Print Helpers
+
     protected static bool Print(string message)
     {
         message = message.Capitalize();
@@ -254,33 +257,69 @@ public abstract class Object
         return false;
     }
 
-    // current object being handled by the command handler
-    public static Object Noun => Context.Current.First;
+    #endregion
 
-    // indirect object of current running command
+    /// <summary>
+    /// Provides access to Object in Before/After routines
+    /// </summary>
+    public static Object First => Context.Current.First;
+
+    /// <summary>
+    /// Provides access to indirect Object in Before/After routines
+    /// </summary>
     public static Object Second => Context.Current.Second;
 
+    /// <summary>
+    /// Get any Object
+    /// </summary>
     public static T Get<T>() where T : Object => Objects.Get<T>();
 
+    /// <summary>
+    /// Gets a Room
+    /// </summary>
     protected static T Room<T>() where T : Room => Rooms.Get<T>();
 
+    /// <summary>
+    /// Return true, if object is in scope, otherwise false
+    /// </summary>
     public bool InScope => CurrentRoom.ObjectsInScope().Contains(this);
 
+    /// <summary>
+    /// Removes object from object tree
+    /// </summary>
     public static void Remove<T>() where T : Object
     {
         var obj = Get<T>();
         obj.Remove();
     }
 
+    /// <summary>
+    /// Removes and Object from the object tree
+    /// </summary>
     public void Remove() => ObjectMap.Remove(this);
 
+    /// <summary>
+    /// Returns true if the Object is in the current location, otherwise false
+    /// </summary>
     public bool InRoom => ObjectMap.Contains(Player.Location, this);
 
+    /// <summary>
+    /// Moves Object to current location
+    /// </summary>
     public void MoveToLocation() => ObjectMap.MoveObject(this, Player.Location);
 
+    /// <summary>
+    /// Move object to given location
+    /// </summary>
+    /// <typeparam name="T">Room</typeparam>
     public void MoveTo<T>() where T : Room => ObjectMap.MoveObject(this, Room<T>());
 
+    /// <summary>
+    /// Object current location
+    /// </summary>
     public Room Location => ObjectMap.Location(this);
+
+    #region Object Location Helpers
 
     public void FoundIn<R>() where R : Room
     {
@@ -329,6 +368,39 @@ public abstract class Object
         FoundIn<R7>();
     }
 
+    #endregion
+
+    [JsonIgnore]
+    public string IndefiniteArticle
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(indefiniteArticle) && !string.IsNullOrEmpty(Name))
+            {
+                var startsWithVowel = vowels.Contains(Name.ToLower().First());
+                indefiniteArticle = startsWithVowel && !PluralName ? "an" : "a";
+            }
+            return indefiniteArticle;
+        }
+        set { indefiniteArticle = value; }
+    }
+
+    [JsonIgnore]
+    public string DefiniteArticle
+    {
+        get
+        {
+            if (string.IsNullOrEmpty(definiteArticle))
+            {
+                definiteArticle = "the";
+            }
+
+            return definiteArticle;
+        }
+
+        set => definiteArticle = value;
+    }
+
     public override int GetHashCode()
     {
         unchecked // Overflow is fine, just wrap
@@ -344,6 +416,7 @@ public abstract class Object
 
     private string DebuggerDisplay => Name != null ? $"{Name} in {Location}" : $"{GetType().Name}";
 
+    // triggers "death"
     protected void Dead()
     {
         throw new DeathException();
