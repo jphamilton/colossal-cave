@@ -2,7 +2,7 @@ Colossal Cave
 =============
 
 This is based on the [Inform 6](https://gitlab.com/DavidGriffith/inform6lib) version of [the game](https://www.ifarchive.org/if-archive/games/source/inform/Advent.inf) because I wanted a rich parser, similar to the old Infocom games like Zork and Planetfall that I grew up playing as a kid. 
-When I started this, I had no idea how deep the rabbit hole would go on this - reading Inform source, several Inform books, ZIL code and a long lost manual on writing ZIL - just to figure out how games like this are work. It's way more complex than I ever would have thought. 
+When I started this, I had no idea how deep the rabbit hole would go on this - reading Inform source, several Inform books, ZIL code and a long lost manual on writing ZIL - just to figure out how games like this work. It's way more complex than I ever would have thought. 
 
 The source code is basically two parts. A library for writing Infocom/Inform type games and the 
 Colossal Cave game itself.
