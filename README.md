@@ -1,8 +1,6 @@
 Colossal Cave
 =============
 
-(playable and winnable but still a work in progress)
-
 This is based on the [Inform 6](https://gitlab.com/DavidGriffith/inform6lib) version of [the game](https://www.ifarchive.org/if-archive/games/source/inform/Advent.inf) because I wanted a rich parser, similar to the old Infocom games like Zork and Planetfall that I grew up playing as a kid. 
 I also wanted a library by the end of it that I could use to remake some of my favorite games (again Zork and Planetfall).
 
