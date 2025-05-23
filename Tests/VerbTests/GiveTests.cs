@@ -1,4 +1,5 @@
 ﻿using Adventure.Net;
+using Adventure.Net.Extensions;
 using ColossalCave.Things;
 using Xunit;
 
@@ -25,7 +26,7 @@ public class GiveTests : BaseTestFixture
 
         Execute("give bottle to donkey");
 
-        Assert.Contains("The donkey doesn't seem interested.", ConsoleOut);
+        Assert.Contains($"{donkey.DName.Capitalize()} doesn't seem interested.", ConsoleOut);
     }
 
     [Fact]

@@ -106,7 +106,7 @@ public class PartialResponseTests : BaseTestFixture
 
         Execute("put batteries in");
 
-        Assert.Contains($"What do you want to put the {fresh} in?", ConsoleOut);
+        Assert.Contains($"What do you want to put {fresh.DName} in?", ConsoleOut);
         Assert.Contains("I'm taking the liberty of replacing the batteries.", ConsoleOut);
 
         Assert.Equal(2500, lamp.PowerRemaining);
@@ -143,7 +143,7 @@ public class PartialResponseTests : BaseTestFixture
 
         Execute("put batteries");
 
-        Assert.Contains($"What do you want to put the {fresh} in?", ConsoleOut);
+        Assert.Contains($"What do you want to put {fresh.DName} in?", ConsoleOut);
         Assert.Contains("I'm taking the liberty of replacing the batteries.", ConsoleOut);
 
         Assert.Equal(2500, lamp.PowerRemaining);

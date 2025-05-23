@@ -1,4 +1,5 @@
-﻿using Adventure.Net.Things;
+﻿using Adventure.Net.Extensions;
+using Adventure.Net.Things;
 using System.Linq;
 
 namespace Adventure.Net.ActionRoutines;
@@ -48,7 +49,7 @@ public class Give : Routine
         }
         else if (creature.Animate)
         {
-            Print($"The {creature} doesn't seem interested.");
+            Print($"{creature.DName.Capitalize()} doesn't seem interested.");
         }
 
         return true;
