@@ -1,5 +1,6 @@
 Colossal Cave
 =============
+*[ If you are interested in how these games work, check out my [Zork 1 repo](https://github.com/jphamilton/zork-1) instead. This repo is kind of a mess.]*
 
 This is based on the [Inform 6](https://gitlab.com/DavidGriffith/inform6lib) version of [the game](https://www.ifarchive.org/if-archive/games/source/inform/Advent.inf) because I wanted a rich parser, similar to the old Infocom games like Zork and Planetfall that I grew up playing as a kid. 
 When I started this, I had no idea how deep the rabbit hole would go on this - reading Inform source, several Inform books, ZIL code and a long lost manual on writing ZIL - just to figure out how games like this work. It's way more complex than I ever would have thought. 
